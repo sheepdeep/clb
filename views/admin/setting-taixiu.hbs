@@ -1,0 +1,337 @@
+{{>head}}
+{{>nav}}
+<main class="main-content">
+    <div class="contents">
+        <div class="crm mb-25">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-main">
+                            <h4 class="text-capitalize breadcrumb-title">{{ title }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mb-25">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title hand" data-bs-toggle="tooltip" data-bs-placement="right"
+                                    data-bs-original-title="Cập nhập vào {{ timeNow settings.updatedAt }}">
+                                    <img src="../themes/admin/images/mini-game.png" alt="" width="35">
+                                    Cài Đặt Tài Xỉu
+                                    <img src="../themes/admin/images/mini-game.png" class="d-md-none" width="35">
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <form action="" method="post" id="formSetting">
+                                    <div class="row">
+                                        {{!-- Bắt Đầu Dữ Liệu Cơ Bản --}}
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Trạng thái</label>
+                                                <select name="refund-status" class="form-control ih-medium ip-light">
+                                                    {{#select settings.banTaiXiu.status }}
+                                                        <option value="active">Có</option>
+                                                        <option value="close">Không</option>
+                                                    {{/select }}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Nội dung tài</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="banTaiXiu-commentTai" value="{{ settings.banTaiXiu.commentTai }}"
+                                                       placeholder="Nhập tên website của bạn">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Nội dung xỉu</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="banTaiXiu-commentXiu" value="{{ settings.banTaiXiu.commentXiu }}"
+                                                       placeholder="Nhập tiêu đề website">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Loại Trả Thưởng</label>
+                                                <select name="banTaiXiu-rewardType" class="form-control ih-medium ip-light">
+                                                    {{#select settings.banTaiXiu.rewardType }}
+                                                        <option value="all">Trả Hết</option>
+                                                        <option value="limit">Giới Hạn</option>
+                                                    {{/select }}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label  for="" class="il-gray fs-14 fw-500 mb-10"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                                        data-bs-original-title="transId, status">Trả thưởng [COMMENT]</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="banTaiXiu-rewardGD"
+                                                       value="{{ settings.banTaiXiu.rewardGD }}"
+                                                       placeholder="Nhập nội dung trả thưởng GD">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Giới Hạn Trả</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="banTaiXiu-rewardLimit"
+                                                       value="{{ settings.banTaiXiu.rewardLimit }}"
+                                                       placeholder="Nhập nội dung trả thưởng GD">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Giới Hạn Trả</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="banTaiXiu-radio"
+                                                       value="{{ settings.banTaiXiu.radio }}"
+                                                       placeholder="Nhập tỉ lệ nhận thưởng">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Đặt tối thiểu</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="banTaiXiu-betMin"
+                                                       value="{{ settings.banTaiXiu.betMin }}"
+                                                       placeholder="Nhập số tiền đặt cược tối thiểu">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Đặt tối đa</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="banTaiXiu-betMax"
+                                                       value="{{ settings.banTaiXiu.betMax }}"
+                                                       placeholder="Nhập số tiền đặt cược tối đa">
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <button class="btn btn-success btn-block"><i class="fas fa-save"></i>
+                                                Lưu</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{{>foot}}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('body').on('submit', '#formSetting', function (e) {
+            e.preventDefault();
+            let data = $(this).serialize();
+
+            $('#formSetting>button').html(`<div class="dm-spin-dots spin-sm"><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span></div>`);
+            axios.put('#', data)
+                    .then((result) => {
+                        let response = result.data;
+                        response.success ? swal('Thông Báo', response.message, 'success') && setTimeout(() => window.location.reload(), 1500) : swal('Thông Báo', response.message, 'error');
+                    })
+                    .catch((err) => {
+                        swal('Thông Báo', err.message || err, 'error');
+                    })
+                    .finally(() => $('#formSetting>button').html(`<i class="fas fa-save"></i> Lưu`));
+        })
+
+        $('body').on('click', '#defaultColor', function (e) {
+            $('[name="themeSite-mainColor"]').attr('type', 'text').val('default');
+        })
+
+        $('body').on('submit', 'form.dataEnz', function (e) {
+            e.preventDefault();
+
+            let _this = $(this);
+            let data = toJSON(_this);
+
+            $('tbody.dataEnz').each(function (e) {
+                let list = [];
+                let _this = $(this);
+                let name = `${_this.attr('data-bs-parent')}${_this.attr('data-bs-child')}`;
+
+                _this.find('tr').each(function (e) {
+                    let _that = $(this);
+                    let isInput, object;
+
+                    _that.find('td[data-bs-key]').each(function (e) {
+                        let key = $(this).attr('data-bs-key');
+                        let value = $(this).attr('data-bs-value');
+                        isInput = $(this).find('input').length;
+
+                        if (!isInput) {
+                            key == "[]" ? list.push(value) : object = {
+                                ...object,
+                                [key]: value
+                            }
+                        }
+                    })
+
+                    !isInput && object && list.push(object);
+
+                })
+
+                data[name] = [
+                    ...list
+                ];
+            })
+
+            $('[name="saveData"]').html(`<div class="dm-spin-dots spin-sm"><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span></div>`);
+
+            axios.put('#', { ...data })
+                    .then((result) => {
+                        let response = result.data;
+
+                        response.success ? swal('Thông Báo', response.message, 'success') && setTimeout(() => window.location.reload(), 1500) : swal('Thông Báo', response.message, 'error');
+                    })
+                    .catch((err) => {
+                        swal('Thông Báo', err.message || err, 'error');
+                    })
+                    .finally(() => $('[name="saveData"]').html(`<i class="fas fa-save"></i> Lưu`));
+        })
+
+        $('body').on('click', '.dataEnz span[data-bs-action]', function (e) {
+            let action = $(this).attr('data-bs-action');
+            let tbody = $(this).parent().parent().parent().parent();
+            let tr = $(this).parent().parent().parent();
+
+            switch (action) {
+                case 'add':
+                    $(this).parent().html(`<span class="badges badge-info" data-bs-action="edit"><i class="fas fa-pen"></i></span> <span class="badges badge-danger" data-bs-action="remove"><i class="fa fa-trash" aria-hidden="true"></i></span>`);
+
+                    tr.find('td[data-bs-key]').each(function (e) {
+                        let key = $(this).attr('data-bs-key');
+                        let value = $(this).find('input').val();
+                        let more = $(this).attr('data-bs-more');
+
+                        if (!value) return tr.remove();
+
+                        let html;
+                        switch (more) {
+                            case 'numberFormat':
+                                html = Intl.NumberFormat('en-US').format(value)
+                                break;
+                            case 'textarea':
+                                html = `<textarea rows="3" class="form-control">${value}</textarea>`;
+                                break;
+                            default:
+                                html = value;
+                                break;
+                        }
+
+                        $(this).html(html).attr('data-bs-value', value);
+                    })
+
+                    if (tr.find('td[data-bs-key="html"]')) {
+                        let html = tr.find('td[data-bs-key="html"]').attr('data-bs-value');
+                        tr.find('td[data-bs-render="html"]').html(`<center>${html}</center>`)
+                    }
+
+                    tbody.find('[data-bs-position="true"]') && resetTOP(tbody);
+                    break;
+                case 'edit':
+                    $(this).parent().html(`<span class="badges badge-success" data-bs-action="save"><i class="fas fa-save"></i></span>`);
+
+                    tr.find('td[data-bs-key]').each(function (e) {
+                        let type = $(this).attr('data-bs-type');
+                        let value = $(this).attr('data-bs-value');
+
+                        $(this).html(`<input type="${type}" class="form-control ih-medium ip-light">`);
+                        $(this).find('input').val(value);
+                    })
+
+                    break;
+                case 'save':
+                    let render;
+                    $(this).parent().html(`<span class="badges badge-info" data-bs-action="edit"><i class="fas fa-pen"></i></span> <span class="badges badge-danger" data-bs-action="remove"><i class="fa fa-trash" aria-hidden="true"></i></span>`);
+
+                    tr.find('td[data-bs-key]').each(function (e) {
+                        let key = $(this).attr('data-bs-key');
+                        let value = $(this).find('input').val();
+                        let more = $(this).attr('data-bs-more');
+
+                        if (!value) return tr.remove();
+
+                        let html;
+                        switch (more) {
+                            case 'numberFormat':
+                                html = Intl.NumberFormat('en-US').format(value)
+                                break;
+                            case 'textarea':
+                                html = `<textarea rows="3" class="form-control">${value}</textarea>`;
+                                break;
+                            default:
+                                html = value;
+                                break;
+                        }
+                        $(this).html(html).attr('data-bs-value', value);
+                    })
+
+                    if (tr.find('td[data-bs-key="html"]')) {
+                        let html = tr.find('td[data-bs-key="html"]').attr('data-bs-value');
+                        tr.find('td[data-bs-render="html"]').html(`<center>${html}</center>`)
+                    }
+
+                    tbody.find('[data-bs-position="true"]') && resetTOP(tbody);
+                    break;
+                case 'remove':
+                    tr.remove();
+                    tbody.find('[data-bs-position="true"]') && resetTOP(tbody);
+                    break;
+                default:
+                    swal('Thông Báo', 'Thao tác không hợp lệ!', 'error');
+                    break;
+            }
+
+        })
+
+        $('body').on('click', '.create', function (e) {
+            let _this = $(this);
+            let value = _this.data('value');
+            let html;
+
+            switch (value) {
+                case 'contact':
+                    html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-key="url" data-bs-value="" data-bs-type="text"><input type="text" class="form-control ih-medium ip-light"></td><td data-bs-key="html" data-bs-value="" data-bs-type="text"><input type="text" class="form-control ih-medium ip-light"></td><td data-bs-render="html"></td></tr>`;
+                    break;
+                case 'missionData':
+                    html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
+                    break;
+                case 'bonusTOP':
+                    html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="[]" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
+                    break;
+                case 'fakeData':
+                    html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="phone" data-bs-value="" data-bs-type="text"><input type="text" class="form-control ih-medium ip-light"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
+                    break;
+                case 'gift':
+                    html = `<tr><td><div class="hand table-actions"><span class="badge-success badges"data-bs-action=add><i class="fa-save fas"></i></span></div><td data-bs-key=pos data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=ratio data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=name data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=amount data-bs-type=number data-bs-value=""data-bs-more=numberFormat><input class="form-control ih-medium ip-light"type=number>`;
+                    break;
+                default:
+                    swal('Thông Báo', 'Dữ liệu không hợp lệ!', 'error');
+                    break;
+            }
+
+            html && $(`tbody[data-bs-parent="${_this.data('parent')}"][data-bs-child="${_this.data('child')}"]`).append(html);
+        })
+
+        function toJSON(form) {
+            return $(form).serializeArray().reduce(function (json, { name, value }) {
+                json[name] = value;
+                return json;
+            }, {});
+        }
+
+        function resetTOP(tbody) {
+            tbody.find('td[data-bs-position="true"]').each(function (index) {
+                $(this).html(`${index + 1}`)
+            })
+        }
+    })
+</script>

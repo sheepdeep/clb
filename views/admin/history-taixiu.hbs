@@ -1,0 +1,451 @@
+{{>head}}
+{{>nav}}
+<main class="main-content">
+    <div class="contents">
+        <div class="crm mb-25">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-main">
+                            <h4 class="text-capitalize breadcrumb-title">{{ title }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mb-20">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title">
+                                    <a href="{{ originalUrl.pathname }}" class="text-dark">
+                                        <img src="../themes/admin/images/history.png" alt="" width="35">
+                                        Lịch Sử Giao Dịch
+                                        <img src="../themes/admin/images/history.png" class="d-md-none" width="35">
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="userDatatable adv-table-table global-shadow border-light-0 adv-table">
+                                    <div id="filter-form-container"
+                                         class="footable-filtering-external footable-filtering-right">
+                                        <form>
+                                            <div class="form-inline">
+                                                <div
+                                                        class="form-group dm-select d-flex align-items-center adv-table-searchs__status mb-3 me-sm-30 me-0">
+                                                    <label
+                                                            class="d-flex align-items-center mb-sm-0 mb-2 fs-15 fw-500">Trò
+                                                        Chơi</label>
+                                                    <select name="gameType" class="form-control ms-sm-10 ms-0">
+                                                        <option value="">Tất Cả</option>
+                                                        {{#each games}}
+                                                            <option value="{{ this.gameType }}">{{ this.name }}</option>
+                                                        {{/each}}
+                                                    </select>
+                                                </div>
+                                                <div
+                                                        class="form-group dm-select d-flex align-items-center adv-table-searchs__status mb-3 me-sm-30 me-0">
+                                                    <label
+                                                            class="d-flex align-items-center mb-sm-0 mb-2 fs-15 fw-500">Loại</label>
+                                                    <select name="io" class="form-control ms-sm-10 ms-0">
+                                                        {{#select io}}
+                                                            <option value="">Tất Cả</option>
+                                                            <option value="-1">Trừ Tiền</option>
+                                                            <option value="1">Nhận Tiền</option>
+                                                        {{/select}}
+                                                    </select>
+                                                </div>
+                                                <div
+                                                        class="form-group dm-select d-flex align-items-center adv-table-searchs__status mb-3 me-sm-30 me-0">
+                                                    <label
+                                                            class="d-flex align-items-center mb-sm-0 mb-2 fs-15 fw-500">Trạng
+                                                        Thái</label>
+                                                    <select name="status" class="form-control ms-sm-10 ms-0">
+                                                        {{#select status }}
+                                                            <option value="">Tất Cả</option>
+                                                            <option value="wait">Đợi Xử Lý</option>
+                                                            <option value="transfer">Chuyển Tiền</option>
+                                                            <option value="recharge">Nạp Tiền</option>
+                                                            <option value="withdraw">Rút Tiền</option>
+                                                            <option value="errorComment">Sai Nội Dung</option>
+                                                            <option value="limitRefund">Giới Hạn Hoàn</option>
+                                                            <option value="limitBet">Sai Hạn Mức</option>
+                                                            <option value="refund">Đã Hoàn Tiền</option>
+                                                            <option value="waitReward">Đợi Trả Thưởng</option>
+                                                            <option value="waitRefund">Đợi Hoàn Tiền</option>
+                                                            <option value="win">Thắng Cược</option>
+                                                            <option value="won">Thua Cược</option>
+                                                            <option value="errorMoney">Không Đủ Tiền</option>
+                                                            <option value="limitPhone">Giới Hạn Số</option>
+                                                            <option value="errorPhone">Lỗi Số</option>
+                                                            <option value="phoneBlock">Đã Chặn Số</option>
+                                                            <option value="error">Tất Cả Lỗi</option>
+                                                        {{/select}}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center">
+                                                <div class="col-md-10">
+                                                    <div class="form-group mb-3 hand">
+                                                        <div class="input-group">
+                                                            <input type="search" name="search" class="form-control"
+                                                                   value="{{ search }}"
+                                                                   placeholder="Nhập nội dung tìm kiếm...">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group mb-3">
+                                                        <button class="btn btn-primary btn-sm btn-block"><i
+                                                                class="fa fa-search" aria-hidden="true"></i> Tìm
+                                                            kiếm</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="table-responsive table-mousewheel mb-3">
+                                    <table
+                                            class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
+                                        <thead class="badge-secondary text-white">
+                                        <tr>
+                                            <th><span data-bs-submit="history-taixiu" data-bs-action="remove" data-id="all"
+                                                      data-bs-toggle="tooltip" data-bs-placement="top"
+                                                      data-bs-original-title="Xóa Tất Cả"><i
+                                                    class="fa fa-times-circle" aria-hidden="true"></i></span>
+                                            </th>
+                                            <th>Mã Giao Dịch</th>
+                                            <th>Phiên</th>
+                                            <th>Số Điện Thoại</th>
+                                            <th>Tiền Nhận {{{ tableSort originalUrl.search 'amount' _sort }}}</th>
+                                            <th>Nội Dung {{{ tableSort originalUrl.search 'comment' _sort }}}</th>
+                                            <th>Tiền Thưởng {{{ tableSort originalUrl.search 'bonus' _sort }}}</th>
+                                            <th>Trạng Thái {{{ tableSort originalUrl.search 'status' _sort }}}</th>
+                                            <th>Mô Tả</th>
+                                            <th>Người Chuyển</th>
+                                            <th>Cập Nhập {{{ tableSort originalUrl.search 'updatedAt' _sort }}}</th>
+                                            <th>Thời Gian {{{ tableSort originalUrl.search 'createdAt' _sort }}}
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody data-table="history-taixiu">
+                                        {{#each list}}
+                                            <tr class="edit-one {{#ifCond this.action.length '>=' 1}}tr-warning{{/ifCond}}"
+                                                data-id="{{ this._id }}">
+                                                <td>
+                                                    <div class="table-actions hand p-2">
+                                                        <span class="badges badge-info checkAction"
+                                                              data-id="{{ this.transId }}" data-bs-toggle="tooltip"
+                                                              data-bs-placement="top"
+                                                              data-bs-original-title="Xem ai đã thao tác"><i
+                                                                class="fa fa-info-circle" aria-hidden="true"></i></span>
+                                                        <span class="badges badge-warning reCheck"
+                                                              data-id="{{ this.transId }}" data-bs-toggle="tooltip"
+                                                              data-bs-placement="top"
+                                                              data-bs-original-title="Kiểm tra lại giao dịch bằng API"><i
+                                                                class="fa fa-question" aria-hidden="true"></i></span>
+                                                        <span class="badges badge-secondary rework"
+                                                              data-id="{{ this.transId }}" data-bs-toggle="tooltip"
+                                                              data-bs-placement="top"
+                                                              data-bs-original-title="Trả thưởng lại"><i
+                                                                class="fa fa-trophy" aria-hidden="true"></i></span>
+                                                        <span class="badges badge-danger" data-bs-submit="history-taixiu"
+                                                              data-bs-action="remove" data-id="{{ this._id }}"
+                                                              data-bs-toggle="tooltip" data-bs-placement="top"
+                                                              data-bs-original-title="Xóa"><i class="fa fa-trash"
+                                                                                              aria-hidden="true"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td><span class="badges badge-secondary">{{ this.transId }}</span></td>
+                                                <td>{{ this.turn }}</td>
+                                                <td>{{ this.phone }}</td>
+                                                <td>{{ numberFormat this.amount }}đ</td>
+                                                <td data-bs-name="comment" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.comment }}">
+                                                        <textarea class="form-control" data-bs-html="true">{{
+                                                        this.comment }}</textarea>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.comment }}">
+                                                        <textarea class="form-control mb-2" rows="3"
+                                                                  data-bs-edit="true">{{ this.comment }}</textarea>
+                                                    </span>
+                                                </td>
+                                                <td>{{ numberFormat this.bonus }}đ</td>
+                                                <td data-bs-name="status" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.status }}">
+                                                        <span data-bs-html="true">{{{ historyStatus this.status
+                                                        }}}</span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.status }}">
+                                                        <select class="form-control ih-medium ip-light mb-2"
+                                                                data-bs-edit="true">
+                                                            <option value="wait">Đợi Xử Lý</option>
+                                                            <option value="transfer">Chuyển Tiền</option>
+                                                            <option value="recharge">Nạp Tiền</option>
+                                                            <option value="withdraw">Rút Tiền</option>
+                                                            <option value="errorComment">Sai Nội Dung</option>
+                                                            <option value="limitRefund">Giới Hạn Hoàn</option>
+                                                            <option value="limitBet">Sai Hạn Mức</option>
+                                                            <option value="refund">Đã Hoàn Tiền</option>
+                                                            <option value="waitReward">Đợi Trả Thưởng</option>
+                                                            <option value="waitRefund">Đợi Hoàn Tiền</option>
+                                                            <option value="win">Thắng Cược</option>
+                                                            <option value="won">Thua Cược</option>
+                                                            <option value="errorMoney">Không Đủ Tiền</option>
+                                                            <option value="limitPhone">Giới Hạn Số</option>
+                                                            <option value="errorPhone">Lỗi Số</option>
+                                                            <option value="phoneBlock">Đã Chặn Số</option>
+                                                        </select>
+                                                    </span>
+                                                </td>
+                                                <td><textarea class="form-control">{{ this.description }}</textarea>
+                                                </td>
+                                                <td>{{ this.partnerId }}</td>
+                                                <td>{{ formatDate this.updatedAt 'DD-MM-YYYY HH:mm:ss'}}</td>
+                                                <td>{{ formatDate this.createdAt 'DD-MM-YYYY HH:mm:ss'}}</td>
+                                            </tr>
+                                        {{else}}
+                                            <tr>
+                                                <td colspan="12">
+                                                    <div class="dm-empty text-center">
+                                                        <div class="dm-empty__image">
+                                                            <img src="../themes/admin/images/1.png" alt="Rỗng">
+                                                        </div>
+                                                        <div class="dm-empty__text">
+                                                            <p class="">Không có dữ liệu !</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <nav class="dm-page">
+                                        <ul class="dm-pagination d-flex">
+                                            <li class="dm-pagination__item">
+                                                {{#paginate pagination type="previous"}}
+                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
+                                                    class="dm-pagination__link pagination-control {{#if disabled}}disabled{{/if}}">
+                                                    <span class="la la-angle-left"></span>
+                                                    </a>
+                                                {{/paginate}}
+                                                {{#paginate pagination type="middle" limit=pagination.limit}}
+                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
+                                                    class="dm-pagination__link {{#if active}}active{{/if}}"><span
+                                                        class="page-number">{{n}}</span>
+                                                    </a>
+                                                {{/paginate}}
+                                                {{#paginate pagination type="next"}}
+                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
+                                                    class="dm-pagination__link pagination-control {{#if disabled}}disabled{{/if}}">
+                                                    <span class="la la-angle-right"></span>
+                                                    </a>
+                                                {{/paginate}}
+                                            </li>
+                                            <li class="dm-pagination__item">
+                                                <div class="paging-option">
+                                                    <select name="perPage" class="page-selection"
+                                                            data-query="{{ checkQuery originalUrl.search 'perPage' }}">
+                                                        {{#select perPage }}
+                                                            <option value="10">10/page</option>
+                                                            <option value="20">20/page</option>
+                                                            <option value="40">40/page</option>
+                                                            <option value="60">60/page</option>
+                                                            <option value="100">100/page</option>
+                                                            <option value="200">200/page</option>
+                                                            <option value="500">500/page</option>
+                                                        {{/select}}
+                                                    </select>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Modal Add Block -->
+<div class="modal fade" data-bs-modal="rework" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="#" method="post" class="form-axios">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="" class="il-gray fs-14 fw-500 mb-10">Mã Giao Dịch</label>
+                        <input type="text" name="transId" class="form-control ih-medium ip-light" readonly="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="il-gray fs-14 fw-500 mb-10">Số Điện Thoại</label>
+                        <select name="phone" class="form-control ih-medium ip-light">
+                            {{#each phones}}
+                                <option value="{{ this.phone }}">{{ this.phone }} - {{ numberFormat this.amount }}đ</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Thực Hiện</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" data-bs-modal="reCheck" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Kiểm Tra Giao Dịch</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="btn-group dm-button-group btn-group-normal nav mb-3" role="tablist">
+                    <a class="btn btn-sm btn-outline-light color-light nav-link active" id="web-tab"
+                       data-bs-toggle="tab" href="#web" role="tab" aria-selected="true">WEB</a>
+                    <a class="btn btn-sm btn-outline-light color-light nav-link" id="api-tab" data-bs-toggle="tab"
+                       href="#api" role="tab" aria-selected="false">API</a>
+                </div>
+                <div class="nav-controller-content tab-content">
+                    <div class="tab-pane fade show active" id="web" role="tabpanel" aria-labelledby="web-tab">
+                        <div class="tab-slide-content">
+                            <div class="table-responsive mb-3">
+                                <table
+                                        class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
+                                    <thead class="badge-secondary text-white">
+                                    <tr>
+                                        <th>Thể Loại</th>
+                                        <th>Giá Trị</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="web"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="api" role="tabpanel" aria-labelledby="api-tab">
+                        <div class="tab-slide-content">
+                            <div class="table-responsive mb-3">
+                                <table
+                                        class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
+                                    <thead class="badge-secondary text-white">
+                                    <tr>
+                                        <th>Thể Loại</th>
+                                        <th>Giá Trị</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="api"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" data-bs-modal="checkAction" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive mb-3">
+                    <table class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
+                        <thead class="badge-secondary text-white">
+                        <tr>
+                            <th>Người Thao Tác</th>
+                            <th>Thể Loại</th>
+                            <th>Giá Trị</th>
+                            <th>Thời Gian</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{>foot}}
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        $('body').on('click', '.rework', function (e) {
+            let transId = $(this).data('id');
+
+            $('[name="transId"]').val(transId);
+            $('[data-bs-modal="rework"] h5.modal-title').html(`Trả Thưởng Giao Dịch #${transId}`);
+            $('[data-bs-modal="rework"]').modal('show')
+        })
+
+        $('body').on('click', '.reCheck', function (e) {
+            let transId = $(this).data('id');
+
+            loadAjax('start');
+            instance.post('/history/reCheck', { transId })
+                    .then((result) => {
+                        let response = result.data;
+
+                        if (!response.success) {
+                            swal('Thông Báo', response.message, 'error');
+                            return;
+                        }
+
+                        $('[data-bs-modal="reCheck"] tbody.web').html('').append(`<tr><td>Mã giao dịch</td><td class="text-info">#${response.data[0].transId}</td></tr><tr><td>Người nhận</td><td class="text-warning">${response.data[0].targetId}</td></tr><tr><td>Người chuyển</td><td class="text-primary">${response.data[0].partnerId}</td></tr><tr><td>Tiền cược</td><td class="text-danger">${Intl.NumberFormat('en-US').format(response.data[0].amount)}đ</td></tr><tr><td>Nội dung</td><td class="text-success">${response.data[0].comment}</td></tr><tr><td>Thời gian</td><td class="text-secondary">${moment(response.data[0].timeTLS).format('DD-MM-YYYY HH:mm:ss')}</td></tr>`);
+                        $('[data-bs-modal="reCheck"] tbody.api').html('').append(`<tr><td>Mã giao dịch</td><td class="text-info">#${response.data[1].transId}</td></tr><tr><td>Người nhận</td><td class="text-warning">${response.data[1].targetId}</td></tr><tr><td>Người chuyển</td><td class="text-primary">${response.data[1].partnerId}</td></tr><tr><td>Tiền cược</td><td class="text-danger">${Intl.NumberFormat('en-US').format(response.data[1].amount)}đ</td></tr><tr><td>Nội dung</td><td class="text-success">${response.data[1].comment}</td></tr><tr><td>Thời gian</td><td class="text-secondary">${moment(response.data[1].timeTLS).format('DD-MM-YYYY HH:mm:ss')}</td></tr>`);
+                        $('[data-bs-modal="reCheck"').modal('show');
+                    })
+                    .catch(err => {
+                        swal('Thông Báo', err.message || err, 'warning');
+                    })
+                    .finally(() => loadAjax('stop'));
+        })
+
+        $('body').on('click', '.checkAction', function (e) {
+            let transId = $(this).data('id');
+
+            loadAjax('start');
+            instance.post('/history/checkAction', { transId })
+                    .then((result) => {
+                        let response = result.data;
+
+                        if (!response.success) {
+                            swal('Thông Báo', response.message, 'error');
+                            return;
+                        }
+
+                        $('[data-bs-modal="checkAction"] h5.modal-title').html(`Thao Tác Chỉnh Sửa #${transId}`)
+                        $('[data-bs-modal="checkAction"] tbody').html('').append(response.data.map((obj) => `<tr><td>${obj.username}</td><td>${obj.key}</td><td>${obj.value}</td><td>${moment(obj.createdAt).format('DD-MM-YYYY HH:mm:ss')}</td></tr>`));
+                        $('[data-bs-modal="checkAction"').modal('show');
+                    })
+                    .catch(err => {
+                        swal('Thông Báo', err.message || err, 'warning');
+                    })
+                    .finally(() => loadAjax('stop'));
+        })
+    })
+</script>

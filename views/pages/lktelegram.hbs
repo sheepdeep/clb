@@ -1,0 +1,101 @@
+{{>header}}
+<body>
+<div class="preloader"></div>
+<!-- header -->
+<header class="header">
+    <div class="header__content">
+        <!-- header logo -->
+        <a href="/" class="header__logo">
+            <img class="logo" src="{{ settings.logo }}" alt="{{ settings.nameSite }}"/>
+        </a>
+        <!-- end header logo -->
+        <!-- header menu btn -->
+        <button class="header__btn" type="button">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <!-- end header menu btn -->
+    </div>
+</header>
+<!-- end header -->
+<!-- sidebar -->
+{{>sidebar}}
+<!-- main content -->
+<main class="main">
+    <div class="container-fluid">
+        <div class="row">
+            {{>game}}
+            <div class="col-12">
+                <div class="dashbox">
+                    <div class="dashbox__title">
+                        <h3 style="margin:0 auto;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-telegram"
+                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"></path>
+                            </svg>
+                            LIÊN KẾT TELEGRAM
+                        </h3>
+                    </div>
+                    {{#ifCond profile.telegram.status '!=' 'active'}}
+                        <div class="subpage-wrapper">
+                            <p>TÀI KHOẢN CỦA BẠN CHƯA ĐƯỢC LIÊN KẾT TELEGRAM</p>
+                            <p class="text-center mb-4">
+                                <a class="lnk__btn" href="https://t.me/supbank_bot/?start={{token}}"
+                                target="_blank">LIÊN KẾT NGAY</a>
+                            </p>
+                        </div>
+                    {{else}}
+                        <div class="subpage-wrapper">
+                            <p>XIN CHÚC MỪNG TÀI KHOẢN CỦA BẠN ĐÃ ĐƯỢC LIÊN KẾT TELEGRAM!</p>
+                        </div>
+                    {{/ifCond}}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div class="modal bounceIn animated" id="modal-notes" tabindex="-1" aria-labelledby="modal-view"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal__content modal__content--view">
+                <div class="comments__autor">
+                    <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                    <span class="comments__name">SUPBANK Thông Báo</span>
+                </div>
+                <p class="comments__text"></p>
+                <div class="modal__btns">
+                    <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal"
+                            aria-label="Close"><span>Đóng</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal bounceIn animated" id="modal-win" tabindex="-1" aria-labelledby="modal-view"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal__content modal__content--view">
+                <div class="comments__autor">
+                    <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                    <span class="comments__name">SUPBANK Thông Báo</span>
+                </div>
+                <p class="comments__text"></p>
+                <div class="modal__btns">
+                    <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal"
+                            aria-label="Close"><span>Đóng</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>$(".nav-item button").click(function () {
+    window.location.href = "/?g=" + $(this).attr("data-bs-target").slice(1)
+})</script>
+{{>footer}}
+{{{ settings.footerScript }}}

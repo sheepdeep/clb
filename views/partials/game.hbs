@@ -1,0 +1,14 @@
+<div class="col-12">
+    <div class="profile__content other__page">
+        <ul class="nav nav-tabs profile__tabs" id="profile__tabs" role="tablist">
+            {{#each games}}
+                <li class="nav-item" role="presentation">
+                    <button data-bs-target="#{{ this.gameType }}"
+                            class="games"
+                            data-name="{{ this.name }}" data-description="{{ this.description }}"
+                            data-type="{{ this.gameType }}" type="button">{{ this.name }}</button>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+</div>

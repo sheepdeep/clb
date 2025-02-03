@@ -1,0 +1,736 @@
+{
+  "code": 200,
+  "message": "Thành công",
+  "data": [
+    {
+      "bankCode": "323",
+      "bankNameI18n": {
+        "vi": "NH TMCP An Binh",
+        "en": "An Binh Joint Stock Commercial Bank"
+      },
+      "shortName": "ABBank",
+      "englishName": "ABBank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713173707419ABBANK.png"
+    },
+    {
+      "bankCode": "307",
+      "bankNameI18n": {
+        "vi": "NH TMCP A Chau",
+        "en": "Asia Joint Stock Commercial Bank"
+      },
+      "shortName": "ACB",
+      "englishName": "ACB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713173655341ACB_A_Chau.png"
+    },
+    {
+      "bankCode": "204",
+      "bankNameI18n": {
+        "vi": "NH Nong nghiep va Phat trien Nong thon Viet Nam",
+        "en": "Vietnam Bank For Agriculture And Rural Development"
+      },
+      "shortName": "Agribank",
+      "englishName": "Agribank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713173232465AGRIBANK.png"
+    },
+    {
+      "bankCode": "638",
+      "bankNameI18n": {
+        "vi": "NH Dau tu va Phat trien Campuchia CN Ha Noi",
+        "en": "Bank For Investment And Development Of Campuchia - Hanoi Branch"
+      },
+      "shortName": "BIDC",
+      "englishName": "BIDC",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713165553164BIDC.png"
+    },
+    {
+      "bankCode": "202",
+      "bankNameI18n": {
+        "vi": "NH TMCP Dau Tu va Phat Trien Viet Nam",
+        "en": "Joint Stock Bank For Investment And Development Of Vietnam"
+      },
+      "shortName": "BIDV",
+      "englishName": "BIDV",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093929516BIDV-NganhangTMCPDauTuvaPhatTrienVietNam.png"
+    },
+    {
+      "bankCode": "614",
+      "bankNameI18n": {
+        "vi": "NH BNP-PARIBAS TP HCM",
+        "en": "BNP Paribas Bank – Ho Chi Minh Branch"
+      },
+      "shortName": "BNP",
+      "englishName": "BNP",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713164930007BNP_PARIBAS.png"
+    },
+    {
+      "bankCode": "657",
+      "bankNameI18n": {
+        "vi": "Ngan hang BNP Paribas CN Ha Noi",
+        "en": "BNP Paribas Bank – Hanoi Branch"
+      },
+      "shortName": "BNP",
+      "englishName": "BNP",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713174236670BNPPARIBASHN.png"
+    },
+    {
+      "bankCode": "620",
+      "bankNameI18n": {
+        "vi": "NH BANK OF CHINA (Hong Kong) Limited Ho Chi Minh City Branch",
+        "en": "Bank Of China (Hong Kong) Limited - Ho Chi Minh Branch"
+      },
+      "shortName": "BOCHK",
+      "englishName": null,
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713164836132CHINA_BANK.png"
+    },
+    {
+      "bankCode": "313",
+      "bankNameI18n": {
+        "vi": "NH TMCP Bac A",
+        "en": "Bac A Joint Stock Commercial Bank"
+      },
+      "shortName": "BacABank",
+      "englishName": "BAB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713173719107BACA.png"
+    },
+    {
+      "bankCode": "359",
+      "bankNameI18n": {
+        "vi": "NH TMCP Bao Viet",
+        "en": "Bao Viet Joint Stock Commercial Bank"
+      },
+      "shortName": "BaoViet Bank",
+      "englishName": "BVB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713173814404BAOVIETBANK.png"
+    },
+    {
+      "bankCode": "667",
+      "bankNameI18n": {
+        "vi": "NH TMCP Viet Nam Thinh Vuong - Ngan hang so CAKE by VPBank",
+        "en": "CAKE By VPBank"
+      },
+      "shortName": "CAKE",
+      "englishName": "CAKE By VPBank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714113059905VPBANK-NganhangTMCPVietNamThinhVuong.png"
+    },
+    {
+      "bankCode": "671",
+      "bankNameI18n": {
+        "vi": "Ngan hang TM TNHH MTV Xay dung Viet Nam",
+        "en": "Construction Commercial One Member Limited Liability Bank"
+      },
+      "shortName": "CBB",
+      "englishName": "CBB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713174104826CBBANK.png"
+    },
+    {
+      "bankCode": "661",
+      "bankNameI18n": {
+        "vi": "NH TNHH MTV CIMB Viet Nam",
+        "en": "CIMB Bank Vietnam Limited"
+      },
+      "shortName": "CIMB",
+      "englishName": "CIMB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713174711342CIMB.png"
+    },
+    {
+      "bankCode": "678",
+      "bankNameI18n": {
+        "vi": "Ngan hang Cathay United Bank CN Ho Chi Minh",
+        "en": "Cathay United Bank - Ho Chi Minh City"
+      },
+      "shortName": "CUBHCM",
+      "englishName": "CUBHCM",
+      "logo": "https://www.ncb-bank.vn/Files/App/CathayBank.png"
+    },
+    {
+      "bankCode": "605",
+      "bankNameI18n": {
+        "vi": "NH CITIBANK VIETNAM",
+        "en": "CITIBANK VIETNAM"
+      },
+      "shortName": "Citi Bank",
+      "englishName": "Citi Bank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/CITIBANK.png"
+    },
+    {
+      "bankCode": "668",
+      "bankNameI18n": {
+        "vi": "NH Hop tac xa Viet Nam",
+        "en": "Co-operative Bank Of Vietnam"
+      },
+      "shortName": "Coopbank",
+      "englishName": "Coopbank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713165823149COOPBANK.png"
+    },
+    {
+      "bankCode": "650",
+      "bankNameI18n": {
+        "vi": "NH DBS- Chi nhanh Ho Chi Minh",
+        "en": "DBS Bank Ltd. – Ho Chi Minh City Branch"
+      },
+      "shortName": "DBS",
+      "englishName": "DBS",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713165606461DBS.png"
+    },
+    {
+      "bankCode": "304",
+      "bankNameI18n": {
+        "vi": "NH TMCP Dong A",
+        "en": "East Asia Joint Stock Commercial Bank"
+      },
+      "shortName": "DongA Bank",
+      "englishName": "DongA Bank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093947485DONGABANK-NganhangTMCPDongA.png"
+    },
+    {
+      "bankCode": "305",
+      "bankNameI18n": {
+        "vi": "NH TMCP Xuat nhap khau Viet Nam",
+        "en": "Vietnam Export Import Commercial Joint Stock Bank"
+      },
+      "shortName": "Eximbank",
+      "englishName": "EIB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093055422EXIMBANK-NganhangTMCPXuatNhapKhauVietNam.png"
+    },
+    {
+      "bankCode": "320",
+      "bankNameI18n": {
+        "vi": "NH TMCP Dau Khi Toan Cau",
+        "en": "Global Petro Sole Member Limited Commercial Bank"
+      },
+      "shortName": "GPBank",
+      "englishName": "GPBank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093851985GPBANK-NganhangTMCPDauKhiToanCau.png"
+    },
+    {
+      "bankCode": "321",
+      "bankNameI18n": {
+        "vi": "NH TMCP Phat trien Thanh Pho Ho Chi Minh",
+        "en": "Ho Chi Minh City Development Joint Stock Commercial Bank"
+      },
+      "shortName": "HDBank",
+      "englishName": "HDBank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093455000HDBANK-NganHangTMCPPhatTrienNhaTp.HoChiMinh.png"
+    },
+    {
+      "bankCode": "617",
+      "bankNameI18n": {
+        "vi": "NH TNHH MTV HSBC Viet Nam",
+        "en": "HSBC Bank Vietnam Limited"
+      },
+      "shortName": "HSBC",
+      "englishName": "HSBC",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713174738514HSBC.png"
+    },
+    {
+      "bankCode": "603",
+      "bankNameI18n": {
+        "vi": "NH Hong Leong Viet Nam Hoi so chinh",
+        "en": "Hong Leong Bank Vietnam Limited"
+      },
+      "shortName": "Hong Leong",
+      "englishName": "Hong Leong",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713165759571HLBVN_Hong_Leong.png"
+    },
+    {
+      "bankCode": "669",
+      "bankNameI18n": {
+        "vi": "NH Cong nghiep Han Quoc CN Ho Chi Minh",
+        "en": "Industrial Bank Of Korea – Ho Chi Minh Branch"
+      },
+      "shortName": "IBK",
+      "englishName": "IBK",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713165509305IBK_Industrial_Bank_Of_Korea.png"
+    },
+    {
+      "bankCode": "641",
+      "bankNameI18n": {
+        "vi": "NH Industrial Bank of Korea",
+        "en": "Industrial Bank Of Korea – Hanoi Branch"
+      },
+      "shortName": "IBK",
+      "englishName": "IBK",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713172743199IBK_Industrial_Bank_Of_Korea.png"
+    },
+    {
+      "bankCode": "502",
+      "bankNameI18n": {
+        "vi": "NH TNHH Indovina",
+        "en": "NH TNHH Indovina"
+      },
+      "shortName": "Indovina Bank",
+      "englishName": "IVB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713174533280IVB.png"
+    },
+    {
+      "bankCode": "656",
+      "bankNameI18n": {
+        "vi": "KEBHANAHCM - NH KEB Hana CN Ho Chi Minh",
+        "en": "KEB Hana Bank - Ho Chi Minh Branch"
+      },
+      "shortName": "KEB",
+      "englishName": "KEB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713172821481HANABANK.png"
+    },
+    {
+      "bankCode": "626",
+      "bankNameI18n": {
+        "vi": "KEBHANAHN - NH KEB Hana CN Ha Noi",
+        "en": "KEB Hana Bank - Hanoi Branch"
+      },
+      "shortName": "KEB",
+      "englishName": "KEB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713172821481HANABANK.png"
+    },
+    {
+      "bankCode": "353",
+      "bankNameI18n": {
+        "vi": "NH TMCP Kien Long",
+        "en": "Kien Long Joint Stock Commercial Bank"
+      },
+      "shortName": "KienlongBank",
+      "englishName": "Kienlongbank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093559157KIENLONGBANK-NganhangTMCPKienLong.png"
+    },
+    {
+      "bankCode": "666",
+      "bankNameI18n": {
+        "vi": "NH Kookmin CN Ha Noi",
+        "en": "Kookmin Bank - Hanoi Branch"
+      },
+      "shortName": "Kookmin",
+      "englishName": "Kookmin",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210715145945481KOOKMINNganHangKookminCNHoChiMinh.png"
+    },
+    {
+      "bankCode": "631",
+      "bankNameI18n": {
+        "vi": "NH Kookmin CN Ho Chi Minh",
+        "en": "Kookmin Bank - Ho Chi Minh Branch"
+      },
+      "shortName": "Kookmin",
+      "englishName": "Kookmin",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713172855246KOOKMIN.png"
+    },
+    {
+      "bankCode": "357",
+      "bankNameI18n": {
+        "vi": "NH TMCP Loc Phat Viet Nam",
+        "en": "Fortune Vietnam Joint Stock Commercial Bank"
+      },
+      "shortName": "LPBank",
+      "englishName": "LPB",
+      "logo": "https://www.ncb-bank.vn/Files/App/LogoNHTMCPBD.png"
+    },
+    {
+      "bankCode": "677",
+      "bankNameI18n": {
+        "vi": "Ngân hàng số Liobank by OCB",
+        "en": "Liobank"
+      },
+      "shortName": "Liobank",
+      "englishName": "Liobank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093509125OCB-NganhangTMCPPhuongDong.png"
+    },
+    {
+      "bankCode": "676",
+      "bankNameI18n": {
+        "vi": "Công ty Tài chính TNHH MTV Mirae Asset (Việt Nam)",
+        "en": "MAFC"
+      },
+      "shortName": "MAFC",
+      "englishName": "MAFC",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/mirae.png"
+    },
+    {
+      "bankCode": "311",
+      "bankNameI18n": {
+        "vi": "NH TMCP Quan Doi",
+        "en": "Military Joint Stock Commercial Bank"
+      },
+      "shortName": "MBBank",
+      "englishName": "MBB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093610172MB-NganhangTMCPQuanDoi.png"
+    },
+    {
+      "bankCode": "302",
+      "bankNameI18n": {
+        "vi": "NH TMCP Hang Hai Viet Nam",
+        "en": "Vietnam Maritime Joint Stock Commercial Bank"
+      },
+      "shortName": "MSB",
+      "englishName": "MSB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714094024876MSB-NganhangTMCPHangHaiVietNam.png"
+    },
+    {
+      "bankCode": "971100",
+      "bankNameI18n": {
+        "vi": "NAPAS",
+        "en": "Napas"
+      },
+      "shortName": "NAPAS",
+      "englishName": "NAPAS",
+      "logo": "http://10.1.62.33/banner_mobile/20211202162051918NCBNganhangTMCPQuocDan.png"
+    },
+    {
+      "bankCode": "306",
+      "bankNameI18n": {
+        "vi": "NH TMCP Nam A",
+        "en": "Nam A Joint Stock Commercial Bank"
+      },
+      "shortName": "NamABank",
+      "englishName": "NamABank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093425203NAMABANK-NganhangTMCPNamA.png"
+    },
+    {
+      "bankCode": "662",
+      "bankNameI18n": {
+        "vi": "NH Nong Hyup CN Ha Noi",
+        "en": "Nonghyup Bank - Hanoi Branch"
+      },
+      "shortName": "Nong Hyup",
+      "englishName": "Nong Hyup",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713173219715NONGHYUP.png"
+    },
+    {
+      "bankCode": "333",
+      "bankNameI18n": {
+        "vi": "NH TMCP Phuong Dong",
+        "en": "Orient Joint Stock Commercial Bank"
+      },
+      "shortName": "OCB",
+      "englishName": "OCB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093509125OCB-NganhangTMCPPhuongDong.png"
+    },
+    {
+      "bankCode": "319",
+      "bankNameI18n": {
+        "vi": "NH TMCP Dai Duong",
+        "en": "Ocean Commercial One Member Limited Liability Bank"
+      },
+      "shortName": "Oceanbank",
+      "englishName": "Oceanbank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093835969OCEANBANK-NganhangTNHHMTVDaiDuong.png"
+    },
+    {
+      "bankCode": "341",
+      "bankNameI18n": {
+        "vi": "NH TMCP Xang dau Petrolimex",
+        "en": "Petrolimex Group Joint Stock Commercial Bank"
+      },
+      "shortName": "PGBank",
+      "englishName": "PGBank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714092930234PGBANK-NganhangTMCPXangdauPetrolimex.png"
+    },
+    {
+      "bankCode": "971122",
+      "bankNameI18n": {
+        "vi": "PVCombank - Napas",
+        "en": "PVCombank - Napas"
+      },
+      "shortName": "PVCombank - Napas",
+      "englishName": "PVCombank - Napas",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093824641PVCOMBANK-NganhangTMCPDaiChungVietNam.png"
+    },
+    {
+      "bankCode": "360",
+      "bankNameI18n": {
+        "vi": "NH TMCP Dai chung Viet Nam",
+        "en": "Vietnam Public Joint Stock Commercial Bank"
+      },
+      "shortName": "PVcomBank",
+      "englishName": "PVcomBank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093824641PVCOMBANK-NganhangTMCPDaiChungVietNam.png"
+    },
+    {
+      "bankCode": "682",
+      "bankNameI18n": {
+        "vi": "PVcomBank Pay",
+        "en": "PvcomBank Pay"
+      },
+      "shortName": "PVcomBank Pay",
+      "englishName": "PVcomBank Pay",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093824641PVCOMBANK-NganhangTMCPDaiChungVietNam.png"
+    },
+    {
+      "bankCode": "501",
+      "bankNameI18n": {
+        "vi": "NH TNHH MTV Public Viet Nam",
+        "en": "Public Bank Vietnam Limited"
+      },
+      "shortName": "PublicBank",
+      "englishName": "VIDBank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713175042296PBVN.png"
+    },
+    {
+      "bankCode": "334",
+      "bankNameI18n": {
+        "vi": "NH TMCP Sai Gon",
+        "en": "Sai Gon Joint Stock Commercial Bank"
+      },
+      "shortName": "SCB",
+      "englishName": "SCB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093651516SCB-NganhangTMCPSaiGon.png"
+    },
+    {
+      "bankCode": "670",
+      "bankNameI18n": {
+        "vi": "Ngan hang TM TNHH MTV Standard Chartered Viet Nam",
+        "en": "Standard Chartered Bank Vietnam Limited"
+      },
+      "shortName": "SCVN",
+      "englishName": "SCVN",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713174149435SC1.png"
+    },
+    {
+      "bankCode": "348",
+      "bankNameI18n": {
+        "vi": "NH TMCP Sai Gon - Ha Noi",
+        "en": "Saigon - Hanoi Joint Stock Commercial Bank"
+      },
+      "shortName": "SHB",
+      "englishName": "SHB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093745172SHB-NganhangTMCPSaiGon-HaNoi.png"
+    },
+    {
+      "bankCode": "679",
+      "bankNameI18n": {
+        "vi": "Cong ty Tai chinh TNHH MTV Shinhan Vietnam",
+        "en": "Shinhan Vietnam Finance Company Limited"
+      },
+      "shortName": "SVFC",
+      "englishName": "SVFC",
+      "logo": "https://www.ncb-bank.vn/Files/App/16396.jpg"
+    },
+    {
+      "bankCode": "303",
+      "bankNameI18n": {
+        "vi": "NH TMCP Sai Gon Thuong Tin",
+        "en": "Sai Gon Thuong Tin Joint Stock Commercial Bank"
+      },
+      "shortName": "Sacombank",
+      "englishName": "SCB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714090651231SACOMBANK-NganhangTMCPSaiGonThuongTin.png"
+    },
+    {
+      "bankCode": "308",
+      "bankNameI18n": {
+        "vi": "NH TMCP Sai Gon Cong Thuong",
+        "en": "Saigon Bank For Industry And Trade"
+      },
+      "shortName": "Saigon Bank",
+      "englishName": "Saigon Bank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714090417090SAIGONBANK-NganhangTMCPSaiGonCongThuong.png"
+    },
+    {
+      "bankCode": "317",
+      "bankNameI18n": {
+        "vi": "NH TMCP Dong Nam A",
+        "en": "South East Asia Joint Stock Commercial Bank"
+      },
+      "shortName": "SeaBank",
+      "englishName": "SeaBank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714094000860SEABANK-NganhangTMCPDongNamA.png"
+    },
+    {
+      "bankCode": "616",
+      "bankNameI18n": {
+        "vi": "NH TNHH Shinhan Viet Nam Hoi so chinh",
+        "en": "Shinhan Vietnam Bank Limited"
+      },
+      "shortName": "Shinhan",
+      "englishName": "Shinhan",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713175137702SHBVN.png"
+    },
+    {
+      "bankCode": "310",
+      "bankNameI18n": {
+        "vi": "NH TMCP Ky thuong Viet Nam",
+        "en": "Vietnam Technological And Commercial Joint Stock Bank"
+      },
+      "shortName": "TCB",
+      "englishName": "TechcomBank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714171915227TECHCOMBANKNganhangTMCPKyThuongVietNam.png"
+    },
+    {
+      "bankCode": "358",
+      "bankNameI18n": {
+        "vi": "NH TMCP Tien Phong",
+        "en": "Tien Phong Joint Stock Commercial Bank"
+      },
+      "shortName": "TPBank",
+      "englishName": "TPBank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714174105401TPBANKNganhangTMCPTienPhong.png"
+    },
+    {
+      "bankCode": "680",
+      "bankNameI18n": {
+        "vi": "Ngan hang so Timo",
+        "en": "Timo by Ban Viet Bank"
+      },
+      "shortName": "Timo by Ban Viet Bank",
+      "englishName": "Timo by Ban Viet Bank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/32003.jpg"
+    },
+    {
+      "bankCode": "672",
+      "bankNameI18n": {
+        "vi": "NH TMCP Viet Nam Thinh Vuong - Ngan hang so Ubank by VPBank",
+        "en": "Ubank By VPBank"
+      },
+      "shortName": "UBANK",
+      "englishName": "Ubank By VPBank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714114210968VPBANK-NganhangTMCPVietNamThinhVuong.png"
+    },
+    {
+      "bankCode": "673",
+      "bankNameI18n": {
+        "vi": "Ngan hang so UMEE by Kienlongbank",
+        "en": "UMEE By Kienlongbank"
+      },
+      "shortName": "UMEE",
+      "englishName": "UMEE By Kienlongbank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093559157KIENLONGBANK-NganhangTMCPKienLong.png"
+    },
+    {
+      "bankCode": "665",
+      "bankNameI18n": {
+        "vi": "NH TNHH MTV United Overseas Bank Viet Nam",
+        "en": "United Overseas Bank Vietnam Limited"
+      },
+      "shortName": "UOB",
+      "englishName": "UOB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713175111780UOB.png"
+    },
+    {
+      "bankCode": "207",
+      "bankNameI18n": {
+        "vi": "NH Chinh sach xa hoi",
+        "en": "Vietnam Bank For Social Policies"
+      },
+      "shortName": "VBSP",
+      "englishName": "VBSP",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713165111757VBSP.png"
+    },
+    {
+      "bankCode": "314",
+      "bankNameI18n": {
+        "vi": "NH TMCP Quoc Te Viet Nam",
+        "en": "Vietnam International Joint Stock Commercial Bank"
+      },
+      "shortName": "VIB",
+      "englishName": "VIB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093632157VIB-NganhangTMCPQuocteVietNam.png"
+    },
+    {
+      "bankCode": "674",
+      "bankNameI18n": {
+        "vi": "VNPT Money",
+        "en": "VNPT Money"
+      },
+      "shortName": "VNPT Money",
+      "englishName": "VNPT Money",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/VNPTMoney.png"
+    },
+    {
+      "bankCode": "309",
+      "bankNameI18n": {
+        "vi": "NH TMCP Viet Nam Thinh Vuong",
+        "en": "Vietnam Prosperity Joint Stock Commercial Bank"
+      },
+      "shortName": "VPBank",
+      "englishName": "VPBank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210715150039294VPBANKNganhangTMCPVietNamThinhVuong.png"
+    },
+    {
+      "bankCode": "505",
+      "bankNameI18n": {
+        "vi": "NH Lien Doanh Viet Nga",
+        "en": "Vietnam - Russia Joint Venture Bank"
+      },
+      "shortName": "VRBANK",
+      "englishName": "VRBANK",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713172908215VRB.png"
+    },
+    {
+      "bankCode": "327",
+      "bankNameI18n": {
+        "vi": "NH TMCP Ban Viet",
+        "en": "Viet Capital Joint Stock Commercial Bank"
+      },
+      "shortName": "Viet Capital Bank",
+      "englishName": "Viet Capital Bank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713173752341VIETCAPITALBANK.png"
+    },
+    {
+      "bankCode": "355",
+      "bankNameI18n": {
+        "vi": "NH TMCP Viet A",
+        "en": "Vietnam Asia Joint Stock Commercial Bank"
+      },
+      "shortName": "VietAbank",
+      "englishName": "VietABank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714092422030VIETABANK-NganhangTMCPVietA.png"
+    },
+    {
+      "bankCode": "356",
+      "bankNameI18n": {
+        "vi": "NH Viet Nam Thuong Tin",
+        "en": "Vietnam Thuong Tin Joint Stock Commercial Bank"
+      },
+      "shortName": "VietBank",
+      "englishName": "Vietbank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713173813200VIETBANK.png"
+    },
+    {
+      "bankCode": "203",
+      "bankNameI18n": {
+        "vi": "NH TMCP Ngoai Thuong Viet Nam",
+        "en": "Joint Stock Commercial Bank For Foreign Trade Of Vietnam"
+      },
+      "shortName": "Vietcombank",
+      "englishName": "VCB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093437547VCB-NganhangTMCPNgoaiThuongVietNam.png"
+    },
+    {
+      "bankCode": "201",
+      "bankNameI18n": {
+        "vi": "NH TMCP Cong Thuong Viet Nam",
+        "en": "Vietnam Joint Stock Commercial Bank For Industry And Trade"
+      },
+      "shortName": "VietinBank",
+      "englishName": "VietinBank",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210714093810391VIETINBANK-NganhangTMCPCongThuongVietNam.png"
+    },
+    {
+      "bankCode": "675",
+      "bankNameI18n": {
+        "vi": "Viettel Money",
+        "en": "Viettel Money"
+      },
+      "shortName": "Viettel Money",
+      "englishName": "Viettel Money",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/viettelmoney-logo.jpg"
+    },
+    {
+      "bankCode": "681",
+      "bankNameI18n": {
+        "vi": "Vikki by HD Bank",
+        "en": "Vikki by HD Bank"
+      },
+      "shortName": "Vikki by HD Bank",
+      "englishName": "Vikki by HD Bank",
+      "logo": "https://www.ncb-bank.vn/Files/App/33144.jpg"
+    },
+    {
+      "bankCode": "663",
+      "bankNameI18n": {
+        "vi": "NH Woori Bank",
+        "en": "Woori Bank Vietnam Limited"
+      },
+      "shortName": "WRB",
+      "englishName": "WRB",
+      "logo": "https://www.ncb-bank.vn/banner_mobile/20210713173701153WOORI.png"
+    }
+  ]
+}

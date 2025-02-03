@@ -1,0 +1,194 @@
+{{>header}}
+<body>
+<div class="preloader"></div>
+<!-- header -->
+<header class="header">
+    <div class="header__content">
+        <!-- header logo -->
+        <a href="/" class="header__logo">
+            <img class="logo" src="{{ settings.logo }}" alt="{{ settings.nameSite }}"/>
+        </a>
+        <!-- end header logo -->
+        <!-- header menu btn -->
+        <button class="header__btn" type="button">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <!-- end header menu btn -->
+    </div>
+</header>
+<!-- end header -->
+<!-- sidebar -->
+{{>sidebar}}
+<!-- main content -->
+<main class="main">
+    <div class="container-fluid">
+        <div class="row">
+            {{>game}}
+            <div class=col-12>
+                <div class=dashbox>
+                    <div class=dashbox__title>
+                        <h3 style="margin:0 auto;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width=24 height=24 viewBox="0 0 24 24" stroke-width=2
+                                 stroke="currentColor" fill=none stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke=none d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M3 21l18 0"></path>
+                                <path d="M3 10l18 0"></path>
+                                <path d="M5 6l7 -3l7 3"></path>
+                                <path d="M4 10l0 11"></path>
+                                <path d="M20 10l0 11"></path>
+                                <path d="M8 14l0 3"></path>
+                                <path d="M12 14l0 3"></path>
+                                <path d="M16 14l0 3"></path>
+                            </svg>
+                            CÀI ĐẶT BANK TRẢ THƯỞNG
+                        </h3>
+                    </div>
+                    <div class=subpage-wrapper>
+                        <form class="form-axios" supmegroup="true" method="post" action="#" style="max-width:400px; margin:0 auto;"
+                              data-redirect="../">
+                            <div class="sign__group text-center" id="err-msg">
+                            </div>
+                            <p>
+                                <select autocomplete=off name=bin class=sign__selectjs>
+                                    <option value="">Chọn ngân hàng nhận tiền</option>
+                                    <option value=970436>VIETCOMBANK - NH TMCP NGOẠI THƯƠNG VIỆT NAM</option>
+                                    <option value=970418>BIDV - NH TMCP ĐẦU TƯ VÀ PHÁT TRIỂN VIỆT NAM</option>
+                                    <option value=970405>AGRIBANK - NH NÔNG NGHIỆP VÀ PHÁT TRIỂN NÔNG THÔN VIỆT NAM</option>
+                                    <option value=970448>OCB - NH TMCP PHƯƠNG ĐÔNG</option>
+                                    <option value=970422>MBBANK - NH TMCP QUÂN ĐỘI</option>
+                                    <option value=970407>TECHCOMBANK - NH TMCP KỸ THƯƠNG VIỆT NAM</option>
+                                    <option value=970416>ACB - NH TMCP Á CHÂU</option>
+                                    <option value=970432>VPBANK - NH TMCP VIỆT NAM THỊNH VƯỢNG</option>
+                                    <option value=970423>TPBANK - NH TMCP TIÊN PHONG</option>
+                                    <option value=970403>SACOMBANK - NH TMCP SÀI GÒN THƯƠNG TÍN</option>
+                                    <option value=970437>HDBANK - NH TMCP PHÁT TRIỂN THÀNH PHỐ HỒ CHÍ MINH</option>
+                                    <option value=970454>VIETCAPITALBANK - NH TMCP BẢN VIỆT</option>
+                                    <option value=970429>SCB - NH TMCP SÀI GÒN</option>
+                                    <option value=970441>VIB - NH TMCP QUỐC TẾ VIỆT NAM</option>
+                                    <option value=970443>SHB - NH TMCP SÀI GÒN - HÀ NỘI</option>
+                                    <option value=970431>EXIMBANK - NH TMCP XUẤT NHẬP KHẨU VIỆT NAM</option>
+                                    <option value=970426>MSB - NH TMCP HÀNG HẢI</option>
+                                    <option value=546034>CAKE - TMCP VIỆT NAM THỊNH VƯỢNG - NH SỐ CAKE BY VPBANK
+                                    </option>
+                                    <option value=546035>UBANK - TMCP VIỆT NAM THỊNH VƯỢNG - NH SỐ UBANK BY VPBANK
+                                    </option>
+                                    <option value=963388>TIMO - NH SỐ TIMO BY BAN VIET BANK (TIMO BY BAN VIET BANK)
+                                    </option>
+                                    <option value=971005>VIETTELMONEY - TỔNG CÔNG TY DỊCH VỤ SỐ VIETTEL - CHI NHÁNH TẬP
+                                        ĐOÀN
+                                        CÔNG NGHIỆP VIỄN THÔNG QUÂN ĐỘI
+                                    </option>
+                                    <option value=971011>VNPTMONEY - VNPT MONEY</option>
+                                    <option value=970400>SAIGONBANK - NH TMCP SÀI GÒN CÔNG THƯƠNG</option>
+                                    <option value=970409>BACABANK - NH TMCP BẮC Á</option>
+                                    <option value=970412>PVCOMBANK - NH TMCP ĐẠI CHÚNG VIỆT NAM</option>
+                                    <option value=970414>OCEANBANK - NH THƯƠNG MẠI TNHH MTV ĐẠI DƯƠNG</option>
+                                    <option value=970419>NCB - NH TMCP QUỐC DÂN</option>
+                                    <option value=970424>SHINHANBANK - NH TNHH MTV SHINHAN VIỆT NAM</option>
+                                    <option value=970425>ABBANK - NH TMCP AN BÌNH</option>
+                                    <option value=970427>VIETABANK - NH TMCP VIỆT Á</option>
+                                    <option value=970428>NAMABANK - NH TMCP NAM Á</option>
+                                    <option value=970430>PGBANK - NH TMCP XĂNG DẦU PETROLIMEX</option>
+                                    <option value=970433>VIETBANK - NH TMCP VIỆT NAM THƯƠNG TÍN</option>
+                                    <option value=970438>BAOVIETBANK - NH TMCP BẢO VIỆT</option>
+                                    <option value=970440>SEABANK - NH TMCP ĐÔNG NAM Á</option>
+                                    <option value=970446>COOPBANK - NH HỢP TÁC XÃ VIỆT NAM</option>
+                                    <option value=970449>LIENVIETPOSTBANK - NH TMCP BƯU ĐIỆN LIÊN VIỆT</option>
+                                    <option value=970452>KIENLONGBANK - NH TMCP KIÊN LONG</option>
+                                    <option value=668888>KBANK - NH ĐẠI CHÚNG TNHH KASIKORNBANK</option>
+                                    <option value=970458>UNITEDOVERSEAS - NH UNITED OVERSEAS - CHI NHÁNH TP. HỒ CHÍ MINH
+                                    </option>
+                                    <option value=970410>STANDARDCHARTERED - NH TNHH MTV STANDARD CHARTERED BANK VIỆT
+                                        NAM
+                                    </option>
+                                    <option value=970439>PUBLICBANK - NH TNHH MTV PUBLIC VIỆT NAM</option>
+                                    <option value=801011>NONGHYUP - NH NONGHYUP - CHI NHÁNH HÀ NỘI</option>
+                                    <option value=970434>INDOVINABANK - NH TNHH INDOVINA</option>
+                                    <option value=970456>IBKHCM - NH CÔNG NGHIỆP HÀN QUỐC - CHI NHÁNH TP. HỒ CHÍ
+                                        MINH
+                                    </option>
+                                    <option value=970455>IBKHN - NH CÔNG NGHIỆP HÀN QUỐC - CHI NHÁNH HÀ NỘI
+                                    </option>
+                                    <option value=970421>VRB - NH LIÊN DOANH VIỆT - NGA</option>
+                                    <option value=970457>WOORI - NH TNHH MTV WOORI VIỆT NAM</option>
+                                    <option value=970462>KOOKMINHN - NH KOOKMIN - CHI NHÁNH HÀ NỘI</option>
+                                    <option value=970463>KOOKMINHCM - NH KOOKMIN - CHI NHÁNH THÀNH PHỐ HỒ CHÍ MINH
+                                    </option>
+                                    <option value=458761>HSBC - NH TNHH MTV HSBC (VIỆT NAM)</option>
+                                    <option value=970442>HONGLEONG - NH TNHH MTV HONG LEONG VIỆT NAM</option>
+                                    <option value=970408>GPBANK - NH THƯƠNG MẠI TNHH MTV DẦU KHÍ TOÀN CẦU</option>
+                                    <option value=970406>DONGABANK - NH TMCP ĐÔNG Á</option>
+                                    <option value=796500>DBSBANK - DBS BANK LTD - CHI NHÁNH THÀNH PHỐ HỒ CHÍ MINH
+                                    </option>
+                                    <option value=422589>CIMB - NH TNHH MTV CIMB VIỆT NAM</option>
+                                    <option value=970444>CBBANK - NH THƯƠNG MẠI TNHH MTV XÂY DỰNG VIỆT NAM</option>
+                                    <option value=533948>CITIBANK - NH CITIBANK, N.A. - CHI NHÁNH HÀ NỘI</option>
+                                    <option value=970466>KEBHANAHCM - NH KEB HANA - CHI NHÁNH THÀNH PHỐ HỒ CHÍ MINH
+                                    </option>
+                                    <option value=970467>KEBHANAHN - NH KEB HANA - CHI NHÁNH HÀ NỘI</option>
+                                    <option value=977777>MAFC - CÔNG TY TÀI CHÍNH TNHH MTV MIRAE ASSET (VIỆT NAM)
+                                    </option>
+                                    <option value=999888>VBSP - NH CHÍNH SÁCH XÃ HỘI</option>
+                                </select>
+                            </p>
+                            <p>
+                                <input autocomplete=off name="number" class=sign__input placeholder="Nhập số tài khoản"
+                                      type=text value="{{ profile.username.bankInfo.accountNumber }}">
+                            </p>
+                            <p><input autocomplete=off name="name" class=sign__input placeholder="Nhập tên chủ tài khoản"
+                                      type=text value="{{ profile.username.bankInfo.accountName }}"></p>
+                            <p>
+                                <button class=sign__btn type=submit><span>CẬP NHẬT</span></button>
+                            </p>
+                        </form>
+                        <p class="text-center mt-4">LƯU Ý: TÀI KHOẢN BANK CỦA BẠN TỰ ĐỘNG Ở CHẾ ĐỘ <span class=code-num>BẢO VỆ</span>
+                            SAU LẦN TRẢ THƯỞNG THÀNH CÔNG ĐẦU TIÊN.</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div class="modal bounceIn animated" id="modal-notes" tabindex="-1" aria-labelledby="modal-view"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal__content modal__content--view">
+                <div class="comments__autor">
+                    <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                    <span class="comments__name">SUPBANK Thông Báo</span>
+                </div>
+                <p class="comments__text"></p>
+                <div class="modal__btns">
+                    <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal"
+                            aria-label="Close"><span>Đóng</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal bounceIn animated" id="modal-win" tabindex="-1" aria-labelledby="modal-view"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal__content modal__content--view">
+                <div class="comments__autor">
+                    <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                    <span class="comments__name">SUPBANK Thông Báo</span>
+                </div>
+                <p class="comments__text"></p>
+                <div class="modal__btns">
+                    <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal"
+                            aria-label="Close"><span>Đóng</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>$(".nav-item button").click(function () {
+    window.location.href = "/?g=" + $(this).attr("data-bs-target").slice(1)
+})</script>
+{{>footer}}
+{{{ settings.footerScript }}}

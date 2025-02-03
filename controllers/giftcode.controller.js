@@ -1,0 +1,158 @@
+const giftModel = require("../models/gift.model");
+const historyModel = require("../models/history.model");
+const moment = require("moment/moment");
+const blockModel = require("../models/block.model");
+const userModel = require('../models/user.model');
+const gameModel = require("../models/game.model");
+const telegramHelper = require("../helpers/telegram.helper");
+
+const giftcodeController = {
+    index: async (req, res, next) => {
+        try {
+            let games = await gameModel.find({ display: 'show' }).lean();
+
+            res.render('pages/giftcode', {games});
+        } catch (e) {
+            next(e);
+        }
+    },
+    check: async (req, res, next) => {
+        try {
+
+            let {code} = req.body;
+
+            if (!code) {
+                return res.json({
+                    success: false,
+                    message: 'Vui lòng nhập mã quà tặng!',
+                })
+            }
+
+            if (res.locals.settings.giftCode.status != 'active') {
+                return res.json({
+                    success: false,
+                    message: 'Mã quà tặng tạm bảo trì!',
+                })
+            }
+
+            let checkCode = await giftModel.findOne({code, status: 'active'});
+
+            if (!checkCode) {
+                return res.json({
+                    success: false,
+                    message: 'Mã code đã hết hạn hoặc không hợp lệ!'
+                })
+            }
+
+            if (checkCode.playCount && !await historyModel.findOne({
+                username: res.locals.profile.username,
+                timeTLS: {$gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate()},
+                $and: [{$or: [{status: 'win'}, {status: 'won'}]}]
+            })) {
+                return res.json({
+                    success: false,
+                    message: 'Vui lòng chơi ít nhất 1 game để sử dụng!'
+                })
+            }
+
+            if (checkCode.players.length >= checkCode.limit) {
+                await giftModel.findOneAndUpdate({code}, {$set: {status: 'limit'}});
+                return res.json({
+                    success: false,
+                    message: 'Mã code đã hết lượt sử dụng!'
+                })
+            }
+
+            let countPlay = await historyModel.aggregate([{
+                $match: {
+                    username: res.locals.profile.username,
+                    gameType: {$exists: true, $ne: null},
+                    timeTLS: {$gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate()}
+                }
+            }, {$group: {_id: null, amount: {$sum: '$amount'}}}]);
+
+            countPlay = !countPlay.length ? 0 : countPlay[0].amount;
+
+            if (checkCode.playCount && checkCode.playCount > countPlay) {
+                return res.json({
+                    success: false,
+                    message: `Bạn phải chơi đủ ${Intl.NumberFormat('en-US').format(checkCode.playCount)}đ thì mới đủ điều kiện sử dụng!`
+                })
+            }
+
+            let timeExpired = Math.abs((moment(checkCode.expiredAt).valueOf() - moment().valueOf()) / 1000).toFixed(0) - Math.abs((moment(checkCode.createdAt).valueOf() - moment().valueOf()) / 1000).toFixed(0);
+
+            if (timeExpired < 1) {
+                await giftModel.findOneAndUpdate({code: code}, {$set: {status: "expired"}});
+                return res.json({
+                    success: false,
+                    message: "Mã code đã hết hạn sử dụng!"
+                });
+            }
+
+            if (checkCode.players.find(e => e.username = res.locals.profile.username)) {
+                return res.json({
+                    success: false,
+                    message: "Mã code đã được sử dụng!"
+                })
+            }
+
+            if (await blockModel.findOne({username: res.locals.profile.username})) {
+                return res.json({
+                    success: false,
+                    message: 'Bạn không có quyền sử dụng!'
+                })
+            }
+
+            if (req.session.giftCode == code) {
+                return res.json({
+                    success: false,
+                    message: "Hệ thống đang xử lý, vui lòng thử lại sau ít phút!"
+                })
+            }
+
+            // req.session.giftCode = code;
+            setTimeout(() => req.session.destroy(), 120 * 1000);
+            checkCode.players.push({
+                username: res.locals.profile.username,
+                amount: checkCode.amount,
+                time: moment().toDate()
+            });
+
+            await checkCode.save();
+
+            if (checkCode.type == 'balance') {
+                await userModel.findOneAndUpdate({username: res.locals.profile.username}, {$set: {
+                        balance: parseInt(res.locals.profile.balance ? res.locals.profile.balance : 0) + checkCode.amount
+                    }
+                })
+
+                let newHistory = await new historyModel({
+                    username: res.locals.profile.username,
+                    receiver: res.locals.profile.username,
+                    transfer: `system`,
+                    transId: `G${Math.floor(Math.random() * (99999999 - 10000000) + 10000000)}`,
+                    amount: checkCode.amount,
+                    bonus: checkCode.amount,
+                    comment: "GIFTCODE",
+                    gameName: 'GIFTCODE',
+                    gameType: 'GIFTCODE',
+                    description: `SB COIN: ${Intl.NumberFormat('en-US').format(res.locals.profile.balance)} -&gt; ${Intl.NumberFormat('en-US').format(res.locals.profile.balance + checkCode.amount)}`,
+                    result: 'ok',
+                    paid: 'sent',
+                }).save();
+            }
+
+
+            return res.json({
+                success: true,
+                message: "Nhận quà thành công!"
+            })
+        } catch (err) {
+            console.log(err);
+            req.session.giftCode = null, next(err);
+        }
+    }
+}
+
+module.exports = giftcodeController;

@@ -1,0 +1,224 @@
+{{>head}}
+{{>nav}}
+<main class="main-content">
+    <div class="contents">
+        <div class="crm mb-25">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-main">
+                            <h4 class="text-capitalize breadcrumb-title">{{ title }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mb-20">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title">
+                                    <a href="{{ originalUrl.pathname }}" class="text-dark">
+                                        <img src="../themes/admin/images/history-jackpot.png" alt="" width="35">
+                                        Lịch Sử Nổ Hũ
+                                        <img src="../themes/admin/images/history-jackpot.png" class="d-md-none"
+                                            width="35">
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="userDatatable adv-table-table global-shadow border-light-0 adv-table">
+                                    <div id="filter-form-container" class="footable-filtering-external content-center">
+                                        <form>
+                                            <div class="form-inline">
+                                                <div class="form-group footable-filtering-search mb-3 me-sm-30 me-0">
+                                                    <div class="input-group">
+                                                        <input type="search" class="form-control" name="search"
+                                                            placeholder="Nhập nội dung cần tìm kiếm..." value="{{ search }}">
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="form-group dm-select d-flex align-items-center adv-table-searchs__status mb-3 me-sm-30 me-0">
+                                                    <label
+                                                        class="d-flex align-items-center mb-sm-0 mb-2 fs-15 fw-500">Trạng
+                                                        Thái</label>
+                                                    <select name="status" class="form-control ms-sm-10 ms-0">
+                                                        {{#select status }}
+                                                        <option value="">Tất Cả</option>
+                                                        <option value="wait">Đợi Xử Lý</option>
+                                                        <option value="error">Lỗi</option>
+                                                        <option value="success">Đã Xử Lý</option>
+                                                        {{/select}}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <button class="btn btn-primary btn-sm btn-block"><i class="fa fa-search"
+                                                        aria-hidden="true"></i> Tìm kiếm</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="table-responsive mb-3">
+                                    <table
+                                        class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
+                                        <thead class="badge-secondary text-white">
+                                            <tr>
+                                                <th>Mã Giao Dịch</th>
+                                                <th>Người Thắng</th>
+                                                <th>Số Tiền {{{ tableSort originalUrl.search 'amount' _sort }}}</th>
+                                                <th>Trạng Thái {{{ tableSort originalUrl.search 'status' _sort }}}</th>
+                                                <th>Thời Gian {{{ tableSort originalUrl.search 'updatedAt' _sort }}}
+                                                </th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody data-table="history_jackpot">
+                                            {{#each historys}}
+                                            <tr class="edit-one" data-id="{{ this._id }}">
+                                                <td>#{{ this.transId }}</td>
+                                                <td>{{ this.receiver }}</td>
+                                                <td>{{ numberFormat this.amount }}đ</td>
+                                                <td data-bs-name="status" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.status }}">
+                                                        <span data-bs-html="true">
+                                                            {{#ifCond this.status '==' 'wait'}}
+                                                            <span class="badges badge-info">Đợi Xử Lý</span>
+                                                            {{/ifCond}}
+                                                            {{#ifCond this.status '==' 'error'}}
+                                                            <span class="badges badge-danger">Lỗi</span>
+                                                            {{/ifCond}}
+                                                            {{#ifCond this.status '==' 'success'}}
+                                                            <span class="badges badge-success">Đã Xử Lý</span>
+                                                            {{/ifCond}}
+                                                        </span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.status }}">
+                                                        <select class="form-control ih-medium ip-light mb-2"
+                                                            data-bs-edit="true">
+                                                            <option value="wait">Đang Xử Lý</option>
+                                                            <option value="error">Lỗi</option>
+                                                            <option value="success">Đã xử lý</option>
+                                                        </select>
+                                                    </span>
+                                                </td>
+                                                <td>{{ formatDate this.updatedAt 'DD-MM-YYYY HH:mm:ss'}}</td>
+                                                <td>
+                                                    <div class="table-actions hand">
+                                                        <span class="badges badge-secondary rework"
+                                                            data-id="{{ this.transId }}"><i class="fa fa-trophy"
+                                                                aria-hidden="true"></i></span>
+                                                        <span class="badges badge-danger"
+                                                            data-bs-submit="history-jackpot" data-bs-action="remove"
+                                                            data-id="{{ this._id }}"><i class="fa fa-trash"
+                                                                aria-hidden="true"></i></span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {{else}}
+                                            <tr>
+                                                <td colspan="12">
+                                                    <div class="dm-empty text-center">
+                                                        <div class="dm-empty__image">
+                                                            <img src="../themes/admin/images/1.png" alt="Rỗng">
+                                                        </div>
+                                                        <div class="dm-empty__text">
+                                                            <p class="">Không có dữ liệu !</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <nav class="dm-page">
+                                        <ul class="dm-pagination d-flex">
+                                            <li class="dm-pagination__item">
+                                                {{#paginate pagination type="previous"}}
+                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
+                                                    class="dm-pagination__link pagination-control {{#if disabled}}disabled{{/if}}">
+                                                    <span class="la la-angle-left"></span>
+                                                </a>
+                                                {{/paginate}}
+                                                {{#paginate pagination type="middle" limit=pagination.limit}}
+                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
+                                                    class="dm-pagination__link {{#if active}}active{{/if}}"><span
+                                                        class="page-number">{{n}}</span>
+                                                </a>
+                                                {{/paginate}}
+                                                {{#paginate pagination type="next"}}
+                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
+                                                    class="dm-pagination__link pagination-control {{#if disabled}}disabled{{/if}}">
+                                                    <span class="la la-angle-right"></span>
+                                                </a>
+                                                {{/paginate}}
+                                            </li>
+                                            <li class="dm-pagination__item">
+                                                <div class="paging-option">
+                                                    <select name="perPage" class="page-selection"
+                                                        data-query="{{ checkQuery originalUrl.search 'perPage' }}">
+                                                        {{#select perPage }}
+                                                        <option value="10">10/page</option>
+                                                        <option value="20">20/page</option>
+                                                        <option value="40">40/page</option>
+                                                        <option value="60">60/page</option>
+                                                        <option value="100">100/page</option>
+                                                        <option value="200">200/page</option>
+                                                        <option value="500">500/page</option>
+                                                        {{/select}}
+                                                    </select>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div class="modal fade" id="modal-rework" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Trả Thưởng Nổ Hũ <b id="transId" class="text-primary">#</b></h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="#" method="post" class="form-axios">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="" class="il-gray fs-14 fw-500 mb-10">Mã Giao Dịch</label>
+                        <input type="text" name="transId" class="form-control ih-medium ip-light" readonly="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="il-gray fs-14 fw-500 mb-10">Số Điện Thoại</label>
+                        <select name="phone" class="form-control ih-medium ip-light">
+                            {{#each phones}}
+                                <option value="{{ this.phone }}">{{ this.phone }} - {{ numberFormat this.amount }}đ</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Thực Hiện</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{>foot}}
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        $('body').on('click', '.rework', function (e) {
+            let transId = $(this).data('id');
+
+            $('[name="transId"]').val(transId);
+            $('#transId').html(`#${transId}`);
+            $('#modal-rework').modal('show')
+        })
+    })
+</script>

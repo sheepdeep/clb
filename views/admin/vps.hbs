@@ -1,0 +1,153 @@
+{{>head}}
+{{>nav}}
+<main class="main-content">
+    <div class="contents">
+        <div class="crm mb-25">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-main">
+                            <h4 class="text-capitalize breadcrumb-title">{{ title }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-md-4 mb-25 hand">
+                                <div class="feature-cards5 d-flex justify-content-between border-0 radius-xl p-25">
+                                    <div class="application-task d-flex align-items-center">
+                                        <div class="application-task-icon wh-60 bg-secondary content-center">
+                                            <img src="../themes/admin/images/ram_free.png" width="50px">
+                                        </div>
+                                        <div class="application-task-content">
+                                            <h4 data-bs-toggle="animate" data-value=""></h4>
+                                            <span class="text-light fs-14 mt-1 texqt-capitalize">Ram Free</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-25 hand">
+                                <div class="feature-cards5 d-flex justify-content-between border-0 radius-xl p-25">
+                                    <div class="application-task d-flex align-items-center">
+                                        <div class="application-task-icon wh-60 bg-primary content-center">
+                                            <img src="../themes/admin/images/ram_use.png" width="50px">
+                                        </div>
+                                        <div class="application-task-content">
+                                            <h4 data-bs-toggle="animate" data-value="{{ revenueData.minus }}">0</h4>
+                                            <span class="text-light fs-14 mt-1 text-capitalize">Ram Usage</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-25 hand">
+                                <div class="feature-cards5 d-flex justify-content-between border-0 radius-xl p-25">
+                                    <div class="application-task d-flex align-items-center">
+                                        <div class="application-task-icon wh-60 bg-success content-center">
+                                            <img src="../themes/admin/images/cpu.png" width="50px">
+                                        </div>
+                                        <div class="application-task-content">
+                                            <h4 id="cpuInfo">0%</h4>
+                                            <span class="text-light fs-14 mt-1 text-capitalize">CPU Usage</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 mb-20">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title">
+                                    <a href="{{ originalUrl.pathname }}" class="text-dark">
+                                        <img src="../themes/admin/images/vps.png" alt="" width="35">
+                                        Quản Lý VPS
+                                        <img src="../themes/admin/images/vps.png" class="d-md-none" width="35">
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <form action="" method="post" id="runCommand">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-10">
+                                            <div class="form-group mb-3 hand">
+                                                <div class="input-group">
+                                                    <input type="search" name="command"
+                                                        class="form-control ih-medium ip-light"
+                                                        placeholder="Nhập lệnh ( tính năng chỉ mang tính chất tham khảo )">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group mb-3">
+                                                <button class="btn btn-primary btn-block">RUN
+                                                    COMMAND</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div id="tabConsole" class="bg-dark p-2" style="min-height: 300px;">
+                                    <pre class="mb-0"><code class="fs-sm">[03:10:43 04-02-2023] Cờ con sờ log...</code>
+                                    </pre>
+                                </div>
+                                <div class="alert alert-warning">
+                                    * pm2 restart 0: khởi động lại server website.<br>
+                                    * sudo apt-get update: cập nhật danh sách các gói phần mềm.<br>
+                                    * sudo apt-get upgrade: nâng cấp các gói phần mềm đang cài đặt trên VPS.<br>
+                                    * sudo apt-get install [package]: cài đặt gói phần mềm mới trên VPS.<br>
+                                    * sudo apt-get remove [package]: gỡ bỏ gói phần mềm đang cài đặt trên VPS.<br>
+                                    * sudo apt-get autoremove: gỡ bỏ các gói phần mềm không còn sử dụng trên VPS.<br>
+                                    * sudo apt-get purge [package]: gỡ bỏ gói phần mềm và các tệp liên quan trên VPS.
+                                    <br>
+                                    * sudo apt-get search [keyword]: tìm kiếm gói phần mềm trên VPS.<br>
+                                    * sudo apt-get clean: xoá các gói phần mềm tạm trên VPS.<br>
+                                    * sudo apt-get check: kiểm tra trạng thái của các gói phần mềm trên VPS.<br>
+                                    * sudo reboot: khởi động lại VPS.<br>
+                                    * sudo shutdown -h now: tắt VPS.<br>
+                                    * sudo top: xem các tiến trình đang chạy trên VPS.<br>
+                                    * sudo ps aux: xem tất cả các tiến trình đang chạy trên VPS.<br>
+                                    * sudo kill [pid]: hủy tiến trình trên VPS.<br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{{>foot}}
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        socket.emit('cpuInfo', 'Trâm Đẹp Trai');
+        socket.on('cpuInfo', function (data) {
+            $('#cpuInfo').html(`${data}%`);
+        })
+
+        setInterval(() => {
+            socket.emit('cpuInfo', 'Trâm Đẹp Trai');
+        }, 1000);
+
+        $('body').on('submit', '#runCommand', function (e) {
+            e.preventDefault();
+            let command = $('input[name="command"]').val();
+
+            if (!command) {
+                swal('Thông Báo', 'Vui lòng nhập lệnh!', 'info');
+                return;
+            }
+
+            $('#runCommand button').html(`<div class="dm-spin-dots spin-sm"><span class="spin-dot badge-dot dot-light"></span><span class="spin-dot badge-dot dot-light"></span><span class="spin-dot badge-dot dot-light"></span><span class="spin-dot badge-dot dot-light"></span></div>`).prop('disabled', true);
+            axios.post('#', { command })
+                .then((result) => {
+                    let response = result.data;
+
+                    $('input[name="command"]').val('');
+                    $('#tabConsole').append(!response.success ? `<pre class="mb-0" style="color:red"><code class="fs-sm">[${moment().format('HH:mm:ss DD-MM-YYYY')}] ${response.message}</code></pre>` : `<pre class="mb-0"><code class="fs-sm">[${moment().format('HH:mm:ss DD-MM-YYYY')}] ${response.data.outData || response.data.errData}</code></pre>`);
+                })
+                .catch((err) => {
+                    swal('Thông Báo', err.message || err, 'error');
+                })
+                .finally(() => $('#runCommand button').html(`RUN COMMAND`).prop('disabled', false))
+        });
+    })
+</script>

@@ -1,0 +1,282 @@
+{{>head}}
+{{>nav}}
+<main class="main-content">
+    <div class="contents">
+        <div class="crm mb-25">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-main">
+                            <h4 class="text-capitalize breadcrumb-title">{{ title }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mb-20">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title">
+                                    <a href="{{ originalUrl.pathname }}" class="text-dark">
+                                        <img src="../themes/admin/images/wallet.png" alt="" width="35">
+                                        Kiểm tra lịch sử
+                                        <img src="../themes/admin/images/wallet.png" class="d-md-none" width="35">
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="userDatatable adv-table-table global-shadow border-light-0 adv-table">
+                                    <div id="filter-form-container"
+                                         class="footable-filtering-external footable-filtering-right">
+                                        <form>
+                                            <div class="form-inline">
+                                                <div
+                                                        class="form-group dm-select d-flex align-items-center adv-table-searchs__status mb-3 me-sm-30 me-0">
+                                                    <label class="d-flex align-items-center mb-sm-0 mb-2 fs-15 fw-500">Số tài khoản</label>
+                                                    <select name="accountNumber" class="form-control ms-sm-10 ms-0">
+                                                        {{#each banks}}
+                                                            <option value="{{ this.accountNumber }}">{{ this.accountNumber }} - {{ uppercase this.bankType }}</option>
+                                                        {{/each}}
+                                                    </select>
+                                                </div>
+                                                <div class="form-group d-flex align-items-center mb-3 me-sm-30 me-0">
+                                                    <label for="" class="form-label color-dark fw-500">Bắt đầu</label>
+                                                    <input type="date" name="startTime" class="form-control ih-medium ip-light">
+                                                </div>
+                                                <div class="form-group d-flex align-items-center mb-3 me-sm-30 me-0">
+                                                    <label for="" class="form-label color-dark fw-500">Kết thúc</label>
+                                                    <input type="date" name="endTime" class="form-control ih-medium ip-light">
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <button class="btn btn-primary btn-sm btn-block"><i
+                                                            class="fa fa-search" aria-hidden="true"></i> Tìm kiếm
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="table-responsive table-mousewheel mb-3">
+                                    <table
+                                            class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
+                                        <thead class="badge-secondary text-white">
+                                        <tr>
+                                            <th>
+                                                    <span data-bs-submit="momo" data-bs-action="add">
+                                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                                    </span>
+                                            </th>
+                                            <th>Số tài khoản</th>
+                                            <th>Loại</th>
+                                            <th>Số Dư Cuối</th>
+                                            <th>Mã giao dịch</th>
+                                            <th>Nội dung</th>
+                                            <th>Thời Gian</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {{#each histories}}
+                                            <tr class="edit-one" data-id="{{ this._id }}">
+                                                <td>
+                                                    <div class="table-actions hand p-2">
+                                                        <span class="badges badge-success qrc" data-bankcode="mbb" data-content="00020101021138530010A0000007270123000697042201090271120050208QRIBFTTA53037045802VN630480D5"
+                                                              data-bs-toggle="tooltip" data-bs-placement="top"
+                                                              data-bs-original-title="Lấy QR"><i
+                                                                class="fas fa-qrcode"></i></span>
+                                                        <span class="badges badge-warning action-more"
+                                                              data-action="balance" data-id="{{ this.phone }}"
+                                                              data-bs-toggle="tooltip" data-bs-placement="top"
+                                                              data-bs-original-title="Cập nhập số dư"><i
+                                                                class="fas fa-coins"></i></span>
+                                                        <span class="badges badge-success action-more"
+                                                              data-action="refresh" data-id="{{ this._id }}"
+                                                              data-bs-toggle="tooltip" data-bs-placement="top"
+                                                              data-bs-original-title="Cập nhập token"><i
+                                                                class="fas fa-redo-alt"></i></span>
+                                                        <a href="./home?_phone={{ this.phone }}"
+                                                        class="badges badge-info" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top"
+                                                        data-bs-original-title="Xem doanh thu số"><i
+                                                            class="fa fa-eye" aria-hidden="true"></i></a>
+                                                        <span class="badges badge-danger" data-bs-submit="bank"
+                                                              data-bs-action="remove" data-id="{{ this._id }}"
+                                                              data-bs-toggle="tooltip" data-bs-placement="top"
+                                                              data-bs-original-title="Xóa"><i class="fa fa-trash"
+                                                                                              aria-hidden="true"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td>{{ this.accountNo }}</td>
+                                                <td>
+                                                    {{#ifCond this.creditAmount '>' 0}}
+                                                        <span class="badge btn-success">Nhận tiền</span>
+                                                    {{else}}
+                                                        <span class="badge btn-danger">Trù tiền</span>
+                                                    {{/ifCond}}
+                                                </td>
+                                                <td>{{ this.refNo }}</td>
+                                                <td>{{ numberFormat this.availableBalance }}</td>
+                                                <td>{{ this.description }}</td>
+                                                <td>{{ this.transactionDate }}</td>
+                                            </tr>
+                                        {{else}}
+                                            <tr>
+                                                <td colspan="24">
+                                                    <div class="dm-empty text-center">
+                                                        <div class="dm-empty__image">
+                                                            <img src="../themes/admin/images/1.png" alt="Rỗng">
+                                                        </div>
+                                                        <div class="dm-empty__text">
+                                                            <p class="">Không có dữ liệu !</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Modal Add Momo -->
+<div class="modal fade" data-bs-modal="momo-add" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-plus-circle"></i> Thêm Tài Khoản</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="#" method="post" id="formAdd">
+                <div class="modal-body">
+                    <div class=form-group>
+                        <label class="fs-14 fw-500 il-gray mb-10" for="">Tài khoản</label>
+                        <input class="form-control ih-medium ip-light" name="username" placeholder="Nhập tài khoản...">
+                    </div>
+                    <div class=form-group>
+                        <label class="fs-14 fw-500 il-gray mb-10" for="">Mật khẩu</label>
+                        <input class="form-control ih-medium ip-light" name="password" placeholder="Nhập mật khẩu...">
+                    </div>
+                    <div class=form-group>
+                        <label class="fs-14 fw-500 il-gray mb-10" for="">Số tài khoản</label>
+                        <input class="form-control ih-medium ip-light" name="accountNumber" placeholder="Nhập số tài khoản...">
+                    </div>
+                    <div class=form-group>
+                        <label class="fs-14 fw-500 il-gray mb-10" for="">Loại ngân hàng</label>
+                        <input class="form-control ih-medium ip-light" name="bankType" placeholder="Nhập loại ngân hàng...">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary btn-sm action-add" data-action="add">Thêm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" data-bs-modal="qrModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content radius-xl">
+            <div class="modal-header">
+                <h5 class="modal-title">Mã </h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class=text-center id=canvasQr>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{>foot}}
+<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.1/lib/qr-code-styling.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function (e) {
+
+        $('body').on('click', '.action-more', function (e) {
+            let _this = $(this);
+            let action = _this.data('action');
+            let id = _this.data('id');
+
+            switch (action) {
+                case 'balance':
+                    _this.prop('disabled', true);
+                    axios.post('/api/v2/momo/balance', {phone})
+                            .then((result) => {
+                                let response = result.data;
+
+                                response.success ? swal('Thông Báo', response.message, 'success') && _this.parent().parent().parent().find('td.amount').html(`${Intl.NumberFormat('en-US').format(response.balance)}đ`) : swal('Thông Báo', response.message, 'error');
+                            })
+                            .catch(err => swal('Thông Báo', `Có lỗi xảy ra ${err.message || err}`, 'warning'))
+                            .finally(() => _this.prop('disabled', false))
+                    break;
+                case 'refresh':
+                    _this.prop('disabled', true);
+                    axios.post('{{adminPath}}/bank/refresh', {id})
+                            .then((result) => {
+                                let response = result.data;
+
+                                response.success ? swal('Thông Báo', response.message, 'success') : swal('Thông Báo', response.message, 'error');
+                            })
+                            .catch(err => swal('Thông Báo', `Có lỗi xảy ra ${err.message || err}`, 'warning'))
+                            .finally(() => _this.prop('disabled', false))
+                    break;
+                default:
+                    swal('Thông Báo', 'Thao tác không hợp lệ!', 'warning');
+                    break;
+            }
+        })
+
+        function loadQR(data, img, bgc) {
+            qrCode = new QRCodeStyling({
+                width: 400,
+                height: 400,
+                data: data,
+                image: img,
+                dotsOptions: {color: bgc, type: "rounded"},
+                backgroundOptions: {color: "#FFF"},
+                imageOptions: {crossOrigin: "anonymous", margin: 5, imageSize: 0.5},
+            });
+            $("#canvasQr").html(""), qrCode.append(document.getElementById("canvasQr"));
+            $('[data-bs-modal="qrModal"]').modal('show')
+        }
+
+        $(document).on("click", ".qrc", function () {
+            var bankCode = $(this).attr('data-bankcode');
+            var bgc = "#11089c";
+
+            var img = window.location.protocol + '//' + window.location.host + '/themes/images/banks/' + bankCode + '.png';
+            var data = $(this).attr('data-content');
+            console.log(data);
+            loadQR(data, img, bgc);
+        });
+
+        $('body').on('submit', '#formAdd', function (e) {
+            e.preventDefault();
+            let data = $(this).serialize();
+
+
+            axios.post(`{{ adminPath }}/bank`, data)
+                    .then((result) => {
+                        let res = result.data;
+
+                        res.success ? swal('Thông báo', res.message, 'success') && setTimeout(() => window.location.reload(), 1500) : swal('Thông báo', res.message, 'error');
+
+                    })
+                    .catch((err) => {
+                        $('textarea[name=error]').textContent(err.dataResult);
+                        swal('Thông Báo', err.message || err, 'error');
+                    })
+        })
+    })
+</script>

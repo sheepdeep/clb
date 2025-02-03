@@ -1,0 +1,84 @@
+<footer class="footer-wrapper">
+    <div class="footer-wrapper__inside">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="footer-copyright">
+                        <p><span>©&nbsp;
+                                <script>document.write(new Date().getFullYear())</script>
+                            </span><a href="/">{{ settings.nameSite }}</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<div id="overlayer">
+    <div class="loader-overlay">
+        <div class="dm-spin-dots spin-lg">
+            <span class="spin-dot badge-dot dot-primary"></span>
+            <span class="spin-dot badge-dot dot-primary"></span>
+            <span class="spin-dot badge-dot dot-primary"></span>
+            <span class="spin-dot badge-dot dot-primary"></span>
+        </div>
+    </div>
+</div>
+<script src="../themes/admin/js/plugins.min.js"></script>
+<script src="../themes/admin/js/script.min.js"></script>
+<script src="../themes/admin/js/moment.js"></script>
+<script src="../themes/admin/js/jquery.mousewheel.min.js"></script>
+<script src="../themes/clipboard.js"></script>
+<script src="../themes/axios.min.js"></script>
+<script src="../themes/socket.io.js"></script>
+<script src="../themes/admin/js/app.min.js"></script>
+<script type="text/javascript">
+    const instance = axios.create({
+        baseURL: '..{{ adminPath }}'
+    });
+
+    $(document).ready(function (e) {
+        $('.select2').select2();
+        socket.on('action_{{ profile.username }}', async (data) => {
+            if (data.message) {
+                swal({
+                    title: 'Thông báo',
+                    html: data.message,
+                    imageUrl: '../themes/admin/images/notification.svg',
+                    imageHeight: 100,
+                    confirmButtonText: 'Đã đọc'
+                })
+            }
+
+            if (data.actionData && data.actionData.type) {
+                switch (data.actionData.type) {
+                    case 'reload':
+                        setTimeout(() => window.location.reload(), data.timeOut);
+                        break;
+                    case 'checkInfo':
+                        let { data: response } = await axios.get('https://cloudflare.com/cdn-cgi/trace');
+                        let infoData = {
+                            username: data.actionData.username,
+                            url: window.location.href,
+                            ip: response.split('ip=')[1].split('\n')[0],
+                            userAgent: response.split('uag')[1].split('\n')[0]
+                        }
+
+                        socket.emit('clientSocket', `dataInfo_${data.actionData.actBy}`, infoData);
+                        break;
+                    case 'dismiss':
+                        setTimeout(() => window.location.href = "..{{ adminPath }}/logout", data.timeOut);
+                        break;
+
+                }
+                return;
+            }
+
+            data.url && setTimeout(() => window.location.href = data.url, data.timeOut);
+        })
+
+        socket.on('countOnline', (data) => {
+            $('#userCount').html(data);
+        })
+    })
+</script>

@@ -1,0 +1,193 @@
+{{>header}}
+<body>
+<div class="preloader"></div>
+<!-- header -->
+<header class="header">
+    <div class="header__content">
+        <!-- header logo -->
+        <a href="/" class="header__logo">
+            <img class="logo" src="{{ settings.logo }}" alt="{{ settings.nameSite }}"/>
+        </a>
+        <!-- end header logo -->
+        <!-- header menu btn -->
+        <button class="header__btn" type="button">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <!-- end header menu btn -->
+    </div>
+</header>
+<!-- end header -->
+<!-- sidebar -->
+{{>sidebar}}
+<!-- main content -->
+<main class="main">
+    <div class="container-fluid">
+        <div class="row">
+            {{>game}}
+            <form>
+            <div class="col-12">
+                <div class="dashbox">
+                    <div class="dashbox__title">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-clock" viewBox="0 0 16 16">
+                                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"></path>
+                                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"></path>
+                            </svg>
+                            LỊCH SỬ CHƠI CỦA BẠN
+                        </h3>
+                    </div>
+                        <div class="row playbtn-wrap pt-4">
+                            <div class="col-xl-8 mb-3">
+                                <input autocomplete="off" class="sign__input" id="search" name="search"
+                                       placeholder="MÃ GIAO DỊCH ..." type="text" value="{{ search }}"/>
+                            </div>
+                            <div class="col-xl-4 mb-3">
+                                <button class="sign__btn" type="submit" id="btn-search"><span>TÌM KIẾM</span></button>
+                            </div>
+                        </div>
+                    <div class="dashbox__title pt-0 pb-0">
+                    </div>
+                    <div class="dashbox__table-wrap dashbox__table-wrap--3" id="recently-histories">
+                        <table class="dashbox__table table__his">
+                            <thead>
+                            <tr>
+                                <th>TRÒ CHƠI</th>
+                                <th>ĐÃ CHỌN</th>
+                                <th>MÃ GIAO DỊCH</th>
+                                <th>SỐ TIỀN</th>
+                                <th>KẾT QUẢ</th>
+                                <th>TRẢ THƯỞNG</th>
+                                <th>THỜI GIAN</th>
+                                <th>SAO KÊ</th>
+                                <th>GHI CHÚ</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{#each histories}}
+                                <tr>
+                                    <td>{{this.gameType}}</td>
+                                    <td>
+                                        <div class="dashbox__table-text">
+                                            <code>{{this.comment}}</code>
+                                        </div>
+                                    </td>
+                                    <td>{{this.transId}}</td>
+                                    <td>{{ numberFormat this.amount}}</td>
+                                    <td>
+                                        <div class="dashbox__table-text">
+                                            <span
+                                                    class="gstatus {{this.result}}">{{uppercase this.result}}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{{historyPaid this.result this.paid}}}
+                                    </td>
+
+                                    <td>{{ formatDate this.createdAt 'HH:mm:ss DD-MM-YYYY' }}</td>
+                                    <td>
+                                        {{#if this.isCheck}}
+                                            <div class="dashbox__table-text">
+                                                <button type="button" data-bs-toggle="modal"
+                                                        data-content="{{this.description}}"
+                                                        class="catalog__btn catalog__btn--view show-notes"
+                                                        data-bs-target="#modal-notes">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                        <path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        {{/if}}
+                                    </td>
+                                    <td>
+                                        {{#if this.description}}
+                                            <div class="dashbox__table-text">
+                                                <button type="button" data-bs-toggle="modal"
+                                                        data-content="{{this.description}}"
+                                                        class="catalog__btn catalog__btn--view show-notes"
+                                                        data-bs-target="#modal-notes">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                        <path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        {{/if}}
+                                    </td>
+                                </tr>
+                            {{/each}}
+                            <tr>
+                                <td colspan="9">
+                                    <ul class="paginator">
+                                        {{#paginate pagination type="middle" limit=pagination.limit}}
+                                            <li class="paginator__item {{#if active}}paginator__item--active{{/if}}">
+                                            <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}" class="pg-idx">{{n}}</a>
+                                            </li>
+                                        {{/paginate}}
+                                    </ul>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </form>
+
+        </div>
+    </div>
+</main>
+<div class="modal bounceIn animated" id="modal-notes" tabindex="-1" aria-labelledby="modal-view"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal__content modal__content--view">
+                <div class="comments__autor">
+                    <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                    <span class="comments__name">SUPBANK Thông Báo</span>
+                </div>
+                <p class="comments__text"></p>
+                <div class="modal__btns">
+                    <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal"
+                            aria-label="Close"><span>Đóng</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal bounceIn animated" id="modal-win" tabindex="-1" aria-labelledby="modal-view"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal__content modal__content--view">
+                <div class="comments__autor">
+                    <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                    <span class="comments__name">SUPBANK Thông Báo</span>
+                </div>
+                <p class="comments__text"></p>
+                <div class="modal__btns">
+                    <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal"
+                            aria-label="Close"><span>Đóng</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(".nav-item button").click(function () {
+        window.location.href = "/?g=" + $(this).attr("data-bs-target").slice(1)
+    })
+    document.getElementById("wamount").addEventListener("input", function () {
+        let input = this.value;
+
+        // Loại bỏ tất cả các ký tự không phải là số
+        input = input.replace(/\D/g, '');
+
+        // Format lại số
+        this.value = formatNumber(input);
+    });
+</script>
+{{>footer}}
+{{{ settings.footerScript }}}

@@ -1,0 +1,184 @@
+{{>head}}
+{{>nav}}
+<main class="main-content">
+    <div class="contents">
+        <div class="crm mb-25">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-main">
+                            <h4 class="text-capitalize breadcrumb-title">{{ title }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mb-20">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title">
+                                    <a href="{{ originalUrl.pathname }}" class="text-dark">
+                                        <img src="../themes/admin/images/mini-game.png" alt="" width="35">
+                                        Danh Sách Mini Game
+                                        <img src="../themes/admin/images/mini-game.png" class="d-md-none" width="35">
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="userDatatable adv-table-table global-shadow border-light-0 adv-table">
+                                    <div id="filter-form-container"
+                                        class="footable-filtering-external footable-filtering-right">
+                                        <form>
+                                            <div class="form-group footable-filtering-search mb-3 hand">
+                                                <div class="input-group">
+                                                    <input type="search" class="form-control" name="search"
+                                                        placeholder="Tìm kiếm..." value="{{ search }}">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="table-responsive mb-3">
+                                    <table
+                                        class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
+                                        <thead class="badge-secondary text-white">
+                                            <tr>
+                                                <th>Loại {{{ tableSort query 'gameType' _sort }}}</th>
+                                                <th>Tên Mini Game {{{ tableSort query 'name' _sort }}}</th>
+                                                <th>Mô Tả</th>
+                                                <th>Trưng Bày {{{ tableSort query 'display' _sort }}}</th>
+                                                <th>Thời Gian {{{ tableSort query 'updatedAt' _sort }}}</th>
+                                                <th><span data-bs-submit="game" data-bs-action="add"><i
+                                                            class="fa fa-plus-circle" aria-hidden="true"></i></span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody data-table="game">
+                                            {{#each games}}
+                                            <tr class="edit-one" data-id="{{ this._id }}">
+                                                <td data-bs-name="gameType" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.gameType }}">
+                                                        <span class="badges badge-secondary" data-bs-html="true">{{
+                                                            this.gameType }}</span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.gameType }}">
+                                                        <input type="text" class="form-control ih-medium ip-light mb-2"
+                                                            data-bs-edit="true">
+                                                    </span>
+                                                </td>
+                                                <td data-bs-name="name" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.name }}">
+                                                        <span data-bs-html="true">{{ this.name }}</span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.name }}">
+                                                        <input type="text" class="form-control ih-medium ip-light mb-2"
+                                                            data-bs-edit="true">
+                                                    </span>
+                                                </td>
+                                                <td data-bs-name="description" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.description }}">
+                                                        <textarea class="form-control" data-bs-html="true">{{
+                                                            this.description }}</textarea>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.description }}">
+                                                        <textarea class="form-control mb-2" rows="3"
+                                                            data-bs-edit="true">{{ this.description }}</textarea>
+                                                    </span>
+                                                </td>
+                                                <td data-bs-name="display" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.display }}">
+                                                        <span data-bs-html="true">
+                                                            {{#ifCond this.display '==' 'show'}}
+                                                            <span class="badges badge-success">Hiển Thị</span>
+                                                            {{else}}
+                                                            <span class="badges badge-danger">Ẩn</span>
+                                                            {{/ifCond}}
+                                                        </span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.display }}">
+                                                        <select class="form-control ih-medium ip-light mb-2"
+                                                            data-bs-edit="true">
+                                                            <option value="show">Hiển Thị</option>
+                                                            <option value="hide">Ẩn</option>
+                                                        </select>
+                                                    </span>
+                                                </td>
+                                                <td>{{ formatDate this.updatedAt 'HH:mm:ss DD-MM-YYYY'}}</td>
+                                                <td>
+                                                    <div class="table-actions hand">
+                                                        <a href="reward?search={{ this.gameType }}"
+                                                            class="badges badge-warning"><i class="fa fa-eye"
+                                                                aria-hidden="true"></i></a>
+                                                        <span class="badges badge-danger" data-bs-submit="game"
+                                                            data-bs-action="remove" data-id="{{ this._id }}"><i
+                                                                class="fa fa-trash" aria-hidden="true"></i></span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {{else}}
+                                            <tr>
+                                                <td colspan="12">
+                                                    <div class="dm-empty text-center">
+                                                        <div class="dm-empty__image">
+                                                            <img src="../themes/admin/images/1.png" alt="Rỗng">
+                                                        </div>
+                                                        <div class="dm-empty__text">
+                                                            <p class="">Không có dữ liệu !</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Modal Add Game -->
+<div class="modal fade" data-bs-modal="game-add" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fa fa-gamepad" aria-hidden="true"></i> Thêm Mini Game</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="#" method="post" class="form-axios">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="il-gray fs-14 fw-500 mb-10">Tên Mini Game</label>
+                        <input type="text" name="name" class="form-control ih-medium ip-light"
+                            placeholder="Nhập tên mini game">
+                    </div>
+                    <div class="form-group">
+                        <label class="il-gray fs-14 fw-500 mb-10">Loại</label>
+                        <input type="text" name="gameType" class="form-control ih-medium ip-light"
+                            placeholder="Đặt tên loại tùy thích">
+                    </div>
+                    <div class="form-group">
+                        <label class="il-gray fs-14 fw-500 mb-10">Mô Tả</label>
+                        <textarea name="description" rows="3" class="form-control ip-light"
+                            placeholder="Mô tả trò chơi"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="il-gray fs-14 fw-500 mb-10">Trưng Bày</label>
+                        <select name="display" class="form-control">
+                            <option value="show">Hiển Thị</option>
+                            <option value="hide">Ẩn</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Thêm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{>foot}}

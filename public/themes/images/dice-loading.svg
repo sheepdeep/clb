@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: none; display: block; shape-rendering: auto; animation-play-state: running; animation-delay: 0s;" width="64px" height="64px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+<g class="ldio-fndck7mxuf5" style="animation-play-state: running; animation-delay: 0s;">
+<g style="transform: scale(0.8); transform-origin: 50px 50px; animation-play-state: running; animation-delay: 0s;">
+  <g style="animation-play-state: running; animation-delay: 0s;"> <rect x="10" y="10" width="80" height="80" stroke="#fe8d1c" fill="#28282d" stroke-width="5" style="animation-play-state: running; animation-delay: 0s;"></rect> </g>
+  <g style="animation-play-state: running; animation-delay: -0.5s;"> <rect x="10" y="10" width="80" height="80" stroke="#fe8d1c" fill="#28282d" stroke-width="5" style="animation-play-state: running; animation-delay: 0s;"></rect> </g>
+  <g style="animation-play-state: running; animation-delay: -1s;"> <rect x="10" y="10" width="80" height="80" stroke="#fe8d1c" fill="#28282d" stroke-width="5" style="animation-play-state: running; animation-delay: 0s;"></rect> </g>
+  <g style="animation-play-state: running; animation-delay: -1.5s;"> <rect x="10" y="10" width="80" height="80" stroke="#fe8d1c" fill="#28282d" stroke-width="5" style="animation-play-state: running; animation-delay: 0s;"></rect> </g>
+  <g style="animation-play-state: running; animation-delay: 0s;"> <circle cx="50" cy="50" r="10" fill="#fe8d1c" stroke-width="0" style="animation-play-state: running; animation-delay: 0s;"></circle> </g>
+  <g style="animation-play-state: running; animation-delay: -0.5s;">
+    <circle cx="30" cy="30" r="6" fill="#fe8d1c" stroke-width="0" style="animation-play-state: running; animation-delay: 0s;"></circle>
+    <circle cx="70" cy="70" r="6" fill="#fe8d1c" stroke-width="0" style="animation-play-state: running; animation-delay: 0s;"></circle>
+  </g>
+  <g style="animation-play-state: running; animation-delay: -1s;">
+    <circle cx="30" cy="30" r="6" fill="#fe8d1c" stroke-width="0" style="animation-play-state: running; animation-delay: 0s;"></circle>
+    <circle cx="70" cy="70" r="6" fill="#fe8d1c" stroke-width="0" style="animation-play-state: running; animation-delay: 0s;"></circle>
+    <circle cx="30" cy="70" r="6" fill="#fe8d1c" stroke-width="0" style="animation-play-state: running; animation-delay: 0s;"></circle>
+    <circle cx="70" cy="30" r="6" fill="#fe8d1c" stroke-width="0" style="animation-play-state: running; animation-delay: 0s;"></circle>
+    <circle cx="30" cy="50" r="6" fill="#fe8d1c" stroke-width="0" style="animation-play-state: running; animation-delay: 0s;"></circle>
+    <circle cx="70" cy="50" r="6" fill="#fe8d1c" stroke-width="0" style="animation-play-state: running; animation-delay: 0s;"></circle>
+  </g>
+  <g style="animation-play-state: running; animation-delay: -1.5s;">
+    <circle cx="30" cy="30" r="6" fill="#fe8d1c" stroke-width="0" style="animation-play-state: running; animation-delay: 0s;"></circle>
+    <circle cx="70" cy="70" r="6" fill="#fe8d1c" stroke-width="0" style="animation-play-state: running; animation-delay: 0s;"></circle>
+    <circle cx="30" cy="70" r="6" fill="#fe8d1c" stroke-width="0" style="animation-play-state: running; animation-delay: 0s;"></circle>
+    <circle cx="70" cy="30" r="6" fill="#fe8d1c" stroke-width="0" style="animation-play-state: running; animation-delay: 0s;"></circle>
+    <circle cx="50" cy="50" r="6" fill="#fe8d1c" stroke-width="0" style="animation-play-state: running; animation-delay: 0s;"></circle>
+  </g>
+</g>
+</g>
+
+<style type="text/css" style="animation-play-state: running; animation-delay: 0s;">
+  @keyframes ldio-fndck7mxuf5 {
+    0% { transform: rotateY(0deg) translateZ(-40px); opacity: 1; }
+    24% { opacity: 1; }
+    25% { transform: rotateY(90deg) translateZ(-40px); opacity: 0; }
+    50% { transform: rotateY(180deg) translateZ(-40px); opacity: 0; }
+    74% { opacity: 0; }
+    75% { transform: rotateY(270deg) translateZ(-40px); opacity: 1; }
+    100% { transform: rotateY(360deg) translateZ(-40px); opacity: 1; }
+  }
+  .ldio-fndck7mxuf5 g g {
+    transform-origin: 50px 50px;
+  }
+  .ldio-fndck7mxuf5 g g:nth-child(1) {
+    animation: ldio-fndck7mxuf5 2s linear infinite;
+  }
+  .ldio-fndck7mxuf5 g g:nth-child(2) {
+    animation: ldio-fndck7mxuf5 2s linear infinite;
+    animation-delay: -0.5s;
+  }
+  .ldio-fndck7mxuf5 g g:nth-child(3) {
+    animation: ldio-fndck7mxuf5 2s linear infinite;
+    animation-delay: -1s;
+  }
+  .ldio-fndck7mxuf5 g g:nth-child(4) {
+    animation: ldio-fndck7mxuf5 2s linear infinite;
+    animation-delay: -1.5s;
+  }
+  .ldio-fndck7mxuf5 g g:nth-child(5) {
+    animation: ldio-fndck7mxuf5 2s linear infinite;
+    animation-delay: 0;
+  }
+  .ldio-fndck7mxuf5 g g:nth-child(6) {
+    animation: ldio-fndck7mxuf5 2s linear infinite;
+    animation-delay: -0.5s;
+  }
+  .ldio-fndck7mxuf5 g g:nth-child(7) {
+    animation: ldio-fndck7mxuf5 2s linear infinite;
+    animation-delay: -1s;
+  }
+  .ldio-fndck7mxuf5 g g:nth-child(8) {
+    animation: ldio-fndck7mxuf5 2s linear infinite;
+    animation-delay: -1.5s;
+  }
+</style>
+<!-- [ldio] generated by https://loading.io/ --></svg>

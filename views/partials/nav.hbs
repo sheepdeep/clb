@@ -1,0 +1,218 @@
+<body class="layout-light">
+    <div class="mobile-author-actions"></div>
+    <header class="header-top">
+        <nav class="navbar navbar-light">
+            <div class="navbar-left">
+                <div class="logo-area">
+                    <a class="navbar-brand" href="..{{ adminPath }}">
+                        <img src="{{ settings.logo }}">
+                    </a>
+                    <a href="#" class="sidebar-toggle">
+                        <img class="svg" src="../themes/admin/fonts/align-center-alt.svg" alt="img"></a>
+                </div>
+                <a href="javascript:;" class="customizer-trigger enable-dark-mode">
+                    <i class="uil uil-moon"></i>
+                    <span>Dark Mode</span>
+                </a>
+            </div>
+            <div class="navbar-right">
+                <ul class="navbar-right__menu">
+                    <li class="nav-flag-select">
+                        <button class="btn btn-sm rounded-pill btn-outline-dashed" data-bs-toggle="tooltip"
+                            data-bs-placement="left" data-bs-original-title="Số người truy cập hiện tại"><i
+                                class="uil uil-globe"></i> <span id="userCount">0</span></button>
+                    </li>
+                    <li class="nav-author">
+                        <div class="dropdown-custom">
+                            <a href="javascript:;" class="nav-item-toggle"><img src="../themes/admin/images/avatar.png"
+                                    alt="" class="rounded-circle">
+                                <span class="nav-item__title">{{ profile.username }}<i
+                                        class="las la-angle-down nav-item__arrow"></i></span>
+                            </a>
+                            <div class="dropdown-parent-wrapper">
+                                <div class="dropdown-wrapper">
+                                    <div class="nav-author__info">
+                                        <div class="author-img">
+                                            <img src="../themes/admin/images/avatar.png" alt="" class="rounded-circle">
+                                        </div>
+                                        <div>
+                                            <h6>{{ profile.name }} {{#ifCond profile.level '==' 1}}<i
+                                                    class="fa fa-crown text-warning"></i>{{/ifCond}}</h6>
+                                            <span>{{  profile.level }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="nav-author__options">
+                                        <a href="..{{ adminPath }}/logout" class="nav-author__signout">
+                                            <i class="uil uil-sign-out-alt"></i> Đăng Xuất</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="navbar-right__mobileAction d-md-none">
+                    <a href="#" class="btn-author-action">
+                        <img class="svg" src="../themes/admin/fonts/more-vertical.svg" alt="more-vertical"></a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="sidebar-wrapper">
+        <div class="sidebar sidebar-collapse" id="sidebar">
+            <div class="sidebar__menu-group">
+                <ul class="sidebar_nav">
+                    <li>
+                        <a href="..{{ adminPath }}" data-href="{{ adminPath }}">
+                            <span class="nav-icon uil uil-create-dashboard"></span>
+                            <span class="menu-text">Tổng Quan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="..{{ adminPath }}/system" data-href="{{ adminPath }}/system">
+                            <span class="nav-icon uil uil-setting"></span>
+                            <span class="menu-text">Quản Trị Hệ Thống</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="..{{ adminPath }}/members" data-href="{{ adminPath }}/members">
+                            <span class="nav-icon uil uil-user-square"></span>
+                            <span class="menu-text">Quản Lý Thành Viên</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="..{{ adminPath }}/vps" data-href="{{ adminPath }}/vps">
+                            <span class="nav-icon uil uil-server"></span>
+                            <span class="menu-text">Quản Lý VPS</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="..{{ adminPath }}/history" data-href="{{ adminPath }}/history">
+                            <span class="nav-icon uil uil-history-alt"></span>
+                            <span class="menu-text">Lịch Sử Giao Dịch</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="..{{ adminPath }}/history-transfer" data-href="{{ adminPath }}/history-transfer">
+                            <span class="nav-icon uil uil-history-alt"></span>
+                            <span class="menu-text">Lịch Sử Chuyển tiền</span>
+                        </a>
+                    </li>
+                    <li class="has-child">
+                        <a href="#">
+                            <span class="nav-icon uil uil-desktop-alt"></span>
+                            <span class="menu-text">Tài xỉu</span>
+                            <span class="toggle-icon"></span>
+                        </a>
+                        <ul>
+                            <li>
+                                <a href="..{{ adminPath }}/taixiu" data-href="{{ adminPath }}/taixiu">Quản lý phiên</a>
+                            </li>
+                            <li>
+                                <a href="..{{ adminPath }}/history-taixiu" data-href="{{ adminPath }}/history-taixiu">Lịch sử đặt cược</a>
+                            </li>
+                            <li>
+                                <a href="..{{ adminPath }}/taixiu-setting" data-href="{{ adminPath }}/player">Cài đặt tài xỉu</a>
+                            </li>
+                            <li>
+                                <a href="..{{ adminPath }}/player" data-href="{{ adminPath }}/player">Quản Lý Người
+                                    Chơi</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="has-child">
+                        <a href="#">
+                            <span class="nav-icon uil uil-game-structure"></span>
+                            <span class="menu-text">Mini Game</span>
+                            <span class="toggle-icon"></span>
+                        </a>
+                        <ul>
+                            <li>
+                                <a href="..{{ adminPath }}/game" data-href="{{ adminPath }}/game">Quản Lý Game</a>
+                            </li>
+                            <li>
+                                <a href="..{{ adminPath }}/reward" data-href="{{ adminPath }}/reward">Quản Lý Trả
+                                    Thưởng</a>
+                            </li>
+                            <li>
+                                <a href="..{{ adminPath }}/player" data-href="{{ adminPath }}/player">Quản Lý Người
+                                    Chơi</a>
+                            </li>
+                            <li>
+                                <a href="..{{ adminPath }}/block" data-href="{{ adminPath }}/block">Danh Sách Đen</a>
+                            </li>
+                            <li>
+                                <a href="..{{ adminPath }}/jackpot" data-href="{{ adminPath }}/jackpot">Danh Sách Chơi
+                                    Nổ
+                                    Hũ</a>
+                            </li>
+                            <li>
+                                <a href="..{{ adminPath }}/history-jackpot"
+                                    data-href="{{ adminPath }}/history-jackpot">Lịch Sử Nổ Hũ</a>
+                            </li>
+                            <li>
+                                <a href="..{{ adminPath }}/muster" data-href="{{ adminPath }}/muster">Danh Sách Điểm
+                                    Danh</a>
+                            </li>
+                            <li>
+                                <a href="..{{ adminPath }}/gift" data-href="{{ adminPath }}/gift">Danh Sách Quà Tặng</a>
+                            </li>
+                            <li>
+                                <a href="..{{ adminPath }}/mission" data-href="{{ adminPath }}/mission">Lịch Sử NVN</a>
+                            </li>
+                            <li>
+                                <a href="..{{ adminPath }}/refund-bill" data-href="{{ adminPath }}/refund-bill">Lịch Sử
+                                    Hoàn Tiền</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="has-child">
+                        <a href="#">
+                            <span class="nav-icon uil uil-wallet"></span>
+                            <span class="menu-text">Ngân hàng</span>
+                            <span class="toggle-icon"></span>
+                        </a>
+                        <ul>
+                            <li>
+                                <a href="..{{ adminPath }}/bank" data-href="{{ adminPath }}/bank">Quản Lý
+                                    Ngân Hàng</a>
+                            </li>
+                            <li>
+                                <a href="..{{ adminPath }}/bank-checkTrans" data-href="{{ adminPath }}/bank-checkTrans">Kiểm Tra Giao Dịch
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="has-child">
+                        <a href="#">
+                            <span class="nav-icon uil uil-wallet"></span>
+                            <span class="menu-text">Ví Momo</span>
+                            <span class="toggle-icon"></span>
+                        </a>
+                        <ul>
+                            <li>
+                                <a href="..{{ adminPath }}/momo-list" data-href="{{ adminPath }}/momo-list">Quản Lý
+                                    Momo</a>
+                            </li>
+                            <li>
+                                <a href="..{{ adminPath }}/transfer" data-href="{{ adminPath }}/transfer">Chuyển Tiền
+                                    Momo</a>
+                            </li>
+                            <li>
+                                <a href="..{{ adminPath }}/transfer-to-bank" data-href="{{ adminPath }}/transfer-to-bank">Chuyển Tiền
+                                    Bank</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="../" data-href="" target="_blank">
+                            <span class="nav-icon uil uil-arrow-circle-left"></span>
+                            <span class="menu-text">WEBSITE</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>

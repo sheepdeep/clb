@@ -1,0 +1,99 @@
+{{>header}}
+<body>
+<div class="preloader"></div>
+<!-- header -->
+<header class="header">
+    <div class="header__content">
+        <!-- header logo -->
+        <a href="/" class="header__logo">
+            <img class="logo" src="{{ settings.logo }}" alt="{{ settings.nameSite }}"/>
+        </a>
+        <!-- end header logo -->
+        <!-- header menu btn -->
+        <button class="header__btn" type="button">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <!-- end header menu btn -->
+    </div>
+</header>
+<!-- end header -->
+<!-- sidebar -->
+{{>sidebar}}
+<!-- main content -->
+<main class="main">
+    <div class="container-fluid">
+        <div class="row">
+            {{>game}}
+            <div class="col-12">
+                <div class="dashbox">
+                    <div class="dashbox__title">
+                        <h3 style="margin:0 auto;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">  <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 5.996V14H3s-1 0-1-1 1-4 6-4c.564 0 1.077.038 1.544.107a4.524 4.524 0 0 0-.803.918A10.46 10.46 0 0 0 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h5ZM9 13a1 1 0 0 1 1-1v-1a2 2 0 1 1 4 0v1a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2Zm3-3a1 1 0 0 0-1 1v1h2v-1a1 1 0 0 0-1-1Z"></path></svg> ĐỔI MẬT KHẨU
+                        </h3>
+                    </div>
+                    <form class="sign__form" supmegroup="true" method="post" action="#" style="margin:30px auto;"
+                          redirect="../dangxuat">
+                        <div class="sign__group">
+                            <p class="text-center err" id="err-msg"></p>
+                        </div>
+                        <div class="sign__group">
+                            <input autocomplete="new-password" class="sign__input" name="oldpassword" placeholder="Mật khẩu hiện tại" type="password">
+                        </div>
+                        <div class="sign__group">
+                            <input autocomplete="new-password" class="sign__input" name="password" placeholder="Mật khẩu mới" type="password">
+                        </div>
+                        <div class="sign__group">
+                            <input type="password" name="rpassword" class="sign__input" placeholder="Nhập lại mật khẩu" autocomplete="new-password">
+                        </div>
+
+                        <button class="sign__btn" type="submit"><span>CẬP NHẬT</span></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div class="modal bounceIn animated" id="modal-notes" tabindex="-1" aria-labelledby="modal-view"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal__content modal__content--view">
+                <div class="comments__autor">
+                    <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                    <span class="comments__name">SUPBANK Thông Báo</span>
+                </div>
+                <p class="comments__text"></p>
+                <div class="modal__btns">
+                    <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal"
+                            aria-label="Close"><span>Đóng</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal bounceIn animated" id="modal-win" tabindex="-1" aria-labelledby="modal-view"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal__content modal__content--view">
+                <div class="comments__autor">
+                    <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                    <span class="comments__name">SUPBANK Thông Báo</span>
+                </div>
+                <p class="comments__text"></p>
+                <div class="modal__btns">
+                    <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal"
+                            aria-label="Close"><span>Đóng</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>$(".nav-item button").click(function () {
+    window.location.href = "/?g=" + $(this).attr("data-bs-target").slice(1)
+})</script>
+{{>footer}}
+{{{ settings.footerScript }}}

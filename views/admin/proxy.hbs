@@ -1,0 +1,163 @@
+{{>head}}
+{{>nav}}
+<main class="main-content">
+    <div class="contents">
+        <div class="crm mb-25">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-main">
+                            <h4 class="text-capitalize breadcrumb-title">{{ title }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mb-20">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title">
+                                    <a href="{{ originalUrl.pathname }}" class="text-dark">
+                                        <img src="../themes/admin/images/server.png" alt="" width="35">
+                                        Danh Sách Proxy
+                                        <img src="../themes/admin/images/server.png" class="d-md-none" width="35">
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="userDatatable adv-table-table global-shadow border-light-0 adv-table">
+                                    <div id="filter-form-container"
+                                         class="footable-filtering-external footable-filtering-right">
+                                        <form>
+                                            <div class="form-group footable-filtering-search mb-3 hand">
+                                                <div class="input-group">
+                                                    <input type="search" class="form-control" name="search"
+                                                           placeholder="Tìm kiếm..." value="{{ search }}">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="table-responsive mb-3">
+                                    <table
+                                            class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
+                                        <thead class="badge-secondary text-white">
+                                        <tr>
+                                            <th>PHONE {{{ tableSort query 'phone' _sort }}}</th>
+                                            <th>IP {{{ tableSort query 'ipAddress' _sort }}}</th>
+                                            <th>PORT {{{ tableSort query 'port' _sort }}}</th>
+                                            <th>USER {{{ tableSort query 'username' _sort }}}</th>
+                                            <th>PASS {{{ tableSort query 'password' _sort }}}</th>
+                                            <th>Thời Gian {{{ tableSort query 'updatedAt' _sort }}}</th>
+                                            <th><span data-bs-submit="game" data-bs-action="add"><i
+                                                    class="fa fa-plus-circle" aria-hidden="true"></i></span>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody data-table="game">
+                                        {{#each proxys}}
+                                            <tr class="edit-one" data-id="{{ this._id }}">
+                                                <td data-bs-name="phone" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.phone }}">
+                                                        <span data-bs-html="true">{{ this.phone }}</span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.phone }}">
+                                                        <input type="text" class="form-control ih-medium ip-light mb-2"
+                                                               data-bs-edit="true">
+                                                    </span>
+                                                </td>
+                                                <td data-bs-name="ipAddress" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.ipAddress }}">
+                                                        <span data-bs-html="true">{{ this.ipAddress }}</span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.ipAddress }}">
+                                                        <input type="text" class="form-control ih-medium ip-light mb-2"
+                                                               data-bs-edit="true">
+                                                    </span>
+                                                </td>
+                                                <td data-bs-name="port" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.port }}">
+                                                        <span data-bs-html="true">{{ this.port }}</span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.port }}">
+                                                        <input type="text" class="form-control ih-medium ip-light mb-2"
+                                                               data-bs-edit="true">
+                                                    </span>
+                                                </td>
+                                                <td data-bs-name="username" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.username }}">
+                                                        <span data-bs-html="true">{{ this.username }}</span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.username }}">
+                                                        <input type="text" class="form-control ih-medium ip-light mb-2"
+                                                               data-bs-edit="true">
+                                                    </span>
+                                                </td>
+                                                <td data-bs-name="password" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.password }}">
+                                                        <span data-bs-html="true">{{ this.password }}</span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.password }}">
+                                                        <input type="text" class="form-control ih-medium ip-light mb-2"
+                                                               data-bs-edit="true">
+                                                    </span>
+                                                </td>
+                                                <td>{{ formatDate this.updatedAt 'HH:mm:ss DD-MM-YYYY'}}</td>
+                                                <td>
+                                                    <div class="table-actions hand">
+                                                        <span class="badges badge-danger" data-bs-submit="proxy"
+                                                              data-bs-action="remove" data-id="{{ this._id }}"><i
+                                                                class="fa fa-trash" aria-hidden="true"></i></span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {{else}}
+                                            <tr>
+                                                <td colspan="12">
+                                                    <div class="dm-empty text-center">
+                                                        <div class="dm-empty__image">
+                                                            <img src="../themes/admin/images/1.png" alt="Rỗng">
+                                                        </div>
+                                                        <div class="dm-empty__text">
+                                                            <p class="">Không có dữ liệu !</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Modal Add Game -->
+<div class="modal fade" data-bs-modal="game-add" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fa fa-server" aria-hidden="true"></i> Thêm Proxy</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="#" method="post" class="form-axios">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="il-gray fs-14 fw-500 mb-10">Proxy</label>
+                        <textarea name="proxy" rows="5" class="form-control ip-light"
+                                  placeholder="Mô tả trò chơi"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Thêm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{>foot}}

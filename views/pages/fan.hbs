@@ -1,0 +1,116 @@
+{{>header}}
+<body>
+<div class="preloader"></div>
+<!-- header -->
+<header class="header">
+    <div class="header__content">
+        <!-- header logo -->
+        <a href="/" class="header__logo">
+            <img class="logo" src="{{ settings.logo }}" alt="{{ settings.nameSite }}"/>
+        </a>
+        <!-- end header logo -->
+        <!-- header menu btn -->
+        <button class="header__btn" type="button">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <!-- end header menu btn -->
+    </div>
+</header>
+<!-- end header -->
+<!-- sidebar -->
+{{>sidebar}}
+<!-- main content -->
+<main class="main">
+    <div class="container-fluid">
+        <div class="row">
+            {{>game}}
+            <div class="col-12">
+                <div class="dashbox">
+                    <div class="dashbox__title">
+                        <h3 style="margin:0 auto;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16"><path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"></path></svg>
+                            FAN SUPBANK
+                        </h3>
+                    </div>
+                    <div class="subpage-wrapper">
+                        <form id="form-fq" class="mb-4" method="post">
+                            <p class="text-center err" id="err-msg"></p>
+                            <div class="wrap-fq"><button class="sign__btn accept-fq" type="button"><span>NHẬN NHIỆM VỤ</span></button></div>
+                            <input type="submit" hidden="">
+                            <input type="hidden" name="Account" id="_account" value="ac328adb555aecd2d50ab068dae4f577">
+                            <input type="hidden" name="HLog" value="e7a41633-1bb3-4db4-9146-cef435c7bf5b" id="_hlog">
+                        </form>
+                        <div class="fq-split">&nbsp;</div>
+                        <p class="mt-4">Trở thành fan của <span class="grd-txt">KUBANK</span> giúp bạn nhận được <span class="code-num">15K-&gt;25K</span> vnđ trả thẳng về <span class="code-num">ATM</span> tiền hằng ngày mà không cần phải làm gì. <br>
+                            Bạn sẽ được thưởng thêm <span class="code-num">20%</span> cho <a href="/nvngay">NHIỆM VỤ NGÀY</a> và <span class="code-num">50%</span> khi nhập code ngẫu nhiên<br>
+                            Đặc biệt phần thưởng khi <a href="/ctv">GIỚI THIỆU</a> người chơi sẽ được trả thẳng về <span class="code-num">ATM</span></p>
+                        <p>ĐỂ TRỞ THÀNH FAN CỦA <span class="grd-txt">KUBANK</span> VUI LÒNG THỰC HIỆN THEO CÁC BƯỚC SAU: </p>
+                        <p>
+                            <span class="code-num">BƯỚC 1:</span> Hãy chắc chắn rằng tài khoản của bạn đã <a href="/lktelegram">LIÊN KẾT TELEGRAM</a> và tham gia <a href="https://t.me/BANKTXCL" target="_blank">NHÓM KUBANK</a> <br>
+                            <span class="code-num">BƯỚC 2:</span> Thay ảnh đại diện (avatar) tài khoản Telegram của bạn bằng hình ảnh <a href="/img/avatar.png" target="_blank">TẠI ĐÂY</a> <br>
+                        </p>
+                        <div class="mt-3 mb-3 text-center"><img class="fan-img" src="/img/avatar.png" alt="KUBANK"></div>
+                        <p>
+                            <span class="code-num">BƯỚC 3:</span> Đổi tên Telegram của bạn bằng cách thêm cụm từ "<span class="code-num">(KUBANK.FAN)</span>" vào cuối. <br>
+                            Ví dụ tên bạn là "<span class="code-num">Tôi Là Ai</span>" thì đổi thành "<span class="code-num">Tôi Là Ai (KUBANK.FAN)</span>" <br>
+                        </p>
+                        <p><span class="code-num">BƯỚC 4:</span> Đổi <span class="code-num">BIO</span> (tiểu sử) của bạn thành <a href="/ctv">LINK GIỚI THIỆU</a> hoặc link <a href="/fan">FAN</a>: <br>
+                            <code style="padding:5px;">https://t.me/kugame_bot...lamtuha1</code><span id="nncref1" style="display:none;">https://t.me/kugame_bot/kbapp?startapp=lamtuha1</span><a href="javascript:void(0);" data-id="nncref1" data-msg="Đã copy" class="mncp copy-bt">&nbsp;</a> <br>
+                            <span>HOẶC</span><br>
+                            <code style="padding:5px;">https://t.me/kugame_bot/kbapp ...</code><span id="nncref2" style="display:none;">https://t.me/kugame_bot/kbapp?startapp=rdr_fan</span><a href="javascript:void(0);" data-id="nncref2" data-msg="Đã copy" class="mncp copy-bt">&nbsp;</a> <br>
+                        </p>
+                        <p>Hãy chắc chắn rằng Avatar và Bio - Tiểu sử của bạn được để ở chế độ công khai.</p>
+                        <p>
+                            <span class="code-num">BƯỚC 5:</span> Click vào "<span class="code-num">NHẬN NHIỆM VỤ</span>" để hoàn tất.<br>
+                            <span class="code-num">LƯU Ý:</span> Bạn sẽ được nhận thưởng sau 24h kể từ khi nhận nhiệm vụ.<br>
+                            Nếu bạn đổi tên, avatar hoặc không có tương tác trong 24h khi đang tiến hành thì nhiệm vụ sẽ bị hủy.<br>
+                            Tài khoản Telegram của bạn phải <span class="code-num">có tương tác</span> đều đặn kể từ khi nhận nhiệm vụ. <br>
+                            Tài khoản của bạn phải chơi ít nhất <span class="code-num">50k</span> khi đã hoàn thành nhiệm vụ để nhận thưởng <br>
+                            Bạn sẽ nhận được <span class="code-num">15k</span> nếu tổng chơi đạt <span class="code-num">50k</span>, <span class="code-num">20k</span> nếu tổng chơi đạt <span class="code-num">100k</span> và <span class="code-num">25k</span> nếu tổng chơi trên <span class="code-num">500k</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div class="modal bounceIn animated" id="modal-notes" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal__content modal__content--view">
+                <div class="comments__autor">
+                    <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                    <span class="comments__name">SUPBANK Thông Báo</span>
+                </div>
+                <p class="comments__text"></p>
+                <div class="modal__btns">
+                    <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal"
+                            aria-label="Close"><span>Đóng</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal bounceIn animated" id="modal-win" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal__content modal__content--view">
+                <div class="comments__autor">
+                    <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                    <span class="comments__name">SUPBANK Thông Báo</span>
+                </div>
+                <p class="comments__text"></p>
+                <div class="modal__btns">
+                    <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal"
+                            aria-label="Close"><span>Đóng</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>$(".nav-item button").click(function(){window.location.href="/?g="+$(this).attr("data-bs-target").slice(1)})</script>
+{{>footer}}
+{{{ settings.footerScript }}}

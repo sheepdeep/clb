@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+    <title>INSTALL SYSTEM</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="title" content="INSTALL SYSTEM" />
+    <meta name="robots" content="index, follow">
+    <link href="../themes/images/logo.png" rel="shortcut icon" type="image/x-icon" />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../themes/admin/css/plugin.min.css">
+    <link rel="stylesheet" href="../themes/admin/css/style.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.0/css/line.css">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<style>
+    .admin {
+        background-image: none;
+    }
+
+    .main-content {
+        background-color: none;
+        background-image: url(../themes/admin/images/bg-auth.png);
+    }
+</style>
+
+<body>
+    <main class="main-content">
+        <div class="admin">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    {{#if token}}
+                    <div class="col-xxl-4 col-xl-4 col-md-6 col-sm-8">
+                        <div class="edit-profile">
+                            <div class="card">
+                                <div class="card-header" style="min-height: 0">
+                                    <div class="edit-profile__title">
+                                        <strong><i class="fa fa-user-secret" aria-hidden="true"></i> INSTALL SYSTEM
+                                            <i class="fa fa-user-secret" aria-hidden="true"></i></strong>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="edit-profile__body text-center">
+                                        <form action="install/token" method="post" class="form-axios">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="token"
+                                                    placeholder="Nhập token setup....">
+                                            </div>
+                                            <div
+                                                class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
+                                                <button type="submit"
+                                                    class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn">
+                                                    Tiến Hành
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/if}}
+                    {{#if user}}
+                    <div class="col-xxl-4 col-xl-4 col-md-6 col-sm-8">
+                        <div class="edit-profile">
+                            <div class="card">
+                                <div class="card-header" style="min-height: 0">
+                                    <div class="edit-profile__title">
+                                        <strong><i class="fa fa-user-secret" aria-hidden="true"></i> INSTALL SYSTEM
+                                            <i class="fa fa-user-secret" aria-hidden="true"></i></strong>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="edit-profile__body">
+                                        <form action="install/users" method="post" class="form-axios">
+                                            <div class="form-group">
+                                                <label for="">Họ Và Tên</label>
+                                                <input type="text" class="form-control" name="name"
+                                                    placeholder="Nhập tên của bạn">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="">Tên Đăng Nhập</label>
+                                                <input type="text" class="form-control" name="username"
+                                                    placeholder="Nhập tên đăng nhập">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="">Mật Khẩu</label>
+                                                <input type="text" class="form-control" name="password"
+                                                    placeholder="Nhập mật khẩu đăng nhập....">
+                                            </div>
+                                            <div
+                                                class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
+                                                <button type="submit"
+                                                    class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn">
+                                                    Thêm
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/if}}
+                    {{#if setting}}
+                    <div class="col-md-10">
+                        <div class="edit-profile">
+                            <div class="card">
+                                <div class="card-header" style="min-height: 0">
+                                    <div class="edit-profile__title">
+                                        <strong><i class="fa fa-user-secret" aria-hidden="true"></i> INSTALL SYSTEM
+                                            <i class="fa fa-user-secret" aria-hidden="true"></i></strong>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="edit-profile__body">
+                                        <form action="install/settings" method="post" class="form-axios">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Tên
+                                                            Website</label>
+                                                        <input type="text" class="form-control ih-medium ip-light"
+                                                            name="nameSite" value="THUECLMM.COM"
+                                                            placeholder="Nhập tên website của bạn">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Tiêu Đề</label>
+                                                        <input type="text" class="form-control ih-medium ip-light"
+                                                            name="defaultTitle"
+                                                            value="Hệ Thống Mini Game Chẳn Lẻ Momo Uy Tín - Tự Động"
+                                                            placeholder="Nhập tiêu đề website">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Icon
+                                                            Website</label>
+                                                        <input type="text" class="form-control ih-medium ip-light"
+                                                            name="favicon" value="../themes/images/logo.png"
+                                                            placeholder="Nhập link icon website của bạn">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Logo
+                                                            Website</label>
+                                                        <input type="text" class="form-control ih-medium ip-light"
+                                                            name="logo" value="../themes/images/logo-momo.png"
+                                                            placeholder="Nhập link logo website của bạn">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for=""
+                                                            class="il-gray fs-14 fw-500 mb-10">Thumbnail</label>
+                                                        <input type="text" class="form-control ih-medium ip-light"
+                                                            name="thumbnail"
+                                                            value="https://file.coin98.com/insights/Vi%CC%81-MOMO.jpg"
+                                                            placeholder="Nhập link thumbnail website">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Mô Tả</label>
+                                                        <textarea class="form-control" name="description" rows="5"
+                                                            placeholder="Nhập mô tả website của bạn">Chẵn Lẻ MoMo - Mini game giải trí chẵn lẻ Momo uy tín và hệ thống thanh toán tự động trong 30s, kiếm Tiền Nhanh Chóng chỉ trong 1 nốt nhạc.</textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Từ Khóa</label>
+                                                        <textarea class="form-control" name="keywords" rows="5"
+                                                            placeholder="Nhập từ khóa tìm kiếm website của bạn">MOMO TU DONG, CLMM, CHẴN LẺ MOMO, CHAN LE MOMO, CLTX, CLMM, TÀI XỈU MOMO, chẵn lẻ momo, clmm, chan le momo, Clmm, Chẵn lẻ momo, Chan le momo, clmm, Clmm, cltx, Cltx, clmm me, clmm 10k, chẵn lẻ momo 10k, momo chan le, clmm 247, clmm ai, clmm 5k, clmm365, clmm247, clmm momo</textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="" class="il-gray fs-14 fw-500">Note [Template
+                                                            Default]</label>
+                                                        <textarea name="note" class="form-control form-editor" rows="5"
+                                                            placeholder="Type your message..."><p class="card-text">Nội dung chuyển khoản không phân biệt in hoa, thường. Nội dung phải đúng với quy định của trò chơi.</p><p>Nếu kết quả <strong>Thắng</strong>, bạn sẽ nhận được tiền thưởng tự động trong vòng <strong>30s - 1 phút</strong>. Số tiền thưởng sẽ được chuyển vào ví Momo của bạn.</p><p>Sau thời gian 1 - 2 phút nếu bạn vẫn chưa nhận được tiền thưởng, vui lòng nhắn tin hỗ trợ, chúng tôi sẽ xử lý gấp cho bạn. Hoặc bạn có thể kiểm tra trạng thái Mã giao dịch.</p></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Header
+                                                            Script</label>
+                                                        <textarea class="form-control" name="headerScript" rows="3"
+                                                            placeholder="headerScript">{{ settings.headerScript
+                                                            }}</textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Footer
+                                                            Script</label>
+                                                        <textarea class="form-control" name="footerScript" rows="3"
+                                                            placeholder="footerScript"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Số Lượng Hiển
+                                                            Thị</label>
+                                                        <input type="number" class="form-control ih-medium ip-light"
+                                                            name="limitPhone" value="10"
+                                                            placeholder="Nhập số lượng số cần chạy">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Nội Dung Nạp
+                                                            Tiền</label>
+                                                        <input type="text" class="form-control ih-medium ip-light"
+                                                            name="paymentComment" value="#recharge"
+                                                            placeholder="Nhập nội dung nhận biết khi nạp tiền vào số ( thống kê )">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Nội Dung Rút
+                                                            Tiền</label>
+                                                        <input type="text" class="form-control ih-medium ip-light"
+                                                            name="withdrawComment" value="#recharge"
+                                                            placeholder="Nhập nội dung nhận biết khi rút tiền ra khỏi số ( thống kê )">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Trạng Thái
+                                                            Site</label>
+                                                        <select name="siteStatus"
+                                                            class="form-control ih-medium ip-light">
+                                                            <option value="active">Hoạt Động</option>
+                                                            <option value="maintenance">Bảo Trì</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Mã Quà
+                                                            Tặng</label>
+                                                        <select name="giftCode-status"
+                                                            class="form-control ih-medium ip-light">
+                                                            <option value="active">Bật</option>
+                                                            <option value="close">Tắt</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="" class="il-gray fs-14 fw-500 mb-10">BOT TOKEN
+                                                            [TELEGRAM]</label>
+                                                        <input type="text" class="form-control ih-medium ip-light"
+                                                            name="telegram-token"
+                                                            value="5202777113:AAFPmPKSRL8Y_5ZCyVt_YcQOzqZLPGNMdig"
+                                                            placeholder="Nhập token bot telegram">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="" class="il-gray fs-14 fw-500 mb-10">CHAT ID
+                                                            [TELEGRAM]</label>
+                                                        <input type="text" class="form-control ih-medium ip-light"
+                                                            name="telegram-chatId"
+                                                            placeholder="Nhập chatId bot telegram">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
+                                                <button type="submit"
+                                                    class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn">
+                                                    Tiến Hành
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="overlayer">
+        <div class="loader-overlay">
+            <div class="dm-spin-dots spin-lg">
+                <span class="spin-dot badge-dot dot-primary"></span>
+                <span class="spin-dot badge-dot dot-primary"></span>
+                <span class="spin-dot badge-dot dot-primary"></span>
+                <span class="spin-dot badge-dot dot-primary"></span>
+            </div>
+        </div>
+    </div>
+    <script src="../themes/admin/js/plugins.min.js"></script>
+    <script src="../themes/admin/js/script.min.js"></script>
+    <script src="../themes/clipboard.js"></script>
+    <script src="../themes/axios.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $('.form-editor').trumbowyg({ svgPath: "undefined" != typeof env && env.editorIconUrl ? env.editorIconUrl : "../themes/admin/images/icons.svg" })
+            $('body').on('submit', '.form-axios', function (e) {
+                e.preventDefault();
+
+                let _this = $(this);
+                let preContent = _this.find('button[type="submit"]').html();
+                let options = {
+                    url: _this.attr('action'),
+                    method: _this.attr('method'),
+                    data: _this.serialize()
+                }
+
+                _this.find('button[type="submit"]').html(`<div class="dm-spin-dots spin-sm"><span class="spin-dot badge-dot dot-light"></span><span class="spin-dot badge-dot dot-light"></span><span class="spin-dot badge-dot dot-light"></span><span class="spin-dot badge-dot dot-light"></span></div>`).prop('disabled', true);
+
+                axios(options)
+                    .then((result) => {
+                        let response = result.data;
+
+                        response.success ? Swal.fire({
+                            title: 'Thông Báo',
+                            text: response.message,
+                            icon: 'success'
+                        }) : Swal.fire('Thông Báo', response.message, 'error');
+
+                        response.success && options.url.includes('settings') ? setTimeout(() => window.location.href = "{{ adminPath }}", 1500) : setTimeout(() => window.location.reload(), 1500);
+
+                    })
+                    .catch((err) => {
+                        Swal.fire('Thông Báo', err.message || err, 'error');
+                    })
+                    .finally(() => _this.find('button[type="submit"]').html(preContent).prop('disabled', false));
+            })
+        })
+    </script>

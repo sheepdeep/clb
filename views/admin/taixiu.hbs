@@ -1,0 +1,477 @@
+{{>head}}
+{{>nav}}
+<style>
+    .radio-container {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .radio-container label {
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: border-color 0.3s ease;
+    }
+
+    .radio-container img {
+        width: 80px; /* Kích thước ảnh */
+        height: auto;
+        border-radius: 10px;
+    }
+
+    .radio-container input[type="radio"] {
+        display: none; /* Ẩn radio button mặc định */
+    }
+
+
+    .radio-container input[name="xucxac1"]:checked + img {
+        border: 2px solid #007BFF;
+        /*box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);*/
+    }
+
+    .radio-container input[name="xucxac2"]:checked + img {
+        border: 2px solid #D70040;
+        /*box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);*/
+    }
+
+    .radio-container input[name="xucxac3"]:checked + img {
+        border: 2px solid #FFC300;
+        /*box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);*/
+    }
+</style>
+<main class="main-content">
+    <div class="contents">
+        <div class="crm mb-25">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-main">
+                            <h4 class="text-capitalize breadcrumb-title">{{ title }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mb-20">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title">
+                                    <a href="{{ originalUrl.pathname }}" class="text-dark">
+                                        <img src="../themes/admin/images/mini-game.png" alt="" width="35">
+                                        Chỉnh sửa phiên
+                                        <img src="../themes/admin/images/mini-game.png" class="d-md-none" width="35">
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <center>
+                                            <h4>Xúc xắc 1</h4>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="radio-container">
+                                                        <label>
+                                                            <input type="radio" name="xucxac1" value="1" {{#ifCond turn.xucxac1 '==' 1}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-1.png" alt="Dice 1">
+                                                        </label>
+
+                                                        <label>
+                                                            <input type="radio" name="xucxac1" value="2" {{#ifCond turn.xucxac1 '==' 2}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-2.png" alt="Dice 2">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <div class="radio-container">
+                                                        <label>
+                                                            <input type="radio" name="xucxac1" value="3" {{#ifCond turn.xucxac1 '==' 3}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-3.png" alt="Dice 3">
+                                                        </label>
+                                                        <label>
+                                                            <input type="radio" name="xucxac1" value="4" {{#ifCond turn.xucxac1 '==' 4}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-4.png" alt="Dice 1">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <div class="radio-container">
+                                                        <label>
+                                                            <input type="radio" name="xucxac1" value="5" {{#ifCond turn.xucxac1 '==' 5}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-5.png" alt="Dice 2">
+                                                        </label>
+
+                                                        <label>
+                                                            <input type="radio" name="xucxac1" value="6" {{#ifCond turn.xucxac1 '==' 6}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-6.png" alt="Dice 3">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </center>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <center>
+                                            <h4>Xúc xắc 2</h4>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="radio-container">
+                                                        <label>
+                                                            <input type="radio" name="xucxac2" value="1" {{#ifCond turn.xucxac2 '==' 1}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-1.png" alt="Dice 1">
+                                                        </label>
+
+                                                        <label>
+                                                            <input type="radio" name="xucxac2" value="2" {{#ifCond turn.xucxac2 '==' 2}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-2.png" alt="Dice 2">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <div class="radio-container">
+                                                        <label>
+                                                            <input type="radio" name="xucxac2" value="3" {{#ifCond turn.xucxac2 '==' 3}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-3.png" alt="Dice 3">
+                                                        </label>
+                                                        <label>
+                                                            <input type="radio" name="xucxac2" value="4" {{#ifCond turn.xucxac2 '==' 4}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-4.png" alt="Dice 1">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <div class="radio-container">
+                                                        <label>
+                                                            <input type="radio" name="xucxac2" value="5" {{#ifCond turn.xucxac2 '==' 5}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-5.png" alt="Dice 2">
+                                                        </label>
+
+                                                        <label>
+                                                            <input type="radio" name="xucxac2" value="6" {{#ifCond turn.xucxac2 '==' 6}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-6.png" alt="Dice 3">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </center>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <center>
+                                            <h4>Xúc xắc 3</h4>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="radio-container xx1">
+                                                        <label>
+                                                            <input type="radio" name="xucxac3" value="1" {{#ifCond turn.xucxac3 '==' 1}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-1.png" alt="Dice 1">
+                                                        </label>
+
+                                                        <label>
+                                                            <input type="radio" name="xucxac3" value="2" {{#ifCond turn.xucxac3 '==' 2}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-2.png" alt="Dice 2">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <div class="radio-container xx2">
+                                                        <label>
+                                                            <input type="radio" name="xucxac3" value="3" {{#ifCond turn.xucxac3 '==' 3}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-3.png" alt="Dice 3">
+                                                        </label>
+                                                        <label>
+                                                            <input type="radio" name="xucxac3" value="4" {{#ifCond turn.xucxac3 '==' 4}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-4.png" alt="Dice 1">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <div class="radio-container xx3">
+                                                        <label>
+                                                            <input type="radio" name="xucxac3" value="5" {{#ifCond turn.xucxac3 '==' 5}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-5.png" alt="Dice 2">
+                                                        </label>
+
+                                                        <label>
+                                                            <input type="radio" name="xucxac3" value="6" {{#ifCond turn.xucxac3 '==' 6}}checked{{/ifCond}}>
+                                                            <img src="/themes/taixiu/image/xx/dice-6.png" alt="Dice 3">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </center>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <button onclick="tai()" class="btn btn-success w-100 mt-4">Tài</button>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <button onclick="xiu()" class="btn btn-danger w-100 mt-4">Xỉu</button>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <button onclick="chinhCau();" class="btn btn-warning w-100 mt-4">Chỉnh cầu
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mb-20">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title">
+                                    <a href="{{ originalUrl.pathname }}" class="text-dark">
+                                        <img src="../themes/admin/images/mini-game.png" alt="" width="35">
+                                        Danh Sách Phiên tài xỉu
+                                        <img src="../themes/admin/images/mini-game.png" class="d-md-none" width="35">
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="userDatatable adv-table-table global-shadow border-light-0 adv-table">
+                                    <div id="filter-form-container"
+                                         class="footable-filtering-external footable-filtering-right">
+                                        <form>
+                                            <div class="form-group footable-filtering-search mb-3 hand">
+                                                <div class="input-group">
+                                                    <input type="search" class="form-control" name="search"
+                                                           placeholder="Tìm kiếm..." value="{{ search }}">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="table-responsive mb-3">
+                                    <table
+                                            class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
+                                        <thead class="badge-secondary text-white">
+                                        <tr>
+                                            <th></th>
+                                            <th>Phiên {{{ tableSort query 'turn' _sort }}}</th>
+                                            <th>Xúc xắc 1 {{{ tableSort query 'xucxac1' _sort }}}</th>
+                                            <th>Xúc xắc 2 {{{ tableSort query 'xucxac2' _sort }}}</th>
+                                            <th>Xúc xắc 3 {{{ tableSort query 'xucxac3' _sort }}}</th>
+                                            <th>Kết quả {{{ tableSort query 'result' _sort }}}</th>
+                                            <th>Tổng tài</th>
+                                            <th>Tổng xỉu</th>
+                                            <th>User tài</th>
+                                            <th>User xỉu</th>
+                                            <th>Doanh thu</th>
+                                            <th>Trạng thái</th>
+                                            <th>Thời Gian {{{ tableSort query 'updatedAt' _sort }}}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody data-table="game">
+                                        {{#each list}}
+                                            <tr class="edit-one {{#ifCond this.earning '>'
+                                                                          0}}tr-success{{/ifCond}} {{#ifCond
+                                                    this.earning '<' 0}}tr-danger{{/ifCond}}" data-id="{{ this._id }}"
+                                                data-turn="{{ this.turn }}">
+                                                <td>
+                                                    <div class="table-actions hand p-2">
+                                                         <span class="badges badge-success action-more"
+                                                               style="margin-right: 2px;"
+                                                               data-action="xiu" data-id="{{ this._id }}"
+                                                               data-bs-toggle="tooltip" data-bs-placement="top"
+                                                               data-bs-original-title="Xem người đặt xỉu"><i
+                                                                 class="uil uil-3-plus"></i>
+                                                         </span>
+                                                        <span class="badges badge-danger action-more"
+                                                              data-action="tai" data-id="{{ this._id }}"
+                                                              data-bs-toggle="tooltip" data-bs-placement="top"
+                                                              data-bs-original-title="Xem người đặt tài"><i
+                                                                class="uil uil-18-plus"></i>
+                                                         </span>
+                                                    </div>
+                                                </td>
+                                                <td>{{ this.turn }}</td>
+                                                <td>{{ this.xucxac1 }}</td>
+                                                <td>{{ this.xucxac2 }}</td>
+                                                <td>{{ this.xucxac3 }}</td>
+                                                <td>{{ this.result }}</td>
+                                                <td>{{ numberFormat this.userSumTai }}</td>
+                                                <td>{{ numberFormat this.userSumXiu }}</td>
+                                                <td>{{ numberFormat this.totalUserTai }}</td>
+                                                <td>{{ numberFormat this.totalUserXiu }}</td>
+                                                <td>{{ numberFormat this.earning }}</td>
+                                                <td>
+                                                    {{#ifCond this.status '==' 'done'}}
+                                                        <span class="badges badge-success">Xong</span>
+                                                    {{/ifCond}}
+                                                    {{#ifCond this.status '==' 'running'}}
+                                                        <span class="badges badge-warning">Chạy</span>
+                                                    {{/ifCond}}
+                                                </td>
+                                                <td>{{ formatDate this.updatedAt 'HH:mm:ss DD-MM-YYYY'}}</td>
+                                            </tr>
+                                        {{else}}
+                                            <tr>
+                                                <td colspan="12">
+                                                    <div class="dm-empty text-center">
+                                                        <div class="dm-empty__image">
+                                                            <img src="../themes/admin/images/1.png" alt="Rỗng">
+                                                        </div>
+                                                        <div class="dm-empty__text">
+                                                            <p class="">Không có dữ liệu !</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <nav class="dm-page">
+                                        <ul class="dm-pagination d-flex">
+                                            <li class="dm-pagination__item">
+                                                {{#paginate pagination type="previous"}}
+                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}
+                                                    page={{n}}{{/if}}"
+                                                    class="dm-pagination__link pagination-control {{#if disabled}}
+                                                    disabled{{/if}}">
+                                                    <span class="la la-angle-left"></span>
+                                                    </a>
+                                                {{/paginate}}
+                                                {{#paginate pagination type="middle" limit=pagination.limit}}
+                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}
+                                                    page={{n}}{{/if}}"
+                                                    class="dm-pagination__link {{#if active}}active{{/if}}"><span
+                                                        class="page-number">{{n}}</span>
+                                                    </a>
+                                                {{/paginate}}
+                                                {{#paginate pagination type="next"}}
+                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}
+                                                    page={{n}}{{/if}}"
+                                                    class="dm-pagination__link pagination-control {{#if disabled}}
+                                                    disabled{{/if}}">
+                                                    <span class="la la-angle-right"></span>
+                                                    </a>
+                                                {{/paginate}}
+                                            </li>
+                                            <li class="dm-pagination__item">
+                                                <div class="paging-option">
+                                                    <select name="perPage" class="page-selection"
+                                                            data-query="{{ checkQuery originalUrl.search 'perPage' }}">
+                                                        {{#select perPage }}
+                                                            <option value="10">10/page</option>
+                                                            <option value="20">20/page</option>
+                                                            <option value="40">40/page</option>
+                                                            <option value="60">60/page</option>
+                                                            <option value="100">100/page</option>
+                                                            <option value="200">200/page</option>
+                                                            <option value="500">500/page</option>
+                                                        {{/select}}
+                                                    </select>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Modal Add Game -->
+<div class="modal fade" data-bs-modal="game-add" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fa fa-gamepad" aria-hidden="true"></i> Thêm Mini Game</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="#" method="post" class="form-axios">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="il-gray fs-14 fw-500 mb-10">Tên Mini Game</label>
+                        <input type="text" name="name" class="form-control ih-medium ip-light"
+                               placeholder="Nhập tên mini game">
+                    </div>
+                    <div class="form-group">
+                        <label class="il-gray fs-14 fw-500 mb-10">Loại</label>
+                        <input type="text" name="gameType" class="form-control ih-medium ip-light"
+                               placeholder="Đặt tên loại tùy thích">
+                    </div>
+                    <div class="form-group">
+                        <label class="il-gray fs-14 fw-500 mb-10">Mô Tả</label>
+                        <textarea name="description" rows="3" class="form-control ip-light"
+                                  placeholder="Mô tả trò chơi"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="il-gray fs-14 fw-500 mb-10">Trưng Bày</label>
+                        <select name="display" class="form-control">
+                            <option value="show">Hiển Thị</option>
+                            <option value="hide">Ẩn</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Thêm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{>foot}}
+<script>
+    function chinhCau() {
+        $.ajax({
+            url: '{{adminPath}}/chinh-cau',
+            method: 'post',
+            data: {
+                type: 'one',
+                xucxac1: $('input[name=xucxac1]:checked').val(),
+                xucxac2: $('input[name=xucxac2]:checked').val(),
+                xucxac3: $('input[name=xucxac3]:checked').val(),
+            },
+            success: (data) => {
+                Swal.fire({
+                    title: 'Thông báo',
+                    text:  data.message,
+                    icon: data.success ? 'success' : 'danger'
+                });
+                window.location.reload();
+            }
+        })
+    }
+
+    function tai() {
+        $.ajax({
+            url: '{{adminPath}}/chinh-cau',
+            method: 'post',
+            data: {
+                type: 'tai',
+            },
+            success: (data) => {
+                Swal.fire({
+                    title: 'Thông báo',
+                    text:  data.message,
+                    icon: data.success ? 'success' : 'danger'
+                });
+                window.location.reload();
+            }
+        })
+    }
+
+    function xiu() {
+        $.ajax({
+            url: '{{adminPath}}/chinh-cau',
+            method: 'post',
+            data: {
+                type: 'xiu',
+            },
+            success: (data) => {
+                Swal.fire({
+                    title: 'Thông báo',
+                    text:  data.message,
+                    icon: data.success ? 'success' : 'danger'
+                });
+                window.location.reload();
+            }
+        })
+    }
+</script>

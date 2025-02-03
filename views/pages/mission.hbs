@@ -1,0 +1,155 @@
+{{>header}}
+<body>
+<div class="preloader"></div>
+<!-- header -->
+<header class="header">
+    <div class="header__content">
+        <!-- header logo -->
+        <a href="/" class="header__logo">
+            <img class="logo" src="{{ settings.logo }}" alt="{{ settings.nameSite }}"/>
+        </a>
+        <!-- end header logo -->
+        <!-- header menu btn -->
+        <button class="header__btn" type="button">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <!-- end header menu btn -->
+    </div>
+</header>
+<!-- end header -->
+<!-- sidebar -->
+{{>sidebar}}
+<!-- main content -->
+<main class="main">
+    <div class="container-fluid">
+        <div class="row">
+            {{>game}}
+            <div class="col-12">
+                <div class="dashbox">
+                    <div class="dashbox__title">
+                        <h3 style="margin:0 auto;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 9C7.44772 9 7 9.44771 7 10C7 10.5523 7.44772 11 8 11H16C16.5523 11 17 10.5523 17 10C17 9.44771 16.5523 9 16 9H8Z"
+                                      fill="currentColor"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                      d="M6 3C4.34315 3 3 4.34315 3 6V18C3 19.6569 4.34315 21 6 21H18C19.6569 21 21 19.6569 21 18V6C21 4.34315 19.6569 3 18 3H6ZM5 18V7H19V18C19 18.5523 18.5523 19 18 19H6C5.44772 19 5 18.5523 5 18Z"
+                                      fill="currentColor"></path>
+                            </svg>
+                            NHIỆM VỤ NGÀY
+                        </h3>
+                    </div>
+                    <div class="subpage-wrapper">
+                        {{#if profile}}
+                            <div class="text-center mb-3">
+                                <p><span>TỔNG CHƠI TRONG NGÀY: </span> <span class="code-num"><b>{{ numberFormat totalCount }}</b></span><br><i
+                                        class="small-notes">(lưu ý: hệ thông cập nhật tổng chơi mỗi 5p)</i></p>
+                            </div>
+                        {{else}}
+                            <div class="text-center">
+
+                                <p>VUI LÒNG <a href="/dangnhap">ĐĂNG NHẬP</a> HOẶC <a href="/dangnhap">ĐĂNG KÝ</a> ĐỂ
+                                    NHẬN THƯỞNG</p>
+                            </div>
+                        {{/if}}
+                        <div class="text-center">
+                            <p class="small-notes"><i>HỆ THỐNG LIÊN TỤC PHÁT CODE NGẪU NHIÊN - MIỄN PHÍ MỖI 10-15P TẠI
+                                <a href="https://t.me/BANKTXCL">GROUP TELEGRAM</a></i></p>
+                        </div>
+                        <p>
+                            <a href="javascript:void(0);" panel="#form-nvngay" class="btn-dq lnk__btn_disabled">CỐ
+                                ĐỊNH</a> &nbsp; <a href="javascript:void(0);" panel="#nv-random"
+                                                   class="btn-dq lnk__btn">NGẪU NHIÊN</a>
+                        </p>
+                        <form class="pn-quests" method="post" id="form-nvngay" action="/nvngay" style="">
+                            <p class="text-center err" id="err-msg"></p>
+                            <div class="col-12 col-xl-6 mg-auto">
+                                <div class="dashbox">
+                                    <div class="dashbox__table-wrap dashbox__table-wrap--1">
+                                        <table class="dashbox__table table__txt-center">
+                                            <thead>
+                                            <tr>
+                                                <th>MỐC CHƠI</th>
+                                                <th>THƯỞNG</th>
+                                                <th>TRẠNG THÁI</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {{#each settings.missionData.data}}
+                                                <tr>
+                                                    <td>{{numberFormat this.amount }}</td>
+                                                    <td>{{numberFormat this.bonus }} <i>(<a href="fan">fan + 20%</a>)</i></td>
+                                                    <td>
+                                                        {{#ifCond ../totalCount '>=' this.amount}}
+                                                            {{#ifCond ../../totalCountMission '>=' ../this.bonus}}
+                                                                <span class="gstatus ok">XONG</span>
+                                                            {{else}}
+                                                                <button type="submit" data-value="{{@index}}" class="gstatus ok">NHẬN</button>
+                                                            {{/ifCond}}
+                                                        {{else}}
+                                                            <span class="gstatus not-done">CHƯA ĐẠT</span>
+                                                        {{/ifCond}}
+                                                    </td>
+                                                </tr>
+                                            {{/each}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                        <div class="pn-quests text-center" id="nv-random" style="display: none;">
+                            <div class="col-12 col-xl-6 mg-auto">
+                                <div id="dq-rnd-details">
+                                    <p class="pt-4">VUI LÒNG CHƠI THÊM <span class="code-num">1 LỆNH BẤT KỲ</span> ĐỂ
+                                        NHẬN NHIỆM VỤ NGẪU NHIÊN.</p>
+                                </div>
+                                <p class="small-notes pt-3 fs-11">
+                                    <i>
+                                        - HỆ THỐNG CHỈ TÍNH CÁC GAME CHƠI VÀO <span class="code-num">BANK</span>, PHẦN
+                                        THƯỞNG VÀ YÊU CẦU LÀ <span class="code-num">NGẪU NHIÊN</span><br>
+                                        - GIAO DỊCH ĐƯỢC TÍNH VÀO THỜI ĐIỂM HỆ THỐNG GHI NHẬN NHIỆM VỤ ĐƯỢC TÍNH TỪ THỜI
+                                        GIAN TẠO<br>
+                                        - NHIỆM VỤ NGẪU NHIÊN LÀ <span class="code-num">KHÔNG GIỚI HẠN</span> VÀ PHẦN
+                                        THƯỞNG <span class="code-num">TĂNG DẦN</span> THEO SỐ LẦN <span
+                                            class="code-num">HOÀN THÀNH</span> TRONG NGÀY<br>
+                                        - HỆ THỐNG SẼ <span class="code-num">XÓA NHIỆM VỤ</span> NGẪU NHIÊN HẰNG NGÀY
+                                        VÀO LÚC <span class="code-num">23:30</span><br>
+                                        - HỆ THỐNG TỰ <span class="code-num">XÓA/THAY ĐỔI</span> NHIỆM VỤ NẾU TIẾN TRÌNH
+                                        NHIỆM VỤ CỦA BẠN <span class="code-num">BẰNG 0</span> SAU <span
+                                            class="code-num">60P</span> <br>
+                                        - TÍNH NĂNG ĐANG TRONG QUÁ TRÌNH THỬ NGHIỆM BỞI VẬY CÓ THỂ SẼ KHÔNG THỂ KHIẾU
+                                        NẠI VỀ TÍNH NĂNG NÀY.
+                                    </i>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div class="modal bounceIn animated" id="modal-notes" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal__content modal__content--view">
+                <div class="comments__autor">
+                    <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                    <span class="comments__name">SUPBANK Thông Báo</span>
+                </div>
+                <p class="comments__text"></p>
+                <div class="modal__btns">
+                    <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal"
+                            aria-label="Close"><span>Đóng</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>$(".nav-item button").click(function(){window.location.href="/?g="+$(this).attr("data-bs-target").slice(1)})</script>
+{{>footer}}
+{{{ settings.footerScript }}}

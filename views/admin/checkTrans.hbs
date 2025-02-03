@@ -1,0 +1,198 @@
+{{>head}}
+{{>nav}}
+<main class="main-content">
+    <div class="contents">
+        <div class="crm mb-25">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-main">
+                            <h4 class="text-capitalize breadcrumb-title">{{ title }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mb-20">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title">
+                                    <a href="{{ originalUrl.pathname }}" class="text-dark">
+                                        <img src="../themes/admin/images/checkTrans.png" alt="" width="35">
+                                        Kiểm Tra Mã
+                                        <img src="../themes/admin/images/checkTrans.png" class="d-md-none" width="35">
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="checkByTrans">
+                                    <div class="form-group">
+                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Số Điện Thoại</label>
+                                        <select name="phone" class="form-controler ih-medium ip-light select2">
+                                            {{#each phones}}
+                                            <option value="{{ this.phone }}">{{ this.phone }}</option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Mã Giao Dịch</label>
+                                        <input type="text" name="transId" class="form-control ih-medium ip-light"
+                                            placeholder="Nhập mã giao dịch cần kiểm tra">
+                                    </div>
+                                    <div class="content-center">
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"
+                                                aria-hidden="true"></i>Kiểm Tra</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mb-20">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title">
+                                    <a href="{{ originalUrl.pathname }}" class="text-dark">
+                                        <img src="../themes/admin/images/checkHistory.png" alt="" width="35">
+                                        Kiểm Tra Lịch Sử
+                                        <img src="../themes/admin/images/checkHistory.png" class="d-md-none" width="35">
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="checkHistory">
+                                    <div class="form-group">
+                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Số Điện Thoại</label>
+                                        <select name="phone" class="form-controler ih-medium ip-light select2">
+                                            {{#each phones}}
+                                            <option value="{{ this.phone }}">{{ this.phone }}</option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Số Lượng</label>
+                                        <input type="number" name="limit" class="form-control ih-medium ip-light"
+                                            placeholder="Nhập số lượng giao dịch cần quét">
+                                    </div>
+                                    <div class="content-center">
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"
+                                                aria-hidden="true"></i>Kiểm Tra</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div class="modal fade" data-bs-modal="infoTrans" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Kiểm Tra Giao Dịch</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive mb-3">
+                    <table class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
+                        <thead class="badge-secondary text-white">
+                            <tr>
+                                <th>Thể Loại</th>
+                                <th>Giá Trị</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" data-bs-modal="listHis" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content radius-xl">
+            <div class="modal-header">
+                <h5 class="modal-title">Kiểm Tra Lịch Sử</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive table-mousewheel mb-3">
+                    <table class="table table-vcenter text-nowrap table-bordered text-center table-mb">
+                        <thead class="badge-secondary text-white">
+                            <tr>
+                                <th>Mã GD</th>
+                                <th>Loại</th>
+                                <th>Người Nhận</th>
+                                <th>Người Chuyển</th>
+                                <th>Số Tiền</th>
+                                <th>Số Dư Cuối</th>
+                                <th>Thời Gian</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{>foot}}
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        $('body').on('click', '#checkByTrans button', function (e) {
+            let phone = $('#checkByTrans select[name="phone"]').val();
+            let transId = $('#checkByTrans input[name="transId"]').val();
+
+            loadAjax('start');
+            axios.post('#', { phone, transId })
+                .then((result) => {
+                    let response = result.data;
+
+                    if (!response.success) {
+                        swal('Thông Báo', response.message, 'error');
+                        return;
+                    }
+
+                    $('[data-bs-modal="infoTrans"] tbody').html('').append(`<tr><td>Loại GD</td><td>${response.data.io == 1 ? `<span class="text-success">Nhận Tiền</span>` : `<span class="text-danger">Trừ Tiền</span>`}</td></tr><tr><td>Mã giao dịch</td><td class="text-info">#${response.data.transId}</td></tr><tr><td>Người nhận</td><td class="text-warning">${response.data.targetId}</td></tr><tr><td>Người chuyển</td><td class="text-primary">${response.data.partnerId}</td></tr><tr><td>Tiền cược</td><td class="text-danger">${Intl.NumberFormat('en-US').format(response.data.amount)}đ</td></tr><tr><td>Nội dung</td><td class="text-success">${response.data.comment}</td></tr><tr><td>Thời gian</td><td class="text-secondary">${moment(response.data.timeTLS).format('DD-MM-YYYY HH:mm:ss')}</td></tr>`);
+                    $('[data-bs-modal="infoTrans"]').modal('show')
+                })
+                .catch((err) => {
+                    swal('Thông Báo', err.message || err, 'error');
+                })
+                .finally(() => loadAjax('stop'))
+        })
+
+        $('body').on('click', '#checkHistory button', function (e) {
+            let phone = $('#checkHistory select[name="phone"]').val();
+            let limit = $('#checkHistory input[name="limit"]').val();
+
+            loadAjax('start');
+            axios.post('#', { phone, limit })
+                .then((result) => {
+                    let response = result.data;
+
+                    if (!response.success) {
+                        swal('Thông Báo', response.message, 'error');
+                        return;
+                    }
+
+                    $('[data-bs-modal="listHis"] tbody').html('').append(response.data.map((obj) => `<tr class="${obj.status != 6 ? 'tr-success' : 'tr-danger'}"><td><span class="badges badge-secondary">${obj.transId}</span></td><td>${obj.io == 1 ? `<span class="badges badge-success">Nhận Tiền</span>` : `<span class="badges badge-danger">Trừ Tiền</span>`}</td><td>${obj.targetId}</td><td>${obj.partnerId}</td><td>${Intl.NumberFormat('en-US').format(obj.amount)}đ</td><td>${Intl.NumberFormat('en-US').format(obj.postBalance)}đ</td><td>${moment(obj.time).format('DD-MM-YYYY HH:mm:ss')}</td></tr>`));
+                    $('[data-bs-modal="listHis"]').modal('show');
+                })
+                .catch((err) => {
+                    swal('Thông Báo', err.message || err, 'error');
+                })
+                .finally(() => loadAjax('stop'))
+        })
+    })
+</script>

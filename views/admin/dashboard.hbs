@@ -1,0 +1,263 @@
+{{>head}}
+{{>nav}}
+<main class="main-content">
+    <div class="contents">
+        <div class="crm mb-25">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-main">
+                            <h4 class="text-capitalize breadcrumb-title">Tổng Quan</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-md-12 mb-20 hand">
+                                <h3 class="text-center" id="actionTime" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-original-title="Tùy chỉnh thời gian"><i class="fas fa-calendar-alt"></i>
+                                    <span data-type="{{ typeDate }}" data-time="{{ _revenueTime }}">{{ formatDate
+                                        _revenueTime typeDate }}</span>
+                                    <i class="fas fa-calendar-alt"></i>
+                                </h3>
+                            </div>
+                            <div class="col-md-4 mb-25 hand">
+                                <div class="feature-cards5 d-flex justify-content-between border-0 radius-xl p-25">
+                                    <div class="application-task d-flex align-items-center">
+                                        <div class="application-task-icon wh-60 bg-secondary content-center">
+                                            <img src="../themes/admin/images/receipt.png" width="50px">
+                                        </div>
+                                        <div class="application-task-content">
+                                            <h4 data-bs-toggle="animate" data-value="{{ revenueData.receipt }}">0</h4>
+                                            <span class="text-light fs-14 mt-1 texqt-capitalize">Tổng Nhận</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-25 hand">
+                                <div class="feature-cards5 d-flex justify-content-between border-0 radius-xl p-25">
+                                    <div class="application-task d-flex align-items-center">
+                                        <div class="application-task-icon wh-60 bg-primary content-center">
+                                            <img src="../themes/admin/images/minus.png" width="50px">
+                                        </div>
+                                        <div class="application-task-content">
+                                            <h4 data-bs-toggle="animate" data-value="{{ revenueData.minus }}">0</h4>
+                                            <span class="text-light fs-14 mt-1 text-capitalize">Tổng Chi</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-25 hand">
+                                <div class="feature-cards5 d-flex justify-content-between border-0 radius-xl p-25">
+                                    <div class="application-task d-flex align-items-center">
+                                        <div class="application-task-icon wh-60 bg-success content-center">
+                                            <img src="../themes/admin/images/earning.png" width="50px">
+                                        </div>
+                                        <div class="application-task-content">
+                                            <h4 data-bs-toggle="animate" data-value="{{ revenueData.earning }}">0</h4>
+                                            <span class="text-light fs-14 mt-1 text-capitalize">Doanh Thu</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-md-3 mb-25 hand">
+                                <div class="feature-cards5 d-flex justify-content-between border-0 radius-xl p-25">
+                                    <div class="application-task d-flex align-items-center">
+                                        <div class="application-task-icon wh-60 bg-success content-center">
+                                            <img src="../themes/admin/images/win.png" width="50px">
+                                        </div>
+                                        <div class="application-task-content">
+                                            <h4 data-bs-toggle="animate" data-value="{{ revenueData.win }}">0</h4>
+                                            <span class="text-light fs-14 mt-1 texqt-capitalize">Tổng Thắng</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-25 hand">
+                                <div class="feature-cards5 d-flex justify-content-between border-0 radius-xl p-25">
+                                    <div class="application-task d-flex align-items-center">
+                                        <div class="application-task-icon wh-60 bg-primary content-center">
+                                            <img src="../themes/admin/images/won.png" width="50px">
+                                        </div>
+                                        <div class="application-task-content">
+                                            <h4 data-bs-toggle="animate" data-value="{{ revenueData.won }}">0</h4>
+                                            <span class="text-light fs-14 mt-1 text-capitalize">Tổng Thua</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-25 hand">
+                                <div class="feature-cards5 d-flex justify-content-between border-0 radius-xl p-25">
+                                    <div class="application-task d-flex align-items-center">
+                                        <div class="application-task-icon wh-60 bg-danger content-center">
+                                            <img src="../themes/admin/images/error.png" width="50px">
+                                        </div>
+                                        <div class="application-task-content">
+                                            <h4 data-bs-toggle="animate" data-value="{{ revenueData.error }}">0</h4>
+                                            <span class="text-light fs-14 mt-1 text-capitalize">Tổng Lỗi</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-25 hand">
+                                <div class="feature-cards5 d-flex justify-content-between border-0 radius-xl p-25">
+                                    <div class="application-task d-flex align-items-center">
+                                        <div class="application-task-icon wh-60 bg-warning content-center">
+                                            <img src="../themes/admin/images/refund.png" width="50px">
+                                        </div>
+                                        <div class="application-task-content">
+                                            <h4 data-bs-toggle="animate" data-value="{{ revenueData.refund }}">0</h4>
+                                            <span class="text-light fs-14 mt-1 text-capitalize">Tổng Hoàn</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-25 hand">
+                                <div class="feature-cards5 d-flex justify-content-between border-0 radius-xl p-25">
+                                    <div class="application-task d-flex align-items-center">
+                                        <div class="application-task-icon wh-60 bg-warning content-center">
+                                            <img src="../themes/admin/images/refund.png" width="50px">
+                                        </div>
+                                        <div class="application-task-content">
+                                            <h4 data-bs-toggle="animate" data-value="{{ countUser }}">0</h4>
+                                            <span class="text-light fs-14 mt-1 text-capitalize">Tổng thành viên</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="card card-default">
+                            <div class="card-header py-20">
+                                <h6>Lịch Sử Hệ Thống</h6>
+                                <div class="card-extra">
+                                    <span class="btn btn-danger btn-xs delete-log" data-id="all">Xóa tất cả</span>
+                                </div>
+                            </div>
+                            <div class="card-body py-30 ps-sm-35 ps-30 pe-sm-50 pe-30"
+                                style="overflow: auto; max-height: 450px;">
+                                <div class="timeline-box--3 timeline-vertical left-middle">
+                                    <ul class="timeline">
+                                        {{#each logs}}
+                                        <li class="timeline-inverted" id="{{ this._id }}">
+                                            <span class="timeline-single__buble" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" data-bs-original-title="{{ this.typeData }}">
+                                                <span
+                                                    class="bg-{{ randArray 'primary,secondary,danger,info,success,dark,light'}}"></span>
+                                            </span>
+                                            <div class="timeline-single">
+                                                <div class="timeline-single__days">
+                                                    <span class="text-danger hand delete-log"
+                                                        data-id="{{ this._id }}"><i class="uil uil-trash"></i></span>
+                                                    <span>{{ timeNow this.createdAt }} - {{ formatDate this.createdAt
+                                                        'HH:mm:ss
+                                                        DD-MM-YYYY' }}</span>
+                                                </div>
+                                                <div class="timeline-single__content">
+                                                    <div
+                                                        class="d-flex justify-content-between align-content-center flex-wrap">
+                                                        <div class="d-flex align-content-center">
+                                                            {{{ this.content }}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        {{else}}
+                                        <div class="dm-empty text-center">
+                                            <div class="dm-empty__image">
+                                                <img src="../themes/admin/images/1.png" alt="Rỗng">
+                                            </div>
+                                            <div class="dm-empty__text">
+                                                <p class="">Không có dữ liệu !</p>
+                                            </div>
+                                        </div>
+                                        {{/each}}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Modal Time -->
+<div class="modal fade" id="modalTime" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content radius-xl">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fa-lg uil uil-credit-card-search"></i> Tùy Chỉnh Thống Kê</h5>
+                <a href="..{{ adminPath }}" class="color-dark">
+                    <span><i class="fa fa-redo"></i></span>
+                </a>
+            </div>
+            <form action="" method="get">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="" class="form-label color-dark fw-500">Thời gian</label>
+                        <input type="date" name="_revenueTime" class="form-control ih-medium ip-light" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="form-label color-dark fw-500">Loại</label>
+                        <div class="radio-horizontal-list d-flex">
+                            <div class="radio-theme-default custom-radio">
+                                <input class="radio" type="radio" name="typeDate" id="typeDate-day" value="day">
+                                <label for="typeDate-day">
+                                    <span class="radio-text">Ngày</span>
+                                </label>
+                            </div>
+                            <div class="radio-theme-default custom-radio">
+                                <input class="radio" type="radio" name="typeDate" id="typeDate-month" value="month">
+                                <label for="typeDate-month">
+                                    <span class="radio-text">Tháng</span>
+                                </label>
+                            </div>
+                            <div class="radio-theme-default custom-radio">
+                                <input class="radio" type="radio" name="typeDate" id="typeDate-all" value="all">
+                                <label for="typeDate-all">
+                                    <span class="radio-text">Tất cả</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
+                        <button class="btn btn-primary btn-sm">Truy Vấn</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{>foot}}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('body').on('click', '.delete-log', function (e) {
+            let id = $(this).data('id');
+
+            $(this).html(`<div class="dm-spin-dots spin-sm"><span class="spin-dot badge-dot dot-secondary"></span><span class="spin-dot badge-dot dot-secondary"></span><span class="spin-dot badge-dot dot-secondary"></span><span class="spin-dot badge-dot dot-secondary"></span></div>`).prop('disabled', true);
+
+            instance.delete(`logSystem/${id}`)
+                .then((response) => {
+                    let data = response.data;
+
+                    data.success ? id == 'all' ? $('ul.timeline>li.timeline-inverted').remove() : $(`#${id}`).remove() : swal('Thông Báo', data.message, 'error');
+                })
+                .catch((err) => {
+                    swal('Thông Báo', err.message || err, 'error');
+                })
+                .finally(() => $(this).html(id == 'all' ? 'Xóa tất cả' : `<i class="uil uil-trash"></i>`).prop('disabled', false));
+        })
+
+        socket.on('logSystem', function (data) {
+            let array = ['info', 'warning', 'danger', 'dark', 'light', 'primary', 'secondary'];
+            $('div.dm-empty').remove();
+            $('ul.timeline').prepend(`<li class="timeline-inverted" id="${data._id}"><span class="timeline-single__buble" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="${data.typeData}"><span class="bg-${array[Math.floor(Math.random() * array.length)]}"></span></span><div class="timeline-single"><div class="timeline-single__days"><span class="text-danger hand delete-log"data-id="${data._id}"><i class="uil uil-trash"></i></span><span>${moment(data.time).locale("vi").fromNow()} - ${moment(data.createdAt).format('HH:mm:ss DD-MM-YYYY')}</span></div><div class="timeline-single__content"><divclass="d-flex justify-content-between align-content-center flex-wrap"><div class="d-flex align-content-center">${data.content}</div></div></div></div></li>`);
+        })
+    })
+</script>

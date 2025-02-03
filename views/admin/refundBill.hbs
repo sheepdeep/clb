@@ -1,0 +1,142 @@
+{{>head}}
+{{>nav}}
+<main class="main-content">
+    <div class="contents">
+        <div class="crm mb-25">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-main">
+                            <h4 class="text-capitalize breadcrumb-title">{{ title }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mb-20">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title">
+                                    <a href="{{ originalUrl.pathname }}" class="text-dark">
+                                        <img src="../themes/admin/images/refund-bill.png" alt="" width="35">
+                                        Lịch Sử Hoàn Tiền
+                                        <img src="../themes/admin/images/refund-bill.png" class="d-md-none" width="35">
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="userDatatable adv-table-table global-shadow border-light-0 adv-table">
+                                    <div id="filter-form-container"
+                                        class="footable-filtering-external footable-filtering-right">
+                                        <form>
+                                            <div class="form-group footable-filtering-search mb-3 hand">
+                                                <div class="input-group">
+                                                    <input type="search" class="form-control" name="search"
+                                                        placeholder="Tìm kiếm..." value="{{ search }}">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="table-responsive mb-3">
+                                    <table
+                                        class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
+                                        <thead class="badge-secondary text-white">
+                                            <tr>
+                                                <th>Mã Giao Dịch</th>
+                                                <th>Số Điện Thoại</th>
+                                                <th>Tiền Cược {{{ tableSort originalUrl.search 'amount' _sort }}}</th>
+                                                <th>Tiền Thưởng {{{ tableSort originalUrl.search 'bonus' _sort }}}</th>
+                                                <th>Thưởng ( % ) {{{ tableSort originalUrl.search 'percent' _sort }}}
+                                                </th>
+                                                <th>Thời Gian {{{ tableSort originalUrl.search 'updatedAt' _sort }}}
+                                                </th>
+                                                <th><span data-bs-submit="refund-bill" data-bs-action="remove"
+                                                        data-id="all" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                        data-bs-original-title="Xóa Tất Cả"><i
+                                                            class="fa fa-times-circle" aria-hidden="true"></i></span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody data-table="refundBill">
+                                            {{#each refunds}}
+                                            <tr>
+                                                <td><span class="badges badge-secondary">#{{ this.transId }}</span></td>
+                                                <td>{{ this.phone }}</td>
+                                                <td>{{ numberFormat this.amount }}đ</td>
+                                                <td>{{ numberFormat this.bonus }}đ</td>
+                                                <td>{{ numberFormat this.percent }}%</td>
+                                                <td>{{ formatDate this.updatedAt 'DD-MM-YYYY HH:mm:ss'}}</td>
+                                                <td>
+                                                    <div class="table-actions hand">
+                                                        <span class="badges badge-danger" data-bs-submit="refund-bill"
+                                                            data-bs-action="remove" data-id="{{ this._id }}"><i
+                                                                class="fa fa-trash" aria-hidden="true"></i></span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {{else}}
+                                            <tr>
+                                                <td colspan="12">
+                                                    <div class="dm-empty text-center">
+                                                        <div class="dm-empty__image">
+                                                            <img src="../themes/admin/images/1.png" alt="Rỗng">
+                                                        </div>
+                                                        <div class="dm-empty__text">
+                                                            <p class="">Không có dữ liệu !</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <nav class="dm-page">
+                                        <ul class="dm-pagination d-flex">
+                                            <li class="dm-pagination__item">
+                                                {{#paginate pagination type="previous"}}
+                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
+                                                    class="dm-pagination__link pagination-control {{#if disabled}}disabled{{/if}}">
+                                                    <span class="la la-angle-left"></span>
+                                                </a>
+                                                {{/paginate}}
+                                                {{#paginate pagination type="middle" limit=pagination.limit}}
+                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
+                                                    class="dm-pagination__link {{#if active}}active{{/if}}"><span
+                                                        class="page-number">{{n}}</span>
+                                                </a>
+                                                {{/paginate}}
+                                                {{#paginate pagination type="next"}}
+                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
+                                                    class="dm-pagination__link pagination-control {{#if disabled}}disabled{{/if}}">
+                                                    <span class="la la-angle-right"></span>
+                                                </a>
+                                                {{/paginate}}
+                                            </li>
+                                            <li class="dm-pagination__item">
+                                                <div class="paging-option">
+                                                    <select name="perPage" class="page-selection"
+                                                        data-query="{{ checkQuery originalUrl.search 'perPage' }}">
+                                                        {{#select perPage }}
+                                                        <option value="10">10/page</option>
+                                                        <option value="20">20/page</option>
+                                                        <option value="40">40/page</option>
+                                                        <option value="60">60/page</option>
+                                                        <option value="100">100/page</option>
+                                                        <option value="200">200/page</option>
+                                                        <option value="500">500/page</option>
+                                                        {{/select}}
+                                                    </select>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{{>foot}}

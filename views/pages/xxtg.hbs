@@ -1,0 +1,262 @@
+{{>header}}
+<body>
+<div class="preloader"></div>
+<!-- header -->
+<header class="header">
+    <div class="header__content">
+        <!-- header logo -->
+        <a href="/" class="header__logo">
+            <img class="logo" src="{{ settings.logo }}" alt="{{ settings.nameSite }}"/>
+        </a>
+        <!-- end header logo -->
+        <!-- header menu btn -->
+        <button class="header__btn" type="button">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <!-- end header menu btn -->
+    </div>
+</header>
+<!-- end header -->
+<!-- sidebar -->
+{{>sidebar}}
+<!-- main content -->
+<main class="main">
+    <div class="container-fluid">
+        <div class="row">
+            {{>game}}
+            <div class="col-12">
+                <div class="dashbox">
+                    <div class="dashbox__title">
+                        <h3 style="margin:0 auto;">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3z"></path>
+                                <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"></path>
+                            </svg>
+                            XÚC XẮC TELEGRAM
+                        </h3>
+                    </div>
+                    <div class="subpage-wrapper">
+                        <p>Xúc Xắc Telegram (<span class="code-num">XXTG</span>) là một trò chơi dựa trên Emoji Dice của
+                            Telegram. Bởi vậy nó có độ xanh chín 100%, không ai có thể can thiệp được.</p>
+                        <p>
+                            Tại sao nên lựa chọn Xúc Xắc Telegram (<span class="code-num">XXTG</span>) thay vì các các
+                            game tài xỉu, tài xỉu md5 như hiện nay? <br>
+                            Hầu hết các game Tài Xỉu hiện nay thường lừa người chơi bằng việc tính toán kết quả dựa vào
+                            tick hay md5 trong khi nhà cái hoàn toàn có thể thay đổi kết quả.<br>
+                            Đối với <span class="code-num">XXTG</span> kết quả dựa vào <span
+                                class="code-num">Emoji Dice</span> của Telegram một mã nguồn mở và đảm bảo không ai có
+                            thể can thiệp.
+                        </p>
+
+                        <div class="text-center mb-3">
+                            {{#if profile}}
+                                <!-- Nếu profile tồn tại, bạn có thể hiển thị thông tin người dùng ở đây -->
+                            {{else}}
+                                <a href="../dangnhap" target="_blank" class="lnk__btn">CHIẾN NGAY NÀO</a>
+                            {{/if}}
+
+                        </div>
+
+                        <div class="text-center">
+                            <p class="small-notes"><i>HỆ THỐNG LIÊN TỤC PHÁT CODE NGẪU NHIÊN - MIỄN PHÍ MỖI 10-15P TẠI
+                                <a href="https://t.me/supbankme">GROUP TELEGRAM</a></i></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{#if profile}}
+                <div class="col-12">
+                    <div class="dashbox">
+                        <div class="dashbox__title">
+                            <h3 style="margin:0 auto;">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3z"></path>
+                                    <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"></path>
+                                </svg>
+                                CHƠI TÀI XỈU
+                            </h3>
+                        </div>
+                        <div class="subpage-wrapper">
+                            <p>KẾT QUẢ TRẢ VỀ</p>
+                            <div class="countdown-container mt-2 mb-2" style="position: relative;">
+                                <svg id="progress-wrapper" width="500" height="500" viewBox="0 0 500 500"
+                                     style="width: 180px; height: 180px; transform: rotate(270deg);">
+                                    <circle cx="250" cy="250" r="200" stroke-width="25" fill="transparent"
+                                            id="cprogress" style="stroke: rgb(254, 141, 28);"></circle>
+                                </svg>
+                                <span class="seconds" id="seconds"
+                                      style="position: absolute; color: rgb(254, 249, 166); font-weight: 900; font-size: 80px; font-family: monospace; top: 50%; left: 50%; display: flex; transform: translate(-50%, -50%);">
+
+                                </span>
+                            </div>
+                            <div class="dashbox__title pt-0 pb-0">
+                            </div>
+                            <div class="text-center pt-3">
+                                <div class="text-center">
+                                    <p>
+                                        <span>SB COIN: </span> <span class="code-num"><b id="sbbal-txt">{{ numberFormat
+                                            profile.balance }}</b></span> VNĐ
+                                        <input type="hidden" id="kbbal" value="0">
+                                        <span id="reload-kbbal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19"
+                                 style="position:relative;top:-1px;" fill="currentColor" class="bi bi-arrow-clockwise"
+                                 viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"></path>
+                                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"></path>
+                            </svg>
+                        </span>
+                                        &nbsp;&nbsp;
+                                        <a href="/kbcoin">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17"
+                                                 style="position:relative;top:-2px;" fill="currentColor"
+                                                 class="bi bi-bag-plus-fill" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                      d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M8.5 8a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V12a.5.5 0 0 0 1 0v-1.5H10a.5.5 0 0 0 0-1H8.5z"></path>
+                                            </svg>
+                                            <span>NẠP/RÚT</span>
+                                        </a>
+                                    </p>
+                                    <div class="row playbtn-wrap">
+                                        <div class="col-12 col-xl-12 mb-3">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <button class="sign__btn none-active sicbo_btn" data-val="T"
+                                                            type="button"><span>CHỌN T</span></button>
+                                                </div>
+                                                <div class="col">
+                                                    <button class="sign__btn none-active sicbo_btn" data-val="X"
+                                                            type="button"><span>CHỌN X</span></button>
+                                                </div>
+                                                <div class="col">
+                                                    <button class="sign__btn none-active sicbo_btn" data-val="C"
+                                                            type="button"><span>CHỌN C</span></button>
+                                                </div>
+                                                <div class="col">
+                                                    <button class="sign__btn none-active sicbo_btn" data-val="L"
+                                                            type="button"><span>CHỌN L</span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-xl-6 mb-3">
+                                            <input autocomplete="off" class="sign__input" id="bet-amount"
+                                                   placeholder="SỐ TIỀN CƯỢC" type="text">
+                                        </div>
+                                        <div class="col-12 col-xl-6">
+                                            <button class="sign__btn" type="button" id="btn-bet"><span>ĐẶT CƯỢC</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashbox">
+                        <div class="dashbox__title">
+                            <h3 style="margin:0 auto;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-clock" viewBox="0 0 16 16">
+                                    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"></path>
+                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"></path>
+                                </svg>
+                                LỊCH SỬ CHƠI GẦN ĐÂY
+                            </h3>
+                        </div>
+
+                        <div class="dashbox__table-wrap dashbox__table-wrap--2" id="recently-histories">
+                            <table class="dashbox__table mw800">
+                                <thead>
+                                <tr>
+                                    <th>TRÒ CHƠI</th>
+                                    <th>ĐÃ CHỌN</th>
+                                    <th>MÃ GIAO DỊCH</th>
+                                    <th>SỐ TIỀN</th>
+                                    <th>KẾT QUẢ</th>
+                                    <th>TRẢ THƯỞNG</th>
+                                    <th>THỜI GIAN</th>
+                                    <th>SAO KÊ</th>
+                                    <th>GHI CHÚ</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tableHistory">
+                                {{#each userHistories}}
+                                    <tr>
+                                        <td>{{this.gameType}}</td>
+                                        <td><code>{{this.comment}}</code></td>
+                                        <td>{{this.transId}}</td>
+                                        <td>{{ numberFormat this.amount}}</td>
+                                        <td>
+                                            <div class="dashbox__table-text"><span
+                                                    class="gstatus {{this.result}}">{{uppercase this.result}}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{{historyPaid this.result this.paid}}}
+                                        </td>
+
+                                        <td>{{ formatDate this.createdAt 'HH:mm:ss DD-MM-YYYY' }}</td>
+                                        <td></td>
+                                        <td>
+                                            <div class="dashbox__table-text">
+                                                <button type="button" data-bs-toggle="modal"
+                                                        data-content="{{this.description}}"
+                                                        class="catalog__btn catalog__btn--view show-notes"
+                                                        data-bs-target="#modal-notes">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                        <path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+</main>
+<div class="modal bounceIn animated" id="modal-notes" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal__content modal__content--view">
+                <div class="comments__autor">
+                    <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                    <span class="comments__name">SUPBANK Thông Báo</span>
+                </div>
+                <p class="comments__text"></p>
+                <div class="modal__btns">
+                    <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal"
+                            aria-label="Close"><span>Đóng</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal bounceIn animated" id="modal-win" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal__content modal__content--view">
+                <div class="comments__autor">
+                    <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                    <span class="comments__name">SUPBANK Thông Báo</span>
+                </div>
+                <p class="comments__text"></p>
+                <div class="modal__btns">
+                    <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal"
+                            aria-label="Close"><span>Đóng</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>$(".nav-item button").click(function(){window.location.href="/?g="+$(this).attr("data-bs-target").slice(1)})</script>
+{{>footer}}
+{{{ settings.footerScript }}}
