@@ -13,7 +13,7 @@ const profileController = {
     coin: async (req, res, next) => {
         try {
             let games = await gameModel.find({display: 'show'}).lean();
-            let banks = await bankModel.find({status: 'active', loginStatus: 'active'}).lean();
+            let banks = await bankModel.find({status: 'active', loginStatus: 'active', bankType: 'mbb'}).lean();
 
             let totalPlay = await historyModel.aggregate([{
                 $match: {

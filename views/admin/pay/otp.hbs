@@ -1,0 +1,143 @@
+{{>head}}
+{{>nav}}
+<main class="main-content">
+    <div class="contents">
+        <div class="crm mb-25">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-main">
+                            <h4 class="text-capitalize breadcrumb-title">{{ title }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-25 hand">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between border-0 radius-xl">
+                                    <div class="application-task d-flex align-items-center">
+                                        <div class="application-task-icon wh-60 bg-success content-center">
+                                            <img src="../themes/admin/images/win.png" width="50px">
+                                        </div>
+                                        <div class="application-task-content">
+                                            <h6>{{ history.transId }} - {{ numberFormat history.bonus }}</h6>
+                                            <span class="text-light fs-14 mt-1 texqt-capitalize">{{ history.gameName }}
+                                                - {{ timeNow history.createdAt }} - {{ formatDate history.createdAt
+                                                                                                  'HH:mm:ss DD-MM-YYYY' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="form-group">
+                                    <input class="form-control ih-medium ip-light" name="transId"
+                                           value="{{ history.transId }}" readonly type="text">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control ih-medium ip-light" name="amount"
+                                           value="{{ numberFormat history.amount }}" readonly type="text">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control ih-medium ip-light" name="bonus"
+                                           value="{{ numberFormat history.bonus }}" readonly type="text">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control ih-medium ip-light" name="accountNumber" value=""
+                                           readonly type="text">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control ih-medium ip-light" name="accountName" value="" readonly
+                                           type="text">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control ih-medium ip-light" name="bankName" value="" readonly
+                                           type="text">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control ih-medium ip-light" name="comment" value="{{ history.comment }}" readonly
+                                           type="text">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control ih-medium ip-light" name="gameName" value="{{ history.gameName }}" readonly
+                                           type="text">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control ih-medium ip-light" id="otp" name="otp" value=""
+                                           placeholder="Nhập mã OTP" type="tel">
+                                </div>
+                                <button id="transfer" data-action="getOTP" class="btn btn-success btn-xs w-100">GET OTP</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{{>foot}}
+<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.1/lib/qr-code-styling.min.js"></script>
+<script>
+    $("#transfer").click(function () {
+        let action = $('#transfer').data('action');
+
+        if (action == 'getOTP') {
+
+            $.ajax({
+                url: '{{adminPath}}/pay-otp',
+                method: 'POST',
+                data: {
+                    transId: "{{ history.transId }}",
+                    action
+                },
+                success: function (res) {
+                    if (res.success) {
+                        $('#transfer').data('action', 'verifyOTP').html('VERIFY OTP');
+                    }
+                    Swal.fire({
+                        icon: res.success ? 'success' : 'error',
+                        text: res.message,
+                        title: 'Thông báo'
+                    })
+                }
+            })
+
+        }
+
+        if (action == 'verifyOTP') {
+
+            $.ajax({
+                url: '{{adminPath}}/pay-otp',
+                method: 'POST',
+                data: {
+                    transId: "{{ history.transId }}",
+                    action,
+                    otp: $('input[name=otp]').val()
+                },
+                success: function (res) {
+                    if (res.success) {
+                        $('#transfer').html('VERIFY OTP');
+                    }
+                    Swal.fire({
+                        icon: res.success ? 'success' : 'error',
+                        text: res.message,
+                        title: 'Thông báo'
+                    })
+                }
+            })
+
+        }
+    });
+
+    if ('OTPCredential' in window) {
+        // Đăng ký OTP credential
+        const otpInput = document.querySelector('#otp');
+        otpInput.addEventListener('focus', () => {
+            // Khi trường nhập OTP được chọn, yêu cầu trình duyệt tự động điền mã OTP từ tin nhắn
+            navigator.credentials.get({ otp: { transport: ['sms'] } })
+                    .then(credential => {
+                        otpInput.value = credential.code; // Tự động điền mã OTP vào trường
+                    })
+                    .catch(error => console.error("OTP Error: ", error));
+        });
+    } else {
+        console.log('Web OTP API is not supported in this browser.');
+    }
+</script>

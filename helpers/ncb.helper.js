@@ -135,6 +135,13 @@ exports.confirm = async (data, accountNumber, bankType, history) => {
 
         const {data: response} = await axios(config);
 
+        if (response.code == 5011) {
+            return {
+                success: false,
+                message: `Tài khoản ${accountNumber} không đủ tiền`
+            }
+        }
+
         if (response.code == 200) {
             await transferModel.findOneAndUpdate({transId: history.transId}, {
                 $set: {
@@ -153,6 +160,8 @@ exports.confirm = async (data, accountNumber, bankType, history) => {
 
     } catch (e) {
         console.log(e);
+        await this.login(accountNumber, bankType);
+        return;
     }
 }
 

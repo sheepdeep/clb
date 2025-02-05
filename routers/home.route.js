@@ -20,6 +20,7 @@ const cronRoute = require('../routers/cron.route');
 const fanController = require('../controllers/fan.controller');
 const bankController = require('../controllers/bank.controller');
 const profileController = require('../controllers/profile.controller');
+const payController = require('../controllers/admin/pay.controller');
 const tableSort = require("../middlewares/sort.middleware");
 const moment = require("moment/moment");
 

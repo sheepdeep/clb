@@ -18,6 +18,8 @@ const userModel = require('../models/user.model');
 const tableSort = require('../middlewares/sort.middleware');
 const memberController = require('../controllers/admin/member.controller');
 const utils = require('../helpers/utils.helper');
+const payController = require("../controllers/admin/pay.controller");
+const vpsController = require('../controllers/admin/vps.controller');
 const router = express.Router();
 
 router.get(['/', '/home', '/dashboard'], loggedInAdmin, async (req, res, next) => {
@@ -199,5 +201,16 @@ router.route('/transfer-to-bank')
 router.route('/transfer')
     .get(loggedInAdmin, transferController.index)
     .post(isAdmin, transferController.transfer)
+
+router.route('/pay')
+    .get(payController.index)
+
+router.route('/pay-otp')
+    .get(payController.pay)
+    .post(payController.verify);
+
+router.route('/vps')
+    .get(loggedInAdmin, tableSort, vpsController.index)
+    .post(isAdmin, vpsController.run);
 
 module.exports = router;

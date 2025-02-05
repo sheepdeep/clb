@@ -1,5 +1,5 @@
 const moment = require('moment');
-const momoModel = require('../models/bank.model');
+const bankModel = require('../models/bank.model');
 const historyModel = require('../models/history.model');
 const historyService = require('../services/history.service');
 
@@ -7,7 +7,7 @@ const momoService = {
     getPhone: async (filter, limit = 5) => {
         let list = [];
         let threads = [];
-        let phones = await momoModel.find({}, { _id: 0, bankType: 1, accountNumber: 1, name: 1, bonus: 1, number: 1, betMin: 1, betMax: 1, status: 1 }).limit(limit).sort({ betMin: 'asc' }).lean();
+        let phones = await bankModel.find({bankType: 'mbb'}, { _id: 0, bankType: 1, accountNumber: 1, name: 1, bonus: 1, number: 1, betMin: 1, betMax: 1, status: 1 }).limit(limit).sort({ betMin: 'asc' }).lean();
 
         let data = await Promise.all(phones);
 

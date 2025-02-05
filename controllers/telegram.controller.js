@@ -119,7 +119,6 @@ const telegramController = {
 
                     await telegramHelper.deleteText(process.env.privateTOKEN, chatId, messageId);
 
-
                     let history = await historyModel.findOne({transId}).lean();
                     let user = await userModel.findOne({username: history.username}).lean();
 
@@ -144,7 +143,7 @@ const telegramController = {
                     ];
                     let rewardComment = await commentHelper.dataComment(dataSetting.commentSite.rewardGD, commentData);
 
-                    const bank = await bankModel.findOne({bankType: 'ncb'}).lean();
+                    const bank = await bankModel.findOne({bankType: 'ncb', status: 'active'}).lean();
 
                     await ncbHelper.confirm(
                         {
@@ -187,6 +186,12 @@ const telegramController = {
                 let user = await userModel.findOne({username: history.username}).lean();
                 await telegramHelper.sendText(process.env.privateTOKEN, chatId, `Mã OTP ${text} đang được xác thực cho #${transId}`, 'HTML');
 
+                if (await transferModel.findOne({transId})) {
+                    await telegramHelper.deleteText(process.env.privateTOKEN, chatId, messageId);
+                    let textMessage = `Trả thưởng MGD #${transId} đã được trả thưởng!`;
+                    return res.json(await telegramHelper.sendText(process.env.privateTOKEN, chatId, textMessage, 'HTML'));
+                }
+
                 let commentData = [
                     {
                         name: 'transId',
@@ -207,7 +212,7 @@ const telegramController = {
 
                 ];
                 let rewardComment = await commentHelper.dataComment(dataSetting.commentSite.rewardGD, commentData);
-                const bank = await bankModel.findOne({bankType: 'ncb'}).lean();
+                const bank = await bankModel.findOne({bankType: 'ncb', status: 'active'}).lean();
 
                 let result = await ncbHelper.verify(
                     { bankCode: user.bankInfo.bankCode, accountNumber: user.bankInfo.accountNumber, amount: history.bonus, comment: rewardComment, name: user.bankInfo.accountName },

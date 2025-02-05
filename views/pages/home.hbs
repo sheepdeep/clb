@@ -7,7 +7,7 @@
     <div class="header__content">
         <!-- header logo -->
         <a href="/" class="header__logo">
-            <img class="logo" src="{{ settings.logo }}" alt="{{ settings.nameSite }}" />
+            <img class="logo" src="{{ settings.logo }}" alt="{{ settings.nameSite }}"/>
         </a>
         <!-- end header logo -->
         <!-- header menu btn -->
@@ -35,7 +35,8 @@
                     <div class="game-details active">
                         <div class="dashbox__title">
                             <h3>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dice-5-fill" viewBox="0 0 16 16">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-dice-5-fill" viewBox="0 0 16 16">
                                     <path d="M3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3zm2.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM12 13.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM5.5 12a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM8 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path>
                                 </svg>
                                 <span id="gameName"></span>
@@ -66,155 +67,196 @@
                 <div class="dashbox play-rules">
                     <div class="dashbox__title">
                         <h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-wide-connected" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-gear-wide-connected" viewBox="0 0 16 16">
                                 <path d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434l.071-.286zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5zm0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78h4.723zM5.048 3.967c-.03.021-.058.043-.087.065l.087-.065zm-.431.355A4.984 4.984 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8 4.617 4.322zm.344 7.646.087.065-.087-.065z"></path>
-                            </svg> THÔNG TIN BANK NHẬN
+                            </svg>
+                            THÔNG TIN BANK NHẬN
                         </h3>
                     </div>
 
                     <div class="dashbox__table-wrap dashbox__table-wrap--4">
                         <p><b>🏦. Ngân hàng: <img width="8%" src="{{ bankImage bank.bankType }}"></b></p>
-                        <p><b>🏧. Số tài khoản: <span>{{ formatBank bank.accountNumber }}</span><span>&nbsp;<a href="javascript:void(0);" data-id="{{bank.accountNumber}}" data-msg="Đã copy:  MB QUÂN ĐỘI {{bank.accountNumber}}" class="mncp copy-bt">&nbsp;</a></span></b></p>
+                        <p><b>🏧. Số tài khoản: <span>{{ formatBank bank.accountNumber }}</span><span>&nbsp;<a
+                                href="javascript:void(0);" data-id="{{bank.accountNumber}}"
+                                data-msg="Đã copy:  MB QUÂN ĐỘI {{bank.accountNumber}}" class="mncp copy-bt">&nbsp;</a></span></b>
+                        </p>
                         <p><b>📇. Chủ tài khoản: <span>{{ formatBank bank.name }}</span> </b></p>
+                        <p><b>🚦. <span>{{ numberFormat bank.betMin }} VNĐ -> {{ numberFormat bank.betMax }} VNĐ</span>
+                        </b></p>
                         <p><b>Hỗ trợ hoàn lại 90% nếu sai cú pháp hoặc ngoài mức cược cho phép.</b></p>
                         <p>Hệ thống chấp nhận tất cả các bank. Kết quả được tính như sau:</p>
-                        <p><i>Ngân hàng <i><b>MBBank, Vietcombank, Techcombank</b></i> sẽ được tính theo Mã ID giao dịch.</i></p>
+                        <p><i>Ngân hàng <i><b>MBBank, Vietcombank, Techcombank</b></i> sẽ được tính theo Mã ID giao
+                            dịch.</i></p>
                         <p>Riêng <i><b>Momo</b></i> luôn lấy theo mã ID của ngân hàng nhận.</p>
                     </div>
                 </div>
             </div>
 
             {{#if profile}}
+                <div class="col-12" id="recently-win-game">
+                    <div class="dashbox">
+                        <div class="dashbox__title">
+                            <h3>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-clock" viewBox="0 0 16 16">
+                                    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"></path>
+                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"></path>
+                                </svg>
+                                LỊCH SỬ CHƠI GẦN ĐÂY
+                            </h3>
+                        </div>
+                        <div class="dashbox__table-wrap dashbox__table-wrap-win-games">
+                            <table class="dashbox__table">
+                                <thead>
+                                <tr>
+                                    <th>TRÒ CHƠI</th>
+                                    <th>ĐÃ CHỌN</th>
+                                    <th>MÃ GIAO DỊCH</th>
+                                    <th>SỐ TIỀN</th>
+                                    <th>KẾT QUẢ</th>
+                                    <th>TRẢ THƯỞNG</th>
+                                    <th>THỜI GIAN</th>
+                                    <th>SAO KÊ</th>
+                                    <th>GHI CHÚ</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tableHistory">
+                                {{#each userHistories}}
+                                    <tr>
+                                        <td>{{this.gameType}}</td>
+                                        <td>
+                                            <div class="dashbox__table-text">
+                                                <code>{{this.comment}}</code>
+                                            </div>
+                                        </td>
+                                        <td>{{this.transId}}</td>
+                                        <td>{{ numberFormat this.amount}}</td>
+                                        <td>
+                                            <div class="dashbox__table-text"><span
+                                                    class="gstatus {{this.result}}">{{uppercase this.result}}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{{historyPaid this.result this.paid}}}
+                                        </td>
+
+                                        <td>{{ formatDate this.createdAt 'HH:mm:ss DD-MM-YYYY' }}</td>
+                                        <td>
+                                            {{#if this.isCheck}}
+                                                <div class="dashbox__table-text">
+                                                    <button type="button" data-bs-toggle="modal"
+                                                            data-content="{{this.description}}"
+                                                            class="catalog__btn catalog__btn--view show-notes"
+                                                            data-bs-target="#modal-notes">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                            <path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            {{/if}}
+                                        </td>
+                                        <td>
+                                            {{#if this.description}}
+                                                <div class="dashbox__table-text">
+                                                    <button type="button" data-bs-toggle="modal"
+                                                            data-content="{{this.description}}"
+                                                            class="catalog__btn catalog__btn--view show-notes"
+                                                            data-bs-target="#modal-notes">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                            <path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            {{/if}}
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
             <div class="col-12" id="recently-win-game">
                 <div class="dashbox">
                     <div class="dashbox__title">
                         <h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-clock" viewBox="0 0 16 16">
                                 <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"></path>
                                 <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"></path>
-                            </svg> LỊCH SỬ CHƠI GẦN ĐÂY
+                            </svg>
+                            LỊCH SỬ THAM GIA
                         </h3>
                     </div>
-                    <div class="dashbox__table-wrap dashbox__table-wrap-win-games">
-                        <table class="dashbox__table">
-                            <thead>
-                            <tr>
-                                <th>TRÒ CHƠI</th>
-                                <th>ĐÃ CHỌN</th>
-                                <th>MÃ GIAO DỊCH</th>
-                                <th>SỐ TIỀN</th>
-                                <th>KẾT QUẢ</th>
-                                <th>TRẢ THƯỞNG</th>
-                                <th>THỜI GIAN</th>
-                                <th>SAO KÊ</th>
-                                <th>GHI CHÚ</th>
-                            </tr>
-                            </thead>
-                            <tbody id="tableHistory">
-                            {{#each userHistories}}
+                    <div class="dashbox__table-wrap dashbox__table-wrap-win-games" data-scrollbar="true" tabindex="-1"
+                         style="overflow: hidden; outline: none;">
+                        <div class="scroll-content">
+                            <table class="dashbox__table">
+                                <thead>
                                 <tr>
-                                    <td>{{this.gameType}}</td>
-                                    <td>
-                                        <div class="dashbox__table-text">
-                                        <code>{{this.comment}}</code>
-                                        </div>
-                                    </td>
-                                    <td>{{this.transId}}</td>
-                                    <td>{{ numberFormat this.amount}}</td>
-                                    <td>
-                                        <div class="dashbox__table-text"><span
-                                                class="gstatus {{this.result}}">{{uppercase this.result}}</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        {{{historyPaid this.result this.paid}}}
-                                    </td>
-
-                                    <td>{{ formatDate this.createdAt 'HH:mm:ss DD-MM-YYYY' }}</td>
-                                    <td>
-                                        {{#if this.isCheck}}
-                                            <div class="dashbox__table-text">
-                                                <button type="button" data-bs-toggle="modal"
-                                                        data-content="{{this.description}}"
-                                                        class="catalog__btn catalog__btn--view show-notes"
-                                                        data-bs-target="#modal-notes">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                                        <path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"></path>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        {{/if}}
-                                    </td>
-                                    <td>
-                                        {{#if this.description}}
-                                        <div class="dashbox__table-text">
-                                            <button type="button" data-bs-toggle="modal"
-                                                    data-content="{{this.description}}"
-                                                    class="catalog__btn catalog__btn--view show-notes"
-                                                    data-bs-target="#modal-notes">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                                    <path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"></path>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                        {{/if}}
-                                    </td>
+                                    <th>NICKNAME</th>
+                                    <th>TIỀN CƯỢC</th>
+                                    <th>TIỀN NHẬN</th>
+                                    <th>TRÒ CHƠI</th>
+                                    <th>ĐÃ CHỌN</th>
+                                    <th>KẾT QUẢ</th>
+                                    <th>THỜI GIAN</th>
                                 </tr>
-                            {{/each}}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                {{#each list}}
+                                    <tr>
+                                        <td>
+                                            <div class="dashbox__table-text">{{ this.username }}</div>
+                                        </td>
+                                        <td>
+                                            <div class="dashbox__table-text">{{ numberFormat this.amount }}</div>
+                                        </td>
+                                        <td>
+                                            <div class="dashbox__table-text">{{ numberFormat this.bonus }}</div>
+                                        </td>
+                                        <td>
+                                            <div class="dashbox__table-text"><span>{{ this.gameType }}</span></div>
+                                        </td>
+                                        <td>
+                                            <div class="dashbox__table-text"><code>{{ this.comment }}</code></div>
+                                        </td>
+                                        <td>
+                                            <div class="dashbox__table-text"><span class="gstatus win">WIN</span></div>
+                                        </td>
+                                        <td>
+                                            <div class="dashbox__table-text">{{ this.time }}</div>
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="scrollbar-track scrollbar-track-x show" style="display: none;">
+                            <div class="scrollbar-thumb scrollbar-thumb-x"
+                                 style="width: 709px; transform: translate3d(0px, 0px, 0px);"></div>
+                        </div>
+                        <div class="scrollbar-track scrollbar-track-y show" style="display: none;">
+                            <div class="scrollbar-thumb scrollbar-thumb-y"
+                                 style="height: 377px; transform: translate3d(0px, 0px, 0px);"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-            {{/if}}
-            <div class="col-12" id="recently-win-game"><div class="dashbox">
-                <div class="dashbox__title">
-                    <h3>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
-                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"></path>
-                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"></path>
-                        </svg> LỊCH SỬ THAM GIA
-                    </h3>
-                </div>
-                <div class="dashbox__table-wrap dashbox__table-wrap-win-games" data-scrollbar="true" tabindex="-1" style="overflow: hidden; outline: none;"><div class="scroll-content">
-                    <table class="dashbox__table">
-                        <thead>
-                        <tr>
-                            <th>NICKNAME</th>
-                            <th>TIỀN CƯỢC</th>
-                            <th>TIỀN NHẬN</th>
-                            <th>TRÒ CHƠI</th>
-                            <th>ĐÃ CHỌN</th>
-                            <th>KẾT QUẢ</th>
-                            <th>THỜI GIAN</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {{#each list}}
-                        <tr>
-                            <td><div class="dashbox__table-text">{{ this.username }}</div></td>
-                            <td><div class="dashbox__table-text">{{ numberFormat this.amount }}</div></td>
-                            <td><div class="dashbox__table-text">{{ numberFormat this.bonus }}</div></td>
-                            <td><div class="dashbox__table-text"><span>{{ this.gameType }}</span></div></td>
-                            <td><div class="dashbox__table-text"><code>{{ this.comment }}</code></div></td>
-                            <td><div class="dashbox__table-text"><span class="gstatus win">WIN</span></div></td>
-                            <td><div class="dashbox__table-text">{{ this.time }}</div></td>
-                        </tr>
-                        {{/each}}
-                        </tbody>
-                    </table>
-                </div><div class="scrollbar-track scrollbar-track-x show" style="display: none;"><div class="scrollbar-thumb scrollbar-thumb-x" style="width: 709px; transform: translate3d(0px, 0px, 0px);"></div></div><div class="scrollbar-track scrollbar-track-y show" style="display: none;"><div class="scrollbar-thumb scrollbar-thumb-y" style="height: 377px; transform: translate3d(0px, 0px, 0px);"></div></div></div>
-            </div></div>
             <!-- end dashbox -->
             <!-- dashbox -->
             <div class="col-12 col-xl-6">
                 <div class="dashbox top-week">
                     <div class="dashbox__title">
                         <h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-award-fill" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-award-fill" viewBox="0 0 16 16">
                                 <path d="m8 0 1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864 8 0z"></path>
                                 <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z"></path>
-                            </svg> ĐẠI GIA TUẦN
+                            </svg>
+                            ĐẠI GIA TUẦN
                         </h3>
                     </div>
 
@@ -251,7 +293,7 @@
                         </table>
                         <div class="text-center mt-4">
                             <p>
-                                - PHẦN THƯỞNG TOP SẼ ĐƯỢC TRAO VÀO 0:00 THỨ 2 TUẦN TIẾP THEO.
+                                - PHẦN THƯỞNG TOP SẼ ĐƯỢC TRAO VÀO 23:59 CUỐI TUẦN .
                             </p>
                         </div>
                     </div>
@@ -263,13 +305,29 @@
                 <div class="dashbox ongoing-events">
                     <div class="dashbox__title">
                         <h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M13 2.5a1.5 1.5 0 0 1 3 0v11a1.5 1.5 0 0 1-3 0v-.214c-2.162-1.241-4.49-1.843-6.912-2.083l.405 2.712A1 1 0 0 1 5.51 15.1h-.548a1 1 0 0 1-.916-.599l-1.85-3.49a68.14 68.14 0 0 0-.202-.003A2.014 2.014 0 0 1 0 9V7a2.02 2.02 0 0 1 1.992-2.013 74.663 74.663 0 0 0 2.483-.075c3.043-.154 6.148-.849 8.525-2.199V2.5zm1 0v11a.5.5 0 0 0 1 0v-11a.5.5 0 0 0-1 0zm-1 1.35c-2.344 1.205-5.209 1.842-8 2.033v4.233c.18.01.359.022.537.036 2.568.189 5.093.744 7.463 1.993V3.85zm-9 6.215v-4.13a95.09 95.09 0 0 1-1.992.052A1.02 1.02 0 0 0 1 7v2c0 .55.448 1.002 1.006 1.009A60.49 60.49 0 0 1 4 10.065zm-.657.975 1.609 3.037.01.024h.548l-.002-.014-.443-2.966a68.019 68.019 0 0 0-1.722-.082z" />
-                            </svg> SỰ KIỆN ĐANG DIỄN RA
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 viewBox="0 0 16 16">
+                                <path d="M13 2.5a1.5 1.5 0 0 1 3 0v11a1.5 1.5 0 0 1-3 0v-.214c-2.162-1.241-4.49-1.843-6.912-2.083l.405 2.712A1 1 0 0 1 5.51 15.1h-.548a1 1 0 0 1-.916-.599l-1.85-3.49a68.14 68.14 0 0 0-.202-.003A2.014 2.014 0 0 1 0 9V7a2.02 2.02 0 0 1 1.992-2.013 74.663 74.663 0 0 0 2.483-.075c3.043-.154 6.148-.849 8.525-2.199V2.5zm1 0v11a.5.5 0 0 0 1 0v-11a.5.5 0 0 0-1 0zm-1 1.35c-2.344 1.205-5.209 1.842-8 2.033v4.233c.18.01.359.022.537.036 2.568.189 5.093.744 7.463 1.993V3.85zm-9 6.215v-4.13a95.09 95.09 0 0 1-1.992.052A1.02 1.02 0 0 0 1 7v2c0 .55.448 1.002 1.006 1.009A60.49 60.49 0 0 1 4 10.065zm-.657.975 1.609 3.037.01.024h.548l-.002-.014-.443-2.966a68.019 68.019 0 0 0-1.722-.082z"/>
+                            </svg>
+                            SỰ KIỆN ĐANG DIỄN RA
                         </h3>
                     </div>
                     <div class="dashbox__table-wrap dashbox__table-wrap--4">
-                        {{ settings.notification.event }}
+                        <p><a href="https://t.me/+xfiT88Y8-JE2MTc1">[HOÀN BILL]</a> HOÀN TIỀN BILL ĐẦU NGÀY THUA TỪ 50K
+                            LÊN TỚI 15% .</p>
+                        <p><a href="/refunds">[HOÀN CƯỢC LỖI]</a> HOÀN CƯỢC BILL SAI NỘI DUNG 90%, HOÀN CƯỢC SAI HẠN MỨC
+                            100% (Nếu Thắng).</p>
+                        <p><a href="/">[CHUỖI CHƯỢC NGÀY]</a> HOÀN CƯỢC BILL CHUỖI THẮNG VÀ THUA LIÊN TIẾP
+                            TỈ LỆ CỰC CAO.</p>
+<!--                        <p><a href="/fans">[FAN MIỄN PHÍ]</a> NHẬN TRÊN 200K HÀNG NGÀY KHI TRỞ THÀNH FAN CHẴN LẺ MÀ-->
+<!--                            KHÔNG PHẢI CHƠI.</p>-->
+<!--                        <p><a href="/jackpots">[NỔ HŨ]</a> THAM GIA NỔ HŨ CHỈ MẤT 2% BILL CHIẾN THẮNG</p>-->
+<!--                        <p><a href="/referrals">[CỘNG TÁC VIÊN]</a> GIỚI THIỆU NGƯỜI CHƠI MỚI, THU NHẬP KHÔNG GIỚI HẠN.-->
+<!--                        </p>-->
+                        <p><a href="/missions">[NHIỆM VỤ NGÀY]</a> CHƠI CÀNG NHIỀU, NHẬN THƯỞNG CÀNG KHỦNG.</p>
+                        <p><a href="/wheel">[VÒNG QUAY MAY MAN]</a> QUAY TAY CÀNG NHIỀU, NỔ HŨ CÀNG NHIỀU (SUPBANK TRÍCH 0.2 - TỪ 50K TIỀN THẮNG VÀO ĐỔI ĐIỂM SUPBANK PHỤC VỤ AE CHƠI HŨ ).</p>
+                        <p><a href="/wheel">[SỰ KIỆN LIÊN QUÂN]</a> TỔ CHỨC VÀO T6 HÀNG TUẦN TOP1 NHẬN 500K, TOP2 NHẬN 200K.</p>
+                        <p><a href="https//t.me/sukaxitu">[ĐẠI LÝ]</a> SUPBANK HỖ TRỢ ĐẠI LÝ ÔM.</p>
                     </div>
                 </div>
             </div>
@@ -279,53 +337,70 @@
                 <div class="dashbox play-rules">
                     <div class="dashbox__title">
                         <h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-wide-connected" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-gear-wide-connected" viewBox="0 0 16 16">
                                 <path d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434l.071-.286zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5zm0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78h4.723zM5.048 3.967c-.03.021-.058.043-.087.065l.087-.065zm-.431.355A4.984 4.984 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8 4.617 4.322zm.344 7.646.087.065-.087-.065z"></path>
-                            </svg> QUY ĐỊNH LUẬT CHƠI
+                            </svg>
+                            QUY ĐỊNH LUẬT CHƠI
                         </h3>
                     </div>
 
                     <div class="dashbox__table-wrap dashbox__table-wrap--4">
                         <p>
-                            1. HỆ THỐNG CHẴN LẺ BANK TÍNH THEO KẾT QUẢ MÃ GIAO DỊCH CỦA BẠN NẾU CHUYỂN KHOẢN CÙNG NGÂN HÀNG.
+                            1. HỆ THỐNG CHẴN LẺ BANK TÍNH THEO KẾT QUẢ MÃ GIAO DỊCH CỦA BẠN NẾU CHUYỂN KHOẢN CÙNG NGÂN
+                            HÀNG.
                         </p>
                         <p>
-                            2. RIÊNG VCB SẼ TÍNH KẾT QUẢ LÀ SỐ GIAO DỊCH CỘNG VỚI MÃ GIAO DỊCH. CÙNG NGÂN PHẢI CHUYỂN TỪ APP VCB DIGIBANK NẾU KHÔNG SẼ KHÔNG ĐƯỢC HOÀN. NẾU GẶP THÔNG BÁO GIAO DỊCH KHÔNG HỢP LỆ. VUI LÒNG KHÔNG CK THÊM NẾU KHÔNG SẼ KHÔNG ĐƯỢC HOÀN TRẢ.
+                            2. RIÊNG VCB SẼ TÍNH KẾT QUẢ LÀ SỐ GIAO DỊCH CỘNG VỚI MÃ GIAO DỊCH. CÙNG NGÂN PHẢI CHUYỂN TỪ
+                            APP VCB DIGIBANK NẾU KHÔNG SẼ KHÔNG ĐƯỢC HOÀN. NẾU GẶP THÔNG BÁO GIAO DỊCH KHÔNG HỢP LỆ. VUI
+                            LÒNG KHÔNG CK THÊM NẾU KHÔNG SẼ KHÔNG ĐƯỢC HOÀN TRẢ.
                         </p>
                         <p>
-                            3. HỆ THÔNG SỬ DỤNG MÃ GIAO DỊCH CỦA BANK NHẬN ĐỂ TÍNH KẾT QUẢ TRÒ CHƠI NẾU BẠN CHUYỂN KHOẢN LIÊN NGÂN HÀNG.
+                            3. HỆ THÔNG SỬ DỤNG MÃ GIAO DỊCH CỦA BANK NHẬN ĐỂ TÍNH KẾT QUẢ TRÒ CHƠI NẾU BẠN CHUYỂN KHOẢN
+                            LIÊN NGÂN HÀNG.
                         </p>
                         <p>
-                            4. CHUYỂN LIÊN BANK NỘI DUNG CÓ THỂ BỊ NGÂN HÀNG THÊM THẮT HOẶC THAY ĐỔI. HT TÍNH THEO NỘI DUNG BANK HT NHẬN ĐƯỢC.
+                            4. CHUYỂN LIÊN BANK NỘI DUNG CÓ THỂ BỊ NGÂN HÀNG THÊM THẮT HOẶC THAY ĐỔI. HT TÍNH THEO NỘI
+                            DUNG BANK HT NHẬN ĐƯỢC.
                         </p>
                         <p>
-                            5. ĐỐI VỚI CÁC BANK CÓ TÊN KẾT THÚC DẠNG (MB/TCB/OK) THÌ NGƯỜI CHƠI CÓ THỂ SỬ DỤNG MB/TCB ĐỂ CHƠI VỚI KẾT QUẢ TÍNH NHƯ SAU:
-                            TCB TÍNH BẰNG MÃ GIAO DỊCH CỦA BẠN, MB SẼ TÍNH BẰNG MÃ CUỐI Ở THÔNG BÁO BIẾN ĐỘNG SỐ DƯ CỦA BẠN NÊN HOÀN TOÀN XANH CHÍN YÊN TÂM.
-                            CÓ MỘT SỐ TRƯỜNG HỢP HIẾM HOI MB KHÔNG GỬI MÃ THÔNG BÁO VỀ BIDV, HT SẼ TÍNH THEO MÃ GD BIDV. BẠN CÓ THỂ XEM SAO KÊ HOẶC YÊU CẦU VIDEO NẾU CẦN THIẾT.
+                            5. ĐỐI VỚI CÁC BANK CÓ TÊN KẾT THÚC DẠNG (MB/TCB/OK) THÌ NGƯỜI CHƠI CÓ THỂ SỬ DỤNG MB/TCB ĐỂ
+                            CHƠI VỚI KẾT QUẢ TÍNH NHƯ SAU:
+                            TCB TÍNH BẰNG MÃ GIAO DỊCH CỦA BẠN, MB SẼ TÍNH BẰNG MÃ CUỐI Ở THÔNG BÁO BIẾN ĐỘNG SỐ DƯ CỦA
+                            BẠN NÊN HOÀN TOÀN XANH CHÍN YÊN TÂM.
+                            CÓ MỘT SỐ TRƯỜNG HỢP HIẾM HOI MB KHÔNG GỬI MÃ THÔNG BÁO VỀ BIDV, HT SẼ TÍNH THEO MÃ GD BIDV.
+                            BẠN CÓ THỂ XEM SAO KÊ HOẶC YÊU CẦU VIDEO NẾU CẦN THIẾT.
                         </p>
                         <p>
-                            6. HỆ THỐNG NGHIÊM CẤM NGƯỜI CHƠI SỬ DỤNG NHIỀU TÀI KHOẢN (CLONE). BẠN SẼ KHÔNG ĐƯỢC THANH TOÁN NẾU VI PHẠM. NGOÀI RA LẠM DỤNG/CHEAT CŨNG SẼ KHÔNG ĐƯỢC THANH TOÁN.
+                            6. HỆ THỐNG NGHIÊM CẤM NGƯỜI CHƠI SỬ DỤNG NHIỀU TÀI KHOẢN (CLONE). BẠN SẼ KHÔNG ĐƯỢC THANH
+                            TOÁN NẾU VI PHẠM. NGOÀI RA LẠM DỤNG/CHEAT CŨNG SẼ KHÔNG ĐƯỢC THANH TOÁN.
                         </p>
                         <p>
-                            7. HỆ THỐNG SẼ TỰ ĐỘNG ĐỔI BANK LIÊN TỤC, TRƯỚC KHI CHƠI KHÁCH HÀNG VUI LÒNG LÊN WEB TẢI LẠI TRANG ĐỂ CẬP NHẬT. NẾU CK VÀO SỐ OFF SẼ KHÔNG ĐƯỢC HOÀN TIỀN.
+                            7. HỆ THỐNG SẼ TỰ ĐỘNG ĐỔI BANK LIÊN TỤC, TRƯỚC KHI CHƠI KHÁCH HÀNG VUI LÒNG LÊN WEB TẢI LẠI
+                            TRANG ĐỂ CẬP NHẬT. NẾU CK VÀO SỐ OFF SẼ KHÔNG ĐƯỢC HOÀN TIỀN.
                         </p>
                         <p>
                             8. HỆ THỐNG TRÍCH 1% TIỀN CƯỢC GIAO DỊCH WIN CHO VÀO HŨ JACKPOT.
                         </p>
                         <p>
-                            9. ĐỐI VỚI MOMO MỖI LẦN CHUYỂN KHOẢN CÁC BẠN CẦN LẤY LẠI QRCODE. NẾU CK VÀO SỐ OFF HOẶC TT QUA VÍ TRẢ SAU SẼ KHÔNG ĐƯỢC HOÀN TIỀN.
+                            9. ĐỐI VỚI MOMO MỖI LẦN CHUYỂN KHOẢN CÁC BẠN CẦN LẤY LẠI QRCODE. NẾU CK VÀO SỐ OFF HOẶC TT
+                            QUA VÍ TRẢ SAU SẼ KHÔNG ĐƯỢC HOÀN TIỀN.
                         </p>
                         <p>
-                            10. ĐỐI VỚI NGƯỜI CHƠI SỬ DỤNG TÀI KHOẢN MOMO ĐỂ CHƠI. TÊN TÀI KHOẢN NHẬN TIỀN CỦA BẠN VÀ TÊN TÀI KHOẢN MOMO CHUYỂN TIỀN CHƠI PHẢI TRÙNG NHAU, NẾU KHÔNG HT SẼ KHÔNG GHI NHẬN. BẠN SẼ MẤT TIỀN MÀ KHÔNG ĐƯỢC HOÀN LẠI.
+                            10. ĐỐI VỚI NGƯỜI CHƠI SỬ DỤNG TÀI KHOẢN MOMO ĐỂ CHƠI. TÊN TÀI KHOẢN NHẬN TIỀN CỦA BẠN VÀ
+                            TÊN TÀI KHOẢN MOMO CHUYỂN TIỀN CHƠI PHẢI TRÙNG NHAU, NẾU KHÔNG HT SẼ KHÔNG GHI NHẬN. BẠN SẼ
+                            MẤT TIỀN MÀ KHÔNG ĐƯỢC HOÀN LẠI.
                         </p>
                         <p>
                             11. CHUYỂN KHOẢN SAI NỘI DUNG/HẠN MỨC/TÀI KHOẢN BẢO TRÌ SẼ KHÔNG ĐƯỢC HOÀN TIỀN.
                         </p>
                         <p>
-                            12. BẠN CẦN TRUY CẬP LẠI WEB NẾU QUÁ 12H KHÔNG CÓ HOẠT ĐỘNG NÀO. NẾU KHÔNG HT SẼ KHÔNG TÍNH NỘI DUNG CỦA BẠN.
+                            12. BẠN CẦN TRUY CẬP LẠI WEB NẾU QUÁ 12H KHÔNG CÓ HOẠT ĐỘNG NÀO. NẾU KHÔNG HT SẼ KHÔNG TÍNH
+                            NỘI DUNG CỦA BẠN.
                         </p>
                         <p>
-                            13. ĐỐI VỚI MỖI NGƯỜI CHƠI SẼ CÓ THỂ CÓ TỶ LỆ CHIẾT KHẤU RIÊNG CỦA NPH DÀNH CHO NGƯỜI CHƠI TRÊN CÁC GAME.
+                            13. ĐỐI VỚI MỖI NGƯỜI CHƠI SẼ CÓ THỂ CÓ TỶ LỆ CHIẾT KHẤU RIÊNG CỦA NPH DÀNH CHO NGƯỜI CHƠI
+                            TRÊN CÁC GAME.
                         </p>
                     </div>
                 </div>
@@ -336,24 +411,42 @@
                 <div class="dashbox play-rules">
                     <div class="dashbox__title">
                         <h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-wide-connected" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-gear-wide-connected" viewBox="0 0 16 16">
                                 <path d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434l.071-.286zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5zm0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78h4.723zM5.048 3.967c-.03.021-.058.043-.087.065l.087-.065zm-.431.355A4.984 4.984 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8 4.617 4.322zm.344 7.646.087.065-.087-.065z"></path>
-                            </svg> CHẴN LẺ BANK LÀ GÌ?
+                            </svg>
+                            CHẴN LẺ BANK LÀ GÌ?
                         </h3>
                     </div>
 
                     <div class="dashbox__table-wrap dashbox__table-wrap--4">
-                        <p>Chẵn lẻ bank là một trò chơi xanh chín, dựa vào mã giao dịch của ngân hàng MB Bank, Vietcombank (VCB), Techcombank (TCB), Vietinbank (VTB), BIDV, VPB Bank, ACB, Agribank, TPBANK (TPB), Sacombank (STB), SHB và nhiều ngân hàng khác. Hiện nay KUBANK.GG đang là hệ thống bank chẵn lẻ, chẵn lẻ zalopay, chẵn lẻ momo thanh toán tự động chỉ trong 3 giây và uy tín nhất hiện tại, Hỗ trợ khách hàng 24/7</p>
-                        <p>Chẵn lẻ là một trò chơi phổ biến, thường được chơi trong các dịp tết đầu năm, lễ hội hoặc tụ tập bạn bè. Hiện nay, Chẵn Lẻ Bank đã được phát triển thành một trò chơi trực tuyến trên ứng dụng thanh toán di động Bank.</p>
-                        <p>Chẵn lẻ trên Bank có cách chơi đơn giản và dễ hiểu. Người chơi chỉ cần chọn cược vào chẵn hoặc lẻ, hoặc cược vào một số lẻ nhất định từ 1 đến 9. Kết quả của trò chơi sẽ được xác định dựa trên số cuối của mã giao dịch chuyển tiền qua ứng dụng Bank.</p>
-                        <p>Ngoài ra Chẵn Lẻ Bank còn phát triển thêm rất nhiều loại khác như Tài Xỉu, Xiên, Đoán Số háy Xổ Số Miền Bắc ...</p>
-                        <p>Chẵn lẻ trên Bank có nhiều ưu điểm vượt trội so với các trò chơi khác. Đầu tiên, trò chơi này hoàn toàn xanh chín do mã giao dịch ngân hàng là không thể thay đổi và can thiệp. Thêm vào đó người chơi có thể tham gia trò chơi mọi lúc mọi nơi chỉ cần có kết nối Internet. Thứ hai, không hề có chế độ nạp rút như các game khác. Tiền được chuyển thẳng về Tài Khoản Ngân Hàng của bạn ngay sau khi bạn Thắng.</p>
-                        <p>Lưu Ý: Hiện nay do tính phổ biến của trò chơi có rất nhiều đối tượng lừa đảo, scam giả mạo để lừa người chơi. Hãy cẩn thận và chỉ chơi trên website của chúng tôi để đảm bảo tính an toàn và xanh chín.</p>
+                        <p>Chẵn lẻ bank là một trò chơi xanh chín, dựa vào mã giao dịch của ngân hàng MB Bank,
+                            Vietcombank (VCB), Techcombank (TCB), Vietinbank (VTB), BIDV, VPB Bank, ACB, Agribank,
+                            TPBANK (TPB), Sacombank (STB), SHB và nhiều ngân hàng khác. Hiện nay KUBANK.GG đang là hệ
+                            thống bank chẵn lẻ, chẵn lẻ zalopay, chẵn lẻ momo thanh toán tự động chỉ trong 3 giây và uy
+                            tín nhất hiện tại, Hỗ trợ khách hàng 24/7</p>
+                        <p>Chẵn lẻ là một trò chơi phổ biến, thường được chơi trong các dịp tết đầu năm, lễ hội hoặc tụ
+                            tập bạn bè. Hiện nay, Chẵn Lẻ Bank đã được phát triển thành một trò chơi trực tuyến trên ứng
+                            dụng thanh toán di động Bank.</p>
+                        <p>Chẵn lẻ trên Bank có cách chơi đơn giản và dễ hiểu. Người chơi chỉ cần chọn cược vào chẵn
+                            hoặc lẻ, hoặc cược vào một số lẻ nhất định từ 1 đến 9. Kết quả của trò chơi sẽ được xác định
+                            dựa trên số cuối của mã giao dịch chuyển tiền qua ứng dụng Bank.</p>
+                        <p>Ngoài ra Chẵn Lẻ Bank còn phát triển thêm rất nhiều loại khác như Tài Xỉu, Xiên, Đoán Số háy
+                            Xổ Số Miền Bắc ...</p>
+                        <p>Chẵn lẻ trên Bank có nhiều ưu điểm vượt trội so với các trò chơi khác. Đầu tiên, trò chơi này
+                            hoàn toàn xanh chín do mã giao dịch ngân hàng là không thể thay đổi và can thiệp. Thêm vào
+                            đó người chơi có thể tham gia trò chơi mọi lúc mọi nơi chỉ cần có kết nối Internet. Thứ hai,
+                            không hề có chế độ nạp rút như các game khác. Tiền được chuyển thẳng về Tài Khoản Ngân Hàng
+                            của bạn ngay sau khi bạn Thắng.</p>
+                        <p>Lưu Ý: Hiện nay do tính phổ biến của trò chơi có rất nhiều đối tượng lừa đảo, scam giả mạo để
+                            lừa người chơi. Hãy cẩn thận và chỉ chơi trên website của chúng tôi để đảm bảo tính an toàn
+                            và xanh chín.</p>
                         <p>Các lưu ý khi chơi chẵn lẻ Bank được chúng tôi khuyến nghị:</p>
                         <p> - Đọc rõ luật chơi và các chú ý trước khi bắt đầu đặt cược.</p>
                         <p> - Khởi đầu với một số tiền hợp lý, không nên vội vàng dẫn tới cháy tài khoản.</p>
                         <p> - Đặt cược một cách thông minh, không lên tất tay vào một lệnh.</p>
-                        <p> - Không nên lạm dung hoặc tìm cách lợi dụng lỗi của hệ thống bạn có thể bị Block mà không được thanh toán.</p>
+                        <p> - Không nên lạm dung hoặc tìm cách lợi dụng lỗi của hệ thống bạn có thể bị Block mà không
+                            được thanh toán.</p>
                         <p> - Cuối cùng chúc bạn may mắn và kiếm được nhiều tiền thông qua trò chơi Chẵn Lẻ Bank!</p>
 
                     </div>
@@ -362,7 +455,8 @@
             <!-- end dashbox -->
             <div class="toast toast-ctv">
                 <div class="toast-body text-center">
-                    <p>LOA LOA!!! NHẬN <span class="code-num">HOÀN CƯỢC</span> LÊN TỚI <span class="code-num">60% BẤT KỂ THẮNG THUA</span>. ƯU ĐÃI CHỈ DÀNH RIÊNG CHO BẠN TRONG NGÀY HÔM NAY!!!</p>
+                    <p>LOA LOA!!! NHẬN <span class="code-num">HOÀN CƯỢC</span> LÊN TỚI <span class="code-num">60% BẤT KỂ THẮNG THUA</span>.
+                        ƯU ĐÃI CHỈ DÀNH RIÊNG CHO BẠN TRONG NGÀY HÔM NAY!!!</p>
                     <div class="mt-3 pt-3 border-top">
                         <a href="/hoancuoc" class="lnk__btn">THAM GIA</a>
                         <button type="button" class="close-tctv">ĐÓNG</button>
@@ -380,7 +474,8 @@
                             </div>
                             <p class="comments__text"></p>
                             <div class="modal__btns">
-                                <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Đóng</span></button>
+                                <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal"
+                                        aria-label="Close"><span>Đóng</span></button>
                             </div>
                         </div>
                     </div>
@@ -401,10 +496,14 @@
                             </div>
                             <div class="text-center mt-3">
                                 <p class="qr-notes"><i>(lưu ý cần tải lại lấy qr code mỗi lần chơi)</i></p>
-                                <p class="text-center mt-2 mb-1"><button id="qr-download" class="lnk__btn" mobile-device="0">Tải QrCode về máy</button></p>
+                                <p class="text-center mt-2 mb-1">
+                                    <button id="qr-download" class="lnk__btn" mobile-device="0">Tải QrCode về máy
+                                    </button>
+                                </p>
                             </div>
                             <div class="modal__btns">
-                                <button class="modal__btn modal__btn--dismiss btn-close-qr" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Đóng</span></button>
+                                <button class="modal__btn modal__btn--dismiss btn-close-qr" type="button"
+                                        data-bs-dismiss="modal" aria-label="Close"><span>Đóng</span></button>
                             </div>
                         </div>
                     </div>
@@ -412,8 +511,8 @@
             </div>
             <!-- end view modal -->
             <div class="hidden">
-                <input type="hidden" name="Account" id="_account" />
-                <input type="hidden" name="HLog" value="" id="_hlog" />
+                <input type="hidden" name="Account" id="_account"/>
+                <input type="hidden" name="HLog" value="" id="_hlog"/>
             </div>
 
         </div>
