@@ -179,7 +179,7 @@
                                                         <span data-bs-html="true">{{{ historyStatus
                                                                 this.result }}}</span>
                                                     </span>
-                                                    <span data-bs-table="edit" data-bs-value="{{ this.status }}">
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.result }}">
                                                         <select class="form-control ih-medium ip-light mb-2"
                                                                 data-bs-edit="true">
                                                             <option value="wait">Đợi Xử Lý</option>
@@ -202,11 +202,11 @@
                                                     </span>
                                                 </td>
                                                 <td data-bs-name="paid" data-bs-hasEdit="true">
-                                                    <span data-bs-table="html" data-bs-value="{{ this.result }}">
-                                                        <span data-bs-html="true">{{{ historyStatus
-                                                                this.result }}}</span>
+                                                    <span data-bs-table="html" data-bs-value="{{ this.paid }}">
+                                                        <span data-bs-html="true">{{{ historyPaidAdmin
+                                                                this.paid }}}</span>
                                                     </span>
-                                                    <span data-bs-table="edit" data-bs-value="{{ this.status }}">
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.paid }}">
                                                         <select class="form-control ih-medium ip-light mb-2"
                                                                 data-bs-edit="true">
                                                             <option value="wait">Đợi chuyển</option>

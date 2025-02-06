@@ -274,6 +274,20 @@ module.exports = {
 
         return html;
     },
+    historyPaidAdmin: (status) => {
+        let html;
+
+        switch (status) {
+            case 'wait':
+                html = `<span class="badges badge-info">Đợi Chuyển</span>`;
+                break;
+            case 'sent':
+                html = `<span class="badges badge-success">Đã chuyển</span>`;
+                break;
+        }
+
+        return html;
+    },
     bankImage: (bankType) => {
         let src;
 
