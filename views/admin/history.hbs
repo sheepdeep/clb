@@ -114,7 +114,8 @@
                                             <th>Tiền Nhận {{{ tableSort originalUrl.search 'amount' _sort }}}</th>
                                             <th>Nội Dung {{{ tableSort originalUrl.search 'comment' _sort }}}</th>
                                             <th>Tiền Thưởng {{{ tableSort originalUrl.search 'bonus' _sort }}}</th>
-                                            <th>Trạng Thái {{{ tableSort originalUrl.search 'status' _sort }}}</th>
+                                            <th>Trạng Thái {{{ tableSort originalUrl.search 'result' _sort }}}</th>
+                                            <th>Trả thưởng {{{ tableSort originalUrl.search 'paid' _sort }}}</th>
                                             <th>Mô Tả</th>
                                             <th>Người Chuyển</th>
                                             <th>Người Nhận</th>
@@ -197,6 +198,20 @@
                                                             <option value="limitPhone">Giới Hạn Số</option>
                                                             <option value="errorPhone">Lỗi Số</option>
                                                             <option value="phoneBlock">Đã Chặn Số</option>
+                                                        </select>
+                                                    </span>
+                                                </td>
+                                                <td data-bs-name="paid" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.result }}">
+                                                        <span data-bs-html="true">{{{ historyStatus
+                                                                this.result }}}</span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.status }}">
+                                                        <select class="form-control ih-medium ip-light mb-2"
+                                                                data-bs-edit="true">
+                                                            <option value="wait">Đợi chuyển</option>
+                                                            <option value="refund">Hoàn tiền</option>
+                                                            <option value="sent">Đã chuyển</option>
                                                         </select>
                                                     </span>
                                                 </td>

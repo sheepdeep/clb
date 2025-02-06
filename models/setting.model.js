@@ -365,6 +365,9 @@ const settingSchema = new mongoose.Schema({
             type: Number,
             default: 10000
         }
+    },
+    fakeUser: {
+        data: Object
     }
 }, {
     timestamps: true

@@ -245,6 +245,13 @@ const cronController = {
         } catch (e) {
             console.log(e);
         }
+    },
+    fakeHistory: async (req, res, next) => {
+        try {
+            
+        } catch (e) {
+            
+        }
     }
 }
 

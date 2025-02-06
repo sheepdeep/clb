@@ -871,22 +871,20 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <label for="" class="il-gray fs-14 fw-500 mb-10">* VÒNG QUAY [EVENT]</label>
+                                <label for="" class="il-gray fs-14 fw-500 mb-10">* FAKE USER [BOT]</label>
                                 <div class="table-responsive">
                                     <table class="table mb-3 table-bordered text-nowrap text-center">
                                         <thead>
                                         <tr class="userDatatable-header">
-                                            <th><i class="fas fa-plus-circle hand create" data-value="gift"
-                                                   data-parent="wheel-" data-child="gift"></i></th>
+                                            <th><i class="fas fa-plus-circle hand create" data-value="fakeUser"
+                                                   data-parent="fakeUser-" data-child="data"></i></th>
                                             <th>Vị Trí</th>
-                                            <th>Tỉ lệ</th>
-                                            <th>Tên thưởng</th>
-                                            <th>Tiền Thưởng</th>
+                                            <th>Tên đăng nhập</th>
                                         </tr>
                                         </thead>
-                                        <tbody class="dataEnz" data-bs-parent="wheel-" data-bs-child="gift"
+                                        <tbody class="dataEnz" data-bs-parent="fakeUser-" data-bs-child="data"
                                                data-bs-position="true">
-                                        {{#each settings.wheel.gift}}
+                                        {{#each settings.fakeUser.data}}
                                             <tr>
                                                 <td>
                                                     <div class="table-actions hand">
@@ -896,21 +894,10 @@
                                                                 class="fa fa-trash" aria-hidden="true"></i></span>
                                                     </div>
                                                 </td>
-                                                <td data-bs-key="pos" data-bs-value="{{ this.pos }}"
-                                                    data-bs-type="number" data-bs-more="numberFormat">{{
-                                                this.pos }}
-                                                </td>
-                                                <td data-bs-key="ratio" data-bs-value="{{ this.ratio }}"
-                                                    data-bs-type="number" data-bs-more="numberFormat">{{
-                                                this.ratio }}
-                                                </td>
-                                                <td data-bs-key="name" data-bs-value="{{ this.name }}"
-                                                    data-bs-type="text" data-bs-more="numberFormat">{{
-                                                this.name }}
-                                                </td>
-                                                <td data-bs-key="amount" data-bs-value="{{ this.amount }}"
-                                                    data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
-                                                        this.amount }}
+                                                <td data-bs-position="true">{{ sum @index 1 }}</td>
+                                                <td data-bs-key="[]" data-bs-value="{{ this }}" data-bs-type="number"
+                                                    data-bs-more="numberFormat">{{ numberFormat
+                                                        this }}
                                                 </td>
                                             </tr>
                                         {{/each}}
@@ -1474,6 +1461,9 @@
                     break;
                 case 'bonusTOP':
                     html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="[]" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
+                    break;
+                case 'fakeUser':
+                    html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="[]" data-bs-value="" data-bs-type="text" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
                     break;
                 case 'fakeData':
                     html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="phone" data-bs-value="" data-bs-type="text"><input type="text" class="form-control ih-medium ip-light"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;

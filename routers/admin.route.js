@@ -20,6 +20,7 @@ const memberController = require('../controllers/admin/member.controller');
 const utils = require('../helpers/utils.helper');
 const payController = require("../controllers/admin/pay.controller");
 const vpsController = require('../controllers/admin/vps.controller');
+const sendController = require('../controllers/admin/send.controller');
 const router = express.Router();
 
 router.get(['/', '/home', '/dashboard'], loggedInAdmin, async (req, res, next) => {
@@ -212,5 +213,9 @@ router.route('/pay-otp')
 router.route('/vps')
     .get(loggedInAdmin, tableSort, vpsController.index)
     .post(isAdmin, vpsController.run);
+
+router.route('/send-message')
+    .get(loggedInAdmin, tableSort, sendController.index)
+    .post(isAdmin, sendController.run);
 
 module.exports = router;
