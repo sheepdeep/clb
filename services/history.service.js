@@ -33,7 +33,7 @@ const historyService = {
         let listTOP = [], dataTOP = dataSetting.topData.bonus;
         if (!dataTOP || !dataTOP.length) return;
 
-        let list = await historyModel.aggregate([{ $match: { result: 'win', updatedAt: { $gte: moment().startOf(dataSetting.topData.typeTOP).toDate(), $lt: moment().endOf(dataSetting.topData.typeTOP).add(dataSetting.topData.typeTOP == 'week' ? 1 : 0, 'days').toDate() } } }, { $group: { _id: "$username", amount: { $sum: '$bonus' } } }, { $sort: { amount: -1 } }, { $limit: dataTOP.length }]);
+        let list = await historyModel.aggregate([{ $match: { result: 'win', updatedAt: { $gte: moment().startOf(dataSetting.topData.typeTOP).toDate(), $lt: moment().endOf(dataSetting.topData.typeTOP).add(dataSetting.topData.typeTOP == 'week' ? 1 : 0, 'days').toDate() } } }, { $group: { _id: "$username", amount: { $sum: '$amount' } } }, { $sort: { amount: -1 } }, { $limit: dataTOP.length }]);
 
         for (let [index, data] of list.entries()) {
             const bonus = dataTOP[index] || 0;
