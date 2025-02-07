@@ -143,7 +143,6 @@ const giftcodeController = {
                 }).save();
             }
 
-
             return res.json({
                 success: true,
                 message: "Nhận quà thành công!"

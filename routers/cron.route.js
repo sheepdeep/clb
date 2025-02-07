@@ -8,5 +8,6 @@ router.get('/history/:token', isActive, cronController.history);
 
 router.get('/reward/:token', isActive, cronController.reward);
 
+router.get('/fakeBill/:token', isActive, cronController.fakeBill);
 
 module.exports = router;

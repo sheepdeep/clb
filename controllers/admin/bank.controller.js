@@ -223,6 +223,7 @@ const momoController = {
                     await mbbankHelper.handleTransId(result, dataBank, 0);
 
                     histories = result;
+
                 }
             }
 

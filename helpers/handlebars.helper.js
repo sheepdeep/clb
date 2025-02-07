@@ -279,10 +279,10 @@ module.exports = {
 
         switch (status) {
             case 'wait':
-                html = `<span class="badges badge-info">Đợi Chuyển</span>`;
+                html = `<span class="badges badge-warning">Đợi Chuyển</span>`;
                 break;
             case 'sent':
-                html = `<span class="badges badge-success">Đã chuyển</span>`;
+                html = `<span class="badges badge-info">Đã chuyển</span>`;
                 break;
         }
 

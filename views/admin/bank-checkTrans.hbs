@@ -65,6 +65,7 @@
                                             </th>
                                             <th>Số tài khoản</th>
                                             <th>Loại</th>
+                                            <th>Số tiền</th>
                                             <th>Số Dư Cuối</th>
                                             <th>Mã giao dịch</th>
                                             <th>Nội dung</th>
@@ -110,8 +111,15 @@
                                                         <span class="badge btn-danger">Trù tiền</span>
                                                     {{/ifCond}}
                                                 </td>
-                                                <td>{{ this.refNo }}</td>
+                                                <td>
+                                                    {{#ifCond this.creditAmount '>' 0}}
+                                                        <span class="text-success">{{ numberFormat ../this.creditAmount }}</span>
+                                                    {{else}}
+                                                        <span class="text-danger">{{ numberFormat ../this.debitAmount }}</span>
+                                                    {{/ifCond}}
+                                                </td>
                                                 <td>{{ numberFormat this.availableBalance }}</td>
+                                                <td>{{ this.refNo }}</td>
                                                 <td>{{ this.description }}</td>
                                                 <td>{{ this.transactionDate }}</td>
                                             </tr>

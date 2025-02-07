@@ -23,7 +23,11 @@ const historySchema = new mongoose.Schema({
     },
     find: Boolean,
     isCheck: Boolean,
-    timeTLS: Date
+    timeTLS: Date,
+    bot: {
+        type: Boolean,
+        default: false
+    },
 }, {
     timestamps: true
 })

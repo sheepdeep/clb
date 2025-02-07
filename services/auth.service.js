@@ -1,13 +1,17 @@
 const moment = require('moment');
 const bcrypt = require('bcrypt');
 const JWT = require('jsonwebtoken')
-const { v4: uuidv4 } = require('uuid');
+const {v4: uuidv4} = require('uuid');
 const userModel = require('../models/user.model');
+const settingModel = require('../models/setting.model');
 
 const authService = {
     register: async (username, password, ip, level = 0, options) => {
         try {
-            let check = await userModel.findOne({ username });
+
+            const dataSetting = await settingModel.findOne();
+
+            let check = await userModel.findOne({username});
 
             !options && (options = {
                 editHis: Boolean(level), // cho phép chỉnh sửa lịch sử
@@ -26,6 +30,13 @@ const authService = {
             })
 
             if (check) {
+                return ({
+                    success: false,
+                    message: 'Tên đăng nhập đã tồn tại!'
+                })
+            }
+
+            if (dataSetting.fakeUser.data.includes(username)) {
                 return ({
                     success: false,
                     message: 'Tên đăng nhập đã tồn tại!'
@@ -59,7 +70,7 @@ const authService = {
     },
     login: async (username, password, ip) => {
         try {
-            let user = await userModel.findOne({ username });
+            let user = await userModel.findOne({username});
             if (!user) {
                 return ({
                     success: false,
@@ -73,10 +84,15 @@ const authService = {
                 })
             }
 
-            const token = JWT.sign({ _id: user._id, username: user.username, token: user.token, ip }, process.env.JWT_SECRET_TOKEN, {
+            const token = JWT.sign({
+                _id: user._id,
+                username: user.username,
+                token: user.token,
+                ip
+            }, process.env.JWT_SECRET_TOKEN, {
                 expiresIn: process.env.JWT_LIFE_TOKEN
             });
-            await userModel.findOneAndUpdate({ username }, { $set: { ip, lastOnline: moment().toDate() } })
+            await userModel.findOneAndUpdate({username}, {$set: {ip, lastOnline: moment().toDate()}})
 
             return ({
                 success: true,
@@ -94,7 +110,7 @@ const authService = {
     checkAuth: async (token) => {
         try {
             let user = JWT.verify(token, process.env.JWT_SECRET_TOKEN);
-            return await userModel.findOne({ _id: user._id, username: user.username }).lean();
+            return await userModel.findOne({_id: user._id, username: user.username}).lean();
         } catch (err) {
             console.log(err);
             return;
@@ -102,7 +118,7 @@ const authService = {
     },
     registerUserAdmin: async (name, username, password, ip, level = 0, options) => {
         try {
-            let check = await userModel.findOne({ username });
+            let check = await userModel.findOne({username});
 
             !options && (options = {
                 editHis: Boolean(level), // cho phép chỉnh sửa lịch sử

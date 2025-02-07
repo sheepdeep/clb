@@ -23,7 +23,7 @@ const momoService = {
     phoneRun: async (limit = 5) => await momoModel.find({ receiver: true, status: 'active', loginStatus: 'active' }).limit(limit).sort({ betMin: 'asc' }),
     limitBet: async (phone, amount) => {
         try {
-            let dataPhone = await momoModel.findOne({ phone });
+            let dataPhone = await bankModel.findOne({ phone });
 
             console.log(`${phone}: ${amount} > ${dataPhone.betMax}: ${amount > dataPhone.betMax} hoặc ${amount} < ${dataPhone.betMin}: ${amount < dataPhone.betMin}`)
 

@@ -14,6 +14,8 @@ const historyController = {
             let page = req.query.page || 1;
             let _sort = { updatedAt: 'desc' };
 
+            filters.bot = false;
+
             if (req.query?.perPage) {
                 perPage = req.query.perPage;
             }

@@ -174,7 +174,7 @@
                                                     </span>
                                                 </td>
                                                 <td>{{ numberFormat this.bonus }}đ</td>
-                                                <td data-bs-name="status" data-bs-hasEdit="true">
+                                                <td data-bs-name="result" data-bs-hasEdit="true">
                                                     <span data-bs-table="html" data-bs-value="{{ this.result }}">
                                                         <span data-bs-html="true">{{{ historyStatus
                                                                 this.result }}}</span>
@@ -183,21 +183,15 @@
                                                         <select class="form-control ih-medium ip-light mb-2"
                                                                 data-bs-edit="true">
                                                             <option value="wait">Đợi Xử Lý</option>
-                                                            <option value="transfer">Chuyển Tiền</option>
-                                                            <option value="recharge">Nạp Tiền</option>
                                                             <option value="withdraw">Rút Tiền</option>
-                                                            <option value="errorComment">Sai Nội Dung</option>
-                                                            <option value="limitRefund">Giới Hạn Hoàn</option>
                                                             <option value="limitBet">Sai Hạn Mức</option>
                                                             <option value="refund">Đã Hoàn Tiền</option>
-                                                            <option value="waitReward">Đợi Trả Thưởng</option>
-                                                            <option value="waitRefund">Đợi Hoàn Tiền</option>
                                                             <option value="win">Thắng Cược</option>
-                                                            <option value="won">Thua Cược</option>
+                                                            <option value="lose">Thua Cược</option>
                                                             <option value="errorMoney">Không Đủ Tiền</option>
-                                                            <option value="limitPhone">Giới Hạn Số</option>
-                                                            <option value="errorPhone">Lỗi Số</option>
-                                                            <option value="phoneBlock">Đã Chặn Số</option>
+                                                            <option value="phoneBlock">Đã Chặn</option>
+                                                            <option value="ok">OK</option>
+                                                            <option value="notUser">Lỗi Thành Viên</option>
                                                         </select>
                                                     </span>
                                                 </td>
@@ -244,23 +238,20 @@
                                         <ul class="dm-pagination d-flex">
                                             <li class="dm-pagination__item">
                                                 {{#paginate pagination type="previous"}}
-                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}
-                                                    page={{n}}{{/if}}"
+                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
                                                     class="dm-pagination__link pagination-control {{#if disabled}}
                                                     disabled{{/if}}">
                                                     <span class="la la-angle-left"></span>
                                                     </a>
                                                 {{/paginate}}
                                                 {{#paginate pagination type="middle" limit=pagination.limit}}
-                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}
-                                                    page={{n}}{{/if}}"
+                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
                                                     class="dm-pagination__link {{#if active}}active{{/if}}"><span
                                                         class="page-number">{{n}}</span>
                                                     </a>
                                                 {{/paginate}}
                                                 {{#paginate pagination type="next"}}
-                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}
-                                                    page={{n}}{{/if}}"
+                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
                                                     class="dm-pagination__link pagination-control {{#if disabled}}
                                                     disabled{{/if}}">
                                                     <span class="la la-angle-right"></span>
