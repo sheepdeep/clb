@@ -11,7 +11,7 @@ const memberController = {
             let filters = {};
             let threads = [];
             let _sort = { lastOnline: 'desc' };
-            res.locals._sort.column = 'lastOnline';
+            res.locals._sort.column = 'created_at';
 
             if (res.locals.profile.admin != 1) {
                 res.redirect(`../`);

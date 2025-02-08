@@ -6,11 +6,11 @@ const settingModel = require('../models/setting.model');
 const revenueService = {
     revenueBet: async (time, typeDate, username, gameType) => {
         try {
-            let filterWin = [{ $match: { result: 'win' } }, { $group: { _id: null, count: { $sum: 1 } } }]
-            let filterWon = [{ $match: { result: 'won' } }, { $group: { _id: null, count: { $sum: 1 } } }];
-            let filterWait = [{ $match: { $and: [{ $or: [{ result: 'wait' }, { result: 'waitReward' }, { result: 'waitRefund' }] }] } }, { $group: { _id: null, count: { $sum: 1 } } }];
-            let filterError = [{ $match: { $and: [{ $or: [{ result: 'errorMoney' }, { result: 'limitPhone' }, { result: 'limitBet' }, { result: 'errorComment' }, { result: 'errorPhone' }, { result: 'phoneBlock' }, { result: 'notUser'}] }] } }, { $group: { _id: null, count: { $sum: 1 } } }];
-            let filterRefund = [{ $match: { $and: [{ $or: [{ result: 'refund' }, { result: 'limitRefund' }] }] } }, { $group: { _id: null, count: { $sum: 1 } } }];
+            let filterWin = [{ $match: { result: 'win', bot: false } }, { $group: { _id: null, count: { $sum: 1 } } }]
+            let filterWon = [{ $match: { result: 'won', bot: false } }, { $group: { _id: null, count: { $sum: 1 } } }];
+            let filterWait = [{ $match: { bot: false, $and: [{ $or: [{ result: 'wait' }, { result: 'waitReward' }, { result: 'waitRefund' }] }] } }, { $group: { _id: null, count: { $sum: 1 } } }];
+            let filterError = [{ $match: { bot: false, $and: [{ $or: [{ result: 'errorMoney' }, { result: 'limitPhone' }, { result: 'limitBet' }, { result: 'errorComment' }, { result: 'errorPhone' }, { result: 'phoneBlock' }, { result: 'notUser'}] }] } }, { $group: { _id: null, count: { $sum: 1 } } }];
+            let filterRefund = [{ $match: { bot: false, $and: [{ $or: [{ result: 'refund' }, { result: 'limitRefund' }] }] } }, { $group: { _id: null, count: { $sum: 1 } } }];
 
             if (username) {
                 filterWin[0].$match.username = username;
@@ -68,7 +68,7 @@ const revenueService = {
     revenueMoney: async (time, typeDate, username) => {
         try {
 
-            let filterReceipt = [{$match: {result: { $ne: 'ok' }} },{ $group: { _id: null, amount: { $sum: '$amount' } } }];
+            let filterReceipt = [{$match: {result: { $ne: 'ok' }, bot: false} },{ $group: { _id: null, amount: { $sum: '$amount' } } }];
             let filterMinus = [{ $match: {}},{ $group: { _id: null, amount: { $sum: '$amount' } } }]
 
             if (username) {
