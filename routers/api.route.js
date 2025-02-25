@@ -20,4 +20,6 @@ router.get('/history', isActive, apiController.getHistory);
 
 router.post('/telegram/webhook', telegramController.hook);
 
+router.get('/load-choice-xsst', apiController.getGameXsst);
+
 module.exports = router;

@@ -10,7 +10,7 @@ const router = express.Router();
 const apiRoute = require('../routers/api.route');
 const adminRoute = require('../routers/admin.route');
 const authController = require('../controllers/auth.controller');
-const {isAuth, isAdmin, loggedIn} = require("../middlewares/auth.middleware");
+const {isAuth, isAdmin, loggedIn, isUser} = require("../middlewares/auth.middleware");
 const giftcodeController = require('../controllers/giftcode.controller');
 const bankModel = require("../models/bank.model");
 const xucxactgController = require('../controllers/xucxactg.controller');
@@ -20,7 +20,9 @@ const cronRoute = require('../routers/cron.route');
 const fanController = require('../controllers/fan.controller');
 const bankController = require('../controllers/bank.controller');
 const profileController = require('../controllers/profile.controller');
-const payController = require('../controllers/admin/pay.controller');
+const xssieutocController = require('../controllers/xssieutoc.controller');
+const xsmbController = require('../controllers/xsmb.controller');
+const taixiuController = require('../controllers/taixiu.controller');
 const tableSort = require("../middlewares/sort.middleware");
 const moment = require("moment/moment");
 
@@ -70,6 +72,7 @@ router.get('/', notInstalled, loggedIn, async (req, res) => {
             paid: 1,
             description: 1,
             createdAt: 1,
+            timeTLS: 1,
             isCheck: 1
         }).sort({createdAt: -1}).limit(10).lean();
     }
@@ -140,6 +143,18 @@ router.route('/lschoi')
 
 router.route('/lktelegram')
     .get([notInstalled, loggedIn], profileController.telegram);
+
+router.route('/xssieutoc')
+    .get([notInstalled, loggedIn], xssieutocController.index)
+    .post([notInstalled, isUser], xssieutocController.bet);
+
+router.route('/xsmb')
+    .get([notInstalled, loggedIn], xsmbController.index)
+    .post([notInstalled, isUser], xsmbController.bet);
+
+router.route('/phongtx')
+    .get([notInstalled, loggedIn], taixiuController.index)
+    .post([notInstalled, isUser], xsmbController.bet);
 
 router.route('/doimk')
     .get([notInstalled, loggedIn], profileController.changePass)

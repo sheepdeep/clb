@@ -63,7 +63,7 @@
             </div>
             <!-- end dashbox -->
             <!-- dashbox -->
-            <div class="col-12 col-xl-6">
+            <div id="bank-infos" class="col-12 col-xl-6">
                 <div class="dashbox play-rules">
                     <div class="dashbox__title">
                         <h3>
@@ -141,7 +141,7 @@
                                             {{{historyPaid this.result this.paid}}}
                                         </td>
 
-                                        <td>{{ formatDate this.createdAt 'HH:mm:ss DD-MM-YYYY' }}</td>
+                                        <td>{{ formatDate this.timeTLS 'DD-MM-YYYY HH:mm:ss'}}</td>
                                         <td>
                                             {{#if this.isCheck}}
                                                 <div class="dashbox__table-text">
@@ -422,7 +422,7 @@
                     <div class="dashbox__table-wrap dashbox__table-wrap--4">
                         <p>Chẵn lẻ bank là một trò chơi xanh chín, dựa vào mã giao dịch của ngân hàng MB Bank,
                             Vietcombank (VCB), Techcombank (TCB), Vietinbank (VTB), BIDV, VPB Bank, ACB, Agribank,
-                            TPBANK (TPB), Sacombank (STB), SHB và nhiều ngân hàng khác. Hiện nay KUBANK.GG đang là hệ
+                            TPBANK (TPB), Sacombank (STB), SHB và nhiều ngân hàng khác. Hiện nay SUPBANK.ME đang là hệ
                             thống bank chẵn lẻ, chẵn lẻ zalopay, chẵn lẻ momo thanh toán tự động chỉ trong 3 giây và uy
                             tín nhất hiện tại, Hỗ trợ khách hàng 24/7</p>
                         <p>Chẵn lẻ là một trò chơi phổ biến, thường được chơi trong các dịp tết đầu năm, lễ hội hoặc tụ
@@ -469,8 +469,8 @@
                     <div class="modal-content">
                         <div class="modal__content modal__content--view">
                             <div class="comments__autor">
-                                <img class="comments__avatar" src="icon/favicon.png" alt="">
-                                <span class="comments__name">KuBank Thông Báo</span>
+                                <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                                <span class="comments__name">SupBank Thông Báo</span>
                             </div>
                             <p class="comments__text"></p>
                             <div class="modal__btns">
@@ -488,8 +488,8 @@
                     <div class="modal-content">
                         <div class="modal__content modal__content--view">
                             <div class="comments__autor">
-                                <img class="comments__avatar" src="icon/favicon.png" alt="">
-                                <span class="comments__name">KuBank QR-Code</span>
+                                <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                                <span class="comments__name">SupBank QR-Code</span>
                             </div>
                             <div class="text-center" id="canvasQr">
                                 <canvas width="200" height="200"></canvas>
@@ -530,7 +530,7 @@
 <div id="ifr-bill-panel">
     <div class="bill-frame">
         <div class="bill-header">
-            <span class="header-bill-text">KUBANK SAO KÊ</span>
+            <span class="header-bill-text">SupBank SAO KÊ</span>
             <a href="javascript:void(0);" class="close-bill-frame">ĐÓNG</a>
         </div>
         <iframe id="show-bill-ifr" src="about:blank" onload="resizeIframe(this)"></iframe>

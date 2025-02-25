@@ -460,154 +460,18 @@ const apiController = {
             next(err);
         }
     },
-    refundTransId: async (req, res, next) => {
+    getGameXsst: async (req, res, next) => {
         try {
-            let transId = req.body.transId;
-            if (!transId) {
-                return res.json({
-                    success: false,
-                    message: 'Vui lòng nhập mã giao dịch!'
-                })
-            }
-
-            if (transId.length < 8) {
-                return res.json({
-                    success: false,
-                    message: 'Mã giao dịch không hợp lệ!'
-                })
-            }
-
-            let find = await historyHelper.checkTransId(transId);
-
-            if (!find) {
-                return res.json({
-                    success: false,
-                    message: 'Không tìm thấy mã giao dịch này!'
-                })
-            }
-
-            if (find.status == 'error' || find.status == 'wait' || find.status == 'done') {
-                return res.json({
-                    success: false,
-                    message: find.status == 'error' ? 'Mã giao dịch này xử lý lỗi, vui lòng báo admin!' : (find.status == 'done' ? 'Mã giao dịch đã xử lý!' : 'Mã giao dịch này đang xử lý!')
-                })
-            }
-
-            if (req.session.transId == transId) {
-                return res.json({
-                    success: false,
-                    message: 'Mã giao dịch này đang xử lý, thử lại sau ít phút!!'
-                })
-            }
-
-            req.session.transId = transId;
-            historyHelper.rewardTransId(null, transId);
-            setTimeout(() => req.session.destroy(), 120 * 1000);
 
             return res.json({
                 success: true,
-                message: 'Gửi yêu cầu hoàn tiền thành công!'
+                html: `<p><span class="bong_tron small">00</span> <span class="bong_tron small">01</span> <span class="bong_tron small">02</span> <span class="bong_tron small">03</span> <span class="bong_tron small">04</span> <span class="bong_tron small">05</span> <span class="bong_tron small">06</span> <span class="bong_tron small">07</span> <span class="bong_tron small">08</span> <span class="bong_tron small">09</span> <span class="bong_tron small">10</span> <span class="bong_tron small">11</span> <span class="bong_tron small">12</span> <span class="bong_tron small">13</span> <span class="bong_tron small">14</span> <span class="bong_tron small">15</span> <span class="bong_tron small">16</span> <span class="bong_tron small">17</span> <span class="bong_tron small">18</span> <span class="bong_tron small">19</span> <span class="bong_tron small">20</span> <span class="bong_tron small">21</span> <span class="bong_tron small">22</span> <span class="bong_tron small">23</span> <span class="bong_tron small">24</span> <span class="bong_tron small">25</span> <span class="bong_tron small">26</span> <span class="bong_tron small">27</span> <span class="bong_tron small">28</span> <span class="bong_tron small">29</span> <span class="bong_tron small">30</span> <span class="bong_tron small">31</span> <span class="bong_tron small">32</span> <span class="bong_tron small">33</span> <span class="bong_tron small">34</span> <span class="bong_tron small">35</span> <span class="bong_tron small">36</span> <span class="bong_tron small">37</span> <span class="bong_tron small">38</span> <span class="bong_tron small">39</span> <span class="bong_tron small">40</span> <span class="bong_tron small">41</span> <span class="bong_tron small">42</span> <span class="bong_tron small">43</span> <span class="bong_tron small">44</span> <span class="bong_tron small">45</span> <span class="bong_tron small">46</span> <span class="bong_tron small">47</span> <span class="bong_tron small">48</span> <span class="bong_tron small">49</span> <span class="bong_tron small">50</span> <span class="bong_tron small">51</span> <span class="bong_tron small">52</span> <span class="bong_tron small">53</span> <span class="bong_tron small">54</span> <span class="bong_tron small">55</span> <span class="bong_tron small">56</span> <span class="bong_tron small">57</span> <span class="bong_tron small">58</span> <span class="bong_tron small">59</span> <span class="bong_tron small">60</span> <span class="bong_tron small">61</span> <span class="bong_tron small">62</span> <span class="bong_tron small">63</span> <span class="bong_tron small">64</span> <span class="bong_tron small">65</span> <span class="bong_tron small">66</span> <span class="bong_tron small">67</span> <span class="bong_tron small">68</span> <span class="bong_tron small">69</span> <span class="bong_tron small">70</span> <span class="bong_tron small">71</span> <span class="bong_tron small">72</span> <span class="bong_tron small">73</span> <span class="bong_tron small">74</span> <span class="bong_tron small">75</span> <span class="bong_tron small">76</span> <span class="bong_tron small">77</span> <span class="bong_tron small">78</span> <span class="bong_tron small">79</span> <span class="bong_tron small">80</span> <span class="bong_tron small">81</span> <span class="bong_tron small">82</span> <span class="bong_tron small">83</span> <span class="bong_tron small">84</span> <span class="bong_tron small">85</span> <span class="bong_tron small">86</span> <span class="bong_tron small">87</span> <span class="bong_tron small">88</span> <span class="bong_tron small">89</span> <span class="bong_tron small">90</span> <span class="bong_tron small">91</span> <span class="bong_tron small">92</span> <span class="bong_tron small">93</span> <span class="bong_tron small">94</span> <span class="bong_tron small">95</span> <span class="bong_tron small">96</span> <span class="bong_tron small">97</span> <span class="bong_tron small">98</span> <span class="bong_tron small">99</span>`
             })
-        } catch (err) {
-            req.session.transId = null;
-            next(err);
-        }
-    },
-    registerPhone: async (req, res, next) => {
-        try {
-
-            if (!req.body.phone) {
-                return res.json({
-                    success: false,
-                    message: 'Số điện thoại không hợp lệ'
-                })
-            }
-            let phone = '0' + req.body.phone;
-
-            if (await memberModel.findOne({phone}).lean()) {
-                return res.json({
-                    success: false,
-                    message: 'Số điện thoại đã được đăng ký!'
-                })
-            }
-
-            const dataMomoTransfer = await momoService.phoneRunTransfer(1);
-            const momoTransfer = dataMomoTransfer[0];
-
-
-            const profile = await momoHelper.checkName(momoTransfer.phone, phone);
-
-            const {name} = profile;
-
-            if (!profile) {
-                return res.json({
-                    message: 'Người dùng MoMo nhận tiền không tồn tại.',
-                    success: false,
-                })
-            }
-
-            await new memberModel({
-                phone: '0' + req.body.phone,
-                name
-            }).save();
-
-            res.json({
-                success: true,
-                message: "Đăng Ký Số Momo Thành Công! SDT: " + '0' + req.body.phone + " (" + name + ")"
-            })
-
 
         } catch (e) {
-
+            next(e);
         }
-    },
-    betTaiXiu: async (req, res, next) => {
-        try {
-            const dataSetting = await settingModel.findOne({});
-            const {amount, type} = req.body;
-
-            if (!amount || !type) {
-                return res.json({
-                    success: false,
-                    message: 'Vui lòng nhập số tiền cược!'
-                })
-            }
-
-            let comment;
-
-            if (type === 'xiu') {
-                comment = dataSetting.banTaiXiu.commentXiu;
-            } else {
-                comment = dataSetting.banTaiXiu.commentTai;
-            }
-
-            const momoReceiver = await momoModel.findOne({receiver: true}).lean();
-
-            let data = {
-                userId: momoReceiver.phone,
-                name: momoReceiver.name,
-                amount: parseInt(amount) + parseInt(comment),
-                transferType: 2018,
-                message: await momoHelper.randomComment().message,
-                enableEditAmount: false
-            }
-
-            const encodedData = Buffer.from(JSON.stringify(data)).toString('base64');
-
-            const momoUrl = `momo://?action=p2p&extra={"dataExtract":"${encodedData}"}`;
-
-            console.log(momoUrl);
-
-            return res.json({
-                success: true,
-                message: 'Đặt cược thành công',
-                url: momoUrl
-            })
-
-        } catch (err) {
-            next(err);
-        }
-    },
+    }
 }
 
 module.exports = apiController;

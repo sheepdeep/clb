@@ -1,0 +1,464 @@
+<style>
+    #taiXiuRong {
+        z-index: 100;
+        height: 0;
+        width: 100%;
+        font-weight: 700
+    }
+
+    #taiXiuRong #frame-taiXiuRong {
+        touch-action: none;
+        position: relative;
+        margin: auto;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        overflow: auto;
+        -webkit-touch-callout: none
+    }
+
+    .frame-taiXiuRong {
+        width: 100%;
+        display: block;
+        margin-bottom: 11%;
+        max-width: 1200px;
+        position: fixed;
+        float: left;
+        margin-right: -3%
+    }
+
+    /*#taiXiuRong .wrap-tai {*/
+    /*    display: flex;*/
+    /*}*/
+
+    /*.wrap-taixiu {*/
+    /*    display: flex;*/
+    /*    justify-content: center;*/
+    /*}*/
+
+    .wrap-cuoc-xiu {
+
+    }
+
+    #taiXiuRong .wrap-cuoc-tai .input {
+        width: 43%;
+        margin-top: -43%;
+        margin-left: -3.1%;
+        z-index: 2;
+        position: absolute;
+        transform: rotate(-90deg);
+        background-size: auto;
+        clip-path: polygon(57.68% 38.5%, 69.52% 36.5%, 68.52% 57.03%, 57.68% 54.03%);
+    }
+
+    #taiXiuRong .wrap-cuoc-tai .click {
+        width: 21%;
+        margin-top: -41.2%;
+        margin-left: 5.7%;
+        z-index: 3;
+        position: absolute;
+        transform: rotate(-90deg);
+        background-size: auto;
+        clip-path: polygon(43.1% 43.9%, 51.46% 43.9%, 53.46% 57.36%, 45.1% 56.36%);
+    }
+
+    #taiXiuRong .close {
+        position: absolute;
+        margin-left: -6%;
+        margin-top: 11.8%;
+        width: 3.6%;
+    }
+
+    #taiXiuRong .wrap-second {
+        position: absolute;
+        width: 16.2%;
+        height: 29%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 41.5%;
+        margin-top: -36%;
+    }
+
+    #taiXiuRong .second1 {
+        width: 100%; /* Đảm bảo phần tử con có kích thước đầy đủ */
+        height: 100%; /* Đảm bảo phần tử con có chiều cao đầy đủ */
+        background-image: url('../themes/images/taiXiuRong/seconds/second-1.png');
+        background-size: contain; /* Hoặc 'cover' nếu bạn muốn ảnh lớn hơn */
+        background-repeat: no-repeat;
+        background-position: center center; /* Căn giữa ảnh nền */
+    }
+
+    #taiXiuRong .second2 {
+        width: 100%; /* Đảm bảo phần tử con có kích thước đầy đủ */
+        height: 100%; /* Đảm bảo phần tử con có chiều cao đầy đủ */
+        background-image: url('../themes/images/taiXiuRong/seconds/second-2.png');
+        background-size: contain; /* Hoặc 'cover' nếu bạn muốn ảnh lớn hơn */
+        background-repeat: no-repeat;
+        background-position: center center; /* Căn giữa ảnh nền */
+    }
+
+    #taiXiuRong .second3 {
+        width: 100%; /* Đảm bảo phần tử con có kích thước đầy đủ */
+        height: 100%; /* Đảm bảo phần tử con có chiều cao đầy đủ */
+        background-image: url('../themes/images/taiXiuRong/seconds/second-3.png');
+        background-size: contain; /* Hoặc 'cover' nếu bạn muốn ảnh lớn hơn */
+        background-repeat: no-repeat;
+        background-position: center center; /* Căn giữa ảnh nền */
+    }
+
+    #taiXiuRong .second4 {
+        width: 100%; /* Đảm bảo phần tử con có kích thước đầy đủ */
+        height: 100%; /* Đảm bảo phần tử con có chiều cao đầy đủ */
+        background-image: url('../themes/images/taiXiuRong/seconds/second-4.png');
+        background-size: contain; /* Hoặc 'cover' nếu bạn muốn ảnh lớn hơn */
+        background-repeat: no-repeat;
+        background-position: center center; /* Căn giữa ảnh nền */
+    }
+
+    #taiXiuRong .second5 {
+        width: 100%; /* Đảm bảo phần tử con có kích thước đầy đủ */
+        height: 100%; /* Đảm bảo phần tử con có chiều cao đầy đủ */
+        background-image: url('../themes/images/taiXiuRong/seconds/second-5.png');
+        background-size: contain; /* Hoặc 'cover' nếu bạn muốn ảnh lớn hơn */
+        background-repeat: no-repeat;
+        background-position: center center; /* Căn giữa ảnh nền */
+    }
+
+    #taiXiuRong .second6 {
+        width: 100%; /* Đảm bảo phần tử con có kích thước đầy đủ */
+        height: 100%; /* Đảm bảo phần tử con có chiều cao đầy đủ */
+        background-image: url('../themes/images/taiXiuRong/seconds/second-6.png');
+        background-size: contain; /* Hoặc 'cover' nếu bạn muốn ảnh lớn hơn */
+        background-repeat: no-repeat;
+        background-position: center center; /* Căn giữa ảnh nền */
+    }
+
+    #taiXiuRong .second7 {
+        width: 100%; /* Đảm bảo phần tử con có kích thước đầy đủ */
+        height: 100%; /* Đảm bảo phần tử con có chiều cao đầy đủ */
+        background-image: url('../themes/images/taiXiuRong/seconds/second-7.png');
+        background-size: contain; /* Hoặc 'cover' nếu bạn muốn ảnh lớn hơn */
+        background-repeat: no-repeat;
+        background-position: center center; /* Căn giữa ảnh nền */
+    }
+
+    #taiXiuRong .second8 {
+        width: 100%; /* Đảm bảo phần tử con có kích thước đầy đủ */
+        height: 100%; /* Đảm bảo phần tử con có chiều cao đầy đủ */
+        background-image: url('../themes/images/taiXiuRong/seconds/second-8.png');
+        background-size: contain; /* Hoặc 'cover' nếu bạn muốn ảnh lớn hơn */
+        background-repeat: no-repeat;
+        background-position: center center; /* Căn giữa ảnh nền */
+    }
+
+    #taiXiuRong .second9 {
+        width: 100%; /* Đảm bảo phần tử con có kích thước đầy đủ */
+        height: 100%; /* Đảm bảo phần tử con có chiều cao đầy đủ */
+        background-image: url('../themes/images/taiXiuRong/seconds/second-9.png');
+        background-size: contain; /* Hoặc 'cover' nếu bạn muốn ảnh lớn hơn */
+        background-repeat: no-repeat;
+        background-position: center center; /* Căn giữa ảnh nền */
+    }
+
+    #taiXiuRong .second0 {
+        width: 100%; /* Đảm bảo phần tử con có kích thước đầy đủ */
+        height: 100%; /* Đảm bảo phần tử con có chiều cao đầy đủ */
+        background-image: url('../themes/images/taiXiuRong/seconds/second-0.png');
+        background-size: contain; /* Hoặc 'cover' nếu bạn muốn ảnh lớn hơn */
+        background-repeat: no-repeat;
+        background-position: center center; /* Căn giữa ảnh nền */
+    }
+
+    #taiXiuRong .wrap-cuoc-tai .tai {
+        width: 96%;
+        margin-top: -47.2%;
+        margin-left: -71%;
+        z-index: 1;
+        position: absolute;
+        background-size: auto;
+        clip-path: polygon(82.1% 28.37%, 100% 28.37%, 100% 50.24%, 82.1% 50.24%);
+    }
+
+    #taiXiuRong .wrap-cuoc-tai .yourBetTai {
+        width: 52%;
+        margin-top: -50.2%;
+        margin-left: -11%;
+        z-index: 1;
+        position: absolute;
+        background-size: auto;
+        transform: rotate(-90deg);
+        clip-path: polygon(49.48% 42.62%, 57.33% 42.62%, 56.33% 61.88%, 48.48% 62.88%);
+    }
+
+    #taiXiuRong .wrap-your-bet-tai {
+        position: absolute;
+        width: 13.8%;
+        height: 4%;
+        display: flex;
+        margin-left: 9.5%;
+        margin-top: -14.5%;
+        z-index: 1;
+        justify-content: center;
+    }
+
+    #taiXiuRong .yourBetTaiText {
+        color: #FDDA0D;
+    }
+
+    .taiXiuRong-modal {
+        pointer-events: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        z-index: 1001;
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .taiXiuRong-modal-content {
+        max-width: 1200px;
+        width: 100%;
+        display: block;
+        margin-bottom: 11%;
+        position: relative;
+    }
+
+    .taiXiuRong-noti {
+        pointer-events: none;
+        position: fixed;
+        top: -6px;
+        left: 24%;
+        width: 100%;
+        height: 100%;
+        z-index: 1001;
+        display: none;
+        justify-content: center;
+        /*animation: slideDown 0.5s ease-out forwards;*/
+    }
+
+    .taiXiuRong-noti p {
+        font-size: 1rem;
+        margin-top: -6.5%;
+        margin-left: 16%;
+    }
+
+    .taiXiuRong-noti .wrap-noti {
+        position: absolute;
+        width: 20.8%; /* Adjust width as needed, you can use vw or % for responsiveness */
+        height: 2.5%; /* Adjust height as needed */
+        display: flex;
+        margin-left: 2.5%;
+        margin-top: -3.6%;
+        z-index: 1002;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        text-align: center; /* Center the text itself */
+        font-size: 2vw; /* Font size responsive based on viewport width */
+    }
+
+    .taiXiuRong-noti .wrap-noti p {
+        margin: 0; /* Remove default margins */
+    }
+
+    #taiXiuRong .wrap .bat {
+        width: 70%;
+        margin-top: -54%;
+        margin-left: 37%;
+        z-index: 99;
+        position: absolute;
+        background-size: auto;
+        clip-path: polygon(0% 13.19%, 36.63% 13.19%, 35.62% 38.51%, 0% 38.51%);
+    }
+
+    #taiXiuRong .wrap .second-countdown {
+        width: 45%;
+        margin-top: -56%;
+        margin-left: 11%;
+        position: absolute;
+        background-size: auto;
+        transform: rotate(-90deg);
+        clip-path: polygon(31.72% 70.45%, 31.72% 80.66%, 20.34% 78.66%, 21.34% 68.45%);
+        z-index: 1;
+    }
+
+    #taiXiuRong .wrap-second-countdown {
+        position: absolute;
+        width: 2.3%;
+        height: 4.7%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 48.7%;
+        margin-top: -14%;
+        z-index: 2;
+    }
+
+    .dice-1 {
+        width: 8%;
+        position: absolute;
+        margin-left: 40%;
+        margin-top: -29%;
+        transform: rotate(97deg);
+    }
+
+    .dice-2 {
+        width: 8%;
+        position: absolute;
+        margin-left: 48%;
+        margin-top: -35%;
+        transform: rotate(96deg);
+    }
+
+    .dice-3 {
+        width: 8%;
+        position: absolute;
+        margin-left: 49%;
+        margin-top: -27%;
+        transform: rotate(83deg);
+    }
+
+    #taiXiuRong .wrap-bet {
+        width: 61%;
+        margin-left: 19.2%;
+    }
+
+    #taiXiuRong .wrap-bet img {
+        width: 100%;
+        height: 95%;
+    }
+
+    #taiXiuRong .wrap-turn {
+        display: flex;
+        position: absolute;
+        width: 17%;
+        height: 5%;
+        margin-left: 41%;
+        margin-top: -10%;
+        justify-content: center;
+    }
+
+    #taiXiuRong .wrap-bet {
+        display: flex;
+        position: absolute;
+        width: 80%;
+        height: 13%;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-left: 10%;
+    }
+
+    #taiXiuRong .wrap-bet img {
+        width: 14%;
+
+    }
+
+    @keyframes slideDown {
+        0% {
+            top: -100px; /* Vị trí ban đầu, nằm ngoài màn hình */
+        }
+        100% {
+            top: -6px; /* Vị trí kết thúc, ở trên cùng màn hình */
+        }
+    }
+
+    @keyframes slideUp {
+        0% {
+            top: -6px; /* Vị trí ban đầu, nằm ngoài màn hình */
+        }
+        100% {
+            top: -100px; /* Vị trí kết thúc, ở trên cùng màn hình */
+        }
+    }
+
+    @media screen and (max-width: 900px) {
+        .frame-taiXiuRong {
+            width: 80%;
+            height: auto;
+        }
+
+        .taiXiuRong-modal-content {
+            max-width: 560px;
+            height: auto;
+        }
+
+        .taiXiuRong-noti .wrap-noti {
+            width: 39.8%;
+            height: 10.5%;
+            margin-left: 4.5%;
+            margin-top: -6.4%;
+        }
+    }
+
+</style>
+<div id="openTaiXiuMd5"
+     style="display: none;pointer-events: none; position: fixed;top: 0;left: 0;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.3);z-index: 99;">
+    <div id="taiXiuRong" class="active-game ui-draggable"
+         style="user-select: none; pointer-events: auto; position: relative; left: 13px; top: -43px;">
+        <div id="frame-taiXiuRong">
+            <div class="frame-taiXiuRong">
+                <img src="../themes/images/taiXiuRong/ban.png" class="ban ui-draggable-handle" width="100%">
+                <img class="close" src="../themes/images/taiXiuRong/8f127b8a-d065-4976-842f-e17251c3f7ac.1f671.png"/>
+                <div class="wrap-tai">
+                    <div class="wrap-cuoc-tai">
+                        <img class="tai"
+                             src="../themes/images/taiXiuRong/a8877353-38a6-4179-9742-17c270541764.84097.png"/>
+                        <img class="input" src="../themes/images/taiXiuRong/17f275c33.481e2.png"/>
+                        <img class="click" src="../themes/images/taiXiuRong/14cf2ec4f.c3e3c.png"/>
+
+                        <img class="yourBetTai" src="../themes/images/taiXiuRong/17f275c33.481e2.png"/>
+                        <div class="wrap-your-bet-tai">
+                            <p class="yourBetTaiText">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="wrap">
+                    <div class="wrap-second"></div>
+                    <div class="wrap-turn">
+                        <p><b id="turn"></b></p>
+                    </div>
+                    <img id="btnBat" class="bat hidden" src="../themes/images/taiXiuRong/17f275c33.481e2.png"/>
+                    <div class="wrap-second-countdown hidden"></div>
+                    <img id="btnBat" class="second-countdown hidden"
+                         src="../themes/images/taiXiuRong/17f275c33.481e2.png"/>
+                    <div class="wrap-dice"></div>
+                    <div class="wrap-bet">
+                        <img class="bet" src="../themes/images/taiXiuRong/bet.png">
+                        <img class="bet" src="../themes/images/taiXiuRong/bet.png">
+                        <img class="bet" src="../themes/images/taiXiuRong/bet.png">
+                        <img class="bet" src="../themes/images/taiXiuRong/bet.png">
+
+                        <img class="bet" src="../themes/images/taiXiuRong/bet.png">
+                        <img class="bet" src="../themes/images/taiXiuRong/bet.png">
+                        <img class="bet" src="../themes/images/taiXiuRong/bet.png">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="taiXiuRong-modal">
+    <div>
+        <div class="taiXiuRong-modal-content">
+            <img src="https://play.son9.club/assets/main/native/37/37cd6d1c-6995-483c-bccf-7fa3a01b194a.dff5a.png"
+                 alt="Image" style="max-width: 100%; height: auto;">
+        </div>
+    </div>
+</div>
+
+
+<div class="taiXiuRong-noti">
+    <div style="max-width: 1200px; width: 100%;">
+        <img src="../themes/images/taiXiuRong/noti.png" style="max-width: 100%; height: auto;">
+        <div class="wrap-noti">
+            <p><b></b></p>
+        </div>
+    </div>
+</div>

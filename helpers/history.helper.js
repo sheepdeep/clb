@@ -1,65 +1,65 @@
 ﻿"use strict";
 const moment = require("moment");
-const utils = require('../helpers/utils.helper');
 const historyModel = require('../models/history.model');
-const momoModel = require('../models/bank.model');
 const settingModel = require('../models/setting.model');
-const transferModel = require('../models/transfer.model');
 const blockModel = require('../models/block.model');
-const missionModel = require("../models/mission.model");
-const refundModel = require("../models/refund-bill.model");
 const logHelper = require('../helpers/log.helper');
-const momoHelper = require('../helpers/momo.helper');
 const gameHelper = require('../helpers/game.helper');
-const jackpotHelper = require('../helpers/jackpot.helper');
 const commentHelper = require('../helpers/comment.helper');
-const gameService = require('../services/game.service');
-const historyService = require('../services/history.service');
-const momoService = require('../services/momo.service');
-const jackpotService = require('../services/jackpot.service');
 const telegramHelper = require('../helpers/telegram.helper');
-const rewardModel = require('../models/reward.model');
-const {setting} = require("../controllers/install.controller");
-const nemberModel = require('../models/member.model');
 const userModel = require("../models/user.model");
 const securityHelper = require("./security.helper");
+const bankModel = require('../models/bank.model');
+const mbbankHelper = require("./mbbank.helper");
+const sleep = require("time-sleep");
+const gameService = require("../services/game.service");
 
-exports.getHistory = async (phone, configHistory) => {
+exports.handleCltx = async (history, bank) => {
     try {
-        let list = [];
-        let dataHistory = await momoHelper.getHistoryBusiness(phone);
+        let {
+            creditAmount: amount,
+            refNo: transId,
+            addDescription: transactionDesc,
+            description,
+            bankName,
+            transactionDate
+        } = history;
 
-        if (!dataHistory || !dataHistory.success) {
-            return ({
-                phone,
-                message: dataHistory.message
-            })
+        amount = parseInt(amount);
+
+        const {username, comment} = await this.handleDesc(transactionDesc);
+
+        let user = await userModel.findOne({username}).lean();
+
+        // Nhận tiền
+        if (amount > 0) {
+
+            let {gameName, gameType} = await gameService.checkGame(comment);
+
+            await historyModel.findOneAndUpdate({transId}, {
+                $set: {
+                    transId,
+                    username: user.username,
+                    receiver: bank.accountNumber,
+                    gameName,
+                    gameType,
+                    amount,
+                    fullComment: description,
+                    result: 'wait',
+                    isCheck: bankName === 'MB' ? false : true,
+                    comment,
+                    timeTLS: moment(transactionDate, 'DD/MM/YYYY HH:mm:ss').format()
+                }
+            }, {upsert: true}).lean();
+
+            await this.handleTransId(transId);
+
+            return true;
         }
 
-        list.push(...dataHistory.history);
-
-        let detailThread = list.map((history) => this.handleTransId(history));
-
-        let data = await Promise.all(detailThread);
-
-        return ({
-            phone,
-            count: data.length,
-            history: data
-        })
-    } catch (err) {
-        console.log(err);
-        await logHelper.create('getHistory', `Lấy lịch sử thất bại!\n* [ ${phone} ]\n* [ ${err.message || err} ]`);
-
-        return ({
-            phone,
-            message: 'Có lỗi xảy ra ' + err.message || err
-        });
+    } catch (e) {
+        console.log(e);
     }
-}
-
-exports.escapeRegex = async (string) => {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // Thoát ký tự đặc biệt
 }
 
 exports.handleTransId = async (transId) => {
@@ -122,32 +122,7 @@ exports.handleTransId = async (transId) => {
                     paid,
                     result,
                 }
-            }
-        )
-
-        if (win) {
-            // Gui thong tin chuyen tien
-            let textMessage = `Mã giao dịch: <code>${history.transId}</code> \nNội dung: <code>${history.comment}</code> \nTrò chơi: <code>${gameName}</code> \nCược: <code>${history.amount}</code> \nNhận: <code>${Math.round(history.amount * bonus)}</code> \nThông tin nhận: <code>${user && user.bankInfo ? user.bankInfo.accountNumber : ''}</code> --- <code>${user && user.bankInfo ? user.bankInfo.bankCode : ''}</code> \nNội dung CK: <code>${rewardComment}</code>`;
-
-            const buttons = [
-                [
-                    {
-                        text: "✅ Đã trả ✅",  // Văn bản trên button
-                        callback_data: `done_${history.transId}`
-                    },
-                    {
-                        text: "🔄 Chuyển người 🔄",  // Văn bản trên button
-                        callback_data: `change_${history.transId}`
-                    },
-                    {
-                        text: "🔓 Mã OTP 🔓",  // Văn bản trên button
-                        callback_data: `otp_${history.transId}`,
-                    }
-                ]
-            ];
-
-            telegramHelper.sendText(process.env.privateTOKEN, process.env.privateID, textMessage, 'HTML', buttons)
-        }
+            })
 
         let histories = await historyModel.find({username: user.username}, {
             _id: 0,
@@ -199,3 +174,183 @@ exports.handleTransId = async (transId) => {
         return;
     }
 }
+
+exports.handleXsmb = async (history, bank) => {
+    try {
+
+        const dataSetting = await settingModel.findOne();
+        const today = new Date();  // Lấy thời gian hiện tại
+
+        let {
+            creditAmount: amount,
+            refNo: transId,
+            addDescription: transactionDesc,
+            description,
+            bankName,
+            transactionDate
+        } = history;
+        amount = parseInt(amount);
+
+        let commentXSMB;
+
+        const {username, comment} = await this.handleDesc(transactionDesc);
+
+        let user = await userModel.findOne({username}).lean();
+
+        if (comment === dataSetting.xsmb.commentLo) {
+            commentXSMB = 'LO';
+        } else if (comment === dataSetting.xsmb.commentDe) {
+            commentXSMB = 'DE';
+        } else if (comment === dataSetting.xsmb.commentXien2) {
+            commentXSMB = 'XIEN2';
+        }
+
+        //TODO: Mã trước 18:00
+        const date = moment(transactionDate, 'DD/MM/YYYY HH:mm:ss'); // "2025-02-11 19:56:29"
+        const hours = date.hours();
+        const minutes = date.minutes();
+
+        console.log(hours)
+
+        const {checkCountNumber, numbers} = await this.handleNumberXsmb(transactionDesc);
+
+        //TODO: không có số đặt cược sử thua
+        if (numbers === 0) {
+            await historyModel.findOneAndUpdate({transId}, {
+                $set: {
+                    transId,
+                    username: user.username,
+                    receiver: bank.accountNumber,
+                    gameName: 'XSMB',
+                    gameType: `XSMB_${commentXSMB}`,
+                    amount,
+                    fullComment: description,
+                    result: 'lose',
+                    paid: 'sent',
+                    isCheck: false,
+                    comment,
+                    timeTLS: new Date()
+                }
+            }, {upsert: true}).lean();
+            return;
+        }
+
+        if (hours > 18) {
+            await historyModel.findOneAndUpdate({transId}, {
+                $set: {
+                    transId,
+                    username: user.username,
+                    receiver: bank.accountNumber,
+                    gameName: 'XSMB',
+                    gameType: `XSMB_${commentXSMB}`,
+                    amount,
+                    fullComment: description,
+                    result: 'wait',
+                    isCheck: false,
+                    comment: numbers,
+                    timeTLS: moment(transactionDate, 'DD/MM/YYYY HH:mm:ss').format(),
+                    timeCheck: new Date(),
+                }
+            }, {upsert: true}).lean();
+            return;
+
+        } else {
+            await historyModel.findOneAndUpdate({transId}, {
+                $set: {
+                    transId,
+                    username: user.username,
+                    receiver: bank.accountNumber,
+                    gameName: 'XSMB',
+                    gameType: `XSMB_${commentXSMB}`,
+                    amount,
+                    fullComment: description,
+                    result: 'wait',
+                    isCheck: false,
+                    comment: numbers,
+                    timeTLS: moment(transactionDate, 'DD/MM/YYYY HH:mm:ss').format(),
+                    timeCheck: today.getDate() + 1,
+                }
+            }, {upsert: true}).lean();
+            return;
+        }
+
+
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+exports.handleNumberXsmb = async (comment) => {
+    try {
+        let numbers;
+        const number = comment.split(' ')[2];
+        let checkCountNumber = 1;
+
+        if (number.includes(' ')) {
+            const arrayNumber = number.split(' ');
+            checkCountNumber = arrayNumber.length;
+            numbers = arrayNumber.join(" - ");
+        } else {
+            numbers = number;
+        }
+
+        return {
+            checkCountNumber,
+            numbers
+        }
+
+    } catch (e) {
+        console.log(e);
+
+        return {
+            checkCountNumber: 0,
+            numbers: 0
+        }
+    }
+}
+
+exports.handleDesc = async (description) => {
+    const desc = description.split(' ');
+
+    return {
+        username: desc[0],
+        comment: desc[1]
+    }
+};
+
+exports.history = async () => {
+    try {
+
+        const dataSetting = await settingModel.findOne();
+        const bankData = await bankModel.findOne({status: 'active', loginStatus: 'active', bankType: 'mbb'}).lean();
+
+        if (bankData) {
+            if (dataSetting?.checkTransId.status == 'close') {
+                await sleep(3 * 1000);
+                return await this.history();
+            }
+    
+            console.log(`Thực hiện kiểm tra lịch sử tài khoản mbb ${bankData.accountNumber}`);
+            const histories = await mbbankHelper.history(bankData.accountNumber, bankData.bankType);
+    
+            if (!histories) {
+                console.log(`Thực hiện đăng nhập tài khoản mbb ${bankData.accountNumber}`);
+                await mbbankHelper.login(bankData.accountNumber, bankData.bankType);
+                await sleep(15 * 1000);
+                return await this.history();
+            }
+    
+            await mbbankHelper.handleTransId(histories, bankData);
+    
+            await sleep(3 * 1000);
+            return await this.history();
+        }
+       
+
+    } catch (e) {
+        // Thong bao loi
+        logHelper.create('getHistory', e.message || e.msg);
+        console.log(e);
+    }
+}
+

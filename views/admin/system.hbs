@@ -1273,6 +1273,121 @@
                         </div>
                     </div>
 
+                    <div class="col-lg-12 mb-25">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title hand" data-bs-toggle="tooltip" data-bs-placement="right"
+                                    data-bs-original-title="Cập nhập vào {{ timeNow settings.updatedAt }}">
+                                    <img src="../themes/admin/images/mini-game.png" alt="" width="35">
+                                    Cài Đặt XSMB
+                                    <img src="../themes/admin/images/mini-game.png" class="d-md-none" width="35">
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <form action="" method="post" id="formSetting">
+                                    <div class="row">
+                                        {{!-- Bắt Đầu Dữ Liệu Cơ Bản --}}
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Trạng thái</label>
+                                                <select name="xsmb-status" class="form-control ih-medium ip-light">
+                                                    {{#select settings.xsmb.status }}
+                                                        <option value="active">Có</option>
+                                                        <option value="close">Không</option>
+                                                    {{/select }}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">ID Chat</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="banTaiXiu-chatId" value="{{ settings.banTaiXiu.chatId }}"
+                                                       placeholder="Nhập chatId gửi kết quả">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Nội dung Lô</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="xsmb-commentLo" value="{{ settings.xsmb.commentLo }}"
+                                                       placeholder="Nhập nội dung lô">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tỉ lệ Lô</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="xsmb-ratioLo" value="{{ settings.xsmb.ratioLo }}"
+                                                       placeholder="Nhập tỉ lệ lô">
+                                            </div>
+                                        </div>
+
+<!--                                        DE-->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Nội dung Đề</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="xsmb-commentDe" value="{{ settings.xsmb.commentDe }}"
+                                                       placeholder="Nhập nội dung đề">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tỉ lệ Đề</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="xsmb-ratioDe" value="{{ settings.xsmb.ratioDe }}"
+                                                       placeholder="Nhập tỉ lệ đề">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Nội dung Xiên 2</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="xsmb-commentXien2" value="{{ settings.xsmb.commentXien2 }}"
+                                                       placeholder="Nhập nội dung xiên 2">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tỉ lệ Xiên 2</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="xsmb-ratioXien2" value="{{ settings.xsmb.ratioXien2 }}"
+                                                       placeholder="Nhập tỉ lệ xiên 2">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Đặt tối thiểu</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="xsmb-betMin"
+                                                       value="{{ settings.xsmb.betMin }}"
+                                                       placeholder="Nhập số tiền đặt cược tối thiểu">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Đặt tối đa</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="xsmb-betMax"
+                                                       value="{{ settings.xsmb.betMax }}"
+                                                       placeholder="Nhập số tiền đặt cược tối đa">
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <button class="btn btn-success btn-block"><i class="fas fa-save"></i>
+                                                Lưu</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

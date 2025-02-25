@@ -11,6 +11,13 @@ const gameService = require("../services/game.service");
 const bankService = require("../services/bank.service");
 const historyService = require("../services/history.service");
 const historyHelper = require('../helpers/history.helper');
+const settingModel = require('../models/setting.model');
+const blockModel = require("../models/block.model");
+const gameHelper = require("./game.helper");
+const commentHelper = require("./comment.helper");
+const telegramHelper = require("./telegram.helper");
+const securityHelper = require("./security.helper");
+const logHelper = require("./log.helper");
 
 exports.solveCaptcha = async (apiUrl, base64Image) => {
     try {
@@ -161,71 +168,61 @@ exports.history = async (accountNumber, bankType, timeStart = null, timeEnd = nu
 
 }
 
-exports.handleDesc = async (description) => {
-    const desc = description.split(' ');
-
-    return {
-        username: desc[0],
-        comment: desc[1]
-    }
-},
-
 exports.handleTransId = async (histories, bank, band = 0) => {
     try {
 
-        let status = 'wait';
-        let check = 0;
+        const dataSetting = await settingModel.findOne();
 
         for (let history of histories) {
 
-            let {creditAmount: amount, refNo: transId, addDescription: transactionDesc, description, bankName} = history;
+            //TODO: Kiểm tra thành viên có đúng không
+            let {
+                creditAmount: amount,
+                refNo: transId,
+                addDescription: transactionDesc,
+                description,
+                bankName,
+                transactionDate
+            } = history;
+
+            //TODO: Kiểm tra mã giao dịch đã có trong hệ thống chưa
+            if (await historyModel.findOne({transId})) {
+                continue;
+            }
 
             amount = parseInt(amount);
 
-            const {username, comment} = await this.handleDesc(transactionDesc);
+            const {username, comment} = await historyHelper.handleDesc(transactionDesc);
 
-            // Kiem tra user
             let user = await userModel.findOne({username}).lean();
-
-            // console.log(user);
-            // Nhận tiền
-            if (amount > 0 && !await historyModel.findOne({transId}).lean()) {
-
-                let {gameName, gameType} = await gameService.checkGame(comment);
-
-                if ((!gameName || !gameType)) status = 'errorComment';
-
-                if (!user) status = 'notUser';
-
-                if (status === 'wait' && await bankService.limitBet(bank.accountNumber, amount)) status = !await historyService.refundCount(user.username, dataSetting.refund.limit || 10) ? 'limitRefund' : 'limitBet';
-
-                if (band) {
-                    status = 'handwork'; user = null;
-                }
-
+            if (!user) {
                 await historyModel.findOneAndUpdate({transId}, {
                     $set: {
                         transId,
-                        username: !user ? null : user.username,
                         receiver: bank.accountNumber,
-                        gameName,
-                        gameType,
                         amount,
                         fullComment: description,
-                        result: status,
-                        isCheck: bankName == 'MB' ? false : true,
-                        comment,
-                        timeTLS: new Date()
+                        result: 'notUser',
+                        comment: description,
+                        timeCheck: new Date(),
+                        timeTLS: moment(transactionDate, 'DD/MM/YYYY HH:mm:ss').format()
                     }
                 }, {upsert: true}).lean();
-
-                await historyHelper.handleTransId(transId);
-
-                check++;
+                continue;
             }
+
+            if (amount > 0) {
+                if (comment === dataSetting.xsmb.commentLo || comment === dataSetting.xsmb.commentDe || comment === dataSetting.xsmb.commentXien2) {
+                    await historyHelper.handleXsmb(history, bank);
+                    continue;
+                }
+
+                await historyHelper.handleCltx(history, bank);
+            }
+
         }
 
-        return check;
+        return 1;
     } catch (e) {
         console.log(e);
     }

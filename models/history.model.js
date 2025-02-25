@@ -28,6 +28,7 @@ const historySchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    timeCheck: Date
 }, {
     timestamps: true
 })

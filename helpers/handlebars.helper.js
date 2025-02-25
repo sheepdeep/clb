@@ -306,7 +306,11 @@ module.exports = {
         return src;
     },
     formatBank: (bank) => {
-        return bank.replace(/^(\d{4})\d{3}(\d{3})$/, '$1***$2');
+        if (bank) {
+            return bank.replace(/^(\d{4})\d{3}(\d{3})$/, '$1***$2');
+        }
+
+        return;
     },
     historyPaid: (status, paid) => {
         if (status === 'wait' || status === 'lose') {
@@ -316,6 +320,10 @@ module.exports = {
         return `<div class="dashbox__table-text"><span class="gstatus ${paid}">${paid.toUpperCase()}</span></div>`;
     },
     uppercase: (text) => {
-        return text.toUpperCase();
+        if (text) {
+            return text.toUpperCase();
+        }
+
+        return;
     },
 }

@@ -29,9 +29,9 @@ exports.loggedIn = async (req, res, next) => {
         let token = req.cookies['Authorization'];
         let user = await authService.checkAuth(token);
 
-        if (!user) throw new Error('User not found!');
+        if (!user) throw new Error('User not foundx!');
 
-        if (await blockModel.findOne({username: user.username, status: 'active'})) {
+        if (user && await blockModel.findOne({username: user.username, status: 'active'})) {
             return res.clearCookie('Authorization').redirect(`../dangnhap`);
         }
 
@@ -94,5 +94,29 @@ exports.isAdmin = async (req, res, next) => {
     } catch (err) {
         console.log(err);
         return res.clearCookie('Authorization').json({ success: false, message: 'Không có quyền truy cập!' })
+    }
+}
+
+exports.isUser = async (req, res, next) => {
+    try {
+        if (!req.cookies?.['Authorization']) return next();
+
+        let token = req.cookies['Authorization'];
+        let user = await authService.checkAuth(token);
+
+        if (!user) {
+            res.clearCookie('Authorization').json({ success: false, message: 'Vui lòng đăng nhập vào tài khoản!' });
+            return;
+        }
+
+        if (user && await blockModel.findOne({username: user.username, status: 'active'})) {
+            return res.clearCookie('Authorization').json({ success: false, message: 'Không có quyền truy cập!' });
+        }
+
+        res.locals.profile = user;
+        next();
+    } catch (err) {
+        console.log(err);
+        return res.clearCookie('Authorization');
     }
 }

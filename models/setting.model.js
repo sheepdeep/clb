@@ -11,6 +11,14 @@ const settingSchema = new mongoose.Schema({
     note: String,
     headerScript: String,
     footerScript: String,
+    getHistory: {
+        time: Number,
+        timeLogin: Number,
+        status: {
+            type: String,
+            default: 'close'
+        }
+    },
     commentSite: {
         rewardGD: {
             type: String,
@@ -329,20 +337,9 @@ const settingSchema = new mongoose.Schema({
     },
     banTaiXiu: {
         turn: Number,
-        secondDefault: Number,
-        status: {
-            type: String,
-            default: 'close'
-        },
-        betMin: Number,
-        betMax: Number,
-        ratio: Number,
-        rewardType: String,
-        rewardLimit: Number,
-        rewardGD: String,
-        commentXiu: String,
-        commentTai: String,
         chatId: String,
+        turnTaiXiuRong: String,
+        secondTaiXiuRong: Number
     },
     giftDay: {
         status: {
@@ -368,6 +365,40 @@ const settingSchema = new mongoose.Schema({
     },
     fakeUser: {
         data: Object
+    },
+    xsst: {
+        turn: Number,
+        secondDefault: Number,
+        status: {
+            type: String,
+            default: 'close'
+        },
+        betMin: Number,
+        betMax: Number,
+        ratio: Number,
+        rewardType: String,
+        rewardLimit: Number,
+        rewardGD: String,
+        commentXiu: String,
+        commentTai: String,
+        chatId: String,
+    },
+    xsmb: {
+        date: String,
+        status: {
+            type: String,
+            default: 'close'
+        },
+        results: Object,
+        betMin: Number,
+        betMax: Number,
+        chatId: String,
+        ratioLo: Number,
+        ratioDe: Number,
+        commentLo: String,
+        commentDe: String,
+        commentXien2: String,
+        ratioXien2: Number
     }
 }, {
     timestamps: true

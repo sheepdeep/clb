@@ -1,0 +1,118 @@
+{{>header}}
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+<body>
+<div class="preloader"></div>
+<!-- header -->
+<header class="header">
+    <div class="header__content">
+        <!-- header logo -->
+        <a href="/" class="header__logo">
+            <img class="logo" src="{{ settings.logo }}" alt="{{ settings.nameSite }}"/>
+        </a>
+        <!-- end header logo -->
+        <!-- header menu btn -->
+        <button class="header__btn" type="button">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <!-- end header menu btn -->
+    </div>
+</header>
+<!-- end header -->
+<!-- sidebar -->
+{{>sidebar}}
+<!-- main content -->
+
+<main class="main">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- profile -->
+            {{>game}}
+            <!-- end profile -->
+            <!-- dashbox -->
+            <div class="col-12">
+                <div class="dashbox">
+                    <div class="dashbox__title">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-dice-5-fill" viewBox="0 0 16 16">
+                                <path d="M3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3zm2.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM12 13.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM5.5 12a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM8 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path>
+                            </svg>
+                            TÀI XỈU SUPBANK
+                        </h3>
+                    </div>
+
+                    <div class="dashbox__table-wrap">
+                        <div id="carouselExample" class="carousel slide">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <center>
+                                        <p>
+                                            <img id="taiXiuRongImg" src="https://image.winudf.com/v2/image/Y29tLnBwb29rZXJyLnRydW0udHJ1bS5jbHViMjAxOF9pY29uXzE1MTQ5Njk3NjNfMDYw/icon.webp?w=140&fakeurl=1&type=.webp" alt="...">
+                                        </p>
+                                    </center>
+                                </div>
+<!--                                <div class="carousel-item">-->
+<!--                                    <center>-->
+<!--                                        <p>-->
+<!--                                            <img width="20%" src="https://image.winudf.com/v2/image/Y29tLnBwb29rZXJyLnRydW0udHJ1bS5jbHViMjAxOF9pY29uXzE1MTQ5Njk3NjNfMDYw/icon.webp?w=140&fakeurl=1&type=.webp" alt="...">-->
+<!--                                        </p>-->
+<!--                                    </center>-->
+<!--                                </div>-->
+<!--                                <div class="carousel-item">-->
+<!--                                </div>-->
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            {{>taiXiuRong}}
+
+            <div class="modal fade" id="modal-notes" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal__content modal__content--view">
+                            <div class="comments__autor">
+                                <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                                <span class="comments__name">SupBank Thông Báo</span>
+                            </div>
+                            <p class="comments__text"></p>
+                            <div class="modal__btns">
+                                <button class="modal__btn" id="startTaiXiuRong" data-bs-dismiss="modal" type="button"><span>Bắt đầu</span></button>
+                                <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Đóng</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</main>
+<!-- end main content -->
+<!-- view modal -->
+
+<script>
+    function resizeIframe(obj) {
+        var fh = obj.contentWindow.document.body.scrollHeight;
+        obj.style.height = Math.min(screen.height, fh) + 'px';
+    }
+</script>
+{{>footer}}
+<script src="../themes/tx.js"></script>
+
+{{{ settings.footerScript }}}
+

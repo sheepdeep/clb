@@ -16,9 +16,12 @@ const db = require('./configs/database');
 const homeRoute = require('./routers/home.route');
 const errorHandler = require('./middlewares/error.middleware');
 const hbsHelper = require('./helpers/handlebars.helper');
+const historyHelper = require('./helpers/history.helper');
+
 let userCount = 0;
 
 global.socket = io;
+
 app.engine('hbs', handlebars.engine({
     extname: '.hbs',
     partialsDir: path.join(__dirname, 'views/partials'),
@@ -70,11 +73,31 @@ io.on('connection', function (socket) {
         });
     })
 
+    socket.on('xsst', (data) => {
+        io.emit('xsst', data);
+    })
+
     socket.on('disconnect', function () {
         userCount--;
         io.emit('countOnline', userCount);
     });
 });
+
+// TAIXIURONG SERVER
+io.of('/taixiu-rong').on('connection', (socket) => {
+    console.log('A user connected to server1 subdomain');
+
+    // Lắng nghe sự kiện từ client
+    socket.on('message', (data) => {
+        console.log('Message from client: ', data);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('A user disconnected from server1 subdomain');
+    });
+});
+
+
 
 // SET TOKEN SETUP
 process.env.TOKEN_SETUP = uuidv4().toUpperCase();
@@ -82,6 +105,7 @@ console.log(`TOKEN SETUP: ${process.env.TOKEN_SETUP.toUpperCase()}`)
 
 // Kết nối MongoDB
 db.connectDB();
+historyHelper.history();
 
 app.use(homeRoute);
 // Error Handler

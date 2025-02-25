@@ -63,6 +63,7 @@ const xucxactgController = {
 
             let balance = user.balance - amount;
 
+
             let newHistory = await new historyModel({
                 username: user.username,
                 receiver: 'system',
@@ -73,7 +74,7 @@ const xucxactgController = {
                 comment,
                 gameName: 'CLTX TELEGRAM',
                 gameType: 'CLTX_TELEGRAM',
-                description: `Bạn đã đặt cược <span class="code-num">${Intl.NumberFormat('en-US').format(amount)}</span> vnđ tại phòng chơi của <span class="code-num">CLTX TELEGRAM</span>. (KB: ${Intl.NumberFormat('en-US').format(user.balance)} -&gt; ${Intl.NumberFormat('en-US').format(balance)})`,
+                description: `Bạn đã đặt cược <span class="code-num">${Intl.NumberFormat('en-US').format(amount)}</span> vnđ tại phòng chơi của <span class="code-num">CLTX TELEGRAM</span>. (SB: ${Intl.NumberFormat('en-US').format(user.balance)} -&gt; ${Intl.NumberFormat('en-US').format(balance)})`,
                 result: 'wait',
                 paid: 'wait',
             }).save();

@@ -1,0 +1,189 @@
+{{>header}}
+
+<body>
+<div class="preloader"></div>
+<!-- header -->
+<header class="header">
+    <div class="header__content">
+        <!-- header logo -->
+        <a href="/" class="header__logo">
+            <img class="logo" src="{{ settings.logo }}" alt="{{ settings.nameSite }}"/>
+        </a>
+        <!-- end header logo -->
+        <!-- header menu btn -->
+        <button class="header__btn" type="button">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <!-- end header menu btn -->
+    </div>
+</header>
+<!-- end header -->
+<!-- sidebar -->
+{{>sidebar}}
+<!-- main content -->
+<main class="main">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- profile -->
+            {{>game}}
+            <!-- end profile -->
+            <!-- dashbox -->
+            <div class="col-12 col-xl-6">
+                <div class="dashbox">
+                    <div class="game-details active">
+                        <div class="dashbox__title">
+                            <h3>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-dice-5-fill" viewBox="0 0 16 16">
+                                    <path d="M3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3zm2.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM12 13.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM5.5 12a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM8 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path>
+                                </svg>
+                                XỔ SỐ MIỀN BẮC
+                            </h3>
+                        </div>
+
+                        <div class="dashbox__table-wrap dashbox__table-wrap--1">
+                            <table class="dashbox__table">
+                                <thead>
+                                <tr>
+                                    <th>LOẠI</th>
+                                    <th>NỘI DUNG</th>
+                                    <th>TỶ LỆ</th>
+                                    <th>SỐ CHỌN</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><div class="dashbox__table-text">LÔ</div></td>
+                                    <td><div class="dashbox__table-text"><span>
+                                        <span id="xsmbl">{{profile.username}} {{settings.xsmb.commentLo}} </span><span>&nbsp;(số chọn)</span> &nbsp;<a href="javascript:void(0);" data-id="{{profile.username}} {{settings.xsmb.commentLo}}" data-msg="Đã copy : lamtuha1 KXSL" class="mncp copy-bt">&nbsp;</a></span>
+                                    </div></td>
+                                    <td><div class="dashbox__table-text">23K ăn 80K</div></td>
+                                    <td>
+                                        <div class="dashbox__table-text">
+                                            <code>00</code> <span class="arrow-right"></span> <code>99</code>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><div class="dashbox__table-text">ĐỀ</div></td>
+                                    <td><div class="dashbox__table-text"><span><span id="xsmbd">{{profile.username}} {{settings.xsmb.commentDe}} </span><span>&nbsp;(số chọn)</span> &nbsp;<a href="javascript:void(0);" data-id="{{profile.username}} {{settings.xsmb.commentDe}}" data-msg="Đã copy : lamtuha1 KXSD" class="mncp copy-bt">&nbsp;</a></span></div></td>
+                                    <td><div class="dashbox__table-text">1K ăn 65K</div></td>
+                                    <td>
+                                        <div class="dashbox__table-text">
+                                            <code>00</code> <span class="arrow-right"></span> <code>99</code>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><div class="dashbox__table-text">XIÊN 2</div></td>
+                                    <td><div class="dashbox__table-text"><span><span id="xsmbx2">{{profile.username}} {{settings.xsmb.commentXien2}} </span><span>&nbsp;(số chọn)</span> &nbsp;<a href="javascript:void(0);" data-id="{{profile.username}} {{settings.xsmb.commentXien2}}" data-msg="Đã copy : lamtuha1 KXSX" class="mncp copy-bt">&nbsp;</a></span></div></td>
+                                    <td><div class="dashbox__table-text">10K ăn 90K</div></td>
+                                    <td>
+                                        <div class="dashbox__table-text">
+                                            <code>00</code> <span class="arrow-right"></span> <code>99</code>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><div class="dashbox__table-text"><span class="mr-5">ĐÁNH LÔ 85</span><span class="arrow-right"></span><code>{{profile.username}} {{settings.xsmb.commentLo}} 85</code></div></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><div class="dashbox__table-text"><span class="mr-5">ĐÁNH ĐỀ 85</span><span class="arrow-right"></span><code>{{profile.username}} {{settings.xsmb.commentDe}} 85</code></div></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><div class="dashbox__table-text"><span class="mr-5">ĐÁNH XIÊN 85-58</span><span class="arrow-right"></span><code>{{profile.username}} {{settings.xsmb.commentXien2}} 85 58</code></div></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="subpage-wrapper">
+                                <p><i class="small-notes">KẾT QUẢ TÍNH THEO KẾT QUẢ XSMB QUAY THƯỞNG LÚC <span class="code-num">18:30</span> HẰNG NGÀY. CÁC GIAO DỊCH NHẬN ĐƯỢC SAU <span class="code-num">18:00</span> SẼ TÍNH VÀO NGÀY HÔM SAU. HỆ THỐNG BẮT ĐẦU TRẢ THƯỜNG LẦN LƯỢT VÀO LÚC <span class="code-num">18:45</span></i></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end dashbox -->
+            <!-- dashbox -->
+            <div id="bank-infos" class="col-12 col-xl-6">
+                <div class="dashbox play-rules">
+                    <div class="dashbox__title">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-gear-wide-connected" viewBox="0 0 16 16">
+                                <path d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434l.071-.286zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5zm0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78h4.723zM5.048 3.967c-.03.021-.058.043-.087.065l.087-.065zm-.431.355A4.984 4.984 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8 4.617 4.322zm.344 7.646.087.065-.087-.065z"></path>
+                            </svg>
+                            THÔNG TIN BANK NHẬN
+                        </h3>
+                    </div>
+
+                    <div class="dashbox__table-wrap dashbox__table-wrap--4">
+                        <p><b>🏦. Ngân hàng: <img width="8%" src="{{ bankImage bank.bankType }}"></b></p>
+                        <p><b>🏧. Số tài khoản: <span>{{ formatBank bank.accountNumber }}</span><span>&nbsp;<a
+                                href="javascript:void(0);" data-id="{{bank.accountNumber}}"
+                                data-msg="Đã copy:  MB QUÂN ĐỘI {{bank.accountNumber}}" class="mncp copy-bt">&nbsp;</a></span></b>
+                        </p>
+                        <p><b>📇. Chủ tài khoản: <span>{{ formatBank bank.name }}</span> </b></p>
+                        <p><b>🚦. <span>{{ numberFormat bank.betMin }} VNĐ -> {{ numberFormat bank.betMax }} VNĐ</span>
+                        </b></p>
+                        <p><b>Hỗ trợ hoàn lại 90% nếu sai cú pháp hoặc ngoài mức cược cho phép.</b></p>
+                        <p>Hệ thống chấp nhận tất cả các bank. Kết quả được tính như sau:</p>
+                        <p><i>Ngân hàng <i><b>MBBank, Vietcombank, Techcombank</b></i> sẽ được tính theo Mã ID giao
+                            dịch.</i></p>
+                        <p>Riêng <i><b>Momo</b></i> luôn lấy theo mã ID của ngân hàng nhận.</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- view modal -->
+            <div class="modal fade" id="modal-notes" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal__content modal__content--view">
+                            <div class="comments__autor">
+                                <img class="comments__avatar" src="icon/favicon.png" alt="">
+                                <span class="comments__name">SupBank Thông Báo</span>
+                            </div>
+                            <p class="comments__text"></p>
+                            <div class="modal__btns">
+                                <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal"
+                                        aria-label="Close"><span>Đóng</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden">
+                <input type="hidden" name="Account" id="_account"/>
+                <input type="hidden" name="HLog" value="" id="_hlog"/>
+            </div>
+
+        </div>
+    </div>
+</main>
+<!-- end main content -->
+<!-- view modal -->
+
+<script>
+    function resizeIframe(obj) {
+        var fh = obj.contentWindow.document.body.scrollHeight;
+        obj.style.height = Math.min(screen.height, fh) + 'px';
+    }
+</script>
+<div id="ifr-bill-panel">
+    <div class="bill-frame">
+        <div class="bill-header">
+            <span class="header-bill-text">KUBANK SAO KÊ</span>
+            <a href="javascript:void(0);" class="close-bill-frame">ĐÓNG</a>
+        </div>
+        <iframe id="show-bill-ifr" src="about:blank" onload="resizeIframe(this)"></iframe>
+    </div>
+</div>
+{{>footer}}
+
+
+{{{ settings.footerScript }}}
+
