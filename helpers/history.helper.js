@@ -325,7 +325,8 @@ exports.history = async () => {
         const bankData = await bankModel.findOne({status: 'active', loginStatus: 'active', bankType: 'mbb'}).lean();
 
         if (bankData) {
-            if (dataSetting?.checkTransId.status == 'close') {
+
+            if (dataSetting.checkTransId.status == 'close') {
                 await sleep(3 * 1000);
                 return await this.history();
             }
@@ -345,6 +346,9 @@ exports.history = async () => {
             await sleep(3 * 1000);
             return await this.history();
         }
+
+        await sleep(10 * 1000);
+        return await this.history();
        
 
     } catch (e) {

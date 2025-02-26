@@ -74,12 +74,11 @@
                             THÔNG TIN BANK NHẬN
                         </h3>
                     </div>
-
+                    {{#if profile}}
                     <div class="dashbox__table-wrap dashbox__table-wrap--4">
                         <p><b>🏦. Ngân hàng: <img width="8%" src="{{ bankImage bank.bankType }}"></b></p>
-                        <p><b>🏧. Số tài khoản: <span>{{ formatBank bank.accountNumber }}</span><span>&nbsp;<a
-                                href="javascript:void(0);" data-id="{{bank.accountNumber}}"
-                                data-msg="Đã copy:  MB QUÂN ĐỘI {{bank.accountNumber}}" class="mncp copy-bt">&nbsp;</a></span></b>
+                        <p><b>🏧. Số tài khoản: <span>{{ formatBank bank.accountNumber }}</span><span>&nbsp;
+                            <a href="javascript:void(0);" data-id="{{bank.accountNumber}}" data-msg="Đã copy:  MB QUÂN ĐỘI {{bank.accountNumber}}" class="mncp copy-bt">&nbsp;</a></span></b>
                         </p>
                         <p><b>📇. Chủ tài khoản: <span>{{ formatBank bank.name }}</span> </b></p>
                         <p><b>🚦. <span>{{ numberFormat bank.betMin }} VNĐ -> {{ numberFormat bank.betMax }} VNĐ</span>
@@ -90,6 +89,7 @@
                             dịch.</i></p>
                         <p>Riêng <i><b>Momo</b></i> luôn lấy theo mã ID của ngân hàng nhận.</p>
                     </div>
+                    {{/if}}
                 </div>
             </div>
 
