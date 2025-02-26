@@ -13,6 +13,7 @@ const bankModel = require('../models/bank.model');
 const mbbankHelper = require("./mbbank.helper");
 const sleep = require("time-sleep");
 const gameService = require("../services/game.service");
+const rewardModel = require("../models/reward.model");
 
 exports.handleCltx = async (history, bank) => {
     try {
@@ -356,5 +357,93 @@ exports.history = async () => {
         logHelper.create('getHistory', e.message || e.msg);
         console.log(e);
     }
-}
+};
 
+exports.fakeBill = async () => {
+    try {
+
+        const bankData = await bankModel.findOne({status: 'active', loginStatus: 'active', bankType: 'mbb'}).lean();
+
+        const dataSetting = await settingModel.findOne({});
+
+        if (!dataSetting.fakeUser.data.length) {
+            await sleep(3000);
+            return await this.fakeBill();
+        }
+
+        if (bankData) {
+
+            const transId = 'FT25038' + Math.floor(Math.random() * (999999999 - 100000000 + 1));
+            const amount = parseInt(String(Math.floor(Math.random() * (100 - 10 + 1)) + 10) + '000');
+            const bank = await bankModel.findOne({status: 'active', loginStatus: 'active'}).lean();
+
+            const randomIndex = Math.floor(Math.random() * dataSetting.fakeUser.data.length);
+
+            const randomReward = await rewardModel.aggregate([{ $sample: { size: 1 } }]);
+            const reward = randomReward[0];
+
+            let {
+                gameName,
+                gameType,
+                bonus,
+                result,
+                win,
+                paid
+            } = await gameHelper.checkWin(bank.accountNumber, amount, transId, reward.content);
+
+
+            await historyModel.findOneAndUpdate({transId}, {
+                $set: {
+                    transId,
+                    username: dataSetting.fakeUser.data[randomIndex],
+                    receiver: bank.accountNumber,
+                    bonus: Math.floor(amount * reward.amount),
+                    gameName,
+                    gameType,
+                    amount,
+                    result: result,
+                    paid: 'sent',
+                    isCheck: false,
+                    comment: reward.content,
+                    timeTLS: new Date(),
+                    bot: true
+                }
+            }, {upsert: true}).lean();
+
+            let historys = await historyModel.find({result: 'win'}).sort({createdAt: 'desc'}).limit(5);
+            let list = [];
+
+            for (const histor of historys) {
+                list.push({
+                    username: `${histor.username.slice(0, 4)}****`,
+                    amount: histor.amount,
+                    bonus: histor.bonus,
+                    gameName: histor.gameType,
+                    comment: histor.comment,
+                    result: histor.result,
+                    time: moment(histor.timeTLS).format('YYYY-MM-DD HH:mm:ss')
+                })
+            }
+
+            let dataPost = {
+                success: true,
+                allHistories: list
+            };
+
+            let dataEncode = await securityHelper.encrypt(JSON.stringify(dataPost));
+
+            socket.emit('cltx', dataEncode);
+
+            await sleep(5 * 1000);
+            return await this.fakeBill();
+        }
+
+        await sleep(60 * 1000);
+        return await this.fakeBill();
+
+    } catch (e) {
+        console.log(e);
+        await sleep(60 * 1000);
+        return await this.fakeBill();
+    }
+}

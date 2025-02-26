@@ -43,16 +43,6 @@ exports.checkWin = async (phone, amount, transId, comment) => {
         !win && (won = true);
         await momoService.limitBet(phone, amount) && (result = "exceed");
 
-        console.log({
-            gameName,
-            gameType,
-            result,
-            paid,
-            win,
-            won,
-            bonus
-        })
-
         return {
             gameName,
             gameType,
