@@ -399,6 +399,10 @@ const settingSchema = new mongoose.Schema({
         commentDe: String,
         commentXien2: String,
         ratioXien2: Number
+    },
+    consecutives: {
+        dataWin: Object,
+        dataLose: Object,
     }
 }, {
     timestamps: true

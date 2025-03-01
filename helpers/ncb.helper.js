@@ -9,81 +9,31 @@ const oldBank = require('../json/bank.json');
 const ncbBank = require('../json/ncb.bank.json');
 const transferModel = require('../models/transfer.model');
 
-exports.solveCaptcha = async (apiUrl, base64Image) => {
-    try {
-        const response = await axios.post(apiUrl, {
-            type: "imagetotext", key: "222e2809099938da51bffe3a654e7b80", img: base64Image
-        }, {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        });
-
-        const result = response.data;
-
-        if (result && result.captcha) {
-            console.log("CAPTCHA đã được giải:", result.captcha);
-            return result.captcha;
-        } else {
-            console.error("Lỗi khi giải CAPTCHA: Không nhận được kết quả hợp lệ.", result);
-            return null;
-        }
-    } catch (error) {
-        console.error("Lỗi khi giải CAPTCHA:", error);
-        return null;
-    }
-}
-
 exports.login = async (accountNumber, bankType) => {
     try {
 
         const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
 
-        const browser = await puppeteer.launch({
-            headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        });
-        const page = await browser.newPage();
-        let result;
+        let config = {
+            maxBodyLength: Infinity,
+            url: "http://103.252.93.74/ncb/login",
+            headers: {
+                "content-type": "application/json",
+            },
+            method: "POST",
+            timeout: 60000,
+            data: {
+                "username": bankData.username,
+                "password": bankData.password,
+            },
+        };
 
-        await page.goto("https://www.ncb-bank.vn/nganhangso.khcn/dang-nhap", {
-            waitUntil: "networkidle2",
-        });
+        const {data: response} = await axios(config);
 
-        const captchaBase64 = await page.evaluate(() => {
-            const img = document.querySelector("div.capcha img");
-            return img ? img.src : null;
-        });
-
-        if (!captchaBase64) {
-            return {
-                success: false, message: 'Không tìm thấy captcha'
-            }
-        }
-
-        const base64 = captchaBase64.replace(/^data:image\/png;base64,/, "");
-
-        const captchaSolution = await this.solveCaptcha("https://autocaptcha.pro/apiv3/process", base64);
-
-
-        await page.type('[formcontrolname="username"]', bankData.username);
-        await page.type('[formcontrolname="password"]', bankData.password);
-        await page.type('[formcontrolname="captcha"]', captchaSolution);
-
-        page.on("response", async (response) => {
-            if (response.url() === "https://www.ncb-bank.vn/nganhangso.khcn/gateway-server/oauth/token" && response.status() === 200) {
-                result = await response.json();
-            }
-        });
-        await page.click(".btn-login");
-
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        await browser.close();
-
-        if (result && result.access_token) {
-
+        if (response.status == 'success') {
             await bankModel.findOneAndUpdate({accountNumber, bankType}, {
                     $set: {
-                        accessToken: result.access_token,
+                        accessToken: response.accessToken,
                         loginStatus: 'active'
                     }
                 }
@@ -99,9 +49,12 @@ exports.login = async (accountNumber, bankType) => {
                 message: 'Đăng nhập thất bại'
             };
         }
-
     } catch (e) {
         console.log(e);
+        return {
+            success: false,
+            message: 'Đăng nhập thất bại'
+        };
     }
 }
 

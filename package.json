@@ -46,6 +46,8 @@
     "os-utils": "^0.0.14",
     "pm2": "^5.4.3",
     "puppeteer": "^24.1.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
     "push-nodejs-receiver": "^1.0.0",
     "request": "^2.88.2",
     "shortid": "^2.2.16",

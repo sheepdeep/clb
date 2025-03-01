@@ -23,6 +23,7 @@ const profileController = require('../controllers/profile.controller');
 const xssieutocController = require('../controllers/xssieutoc.controller');
 const xsmbController = require('../controllers/xsmb.controller');
 const taixiuController = require('../controllers/taixiu.controller');
+const eventController = require('../controllers/event.controller');
 const tableSort = require("../middlewares/sort.middleware");
 const moment = require("moment/moment");
 
@@ -158,6 +159,10 @@ router.route('/phongtx')
 
 router.route('/doimk')
     .get([notInstalled, loggedIn], profileController.changePass)
+    .post([notInstalled, loggedIn], profileController.update);
+
+router.route('/chuoi')
+    .get([notInstalled, loggedIn], eventController.consecutive)
     .post([notInstalled, loggedIn], profileController.update);
 
 router.route('/dangxuat')

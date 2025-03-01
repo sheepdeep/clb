@@ -3,6 +3,7 @@ const historyModel = require("../models/history.model");
 const historyTaiXiuModel = require("../models/history-taixiu.model");
 const historyEvent = require('../models/history-event.model');
 const memberModel = require("../models/member.model");
+const gameModel = require("../models/game.model");
 const moment = require("moment/moment");
 const { v4: uuidv4 } = require('uuid');
 const eventHelper = require('../helpers/event.helper');
@@ -175,6 +176,21 @@ const eventController = {
                 success: false,
                 message: 'Hệ thống chưa thể kiểm tra lịch sử chơi!'
             })
+        }
+    },
+    consecutive: async function (req, res) {
+        try {
+            let games = await gameModel.find({ display: 'show' }).lean();
+            let totalCount = 0;
+            let totalCountMission = 0;
+
+            if (res.locals.profile) {
+
+            }
+
+            res.render('pages/chuoi', {games, totalCount, totalCountMission});
+        } catch (e) {
+            console.log(e);
         }
     }
 }
