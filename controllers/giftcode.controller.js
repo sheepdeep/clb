@@ -35,6 +35,13 @@ const giftcodeController = {
                 })
             }
 
+            if (res.locals.profile.telegram?.status != 'active') {
+                return res.json({
+                    success: false,
+                    message: 'Vui lòng liên kết tài khoản telegram!',
+                })
+            }
+
             let checkCode = await giftModel.findOne({code, status: 'active'});
 
             if (!checkCode) {
@@ -131,7 +138,7 @@ const giftcodeController = {
                     username: res.locals.profile.username,
                     receiver: res.locals.profile.username,
                     transfer: `system`,
-                    transId: `G${Math.floor(Math.random() * (99999999 - 10000000) + 10000000)}`,
+                    transId: `SBG${Math.floor(Math.random() * (99999999 - 10000000) + 10000000)}`,
                     amount: checkCode.amount,
                     bonus: checkCode.amount,
                     comment: "GIFTCODE",
@@ -140,6 +147,23 @@ const giftcodeController = {
                     description: `SB COIN: ${Intl.NumberFormat('en-US').format(res.locals.profile.balance)} -&gt; ${Intl.NumberFormat('en-US').format(res.locals.profile.balance + checkCode.amount)}`,
                     result: 'ok',
                     paid: 'sent',
+                }).save();
+            }
+
+            if (checkCode.type == 'bank') {
+                let newHistory = await new historyModel({
+                    username: res.locals.profile.username,
+                    receiver: res.locals.profile.username,
+                    transfer: `system`,
+                    transId: `SBG${Math.floor(Math.random() * (99999999 - 10000000) + 10000000)}`,
+                    amount: checkCode.amount,
+                    bonus: checkCode.amount,
+                    comment: "GIFTCODE",
+                    gameName: 'GIFTCODE',
+                    gameType: 'GIFTCODE',
+                    // description: `SB COIN: ${Intl.NumberFormat('en-US').format(res.locals.profile.balance)} -&gt; ${Intl.NumberFormat('en-US').format(res.locals.profile.balance + checkCode.amount)}`,
+                    result: 'ok',
+                    paid: 'wait',
                 }).save();
             }
 

@@ -192,10 +192,10 @@ const giftController = {
     delHistory: async (req, res, next) => {
         try {
             let id = req.params.id;
-            let phone = req.body.phone;
+            let username = req.body.username;
 
             if (id == 'all') {
-                await giftModel.findOneAndUpdate({ phone }, {
+                await giftModel.findByIdAndUpdate({ id }, {
                     $set: {
                         players: []
                     }
@@ -207,7 +207,7 @@ const giftController = {
                 })
             }
 
-            if (!phone) {
+            if (!username) {
                 return res.json({
                     success: false,
                     message: 'Thiếu dữ liệu!'
@@ -216,7 +216,7 @@ const giftController = {
 
             let data = await giftModel.findById(id);
 
-            data.players = data.players.filter(item => item.phone != phone);
+            data.players = data.players.filter(item => item.username != username);
             await data.save();
 
             res.json({

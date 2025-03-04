@@ -300,7 +300,7 @@
                     <table class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
                         <thead class="badge-secondary text-white">
                             <tr>
-                                <th>Số Điện Thoại</th>
+                                <th>Thành Viên</th>
                                 <th>Thời Gian</th>
                                 <th><span class="delete-history" data-id="all"><i class="fa fa-times-circle"
                                             aria-hidden="true"></i></span></th>
@@ -334,7 +334,7 @@
                     $('[data-bs-modal="gift-history"] h5.modal-title').html(`<i class="fa fa-gift" aria-hidden="true"></i> ${response.data.code}`);
                     $('#historyGift').html(!response.data.players.length ? `<tr><td colspan="12"><div class="dm-empty text-center"><div class="dm-empty__image"><img src="../themes/admin/images/1.png" alt="Rỗng"></div><div class="dm-empty__text"><p class="">Không có dữ liệu!</p></div></div></td></tr>` : '');
 
-                    response.data.players.map(obj => $('#historyGift').append(`<tr><td>${obj.phone}</td><td>${moment(obj.time).format('HH:mm:ss DD-MM-YYYY')}</td><td><div class="table-actions hand"><span class="badges badge-danger delete-history" data-id="${response.data._id}" data-phone="${obj.phone}"><i class="fa fa-trash" aria-hidden="true"></i></span></div></td></tr>`));
+                    response.data.players.map(obj => $('#historyGift').append(`<tr><td>${obj.username}</td><td>${moment(obj.time).format('HH:mm:ss DD-MM-YYYY')}</td><td><div class="table-actions hand"><span class="badges badge-danger delete-history" data-id="${response.data._id}" data-username="${obj.username}"><i class="fa fa-trash" aria-hidden="true"></i></span></div></td></tr>`));
                     $('[data-bs-modal="gift-history"]').modal('show');
                 })
                 .catch((err) => {
@@ -344,14 +344,14 @@
 
         $('body').on('click', '.delete-history', function (e) {
             let id = $(this).data('id');
-            let phone = $(this).data('phone');
+            let username = $(this).data('username');
 
             if (!id) {
                 swal('Thông Báo', 'Dữ liệu không hợp lệ!', 'warning');
                 return;
             }
 
-            instance.post(`/history-gift/${id}`, { phone })
+            instance.post(`/history-gift/${id}`, { username })
                 .then((result) => {
                     let response = result.data;
 

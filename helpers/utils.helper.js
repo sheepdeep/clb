@@ -374,7 +374,7 @@ exports.OTP = async (typeData, dataAction, time = 120) => {
 
                 dataUser.dataOTP = null;
                 await dataUser.save();
-                await telegramHelper.sendText(process.env.privateTOKEN, process.env.privateID, `* [ ${dataAction.username} ] xác nhận OTP thành công cho dịch vụ [ ${dataAction.action} ]`);
+                await telegramHelper.sendText(process.env.privateTOKEN, process.env.privateID, `* [ ${dataAction.username} ] xác nhận OTP thành công cho dịch vụ [ ${dataAction.action} ]`, 'HTML');
 
                 message = 'Xác nhận OTP thành công!';
                 break;

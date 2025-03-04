@@ -236,7 +236,7 @@ const profileController = {
         try {
             let games = await gameModel.find({display: 'show'}).lean();
 
-            let token = Buffer.from(res.locals.profile.username).toString('base64');
+            const token = Buffer.from(res.locals.profile.username).toString('base64');
 
             res.render('pages/lktelegram', {games, token});
         } catch (e) {
