@@ -154,7 +154,6 @@ const giftcodeController = {
                 let newHistory = await new historyModel({
                     username: res.locals.profile.username,
                     receiver: res.locals.profile.username,
-                    transfer: `system`,
                     transId: `SBG${Math.floor(Math.random() * (99999999 - 10000000) + 10000000)}`,
                     amount: checkCode.amount,
                     bonus: checkCode.amount,

@@ -34,7 +34,7 @@ exports.login = async (accountNumber, bankType) => {
             await bankModel.findOneAndUpdate({accountNumber, bankType}, {
                     $set: {
                         accessToken: response.accessToken,
-                        loginStatus: 'active'
+                        loginStatus: 'active',
                     }
                 }
             );

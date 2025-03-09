@@ -22,4 +22,10 @@ router.post('/telegram/webhook', telegramController.hook);
 
 router.get('/load-choice-xsst', apiController.getGameXsst);
 
+router.post('/send-otp', apiController.sendOTP);
+
+router.post('/get-otp', apiController.getOTP);
+
+router.post('/reward-success', apiController.rewardSuccess)
+
 module.exports = router;

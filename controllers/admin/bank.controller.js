@@ -107,7 +107,8 @@ const momoController = {
                     accountNumber,
                     bankType,
                     status: 'pending',
-                    loginStatus: 'wait'
+                    loginStatus: 'wait',
+                    reward: false
                 }
             }, {upsert: true})
 

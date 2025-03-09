@@ -315,7 +315,7 @@ exports.handleDesc = async (description) => {
 
     return {
         username: desc[0],
-        comment: desc[1]
+        comment: desc[1].toUpperCase()
     }
 };
 
@@ -367,6 +367,11 @@ exports.fakeBill = async () => {
         const dataSetting = await settingModel.findOne({});
 
         if (!dataSetting.fakeUser.data.length) {
+            await sleep(3000);
+            return await this.fakeBill();
+        }
+
+        if (dataSetting.checkTransId.status == 'close') {
             await sleep(3000);
             return await this.fakeBill();
         }

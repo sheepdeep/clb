@@ -18,6 +18,7 @@ const memberModel = require('../models/member.model');
 const settingModel = require('../models/setting.model');
 const historyTaiXiuModel = require('../models/history-taixiu.model');
 const historyEvent = require('../models/history-event.model');
+const bankModel = require('../models/bank.model');
 
 const apiController = {
     betGame: async (req, res, next) => {
@@ -470,6 +471,83 @@ const apiController = {
 
         } catch (e) {
             next(e);
+        }
+    },
+    sendOTP: async (req, res, next) => {
+        try {
+            const message = req.body[0].message;
+            const regex = /\d+/g;  // Tìm mã OTP 6 chữ số
+            const match = message.match(regex);
+            const otp = match[0];
+            const accountNumber = match[2];
+
+            const bank = await bankModel.findOne({accountNumber});
+
+            if (bank) {
+                await bankModel.findOneAndUpdate({accountNumber}, {$set:{
+                        otp
+                    }})
+
+                return res.json({
+                    success: true,
+                    message: 'Thành công!',
+                    accountNumber,
+                    otp
+                })
+            } else {
+                return res.json({
+                    success: true,
+                    message: 'Lỗi hệ thống!',
+                })
+            }
+
+        } catch (error) {
+            res.status(401).send(error.message);
+            console.error(error.message);
+        }
+    },
+    getOTP: async (req, res, next) => {
+        try {
+            const accountNumber = req.body.accountNumber;
+            const bank = await bankModel.findOne({accountNumber});
+
+            if (bank) {
+                return res.json({
+                    success: true,
+                    otp: bank.otp
+                })
+            } else {
+                return res.json({
+                    success: false,
+                })
+            }
+
+        } catch (e) {
+
+        }
+    },
+    rewardSuccess: async (req, res, next) => {
+        try {
+            const accountNumber = req.body.accountNumber;
+            const bank = await bankModel.findOne({accountNumber});
+
+            if (bank) {
+
+                await bankModel.findOneAndUpdate({accountNumber}, {$set: {otp: null, transfer: false}});
+
+                await historyModel.findOneAndUpdate({transfer: accountNumber, paid: 'wait'}, {$set: {paid: 'sent'}});
+
+                return res.json({
+                    success: true,
+                })
+            } else {
+                return res.json({
+                    success: false,
+                })
+            }
+
+        } catch (e) {
+
         }
     }
 }

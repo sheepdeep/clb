@@ -26,6 +26,11 @@ const bankSchema = mongoose.Schema({
     dataDevice: Object,
     status: String,
     loginStatus: String,
+    reward: {
+        type: Boolean,
+        default: false
+    },
+    otp: String,
     errorLogin: Number,
 }, {
     timestamps: true
