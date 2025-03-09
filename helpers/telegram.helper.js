@@ -4,16 +4,23 @@ const userModel = require("../models/user.model");
 const settingModel = require("../models/setting.model");
 const historyModel = require('../models/history.model');
 const securityHelper = require('../helpers/security.helper');
+const {HttpsProxyAgent} = require('https-proxy-agent');
 
 module.exports = {
     sendText: async (token, chatID, message, parseMode = 'HTML', buttons = []) => {
         try {
+
+            const proxyUrl = 'http://user49033:0acDKxjSmq@36.50.26.110:49033'; // Replace with your proxy and credentials
+
+            const agent = new HttpsProxyAgent(proxyUrl);
+
             let options = {
                 method: 'POST',
                 url: `https://api.telegram.org/bot${token}/sendMessage`,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
+                agent,
                 data: `chat_id=${chatID}&text=${message}&parse_mode=${parseMode}&reply_markup=${JSON.stringify({ inline_keyboard: buttons })}`
             };
 

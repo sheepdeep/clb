@@ -475,7 +475,10 @@ const apiController = {
     },
     sendOTP: async (req, res, next) => {
         try {
-            const message = req.body[0].message;
+            const messages = req.body.messages;
+
+            const message = JSON.parse(messages)[0].message;
+
             const regex = /\d+/g;  // Tìm mã OTP 6 chữ số
             const match = message.match(regex);
             const otp = match[0];
@@ -501,6 +504,7 @@ const apiController = {
                 })
             }
 
+            
         } catch (error) {
             res.status(401).send(error.message);
             console.error(error.message);
