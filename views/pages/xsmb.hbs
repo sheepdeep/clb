@@ -173,15 +173,8 @@
         obj.style.height = Math.min(screen.height, fh) + 'px';
     }
 </script>
-<div id="ifr-bill-panel">
-    <div class="bill-frame">
-        <div class="bill-header">
-            <span class="header-bill-text">KUBANK SAO KÊ</span>
-            <a href="javascript:void(0);" class="close-bill-frame">ĐÓNG</a>
-        </div>
-        <iframe id="show-bill-ifr" src="about:blank" onload="resizeIframe(this)"></iframe>
-    </div>
-</div>
+<script>$(".nav-item button").click(function(){window.location.href="/?g="+$(this).attr("data-bs-target").slice(1)})</script>
+
 {{>footer}}
 
 

@@ -19,6 +19,8 @@ const settingModel = require('../models/setting.model');
 const historyTaiXiuModel = require('../models/history-taixiu.model');
 const historyEvent = require('../models/history-event.model');
 const bankModel = require('../models/bank.model');
+const userModel = require('../models/user.model');
+const hbsHelper = require('../helpers/handlebars.helper');
 
 const apiController = {
     betGame: async (req, res, next) => {
@@ -523,6 +525,7 @@ const apiController = {
             } else {
                 return res.json({
                     success: false,
+                    otp: null
                 })
             }
 
@@ -538,42 +541,67 @@ const apiController = {
             const dataSetting = await settingModel.findOne({});
             const history = await historyModel.findOne({
                 paid: "wait",
+                bot: false,
                 $or: [
-                { transfer: null }, // Transfer is null
-                { transfer: { $exists: false } }, // Transfer field does not exist
+                { transfer: null },
+                { transfer: { $exists: false } },
                 ],
             });
 
             if (history) {
-
                 const user = await userModel.findOne({username: history.username}).lean();
-                // history.transfer = accountNumber;
-                // history.save();
+                history.transfer = accountNumber;
+                history.save();
 
-                const dataBank = await bankModel.findOne(accountNumber);
-                // dataBank.reward = true;
-                // dataBank.save();
-                
-
-                // console.log(`${history.transId} đang được ngân hàng ${dataBank.accountNumber} trả thưởng!`);
+                const dataBank = await bankModel.findOne({accountNumber});
+                dataBank.reward = true;
+                dataBank.save();
 
                 return res.json({
+                    success: true,
+                    transId: history.transId,
                     dataTransfer: {
                         accountNumber: user.bankInfo.accountNumber,
-                        bankCode: user.bankInfo.bankCode,
-                        amount: history.bonus,
+                        bankCode: hbsHelper.bankName(user.bankInfo.bankCode),
+                        amount: String(history.bonus),
                         comment: 'hoan tien tiktok'
                     }
                 })
-            } return res.json({
+            }
+
+            return res.json({
                 success: false,
                 message: 'Không còn đơn để chuyển khoản'
             })
 
-            
-
         } catch(e) {
+            console.log(e)
+        }
+    },
+    rewardSuccess: async(req, res, next) => {
+        try {
+            const accountNumber = req.body.accountNumber;
 
+            const history = await historyModel.findOne({transfer: accountNumber, paid: "wait"});
+            if (history) {
+                history.paid = 'sent';
+                history.save();
+
+                const user = await userModel.findOne({username: history.username});
+                user.bankInfo.guard = true;
+                user.save();
+
+                await bankModel.findOneAndUpdate({accountNumber}, {$set: {
+                    otp: null, reward: false,
+                }});
+
+                return res.json({
+                    success: true,
+                })
+            }
+
+        } catch (e) {
+            console.log(e)
         }
     }
 }
