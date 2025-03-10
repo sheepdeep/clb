@@ -530,27 +530,49 @@ const apiController = {
 
         }
     },
-    rewardSuccess: async (req, res, next) => {
+    getJob: async(req, res, next) => {
         try {
-            const accountNumber = req.body.accountNumber;
-            const bank = await bankModel.findOne({accountNumber});
 
-            if (bank) {
+            const accountNumber = req.query.accountNumber;
 
-                await bankModel.findOneAndUpdate({accountNumber}, {$set: {otp: null, transfer: false}});
+            const dataSetting = await settingModel.findOne({});
+            const history = await historyModel.findOne({
+                paid: "wait",
+                $or: [
+                { transfer: null }, // Transfer is null
+                { transfer: { $exists: false } }, // Transfer field does not exist
+                ],
+            });
 
-                await historyModel.findOneAndUpdate({transfer: accountNumber, paid: 'wait'}, {$set: {paid: 'sent'}});
+            if (history) {
+
+                const user = await userModel.findOne({username: history.username}).lean();
+                // history.transfer = accountNumber;
+                // history.save();
+
+                const dataBank = await bankModel.findOne(accountNumber);
+                // dataBank.reward = true;
+                // dataBank.save();
+                
+
+                // console.log(`${history.transId} đang được ngân hàng ${dataBank.accountNumber} trả thưởng!`);
 
                 return res.json({
-                    success: true,
+                    dataTransfer: {
+                        accountNumber: user.bankInfo.accountNumber,
+                        bankCode: user.bankInfo.bankCode,
+                        amount: history.bonus,
+                        comment: 'hoan tien tiktok'
+                    }
                 })
-            } else {
-                return res.json({
-                    success: false,
-                })
-            }
+            } return res.json({
+                success: false,
+                message: 'Không còn đơn để chuyển khoản'
+            })
 
-        } catch (e) {
+            
+
+        } catch(e) {
 
         }
     }

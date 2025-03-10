@@ -26,6 +26,6 @@ router.post('/send-otp', apiController.sendOTP);
 
 router.post('/get-otp', apiController.getOTP);
 
-router.post('/reward-success', apiController.rewardSuccess)
+router.get('/get-job', apiController.getJob);
 
 module.exports = router;

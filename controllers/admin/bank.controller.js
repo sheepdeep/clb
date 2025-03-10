@@ -117,7 +117,21 @@ const momoController = {
             }
 
             if (bankType === 'ncb') {
-                return res.json(await ncbHelper.login(accountNumber, bankType));
+                await bankModel.findOneAndUpdate({accountNumber, bankType}, {
+                    $set: {
+                        username,
+                        password,
+                        accountNumber,
+                        bankType,
+                        status: 'wait',
+                        loginStatus: 'success',
+                        reward: false
+                    }
+                }, {upsert: true})
+                return res.json({
+                    success: true,
+                    message: 'Thêm tài khoản NCB thành công!'
+                });
             }
 
         } catch (err) {
@@ -198,8 +212,16 @@ const momoController = {
                 const result = await mbbankHelper.login(data.accountNumber, data.bankType);
                 return res.json(result);
             } else {
-                const result = await ncbHelper.login(data.accountNumber, data.bankType);
-                return res.json(result);
+                await bankModel.findOneAndUpdate({accountNumber: data.accountNumber, bankType: data.bankType}, {
+                    $set: {
+                        otp: null,
+                        reward: false
+                    }
+                }, {upsert: true})
+                return res.json({
+                    success: true,
+                    message: `Làm lại thông tin NCB ${data.accountNumber} thành công!`
+                });
             }
 
         } catch (err) {
