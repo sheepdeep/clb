@@ -25,8 +25,6 @@ const momoService = {
         try {
             let dataPhone = await bankModel.findOne({ phone });
 
-            console.log(`${phone}: ${amount} > ${dataPhone.betMax}: ${amount > dataPhone.betMax} hoặc ${amount} < ${dataPhone.betMin}: ${amount < dataPhone.betMin}`)
-
             return amount > dataPhone.betMax || amount < dataPhone.betMin;
         } catch (err) {
             console.log(err);

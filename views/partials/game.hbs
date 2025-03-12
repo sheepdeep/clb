@@ -9,9 +9,9 @@
                             data-type="{{ this.gameType }}" type="button">{{ this.name }}</button>
                 </li>
             {{/each}}
-            <li class="nav-item" role="presentation">
-                <a href="/xsmb">
-                    <button data-bs-target="#{{ this.gameType }}" data-type="{{ this.gameType }}" class="game" type="button">XSMB</button>
+            <li id="#xsmb" class="nav-item" role="presentation">
+                <a href="/xsmb?g=xsmb">
+                    <button data-bs-target="#xsmb" data-type="xsmb" class="game" type="button">XSMB</button>
                 </a>
             </li>
         </ul>

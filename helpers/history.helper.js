@@ -332,7 +332,6 @@ exports.history = async () => {
                 return await this.history();
             }
     
-            console.log(`Thực hiện kiểm tra lịch sử tài khoản mbb ${bankData.accountNumber}`);
             const histories = await mbbankHelper.history(bankData.accountNumber, bankData.bankType);
     
             if (!histories) {
@@ -450,5 +449,49 @@ exports.fakeBill = async () => {
         console.log(e);
         await sleep(60 * 1000);
         return await this.fakeBill();
+    }
+};
+
+exports.gift = async () => {
+    try {
+
+        const dataSetting = await settingModel.findOne({});
+
+        /** LẤY RANDOM USERNAME */
+        const randomRecord = await historyModel.aggregate([
+            {
+                $match: {
+                    result: 'lose',  // Lọc các kết quả thua
+                    bot: false,  // Lọc không phải bot
+                    createdAt: {  // Giả sử trường 'createdAt' là trường chứa thời gian bạn cần lọc
+                        $gte: moment(moment().format('YYYY-MM-DD')).startOf('day').toDate(),  // Từ đầu ngày hôm nay
+                        $lt: moment(moment().format('YYYY-MM-DD')).endOf('day').toDate()  // Đến cuối ngày hôm nay
+                    }
+                }
+            },
+            {
+                $sample: { size: 1 }  // Lấy ngẫu nhiên 1 bản ghi
+            }
+        ]);
+        const history = randomRecord[0];
+
+        if (history) {
+            const user = await userModel.findOne({username: history.username});
+            let photo = 'https://img.upanh.tv/2025/03/12/uri_ifs___M_3cb0a230-1036-4403-aa89-621d70997dfc.jpg';
+
+            if (user.telegram?.chatId) {
+                let textMessage = `<i>🔉 SUPBANK.ME THÔNG BÁO 🔉</i> \n\n<b>🎉 Chúc mừng ${user.username} 🎉</b> \n\n <i>(lưu ý: mã quà duy trì trong 5p vui lòng nhận nhanh tránh mất nha).</i> \n\n<b>Truy cập SUPBANK.ME để trải nghiệm</b> \n\n<b> AI NHẬN ĐƯỢC THƯỞNG VUI LÒNG <a href="https://t.me/supbank_bot">ẤN VÀO ĐÂY</a></b>`;
+
+                await telegramHelper.sendPhoto(dataSetting.telegram.token, dataSetting.telegram.chatId, textMessage, photo, 'HTML');
+            }
+
+            let textMessage = `<i>🔉 SUPBANK.ME THÔNG BÁO 🔉</i> \n\n<b>🎉 Chúc mừng ${user.username.slice(0, -4)}**** 🎉</b> \n\n <i>(lưu ý: mã quà duy trì trong 5p vui lòng nhận nhanh tránh mất nha).</i> \n\n<b>Truy cập SUPBANK.ME để trải nghiệm</b> \n\n<b> AI NHẬN ĐƯỢC THƯỞNG VUI LÒNG <a href="https://t.me/supbank_bot">ẤN VÀO ĐÂY</a></b>`;
+
+            await telegramHelper.sendPhoto(dataSetting.telegram.token, dataSetting.telegram.chatId, textMessage, photo, 'HTML');
+
+        }
+
+    } catch (e) {
+        console.log(e);
     }
 }

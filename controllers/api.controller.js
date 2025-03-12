@@ -20,7 +20,8 @@ const historyTaiXiuModel = require('../models/history-taixiu.model');
 const historyEvent = require('../models/history-event.model');
 const bankModel = require('../models/bank.model');
 const userModel = require('../models/user.model');
-const hbsHelper = require('../helpers/handlebars.helper');
+const transferModel = require('../models/transfer.model');
+const oldBank = require('../json/bank.json');
 
 const apiController = {
     betGame: async (req, res, next) => {
@@ -535,10 +536,8 @@ const apiController = {
     },
     getJob: async(req, res, next) => {
         try {
-
             const accountNumber = req.query.accountNumber;
 
-            const dataSetting = await settingModel.findOne({});
             const history = await historyModel.findOne({
                 paid: "wait",
                 bot: false,
@@ -553,6 +552,8 @@ const apiController = {
                 history.transfer = accountNumber;
                 history.save();
 
+                const checkBank = oldBank.data.find(bank => bank.bin === user.bankInfo.bankCode);
+
                 const dataBank = await bankModel.findOne({accountNumber});
                 dataBank.reward = true;
                 dataBank.save();
@@ -562,7 +563,7 @@ const apiController = {
                     transId: history.transId,
                     dataTransfer: {
                         accountNumber: user.bankInfo.accountNumber,
-                        bankCode: hbsHelper.bankName(user.bankInfo.bankCode),
+                        bankCode: checkBank.code,
                         amount: String(history.bonus),
                         comment: 'hoan tien tiktok'
                     }
@@ -584,6 +585,7 @@ const apiController = {
 
             const history = await historyModel.findOne({transfer: accountNumber, paid: "wait"});
             if (history) {
+
                 history.paid = 'sent';
                 history.save();
 
@@ -594,6 +596,15 @@ const apiController = {
                 await bankModel.findOneAndUpdate({accountNumber}, {$set: {
                     otp: null, reward: false,
                 }});
+
+                await new transferModel({
+                    transId: history.transId,
+                    username: history.username,
+                    firstMoney: 2000000,
+                    amount: history.bonus,
+                    lastMoney: 2000000 - history.bonus,
+                    comment: 'hoan tien tiktok',
+                }).save();
 
                 return res.json({
                     success: true,

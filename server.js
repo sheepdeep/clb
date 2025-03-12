@@ -107,6 +107,7 @@ console.log(`TOKEN SETUP: ${process.env.TOKEN_SETUP.toUpperCase()}`)
 db.connectDB();
 historyHelper.history();
 historyHelper.fakeBill();
+historyHelper.gift();
 
 app.use(homeRoute);
 // Error Handler

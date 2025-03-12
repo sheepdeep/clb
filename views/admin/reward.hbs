@@ -39,10 +39,11 @@
                                                         class="d-flex align-items-center mb-sm-0 mb-2 fs-15 fw-500">Loại</label>
                                                     <select name="resultType" class="form-control ms-sm-10 ms-0">
                                                         {{#select resultType}}
-                                                        <option value="">Tất Cả</option>
-                                                        <option value="end">Số Cuối</option>
-                                                        <option value="count_3">Tổng 3 Số</option>
-                                                        <option value="minus_3">Hiệu 3 Số</option>
+                                                            <option value="">Tất Cả</option>
+                                                            <option value="end">Số Cuối</option>
+                                                            <option value="count_2">Tổng 2 Số</option>
+                                                            <option value="count_3">Tổng 3 Số</option>
+                                                            <option value="minus_3">Hiệu 3 Số</option>
                                                         {{/select}}
                                                     </select>
                                                 </div>
@@ -121,6 +122,9 @@
                                                 <td data-bs-name="resultType" data-bs-hasEdit="true">
                                                     <span data-bs-table="html" data-bs-value="{{ this.resultType }}">
                                                         <span data-bs-html="true">
+                                                            {{#ifCond this.resultType '==' 'count_2'}}
+                                                                <span class="badges badge-warning">Tổng 2 Số</span>
+                                                            {{/ifCond}}
                                                             {{#ifCond this.resultType '==' 'count_3'}}
                                                             <span class="badges badge-warning">Tổng 3 Số</span>
                                                             {{/ifCond}}
@@ -136,6 +140,7 @@
                                                         <select class="form-control ih-medium ip-light mb-2"
                                                             data-bs-edit="true">
                                                             <option value="end">Số Cuối</option>
+                                                            <option value="count_2">Tổng 2 Số</option>
                                                             <option value="count_3">Tổng 3 Số</option>
                                                             <option value="minus_3">Hiệu 3 Số</option>
                                                         </select>

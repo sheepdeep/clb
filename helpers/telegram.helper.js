@@ -20,11 +20,13 @@ module.exports = {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                agent,
+                httpsAgent: agent,
                 data: `chat_id=${chatID}&text=${message}&parse_mode=${parseMode}&reply_markup=${JSON.stringify({ inline_keyboard: buttons })}`
             };
 
             let { data: response } = await axios(options);
+
+            console.log(response)
 
             return response.ok ? ({
                 success: true,

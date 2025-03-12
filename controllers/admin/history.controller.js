@@ -5,6 +5,7 @@ const momoModel = require('../../models/bank.model');
 const historyHelper = require('../../helpers/history.helper');
 const momoHelper = require('../../helpers/momo.helper');
 const utils = require('../../helpers/utils.helper');
+const settingModel = require('../../models/setting.model');
 
 const historyController = {
     index: async (req, res, next) => {
@@ -107,6 +108,7 @@ const historyController = {
     },
     update: async (req, res, next) => {
         try {
+            const dataSetting = await settingModel.findOne();
             let id = req.params.id;
 
             if (!res.locals.profile.permission.editHis || (req.body.comment && !res.locals.profile.permission.editComment)) {
@@ -126,11 +128,24 @@ const historyController = {
             }
 
             for (let key in req.body) {
-                await historyModel.findByIdAndUpdate(id, {
-                    $set: {
-                        ...req.body,
-                    }
-                });
+
+                if (req.body.result == 'refund') {
+                    const bonus = data.amount * dataSetting.refund.won / 100;
+                    await historyModel.findByIdAndUpdate(id, {
+                        $set: {
+                            result: 'lose',
+                            bonus: bonus,
+                            paid: 'wait',
+                            description: 'Hoàn tiền đơn thua'
+                        }
+                    });
+                } else {
+                    await historyModel.findByIdAndUpdate(id, {
+                        $set: {
+                            ...req.body,
+                        }
+                    });
+                }
 
                 await historyModel.findByIdAndUpdate(id, {
                     $push: {
@@ -216,13 +231,6 @@ const historyController = {
                 })
             }
 
-            if (!await momoModel.findOne({ phone, status: 'active', loginStatus: 'active' })) {
-                return res.json({
-                    success: false,
-                    message: 'Số điện thoại này không hoạt động!'
-                })
-            }
-
             let data = await historyModel.findOne({ transId });
 
             if (!data) {
@@ -234,19 +242,15 @@ const historyController = {
 
             await historyModel.findOneAndUpdate({transId}, {
                     $set: {
-                        result: 'wait',
+                        paid: 'wait',
+                        transfer: null
                     }
                 }
             )
 
-            let reward = await historyHelper.handleTransId(transId);
-
-            return !reward ? res.json({
-                success: false,
-                message: 'Trả thưởng lại thất bại!'
-            }) : res.json({
+            return res.json({
                 success: true,
-                message: `Trả thưởng lại thành công #${reward.transId}`
+                message: `Trả thưởng lại thành công #${data.transId}`
             })
 
         } catch (err) {
