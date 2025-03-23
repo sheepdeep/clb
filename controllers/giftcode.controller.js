@@ -51,18 +51,18 @@ const giftcodeController = {
 
             let checkCode = await giftModel.findOne({code, status: 'active'});
 
-            if (checkCode.players.find(e => e.username == res.locals.profile.username)) {
-                return res.json({
-                    success: false,
-                    message: "Mã code đã được sử dụng!"
-                });
-            }
-
             if (!checkCode) {
                 return res.json({
                     success: false,
                     message: 'Mã code đã hết hạn hoặc không hợp lệ!'
                 })
+            }
+
+            if (checkCode.players.find(e => e.username == res.locals.profile.username)) {
+                return res.json({
+                    success: false,
+                    message: "Mã code đã được sử dụng!"
+                });
             }
 
             if (checkCode.playCount && !await historyModel.findOne({
@@ -110,10 +110,10 @@ const giftcodeController = {
                 })
             }
 
-            let timeExpired = Math.abs((moment(checkCode.expiredAt).valueOf() - moment().valueOf()) / 1000).toFixed(0) - Math.abs((moment(checkCode.createdAt).valueOf() - moment().valueOf()) / 1000).toFixed(0);
+            const timeRemaining = moment(checkCode.expiredAt).diff(moment(), 'seconds');
 
-            if (timeExpired < 1) {
-                await giftModel.findOneAndUpdate({code: code}, {$set: {status: "expired"}});
+            if (timeRemaining < 1) {
+                await giftModel.findOneAndUpdate({ code }, { $set: { status: "expired" } });
                 return res.json({
                     success: false,
                     message: "Mã code đã hết hạn sử dụng!"
