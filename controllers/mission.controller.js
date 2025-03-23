@@ -18,6 +18,7 @@ const missionController = {
                     $match: {
                         username: res.locals.profile.username,
                         gameType: {$exists: true, $ne: null},
+                        $and: [{$or: [{result: 'win'}, {result: 'lose'}]}],
                         timeTLS: {$gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate()}
                     }
                 }, {$group: {_id: null, amount: {$sum: '$amount'}}}]);

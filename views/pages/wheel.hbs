@@ -1,0 +1,196 @@
+{{>header}}
+<body>
+<div class="preloader"></div>
+<!-- header -->
+<header class="header">
+    <div class="header__content">
+        <!-- header logo -->
+        <a href="/" class="header__logo">
+            <img class="logo" src="{{ settings.logo }}" alt="{{ settings.nameSite }}"/>
+        </a>
+        <!-- end header logo -->
+        <!-- header menu btn -->
+        <button class="header__btn" type="button">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <!-- end header menu btn -->
+    </div>
+</header>
+<style>
+    .rotation {
+        text-align: center;
+    }
+    section {
+        padding: 30px 0;
+    }
+    .rotation .play-spin {
+        width: 100%;
+        position: relative;
+        margin: 0 auto;
+    }
+    .rotation .play-spin .ani-zoom {
+        position: absolute;
+        display: block;
+        width: 110px;
+        z-index: 5;
+        top: calc(50% - 70px);
+        left: calc(50% - 55px);
+    }
+    .ani-zoom {
+        -webkit-transition: all .2s linear;
+        -moz-transition: all .2s linear;
+        -ms-transition: all .2s linear;
+        -o-transition: all .2s linear;
+        transition: all .2s linear;
+    }
+    img {
+        max-width: 100%;
+    }
+    img {
+        vertical-align: middle;
+    }
+</style>
+<!-- end header -->
+<!-- sidebar -->
+{{>sidebar}}
+<!-- main content -->
+<main class="main">
+    <div class="container-fluid">
+        <div class="row">
+            {{>game}}
+            <div class="col-12">
+                <div class="dashbox">
+                    <div class="dashbox__title">
+                        <h3 style="margin:0 auto;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 9C7.44772 9 7 9.44771 7 10C7 10.5523 7.44772 11 8 11H16C16.5523 11 17 10.5523 17 10C17 9.44771 16.5523 9 16 9H8Z"
+                                      fill="currentColor"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                      d="M6 3C4.34315 3 3 4.34315 3 6V18C3 19.6569 4.34315 21 6 21H18C19.6569 21 21 19.6569 21 18V6C21 4.34315 19.6569 3 18 3H6ZM5 18V7H19V18C19 18.5523 18.5523 19 18 19H6C5.44772 19 5 18.5523 5 18Z"
+                                      fill="currentColor"></path>
+                            </svg>
+                            VÒNG QUAY MAY MẮN
+                        </h3>
+                    </div>
+                    <div class="subpage-wrapper">
+                        {{#if profile}}
+                            <div class="text-center mb-3">
+                                <p>
+                                    <span>TỔNG CHƠI TRONG NGÀY: </span> <span class="code-num"><b>{{ numberFormat totalCount }}</b></span>
+                                    <br><i class="small-notes">(lưu ý: hệ thông cập nhật tổng chơi mỗi 5p - ƯU CẦU CHƠI 1 TAY {{ numberFormat settings.wheel.amount }})</i>
+                                    <br>
+                                    <span>TỔNG LƯỢT QUAY TRONG NGÀY: </span> <span class="code-num"><b>{{ numberFormat totalWheel }}</b></span></p>
+                            </div>
+                        {{else}}
+                            <div class="text-center">
+                                <p>VUI LÒNG <a href="/dangnhap">ĐĂNG NHẬP</a> HOẶC <a href="/dangnhap">ĐĂNG KÝ</a> ĐỂ
+                                    NHẬN THƯỞNG</p>
+                            </div>
+                        {{/if}}
+                        <div class="text-center">
+                            <p class="small-notes"><i>HỆ THỐNG LIÊN TỤC PHÁT CODE NGẪU NHIÊN - MIỄN PHÍ MỖI 10-15P TẠI
+                                <a href="https://t.me/BANKTXCL">GROUP TELEGRAM</a></i></p>
+                        </div>
+                        <form class="pn-quests" method="post" id="form-nvngay" action="/nvngay" style="">
+                            <p class="text-center err" id="err-msg"></p>
+                            <div class="col-12">
+                                <section class="rotation">
+                                    <div class="play-spin">
+                                        <a class="ani-zoom" id="start-played1"><img src="https://tramparmarpblox.com/qbvlxj3gk0.png" alt="Play Center"></a>
+                                        <img style="width: 80%;max-width: 80%;opacity: 1;" src="/themes/images/vongquay.png" alt="Play" id="rotate-play">
+                                    </div>
+                                </section>
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div class="modal bounceIn animated" id="modal-notes" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal__content modal__content--view">
+                <div class="comments__autor">
+                    <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                    <span class="comments__name">SUPBANK Thông Báo</span>
+                </div>
+                <p class="comments__text"></p>
+                <div class="modal__btns">
+                    <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal"
+                            aria-label="Close"><span>Đóng</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(e){
+
+        var roll_check = true;
+        var num_loop = 4;
+        var angle_gift = '';
+        var num_gift = 8;
+        var gift_message = '';
+        var angles = 0;
+        //Click nút quay
+        $('body').delegate('#start-played1', 'click', function(){
+            if(roll_check){
+                roll_check = false;
+                $('#err-msg').html(``)
+                $.ajax({
+                    url: '/wheel',
+                    datatype:'json',
+                    type: 'post',
+                    success: function (data) {
+                        if (!data.success) {
+                            $('#err-msg').html(`<p class="text-${data.success ? 'success' : 'danger'}">${data.message}</p>`)
+                            roll_check = true;
+                            return;
+                        }
+                        gift_message = data.message;
+                        // gift_revice = data.arr_gift;
+                        // gift_total = data.total;
+                        // gift_price = data.price;
+                        // num_roll_remain = gift_detail.num_roll_remain;
+                        $('#rotate-play').css({"transform": "rotate(0deg)"});
+                        angles = 0;
+                        angle_gift = data.gift.pos*(360/num_gift);
+                        loop();
+                    },
+                    error: function(){
+                        $('.content-popup').text('Có lỗi xảy ra. Vui lòng thử lại!');
+                        $('#noticeModal').modal('show');
+                    }
+                })
+            }
+        });
+
+        function loop() {
+            $('#rotate-play').css({"transform": "rotate("+angles+"deg)"});
+
+            if((parseInt(angles)-10)<=-(((num_loop*360)+angle_gift))){
+                angles = parseInt(angles) - 2;
+            }else{
+                angles = parseInt(angles) - 10;
+            }
+
+            if(angles >= -((num_loop*360)+angle_gift)){
+                requestAnimationFrame(loop);
+            }else{
+                roll_check = true;
+                $('#err-msg').html(`<p class="text-success">${gift_message}</p>`)
+
+            }
+        }
+    });
+</script>
+<script>$(".nav-item button").click(function(){window.location.href="/?g="+$(this).attr("data-bs-target").slice(1)})</script>
+{{>footer}}
+{{{ settings.footerScript }}}

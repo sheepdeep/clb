@@ -11,12 +11,6 @@ const userSchema = new mongoose.Schema({
     dataOTP: Object,
     ip: String,
     balance: Number,
-    event: {
-        countJackpot: Number,
-        useJackpotDay: Number,
-        countWheel: Number,
-        useWheelDay: Number,
-    },
     telegram: Object,
     bankInfo: {
         accountNumber: String,

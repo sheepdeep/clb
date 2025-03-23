@@ -68,7 +68,7 @@ const giftcodeController = {
             if (checkCode.playCount && !await historyModel.findOne({
                 username: res.locals.profile.username,
                 timeTLS: {$gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate()},
-                $and: [{$or: [{status: 'win'}, {status: 'lose'}]}]
+                $and: [{$or: [{result: 'win'}, {result: 'lose'}]}]
             })) {
                 return res.json({
                     success: false,

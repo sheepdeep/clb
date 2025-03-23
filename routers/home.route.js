@@ -25,6 +25,7 @@ const xsmbController = require('../controllers/xsmb.controller');
 const taixiuController = require('../controllers/taixiu.controller');
 const eventController = require('../controllers/event.controller');
 const tableSort = require("../middlewares/sort.middleware");
+const wheelController = require('../controllers/wheel.controller');
 const moment = require("moment/moment");
 const rateLimit = require('express-rate-limit');
 
@@ -192,6 +193,10 @@ router.route('/chuoi')
 
 router.route('/dangxuat')
     .get([notInstalled, loggedIn], profileController.logout)
+
+router.route('/wheel')
+    .get([notInstalled, loggedIn], wheelController.index)
+    .post([notInstalled, isUser, limiterGift], wheelController.wheel);
 
 router.use((req, res, next) => {
     next({status: 404, message: `404 page not found!`});
