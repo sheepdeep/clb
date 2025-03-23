@@ -42,7 +42,21 @@ const giftcodeController = {
                 })
             }
 
+            if (req.session.giftCode == code) {
+                return res.json({
+                    success: false,
+                    message: "Hệ thống đang xử lý, vui lòng thử lại sau ít phút!"
+                })
+            }
+
             let checkCode = await giftModel.findOne({code, status: 'active'});
+
+            if (checkCode.players.find(e => e.username == res.locals.profile.username)) {
+                return res.json({
+                    success: false,
+                    message: "Mã code đã được sử dụng!"
+                });
+            }
 
             if (!checkCode) {
                 return res.json({
@@ -54,7 +68,7 @@ const giftcodeController = {
             if (checkCode.playCount && !await historyModel.findOne({
                 username: res.locals.profile.username,
                 timeTLS: {$gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate()},
-                $and: [{$or: [{status: 'win'}, {status: 'won'}]}]
+                $and: [{$or: [{status: 'win'}, {status: 'lose'}]}]
             })) {
                 return res.json({
                     success: false,
@@ -67,6 +81,15 @@ const giftcodeController = {
                 return res.json({
                     success: false,
                     message: 'Mã code đã hết lượt sử dụng!'
+                })
+            }
+
+            let countGift = await historyModel.aggregate([{ $match: { username: res.locals.profile.username, gameName: 'GIFTCODE', bot: false, createdAt: {$gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate()} } }, { $group: { _id: null, count: { $sum: 1 } } }]);
+
+            if (countGift.length > 0 && countGift[0].count >= 3) {
+                return res.json({
+                    success: false,
+                    message: 'Bạn chỉ được nhập giới hạn 3 mã code!'
                 })
             }
 
@@ -97,13 +120,6 @@ const giftcodeController = {
                 });
             }
 
-            if (checkCode.players.find(e => e.username = res.locals.profile.username)) {
-                return res.json({
-                    success: false,
-                    message: "Mã code đã được sử dụng!"
-                })
-            }
-
             if (await blockModel.findOne({username: res.locals.profile.username})) {
                 return res.json({
                     success: false,
@@ -111,14 +127,7 @@ const giftcodeController = {
                 })
             }
 
-            if (req.session.giftCode == code) {
-                return res.json({
-                    success: false,
-                    message: "Hệ thống đang xử lý, vui lòng thử lại sau ít phút!"
-                })
-            }
-
-            // req.session.giftCode = code;
+            req.session.giftCode = code;
             setTimeout(() => req.session.destroy(), 120 * 1000);
             checkCode.players.push({
                 username: res.locals.profile.username,

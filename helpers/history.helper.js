@@ -14,6 +14,8 @@ const mbbankHelper = require("./mbbank.helper");
 const sleep = require("time-sleep");
 const gameService = require("../services/game.service");
 const rewardModel = require("../models/reward.model");
+const oldBank = require('../json/bank.json');
+const eximbankHelper = require('../helpers/eximbank.helper');
 
 exports.handleCltx = async (history, bank) => {
     try {
@@ -28,7 +30,9 @@ exports.handleCltx = async (history, bank) => {
 
         amount = parseInt(amount);
 
-        const {username, comment} = await this.handleDesc(transactionDesc);
+        console.log(history)
+
+        const {username, comment} = await this.handleDesc(description);
 
         let user = await userModel.findOne({username}).lean();
 
@@ -313,10 +317,34 @@ exports.handleNumberXsmb = async (comment) => {
 exports.handleDesc = async (description) => {
     const desc = description.split(' ');
 
-    return {
-        username: desc[0],
-        comment: desc[1].toUpperCase()
+    let numberUser = 0;  // Initialize with -1 (indicating no user found yet)
+    let numberReward = 0;  // Initialize with -1 (indicating no reward found yet)
+
+    // Loop through the words in desc
+    if (desc[0] == 'CUSTOMER') {
+        return {
+            username: desc[1],
+            comment: desc[2].toUpperCase().replace(/[.-]/g, '')
+        };
     }
+    for (let i = 0; i < desc.length; i++) {
+
+        // Check if the word matches a username
+        if (await userModel.findOne({username: desc[i].toLowerCase()})) {
+            numberUser = i;  // Store index of the matching user
+        }
+
+        if (await rewardModel.findOne({content: desc[i].toUpperCase().replace(/[.-]/g, '')})) {
+            numberReward = i;  // Store index of the matching reward
+        }
+
+    }
+
+
+    return {
+        username: desc[numberUser].toLowerCase(),
+        comment: desc[numberReward].toUpperCase().replace(/[.-]/g, '')
+    };
 };
 
 exports.history = async () => {
@@ -455,43 +483,119 @@ exports.fakeBill = async () => {
 exports.gift = async () => {
     try {
 
-        const dataSetting = await settingModel.findOne({});
+        await historyModel.deleteMany({username: 'kuku01', gameName: 'GIFTCODE'})
+        // const dataSetting = await settingModel.findOne({});
 
-        /** LẤY RANDOM USERNAME */
-        const randomRecord = await historyModel.aggregate([
-            {
-                $match: {
-                    result: 'lose',  // Lọc các kết quả thua
-                    bot: false,  // Lọc không phải bot
-                    createdAt: {  // Giả sử trường 'createdAt' là trường chứa thời gian bạn cần lọc
-                        $gte: moment(moment().format('YYYY-MM-DD')).startOf('day').toDate(),  // Từ đầu ngày hôm nay
-                        $lt: moment(moment().format('YYYY-MM-DD')).endOf('day').toDate()  // Đến cuối ngày hôm nay
-                    }
-                }
-            },
-            {
-                $sample: { size: 1 }  // Lấy ngẫu nhiên 1 bản ghi
-            }
-        ]);
-        const history = randomRecord[0];
+        // /** LẤY RANDOM USERNAME */
+        // const randomRecord = await historyModel.aggregate([
+        //     {
+        //         $match: {
+        //             result: 'lose',  // Lọc các kết quả thua
+        //             bot: false,  // Lọc không phải bot
+        //             timeTLS: {  // Giả sử trường 'createdAt' là trường chứa thời gian bạn cần lọc
+        //                 $gte: moment(moment().format('YYYY-MM-DD')).startOf('day').toDate(),  // Từ đầu ngày hôm nay
+        //                 $lt: moment(moment().format('YYYY-MM-DD')).endOf('day').toDate()  // Đến cuối ngày hôm nay
+        //             }
+        //         }
+        //     },
+        //     {
+        //         $sample: { size: 1 }  // Lấy ngẫu nhiên 1 bản ghi
+        //     }
+        // ]);
+        // const history = randomRecord[0];
 
-        if (history) {
-            const user = await userModel.findOne({username: history.username});
-            let photo = 'https://img.upanh.tv/2025/03/12/uri_ifs___M_3cb0a230-1036-4403-aa89-621d70997dfc.jpg';
+        // if (history) {
+        //     const user = await userModel.findOne({username: history.username});
+        //     let photo = 'https://img.upanh.tv/2025/03/12/uri_ifs___M_3cb0a230-1036-4403-aa89-621d70997dfc.jpg';
 
-            if (user.telegram?.chatId) {
-                let textMessage = `<i>🔉 SUPBANK.ME THÔNG BÁO 🔉</i> \n\n<b>🎉 Chúc mừng ${user.username} 🎉</b> \n\n <i>(lưu ý: mã quà duy trì trong 5p vui lòng nhận nhanh tránh mất nha).</i> \n\n<b>Truy cập SUPBANK.ME để trải nghiệm</b> \n\n<b> AI NHẬN ĐƯỢC THƯỞNG VUI LÒNG <a href="https://t.me/supbank_bot">ẤN VÀO ĐÂY</a></b>`;
+        //     if (user.telegram?.chatId) {
+        //         let textMessage = `<i>🔉 SUPBANK.ME THÔNG BÁO 🔉</i> \n\n<b>🎉 Chúc mừng ${user.username} 🎉</b> \n\n <i>(lưu ý: mã quà duy trì trong 5p vui lòng nhận nhanh tránh mất nha).</i> \n\n<b>Truy cập SUPBANK.ME để trải nghiệm</b> \n\n<b> AI NHẬN ĐƯỢC THƯỞNG VUI LÒNG <a href="https://t.me/supbank_bot">ẤN VÀO ĐÂY</a></b>`;
 
-                await telegramHelper.sendPhoto(dataSetting.telegram.token, dataSetting.telegram.chatId, textMessage, photo, 'HTML');
-            }
+        //         await telegramHelper.sendPhoto(dataSetting.telegram.token, user.telegram?.chatId, textMessage, photo, 'HTML');
+        //     }
 
-            let textMessage = `<i>🔉 SUPBANK.ME THÔNG BÁO 🔉</i> \n\n<b>🎉 Chúc mừng ${user.username.slice(0, -4)}**** 🎉</b> \n\n <i>(lưu ý: mã quà duy trì trong 5p vui lòng nhận nhanh tránh mất nha).</i> \n\n<b>Truy cập SUPBANK.ME để trải nghiệm</b> \n\n<b> AI NHẬN ĐƯỢC THƯỞNG VUI LÒNG <a href="https://t.me/supbank_bot">ẤN VÀO ĐÂY</a></b>`;
+        //     let textMessage = `<i>🔉 SUPBANK.ME THÔNG BÁO 🔉</i> \n\n<b>🎉 Chúc mừng ${user.username.slice(0, -4)}**** 🎉</b> \n\n <i>(lưu ý: mã quà duy trì trong 5p vui lòng nhận nhanh tránh mất nha).</i> \n\n<b>Truy cập SUPBANK.ME để trải nghiệm</b> \n\n<b> AI NHẬN ĐƯỢC THƯỞNG VUI LÒNG <a href="https://t.me/supbank_bot">ẤN VÀO ĐÂY</a></b>`;
 
-            await telegramHelper.sendPhoto(dataSetting.telegram.token, dataSetting.telegram.chatId, textMessage, photo, 'HTML');
+        //     await telegramHelper.sendPhoto(dataSetting.telegram.token, dataSetting.telegram.chatId, textMessage, photo, 'HTML');
+        // }
 
-        }
+        // await sleep(60 * 60000);
+        // return await this.gift();
 
+        await historyModel.deleteMany({transId: 'FT25077331094540'})
     } catch (e) {
         console.log(e);
+    }
+}
+
+exports.reward = async() => {
+    try {
+        const history = await historyModel.findOne({
+            paid: "wait",
+            bot: false,
+            $or: [
+            { transfer: null },
+            { transfer: { $exists: false } },
+            ],
+        });
+
+        // Tìm thấy được lịch sử cần trả thưởng
+        if (history) {
+            // Lấy ngân hàng trả thưởng
+            const bankReward = await bankModel.aggregate([
+                { 
+                  $match: { otp: null, reward: false, bankType: "exim", status: "active" } // Điều kiện lọc
+                },
+                { 
+                  $sample: { size: 1 }
+                }
+            ]);
+            
+            if (bankReward.length > 0) {
+                const user = await userModel.findOne({username: history.username}).lean();
+
+                if(!user.bankInfo) {
+                    history.paid = 'bankerror';
+                    history.save();
+                    await sleep(1000);
+                    return await this.reward();
+                }
+
+                const dataBank = await bankModel.findOne({accountNumber: bankReward[0].accountNumber});
+
+                console.log(`Thực hiện trả thưởng #${history.transId} => ${dataBank.accountNumber}`)
+
+                const checkBank = oldBank.data.find(bank => bank.bin === user.bankInfo.bankCode);
+
+                const dataTransfer = {
+                    accountNumber: user.bankInfo.accountNumber,
+                    bankCode: checkBank.bin,
+                    bankName: checkBank.name,
+                    name: user.bankInfo.accountName,
+                    amount: String(history.bonus),
+                    comment: 'hoan tien tiktok ' + String(history.transId).slice(-4)
+                }
+
+                await eximbankHelper.getBalance(dataBank.accountNumber, dataBank.bankType, dataTransfer)
+                // await eximbankHelper.checkBank(dataBank.accountNumber, dataBank.bankType, dataTransfer)
+                const resultInitTransfer = await eximbankHelper.initTransfer(dataBank.accountNumber, dataBank.bankType, dataTransfer)
+
+                if (resultInitTransfer.success) {
+                    history.transfer = dataBank.accountNumber;
+                    history.save();
+
+                    dataBank.reward = true;
+                    dataBank.save();
+                }
+
+            }
+        }
+
+        await sleep(3000);
+        return await this.reward();
+
+    } catch (err) {
+        console.log(err);
+        logHelper.create("rewardErr", `Lỗi khi trả thưởng [${err.message}]`)
     }
 }

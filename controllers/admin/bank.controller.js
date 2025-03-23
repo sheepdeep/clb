@@ -4,6 +4,7 @@ const momoService = require('../../services/momo.service');
 const utils = require('../../helpers/utils.helper');
 const mbbankHelper = require('../../helpers/mbbank.helper');
 const ncbHelper = require('../../helpers/ncb.helper');
+const eximbankHelper = require('../../helpers/eximbank.helper');
 
 const momoController = {
     index: async (req, res, next) => {
@@ -116,6 +117,10 @@ const momoController = {
                 return res.json(await mbbankHelper.login(accountNumber, bankType));
             }
 
+            if (bankType === 'exim') {
+                return res.json(await eximbankHelper.login(accountNumber, bankType));
+            }
+
             if (bankType === 'ncb') {
                 await bankModel.findOneAndUpdate({accountNumber, bankType}, {
                     $set: {
@@ -211,6 +216,18 @@ const momoController = {
             if (data.bankType == 'mbb') {
                 const result = await mbbankHelper.login(data.accountNumber, data.bankType);
                 return res.json(result);
+            } else if (data.bankType == 'exim') {
+                // const result = await eximbankHelper.login(data.accountNumber, data.bankType);
+                await bankModel.findOneAndUpdate({accountNumber: data.accountNumber, bankType: data.bankType}, {
+                    $set: {
+                        otp: null,
+                        reward: false
+                    }
+                }, {upsert: true})
+                return res.json({
+                    success: true,
+                    message: `Làm lại thông tin Eximbank ${data.accountNumber} thành công!`
+                });
             } else {
                 await bankModel.findOneAndUpdate({accountNumber: data.accountNumber, bankType: data.bankType}, {
                     $set: {

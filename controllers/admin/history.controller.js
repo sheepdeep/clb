@@ -49,6 +49,9 @@ const historyController = {
                 let search = req.query.search;
                 let arr = [
                     {
+                        transId: { $regex: search }
+                    },
+                    {
                         username: { $regex: search }
                     },
                     {
@@ -66,7 +69,6 @@ const historyController = {
 
                 if (!isNaN(search)) {
                     filters.$or.push(...[
-                        { transId: search },
                         { amount: search },
                         { bonus: search },
                         { postBalance: search }
@@ -134,7 +136,7 @@ const historyController = {
                     await historyModel.findByIdAndUpdate(id, {
                         $set: {
                             result: 'lose',
-                            bonus: bonus,
+                            bonus: Math.floor(bonus),
                             paid: 'wait',
                             description: 'Hoàn tiền đơn thua'
                         }

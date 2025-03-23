@@ -5,7 +5,6 @@ const router = express.Router();
 const momoRoute = require('../routers/momo.route');
 const telegramController = require('../controllers/telegram.controller');
 const {loggedIn} = require("../middlewares/auth.middleware");
-
 router.use('/momo', momoRoute);
 
 router.post('/games', isActive, apiController.getGame);

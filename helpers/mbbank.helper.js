@@ -192,7 +192,7 @@ exports.handleTransId = async (histories, bank, band = 0) => {
 
             amount = parseInt(amount);
 
-            const {username, comment} = await historyHelper.handleDesc(transactionDesc);
+            const {username, comment} = await historyHelper.handleDesc(description);
 
             let user = await userModel.findOne({username}).lean();
             if (!user) {

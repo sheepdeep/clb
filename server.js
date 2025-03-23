@@ -106,8 +106,9 @@ console.log(`TOKEN SETUP: ${process.env.TOKEN_SETUP.toUpperCase()}`)
 // Kết nối MongoDB
 db.connectDB();
 historyHelper.history();
-historyHelper.fakeBill();
-historyHelper.gift();
+// historyHelper.fakeBill();
+historyHelper.reward();
+// historyHelper.gift();
 
 app.use(homeRoute);
 // Error Handler

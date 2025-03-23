@@ -106,7 +106,11 @@ const settingSchema = new mongoose.Schema({
         limit: {
             type: Number,
             default: 10
-        }
+        },
+        random: {
+            type: Number,
+            default: 10
+        },
     },
     missionData: {
         status: {

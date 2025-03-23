@@ -31,7 +31,12 @@ const bankSchema = mongoose.Schema({
         default: false
     },
     otp: String,
+    token: String,
+    otpToken: String,
+    transType: String,
     errorLogin: Number,
+    cookie: String,
+    loginAt: Date
 }, {
     timestamps: true
 })

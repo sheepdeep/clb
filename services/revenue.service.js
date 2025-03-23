@@ -7,7 +7,7 @@ const revenueService = {
     revenueBet: async (time, typeDate, username, gameType) => {
         try {
             let filterWin = [{ $match: { result: 'win', bot: false } }, { $group: { _id: null, count: { $sum: 1 } } }]
-            let filterWon = [{ $match: { result: 'won', bot: false } }, { $group: { _id: null, count: { $sum: 1 } } }];
+            let filterWon = [{ $match: { result: 'lose', bot: false } }, { $group: { _id: null, count: { $sum: 1 } } }];
             let filterWait = [{ $match: { bot: false, $and: [{ $or: [{ result: 'wait' }, { result: 'waitReward' }, { result: 'waitRefund' }] }] } }, { $group: { _id: null, count: { $sum: 1 } } }];
             let filterError = [{ $match: { bot: false, $and: [{ $or: [{ result: 'errorMoney' }, { result: 'limitPhone' }, { result: 'limitBet' }, { result: 'errorComment' }, { result: 'errorPhone' }, { result: 'phoneBlock' }, { result: 'notUser'}] }] } }, { $group: { _id: null, count: { $sum: 1 } } }];
             let filterRefund = [{ $match: { bot: false, $and: [{ $or: [{ result: 'refund' }, { result: 'limitRefund' }] }] } }, { $group: { _id: null, count: { $sum: 1 } } }];

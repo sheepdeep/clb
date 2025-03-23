@@ -25,6 +25,7 @@
     "express": "^4.18.2",
     "express-handlebars": "^6.0.6",
     "express-hbsmin": "^0.1.4",
+    "express-rate-limit": "^7.5.0",
     "express-session": "^1.17.3",
     "express-subdomain": "^1.0.6",
     "fix": "^0.0.3",

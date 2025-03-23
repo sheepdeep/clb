@@ -85,7 +85,10 @@ const transferController = {
 
             filters.$or = [
                 {
-                    phone: { $regex: search }
+                    transId: { $regex: search }
+                },
+                {
+                    transfer: { $regex: search }
                 },
                 {
                     receiver: { $regex: search }

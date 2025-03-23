@@ -18,8 +18,6 @@ const telegramController = {
             let dataSetting = await settingModel.findOne();
             const update = req.body;
 
-            console.log(update);
-
             // Kiểm tra nếu có tin nhắn mới
             if (update.message) {
 
@@ -31,14 +29,10 @@ const telegramController = {
                 const command = dataText[0];
                 const comment = dataText[1];
 
-                console.log(command);
-
                 if (command == '/start') {
 
                     const username = Buffer.from(comment, 'base64').toString('utf8');
                     const user = await userModel.findOne({username});
-
-                    console.log(user);
 
                     if (!user) {
                         message = `❌ Tài khoản không có trong hệ thống!`;

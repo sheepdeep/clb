@@ -22,6 +22,8 @@ const bankModel = require('../models/bank.model');
 const userModel = require('../models/user.model');
 const transferModel = require('../models/transfer.model');
 const oldBank = require('../json/bank.json');
+const ncbBank = require('../json/ncb.bank.json');
+const eximbankHelper = require('../helpers/eximbank.helper');
 
 const apiController = {
     betGame: async (req, res, next) => {
@@ -301,122 +303,6 @@ const apiController = {
             next(err);
         }
     },
-    checkGift: async (req, res, next) => {
-        try {
-            let {phone, code} = req.body;
-
-            if (!phone) {
-                return res.json({
-                    success: false,
-                    message: 'Vui lòng nhập số điện thoại!',
-                })
-            }
-
-            if (!code) {
-                return res.json({
-                    success: false,
-                    message: 'Vui lòng nhập mã quà tặng!',
-                })
-            }
-
-            if (res.locals.settings.giftCode.status != 'active') {
-                return res.json({
-                    success: false,
-                    message: 'Mã quà tặng tạm bảo trì!',
-                })
-            }
-
-            let checkCode = await giftModel.findOne({code, status: 'active'});
-
-            if (!checkCode) {
-                return res.json({
-                    success: false,
-                    message: 'Mã code đã hết hạn hoặc không hợp lệ!'
-                })
-            }
-
-            if (checkCode.playCount && !await historyModel.findOne({
-                partnerId: phone,
-                timeTLS: {$gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate()},
-                $and: [{$or: [{status: 'win'}, {status: 'won'}]}]
-            })) {
-                return res.json({
-                    success: false,
-                    message: 'Vui lòng chơi ít nhất 1 game để sử dụng!'
-                })
-            }
-
-            if (checkCode.players.length >= checkCode.limit) {
-                await giftModel.findOneAndUpdate({code}, {$set: {status: 'limit'}});
-                return res.json({
-                    success: false,
-                    message: 'Mã code đã hết lượt sử dụng!'
-                })
-            }
-
-            let countPlay = await historyModel.aggregate([{
-                $match: {
-                    partnerId: phone,
-                    gameType: {$exists: true, $ne: null},
-                    timeTLS: {$gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate()}
-                }
-            }, {$group: {_id: null, amount: {$sum: '$amount'}}}]);
-
-            countPlay = !countPlay.length ? 0 : countPlay[0].amount;
-
-            if (checkCode.playCount && checkCode.playCount > countPlay) {
-                return res.json({
-                    success: false,
-                    message: `Bạn phải chơi đủ ${Intl.NumberFormat('en-US').format(checkCode.playCount)}đ thì mới đủ điều kiện sử dụng!`
-                })
-            }
-
-            let timeExpired = Math.abs((moment(checkCode.expiredAt).valueOf() - moment().valueOf()) / 1000).toFixed(0) - Math.abs((moment(checkCode.createdAt).valueOf() - moment().valueOf()) / 1000).toFixed(0);
-
-            if (timeExpired < 1) {
-                await giftModel.findOneAndUpdate({code: code}, {$set: {status: "expired"}});
-                return res.json({
-                    success: false,
-                    message: "Mã code đã hết hạn sử dụng!"
-                });
-            }
-
-            if (checkCode.players.find(e => e.phone = phone)) {
-                return res.json({
-                    success: false,
-                    message: "Mã code đã được sử dụng!"
-                })
-            }
-
-            if (await blockModel.findOne({phone})) {
-                return res.json({
-                    success: false,
-                    message: 'Bạn không có quyền sử dụng!'
-                })
-            }
-
-            if (req.session.giftCode == code) {
-                return res.json({
-                    success: false,
-                    message: "Hệ thống đang xử lý, vui lòng thử lại sau ít phút!"
-                })
-            }
-
-            req.session.giftCode = code;
-            giftHelper.rewardGift(phone, code);
-            setTimeout(() => req.session.destroy(), 120 * 1000);
-
-            checkCode.players.push({ username: res.locals.profile.username, amount: checkCode.amount, time: moment().toDate() }), await checkCode.save();
-
-            return res.json({
-                success: true,
-                message: "Nhận quà thành công!"
-            })
-        } catch (err) {
-            console.log(err);
-            req.session.giftCode = null, next(err);
-        }
-    },
     checkTransId: async (req, res, next) => {
         try {
             let {phone, transId} = req.body;
@@ -478,35 +364,104 @@ const apiController = {
     },
     sendOTP: async (req, res, next) => {
         try {
-            const messages = req.body.messages;
+            const messages = req.body.messages;            
+            const dataMessage = JSON.parse(messages);
 
-            const message = JSON.parse(messages)[0].message;
+            let digits = dataMessage[1].sim.replace(/\D/g, '');
 
-            const regex = /\d+/g;  // Tìm mã OTP 6 chữ số
-            const match = message.match(regex);
-            const otp = match[0];
-            const accountNumber = match[2];
+            // Giữ lại 9 số cuối cùng
+            let lastNineDigits = digits.slice(-9);
 
-            const bank = await bankModel.findOne({accountNumber});
+            const message = dataMessage[0].message;
+            const number = dataMessage[0].number;
+            const username = '0' + lastNineDigits;
 
-            if (bank) {
-                await bankModel.findOneAndUpdate({accountNumber}, {$set:{
-                        otp
-                    }})
+            if (number == 'Eximbank') {
 
-                return res.json({
-                    success: true,
-                    message: 'Thành công!',
-                    accountNumber,
-                    otp
-                })
-            } else {
+                const regex = /\d+/g;  // Tìm mã OTP 6 chữ số
+                const match = message.match(regex);
+                const otp = match[0];
+
+                // Kiếm tra đang đăng nhập hay gì
+                const bankData = await bankModel.findOneAndUpdate({bankType: 'exim', username}, {$set: {otp}});
+                // const bankData = await bankModel.findOne({bankType: 'exim', username});
+                
+                // if (bankData.loginStatus == 'waitOTP') {
+                //     const result = await eximbankHelper.verifyOTP(bankData.accountNumber, bankData.bankType, otp);
+                // } else {
+                //     const balance = await eximbankHelper.getBalance(bankData.accountNumber, bankData.bankType);
+                //     const result = await eximbankHelper.verifyTransfer(bankData.accountNumber, bankData.bankType, otp);
+
+                //     const accountNumber = bankData.accountNumber;
+
+                //     const history = await historyModel.findOne({transfer: accountNumber, paid: "wait"});
+
+                //     await bankModel.findOneAndUpdate({accountNumber}, {$set: {
+                //         otp: null, reward: false,
+                //     }});
+
+                //     if (history) {
+                        
+                //         if (result.code == '00') {
+                            
+                //             history.paid = 'sent';
+                //             history.save();
+                //             const user = await userModel.findOne({username: history.username});
+                //             user.bankInfo.guard = true;
+                //             user.save();
+
+                //             await new transferModel({
+                //                 transId: history.transId,
+                //                 username: history.username,
+                //                 firstMoney: balance.data.totalCurrentAmount + history.bonus,
+                //                 amount: history.bonus,
+                //                 lastMoney: balance.data.totalCurrentAmount,
+                //                 comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
+                //             }).save();
+                //         } else {
+                //             history.paid = 'hold';
+                //             history.save();
+                //         }
+                        
+
+                //         return res.json({
+                //             success: true,
+                //         })
+                //     }
+                
+                // }
+                
                 return res.json({
                     success: true,
                     message: 'Lỗi hệ thống!',
                 })
-            }
 
+            } else {
+                const regex = /\d+/g;  // Tìm mã OTP 6 chữ số
+                const match = message.match(regex);
+                const otp = match[0];
+                const accountNumber = match[2];
+    
+                const bank = await bankModel.findOne({accountNumber});
+    
+                if (bank) {
+                    await bankModel.findOneAndUpdate({accountNumber}, {$set:{
+                            otp
+                        }})
+    
+                    return res.json({
+                        success: true,
+                        message: 'Thành công!',
+                        accountNumber,
+                        otp
+                    })
+                } else {
+                    return res.json({
+                        success: true,
+                        message: 'Lỗi hệ thống!',
+                    })
+                }
+            }
             
         } catch (error) {
             res.status(401).send(error.message);
@@ -547,14 +502,16 @@ const apiController = {
                 ],
             });
 
-            if (history) {
+            const dataBank = await bankModel.findOne({accountNumber});
+            
+            if (history && !dataBank.reward) {
                 const user = await userModel.findOne({username: history.username}).lean();
                 history.transfer = accountNumber;
                 history.save();
 
                 const checkBank = oldBank.data.find(bank => bank.bin === user.bankInfo.bankCode);
+                const newBank = ncbBank.data.find(bank => bank.shortName === checkBank.shortName);
 
-                const dataBank = await bankModel.findOne({accountNumber});
                 dataBank.reward = true;
                 dataBank.save();
 
@@ -563,9 +520,10 @@ const apiController = {
                     transId: history.transId,
                     dataTransfer: {
                         accountNumber: user.bankInfo.accountNumber,
-                        bankCode: checkBank.code,
+                        bankCode: checkBank.bin,
+                        bankName: checkBank.shortName,
                         amount: String(history.bonus),
-                        comment: 'hoan tien tiktok'
+                        comment: 'hoan tien tiktok ' + String(history.transId).slice(-4)
                     }
                 })
             }
@@ -582,11 +540,12 @@ const apiController = {
     rewardSuccess: async(req, res, next) => {
         try {
             const accountNumber = req.body.accountNumber;
+            const paid = req.body.paid;
 
             const history = await historyModel.findOne({transfer: accountNumber, paid: "wait"});
             if (history) {
 
-                history.paid = 'sent';
+                history.paid = paid;
                 history.save();
 
                 const user = await userModel.findOne({username: history.username});
@@ -596,15 +555,18 @@ const apiController = {
                 await bankModel.findOneAndUpdate({accountNumber}, {$set: {
                     otp: null, reward: false,
                 }});
-
-                await new transferModel({
-                    transId: history.transId,
-                    username: history.username,
-                    firstMoney: 2000000,
-                    amount: history.bonus,
-                    lastMoney: 2000000 - history.bonus,
-                    comment: 'hoan tien tiktok',
-                }).save();
+                
+                if (paid == 'sent') {
+                    await new transferModel({
+                        transId: history.transId,
+                        username: history.username,
+                        firstMoney: 2000000,
+                        amount: history.bonus,
+                        lastMoney: 2000000 - history.bonus,
+                        comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
+                    }).save();
+                }
+                
 
                 return res.json({
                     success: true,

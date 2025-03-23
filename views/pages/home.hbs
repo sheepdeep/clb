@@ -530,7 +530,23 @@
         var fh = obj.contentWindow.document.body.scrollHeight;
         obj.style.height = Math.min(screen.height, fh) + 'px';
     }
+    $("body").on("click", ".close-tctv", function(t) {
+        localStorage.setItem("cnoti", Date.now() + 36e5),
+        $("#toast-ctv").css("display", 'none')
+    })
 </script>
+<div class="toast toast-ctv" id="toast-ctv" style="display: block;">
+    <div class="toast-body text-center">
+        <div>
+        {{{ settings.notification.data }}}
+
+            </div>
+        <div class="mt-3 pt-3 border-top">
+            <a href="/hoancuoc" class="lnk__btn">THAM GIA</a>
+            <button type="button" class="close-tctv">ĐÓNG</button>
+        </div>
+    </div>
+</div>
 <div id="ifr-bill-panel">
     <div class="bill-frame">
         <div class="bill-header">

@@ -322,7 +322,7 @@
                                         </div>
                                         {{!-- Kết Thúc Trả Thưởng --}}
                                         {{!-- Bắt Đầu Hoàn Tiền --}}
-                                        <div class="col-md-4">
+                                        <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="" class="il-gray fs-14 fw-500 mb-10">Hoàn Tiền</label>
                                                 <select name="refund-status" class="form-control ih-medium ip-light">
@@ -364,6 +364,14 @@
                                                 <input type="number" class="form-control ih-medium ip-light"
                                                     name="refund-limit" value="{{ settings.refund.limit }}"
                                                     placeholder="Nhập số lần hoàn tiền trong 1 ngày">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Phần Quà Random</label>
+                                                <input type="number" class="form-control ih-medium ip-light"
+                                                    name="refund-random" value="{{ settings.refund.random }}"
+                                                    placeholder="Nhập phần chăm nhận khi pem">
                                             </div>
                                         </div>
                                         {{!-- Kết Thúc Hoàn Tiền --}}

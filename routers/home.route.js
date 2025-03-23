@@ -26,6 +26,31 @@ const taixiuController = require('../controllers/taixiu.controller');
 const eventController = require('../controllers/event.controller');
 const tableSort = require("../middlewares/sort.middleware");
 const moment = require("moment/moment");
+const rateLimit = require('express-rate-limit');
+
+const limiterGift = rateLimit({
+    windowMs: 5 * 1000, // 1 phút
+    max: 1, // Tối đa 5 request mỗi phút
+    message: { 
+        success: false,
+        message: 'Bạn đã gửi quá nhiều yêu cầu. Vui lòng thử lại sau 1 phút.'
+    },
+    standardHeaders: true, // Hiển thị thông tin giới hạn trong header
+    legacyHeaders: false,  // Ẩn thông tin giới hạn cũ trong header
+
+    // Custom response JSON
+    handler: (req, res, options) => {
+        const retryAfterHeader = res.getHeaders()['retry-after'];
+         const retryAfter = parseInt(retryAfterHeader) || 60;
+         
+        res.status(200).json({
+            success: false,
+            error: 'Quá nhiều yêu cầu',
+            message: `Vui lòng thử lại sau ${retryAfter} giây.`,
+            retryAfter: retryAfter
+        });
+    }
+});
 
 router.use(async (req, res, next) => {
     res.locals.settings = await settingModel.findOne().lean();
@@ -114,7 +139,7 @@ router.route('/dangnhap')
 
 router.route('/giftcode')
     .get([notInstalled, loggedIn], giftcodeController.index)
-    .post([notInstalled, loggedIn], giftcodeController.check);
+    .post([notInstalled, loggedIn, limiterGift], giftcodeController.check);
 
 router.route('/xxtg')
     .get([notInstalled, loggedIn], xucxactgController.index)
