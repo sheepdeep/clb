@@ -26,6 +26,8 @@ const taixiuController = require('../controllers/taixiu.controller');
 const eventController = require('../controllers/event.controller');
 const tableSort = require("../middlewares/sort.middleware");
 const wheelController = require('../controllers/wheel.controller');
+const jackpotController = require('../controllers/jackpot.controller');
+const luckygiftController = require('../controllers/luckygift.controller');
 const moment = require("moment/moment");
 const rateLimit = require('express-rate-limit');
 
@@ -197,6 +199,12 @@ router.route('/dangxuat')
 router.route('/wheel')
     .get([notInstalled, loggedIn], wheelController.index)
     .post([notInstalled, isUser, limiterGift], wheelController.wheel);
+
+router.route('/nohu')
+    .get([notInstalled, loggedIn], jackpotController.index)
+    .post([notInstalled, isUser, limiterGift], jackpotController.wheel);
+
+router.post('/hopquamayman', [notInstalled, isUser, limiterGift], luckygiftController.getGift)
 
 router.use((req, res, next) => {
     next({status: 404, message: `404 page not found!`});

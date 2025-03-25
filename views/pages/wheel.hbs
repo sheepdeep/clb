@@ -165,8 +165,8 @@
                         loop();
                     },
                     error: function(){
-                        $('.content-popup').text('Có lỗi xảy ra. Vui lòng thử lại!');
-                        $('#noticeModal').modal('show');
+                        $('#err-msg').html(`<p class="text-danger">Có lỗi xảy ra. Vui lòng thử lại!</p>`)
+
                     }
                 })
             }
