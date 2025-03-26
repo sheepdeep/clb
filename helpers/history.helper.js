@@ -30,8 +30,6 @@ exports.handleCltx = async (history, bank) => {
 
         amount = parseInt(amount);
 
-        console.log(history)
-
         const {username, comment} = await this.handleDesc(description);
 
         let user = await userModel.findOne({username}).lean();
@@ -41,21 +39,48 @@ exports.handleCltx = async (history, bank) => {
 
             let {gameName, gameType} = await gameService.checkGame(comment);
 
-            await historyModel.findOneAndUpdate({transId}, {
-                $set: {
-                    transId,
-                    username: user.username,
-                    receiver: bank.accountNumber,
-                    gameName,
-                    gameType,
-                    amount,
-                    fullComment: description,
-                    result: 'wait',
-                    isCheck: bankName === 'MB' ? false : true,
-                    comment,
-                    timeTLS: moment(transactionDate, 'DD/MM/YYYY HH:mm:ss').format()
-                }
-            }, {upsert: true}).lean();
+            const oneMinuteAgo = new Date(Date.now() - 60 * 1000); // Lấy thời gian 1 phút trước
+
+            // Lấy 2 đơn gần nhất của user trong vòng 1 phút
+            const recentOrders = await historyModel.find({
+                username,
+                timeTLS: { $gte: oneMinuteAgo }
+            }).sort({ timeTLS: -1 }).limit(3);
+
+            // Nếu đã có 2 đơn rồi, thì chặn đơn thứ 3
+            if (recentOrders.length >= 3) {
+                await historyModel.findOneAndUpdate({transId}, {
+                    $set: {
+                        transId,
+                        username: user.username,
+                        receiver: bank.accountNumber,
+                        gameName,
+                        gameType,
+                        amount,
+                        fullComment: description,
+                        result: 'lose',
+                        isCheck: bankName === 'MB' ? false : true,
+                        comment,
+                        timeTLS: moment(transactionDate, 'DD/MM/YYYY HH:mm:ss').format()
+                    }
+                }, {upsert: true}).lean();
+            } else {
+                await historyModel.findOneAndUpdate({transId}, {
+                    $set: {
+                        transId,
+                        username: user.username,
+                        receiver: bank.accountNumber,
+                        gameName,
+                        gameType,
+                        amount,
+                        fullComment: description,
+                        result: 'wait',
+                        isCheck: bankName === 'MB' ? false : true,
+                        comment,
+                        timeTLS: moment(transactionDate, 'DD/MM/YYYY HH:mm:ss').format()
+                    }
+                }, {upsert: true}).lean();
+            }
 
             await this.handleTransId(transId);
 
@@ -94,7 +119,8 @@ exports.handleTransId = async (transId) => {
                     $or: [
                         {result: "win"},
                         {result: "lose"},
-                        {result: "notUser"}
+                        {result: "notUser"},
+                        {result: "refund"}
                     ]
                 }
             ]

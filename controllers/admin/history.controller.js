@@ -132,15 +132,24 @@ const historyController = {
             for (let key in req.body) {
 
                 if (req.body.result == 'refund') {
+                    const transId = `SBRF${Math.floor(Math.random() * (99999999 - 10000000) + 10000000)}`;
+
                     const bonus = data.amount * dataSetting.refund.won / 100;
-                    await historyModel.findByIdAndUpdate(id, {
+                    await historyModel.findOneAndUpdate({transId}, {
                         $set: {
-                            result: 'lose',
-                            bonus: Math.floor(bonus),
+                            transId,
+                            username: data.username,
+                            receiver: data.receiver,
+                            gameName: data.gameName,
+                            gameType: data.gameType,
+                            amount: bonus,
+                            bonus,
+                            result: 'refund',
                             paid: 'wait',
-                            description: 'Hoàn tiền đơn thua'
+                            comment: data.comment,
+                            description: `Hoàn tiền đơn thua ${data.transId}`,
                         }
-                    });
+                    }, {upsert: true}).lean();
                 } else {
                     await historyModel.findByIdAndUpdate(id, {
                         $set: {

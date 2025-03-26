@@ -407,7 +407,8 @@ const settingSchema = new mongoose.Schema({
     consecutives: {
         dataWin: Object,
         dataLose: Object,
-    }
+    },
+    x3: String
 }, {
     timestamps: true
 })

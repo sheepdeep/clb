@@ -1,5 +1,6 @@
 const moment = require('moment');
 const settingModel = require('../../models/setting.model');
+const rewardModel = require('../../models/reward.model');
 
 const systemController = {
     index: async (req, res, next) => {
@@ -17,6 +18,18 @@ const systemController = {
                     success: false,
                     message: 'Không có quyền thao tác!'
                 })
+            }
+
+            if  (req.body.x3 == 'active') {
+                await rewardModel.updateMany(
+                    { gameType: { $in: ['CL_Game', 'TX_Game'] } },
+                    { $set: { amount: 3 } }
+                );
+            } else {
+                await rewardModel.updateMany(
+                    { gameType: { $in: ['CL_Game', 'TX_Game'] } },
+                    { $set: { amount: 2.6 } }
+                );
             }
 
             for (let data in req.body) {

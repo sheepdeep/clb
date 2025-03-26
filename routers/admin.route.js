@@ -171,6 +171,8 @@ router.route('/history/:id')
     .delete(isAdmin, historyController.remove);
 
 router.post('/history/reCheck', isAdmin, historyController.reCheck);
+router.post('/history/checkAction', isAdmin, historyController.checkAction);
+
 
 router.route('/members')
     .get(loggedInAdmin, tableSort, memberController.index)

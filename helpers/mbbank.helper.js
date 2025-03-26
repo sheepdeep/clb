@@ -196,6 +196,7 @@ exports.handleTransId = async (histories, bank, band = 0) => {
 
             let user = await userModel.findOne({username}).lean();
             if (!user) {
+
                 await historyModel.findOneAndUpdate({transId}, {
                     $set: {
                         transId,

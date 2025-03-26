@@ -541,6 +541,7 @@ const apiController = {
         try {
             const accountNumber = req.body.accountNumber;
             const paid = req.body.paid;
+            const balance = req.body.balance;
 
             const history = await historyModel.findOne({transfer: accountNumber, paid: "wait"});
             if (history) {
@@ -553,20 +554,19 @@ const apiController = {
                 user.save();
 
                 await bankModel.findOneAndUpdate({accountNumber}, {$set: {
-                    otp: null, reward: false,
+                    otp: null, reward: false, balance
                 }});
                 
                 if (paid == 'sent') {
                     await new transferModel({
                         transId: history.transId,
                         username: history.username,
-                        firstMoney: 2000000,
+                        firstMoney: balance,
                         amount: history.bonus,
-                        lastMoney: 2000000 - history.bonus,
+                        lastMoney: balance - history.bonus,
                         comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
                     }).save();
                 }
-                
 
                 return res.json({
                     success: true,

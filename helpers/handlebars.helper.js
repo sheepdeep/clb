@@ -267,6 +267,9 @@ module.exports = {
             case 'handwork':
                 html = `<span class="badges badge-warning">Thủ Công</span>`;
                 break;
+            case 'refund':
+                html = `<span class="badges badge-warning">Hoàn Tiền</span>`;
+                break;
             default:
                 html = `<span class="badges badge-danger">Lỗi</span>`;
                 break;
@@ -299,7 +302,7 @@ module.exports = {
                 src = `/themes/images/banks/ncb.png`;
                 break;
             case 'exim':
-                src = `/themes/images/banks/exim.png`;
+                src = `/themes/images/banks/eximbank.png`;
                 break;
             default:
                 src = `<span class="badges badge-danger">Lỗi</span>`;
