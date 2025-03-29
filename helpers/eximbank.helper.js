@@ -1,7 +1,7 @@
 const puppeteer = require("puppeteer");
 const axios = require("axios");
 const path = require("path");
-const moment = require("moment-timezone");
+const moment = require("moment");
 const express = require("express");
 const bankModel = require("../models/bank.model");
 const oldBank = require('../json/bank.json');
@@ -11,6 +11,7 @@ const historyModel = require('../models/history.model');
 const userModel = require('../models/user.model');
 const { v4: uuidv4 } = require("uuid");
 const crypto = require('crypto');
+const {HttpsProxyAgent} = require('https-proxy-agent');
 
 
 exports.getCaptcha = async() => {
@@ -73,8 +74,7 @@ exports.createTaskCaptcha = async() => {
 
 exports.login = async (accountNumber, bankType) => {
     try {
-
-        const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
+        const bankData = await bankModel.findOne({ accountNumber, bankType }).lean();
 
         // Giải captcha
         const dataCaptcha = await this.createTaskCaptcha();
@@ -84,9 +84,11 @@ exports.login = async (accountNumber, bankType) => {
             "E": uuidv4().toString(),
             "OV": "124.0.0.0",
             "PM": "Edge",
-        }
-        
-        headers = await this.headerDefault(null)
+        };
+
+        // Tạo header mặc định
+        headers = await this.headerDefault(null);
+
         const bodyData = {
             ...dataDevice,
             "ATS": moment().format('YYMMDDHHmmss'),
@@ -97,9 +99,17 @@ exports.login = async (accountNumber, bankType) => {
             "authMethod": "SMS",
             "pin": bankData.password,
             "username": bankData.username,
+        };
+
+        // Kiểm tra proxy và tạo agent nếu cần thiết
+        let agent;
+        if (bankData.proxy) {
+            const proxyUrl = `http://${bankData.proxy}`;
+            agent = new HttpsProxyAgent(proxyUrl); // Sử dụng proxy nếu có
         }
 
-        const encrypted_data = await this.encrypt_data(bodyData)
+        // Mã hóa dữ liệu cần gửi
+        const encrypted_data = await this.encrypt_data(bodyData);
 
         let config = {
             maxBodyLength: Infinity,
@@ -109,16 +119,25 @@ exports.login = async (accountNumber, bankType) => {
             data: encrypted_data,
         };
 
-        const response = await axios(config);
-
-        const resultDecode = await this.decrypt_data(response.data)
-
-        if(resultDecode.code == '96') {
-            return this.login(accountNumber, bankType)
+        // Nếu có proxy, thêm httpsAgent vào cấu hình
+        if (agent) {
+            config.httpsAgent = agent;
         }
 
+        // Gửi yêu cầu POST
+        const response = await axios(config);
+
+        // Giải mã dữ liệu từ phản hồi
+        const resultDecode = await this.decrypt_data(response.data);
+
+        // Nếu mã lỗi là '96', gọi lại hàm login
+        if (resultDecode.code == '96') {
+            return this.login(accountNumber, bankType);
+        }
+
+        // Nếu mã lỗi là '00', cập nhật thông tin tài khoản và trả về kết quả
         if (resultDecode.code == '00') {
-            await bankModel.findOneAndUpdate({accountNumber, bankType}, {
+            await bankModel.findOneAndUpdate({ accountNumber, bankType }, {
                 $set: {
                     accountNumber,
                     bankType,
@@ -130,17 +149,17 @@ exports.login = async (accountNumber, bankType) => {
                     otp: null,
                     reward: false
                 }
-            }, {upsert: true})
+            }, { upsert: true });
 
             return {
                 message: "Thêm tài khoản thành công. Đang thực hiện lấy OTP xác thực!",
                 success: true
-            }
+            };
         } else {
             return {
                 message: resultDecode.des,
                 success: false
-            }
+            };
         }
     } catch (e) {
         console.log(e);
@@ -149,7 +168,8 @@ exports.login = async (accountNumber, bankType) => {
             message: 'Đăng nhập thất bại'
         };
     }
-}
+};
+
 
 exports.verifyOTP = async (accountNumber, bankType, otp) => {
     try {
@@ -172,12 +192,23 @@ exports.verifyOTP = async (accountNumber, bankType, otp) => {
 
         const encrypted_data = await this.encrypt_data(bodyData)
 
+        let agent;
+        if (bankData.proxy) {
+            const proxyUrl = `http://${bankData.proxy}`;
+            agent = new HttpsProxyAgent(proxyUrl);  // Sử dụng proxy nếu có
+        }
+
         let config = {
             url: "https://edigi.eximbank.com.vn/ib/",
             headers,
             method: "POST",
             data: encrypted_data,
         };
+
+        // Nếu có proxy, thêm httpsAgent vào cấu hình
+        if (agent) {
+            config.httpsAgent = agent;
+        }
 
         const response = await axios(config);
 
@@ -195,7 +226,7 @@ exports.verifyOTP = async (accountNumber, bankType, otp) => {
                 $set: {
                     accountNumber,
                     bankType,
-                    status: 'pending',
+                    status: 'active',
                     loginStatus: 'active',
                     accessToken: response.headers['authorization'],
                     dataDevice,
@@ -223,14 +254,13 @@ exports.verifyOTP = async (accountNumber, bankType, otp) => {
     }
 }
 
-exports.checkBank = async (accountNumber, bankType, dataTransfer) => {
+exports.checkBank = async (accountNumber, bankType, bankCode, receiver) => {
     try {
         
         const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
         console.log("Token lúc xác minh là " + bankData.accessToken)
 
         const headers = await this.headerDefault({Authorization: bankData.accessToken})
-
 
         const bodyData = {
             ...bankData.dataDevice,
@@ -240,13 +270,19 @@ exports.checkBank = async (accountNumber, bankType, dataTransfer) => {
             "authMethod": "SMS",
             "isCache": false,
             "maxRequestInCache": false,
-            "bankCode": dataTransfer.bankCode,
-            "accountNo": dataTransfer.accountNumber,
+            "bankCode": bankCode,
+            "accountNo": receiver,
             "isCard": "0",
             "currentAccountNo": accountNumber,
         }
 
         const encrypted_data = await this.encrypt_data(bodyData)
+
+        let agent;
+        if (bankData.proxy) {
+            const proxyUrl = `http://${bankData.proxy}`;
+            agent = new HttpsProxyAgent(proxyUrl);  // Sử dụng proxy nếu có
+        }
 
         let config = {
             url: "https://edigi.eximbank.com.vn/ib/",
@@ -255,11 +291,14 @@ exports.checkBank = async (accountNumber, bankType, dataTransfer) => {
             data: encrypted_data,
         };
 
+        // Nếu có proxy, thêm httpsAgent vào cấu hình
+        if (agent) {
+            config.httpsAgent = agent;
+        }
+
         const response = await axios(config);
 
         const resultDecode = await this.decrypt_data(response.data)
-
-        console.log(resultDecode);
         
         if (resultDecode.code == '00') {
             await bankModel.findOneAndUpdate({accountNumber, bankType}, {
@@ -269,6 +308,7 @@ exports.checkBank = async (accountNumber, bankType, dataTransfer) => {
             }, {upsert: true})
 
             return {
+                resultDecode,
                 message: "Thêm tài khoản thành công. Đang thực hiện lấy OTP xác thực!",
                 success: true
             }
@@ -279,7 +319,6 @@ exports.checkBank = async (accountNumber, bankType, dataTransfer) => {
             }
         }
     } catch (e) {
-        console.log(e);
         return {
             success: false,
             message: 'Đăng nhập thất bại'
@@ -291,7 +330,7 @@ exports.getBalance = async (accountNumber, bankType) => {
     try {
         
         const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
-        console.log("Token lúc đăng nhập là " + bankData.accessToken)
+        console.log("Token lúc xác minh là " + bankData.accessToken)
 
         const headers = await this.headerDefault({Authorization: bankData.accessToken})
 
@@ -308,12 +347,22 @@ exports.getBalance = async (accountNumber, bankType) => {
 
         const encrypted_data = await this.encrypt_data(bodyData)
 
+        let agent;
+        if (bankData.proxy) {
+            const proxyUrl = `http://${bankData.proxy}`;
+            agent = new HttpsProxyAgent(proxyUrl);  // Sử dụng proxy nếu có
+        }
+
         let config = {
             url: "https://edigi.eximbank.com.vn/ib/",
             headers,
             method: "POST",
             data: encrypted_data,
         };
+
+        if (agent) {
+            config.httpsAgent = agent;
+        }
 
         const response = await axios(config);
 
@@ -326,7 +375,10 @@ exports.getBalance = async (accountNumber, bankType) => {
                 }
             }, {upsert: true})
 
-            return resultDecode
+            return {
+                success: true,
+                resultDecode
+            };
         } else {
             return {
                 message: resultDecode.des,
@@ -348,10 +400,9 @@ exports.initTransfer = async (accountNumber, bankType, dataTransfer) => {
     try {
         
         const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
-        console.log("Token lúc kiểm tra bank là " + bankData.accessToken)
+        console.log("Token lúc lấy số dư là " + bankData.accessToken)
 
-        // const headers = await this.headerDefault({})
-
+        const headers = await this.headerDefault({Authorization: bankData.accessToken})
 
         const bodyData = {
             ...bankData.dataDevice,
@@ -394,20 +445,26 @@ exports.initTransfer = async (accountNumber, bankType, dataTransfer) => {
 
         const encrypted_data = await this.encrypt_data(bodyData)
 
+        let agent;
+        if (bankData.proxy) {
+            const proxyUrl = `http://${bankData.proxy}`;
+            agent = new HttpsProxyAgent(proxyUrl);  // Sử dụng proxy nếu có
+        }
+
         let config = {
             url: "https://edigi.eximbank.com.vn/ib/",
-            headers: {
-                Authorization: bankData.accessToken
-            },
+            headers,
             method: "POST",
             data: encrypted_data,
         };
 
+        if (agent) {
+            config.httpsAgent = agent;
+        }
+
         const response = await axios(config);
 
         const resultDecode = await this.decrypt_data(response.data)
-
-        console.log(resultDecode)
         
         if (resultDecode.code == '00') {
             await bankModel.findOneAndUpdate({accountNumber, bankType}, {
@@ -420,7 +477,8 @@ exports.initTransfer = async (accountNumber, bankType, dataTransfer) => {
             }, {upsert: true})
 
             return {
-                message: "Thêm tài khoản thành công. Đang thực hiện lấy OTP xác thực!",
+                resultDecode,
+                message: "Tạo đơn chuyển tiền thành công!",
                 success: true
             }
         } else {
@@ -443,20 +501,6 @@ exports.verifyTransfer = async (accountNumber, bankType, otp) => {
         
         const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
 
-        const history = await historyModel.findOne({transfer: accountNumber, paid: "wait"});
-        const user = await userModel.findOne({username: history.username}).lean();
-
-        const checkBank = oldBank.data.find(bank => bank.bin === user.bankInfo.bankCode);
-
-        const dataTransfer = {
-            accountNumber: user.bankInfo.accountNumber,
-            bankCode: checkBank.bin,
-            bankName: checkBank.name,
-            name: user.bankInfo.accountName,
-            amount: String(history.bonus),
-            comment: 'hoan tien tiktok ' + String(history.transId).slice(-4)
-        }
-
         headers = await this.headerDefault({Authorization: bankData.accessToken})
 
         const bodyData = {
@@ -465,47 +509,19 @@ exports.verifyTransfer = async (accountNumber, bankType, otp) => {
             "clientId": "",
             "mid": 16,
             "authMethod": "SMS",
-            // "isCache": false,
-            // "maxRequestInCache": false,
-            // "sender": {
-            //     "accountNo": accountNumber
-            // },
-            // "beneficiary": {
-            //     "accountNo": "027112005",
-            //     "ccy": "VND",
-            //     "name": "NGUYEN TIEN DUNG",
-            //     "bankCode": "970422",
-            //     "bankName": "NH TMCP Quan Doi (MBBank)",
-            //     "branchCode": "",
-            //     "branchName": "",
-            //     "cityCode": "",
-            //     "cityName": "",
-            //     "posCode": "",
-            //     "posName": "",
-            //     "idNumberType": "",
-            //     "issueDate": "",
-            //     "issuePlace": ""
-            // },
-            // "transactionInfo": {
-            //     "amount": 10000,
-            //     "ccy": "VND",
-            //     "remark": "hoan tien tiktok"
-            // },
-            // "savedBene": 0,
-            // "nickname": "",
-            // "isFavorite": 0,
-            // "isQR": 0,
             "token": bankData.token,
             "otpToken": bankData.otpToken,
             "transType": bankData.transType,
             "otp": otp
         }
 
-        console.log(bodyData)
-
         const encrypted_data = await this.encrypt_data(bodyData)
 
-        console.log(encrypted_data)
+        let agent;
+        if (bankData.proxy) {
+            const proxyUrl = `http://${bankData.proxy}`;
+            agent = new HttpsProxyAgent(proxyUrl);  // Sử dụng proxy nếu có
+        }
 
         let config = {
             url: "https://edigi.eximbank.com.vn/ib/",
@@ -514,19 +530,28 @@ exports.verifyTransfer = async (accountNumber, bankType, otp) => {
             data: encrypted_data,
         };
 
+        if (agent) {
+            config.httpsAgent = agent;
+        }
+        
         const response = await axios(config);
 
         const resultDecode = await this.decrypt_data(response.data)
-
-        console.log(resultDecode)
         
         if (resultDecode.code == '00') {
+            await bankModel.findOneAndUpdate({accountNumber, bankType}, {
+                $set: {
+                    accessToken: response.headers['authorization'],
+                }
+            }, {upsert: true})
             return {
+                resultDecode,
                 message: "Tạo đơn chuyển tiền thành công!",
                 success: true
             }
         } else {
             return {
+                resultDecode,
                 message: resultDecode.des,
                 success: false
             }

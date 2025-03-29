@@ -217,13 +217,26 @@ const momoController = {
                 const result = await mbbankHelper.login(data.accountNumber, data.bankType);
                 return res.json(result);
             } else if (data.bankType == 'exim') {
-                // const result = await eximbankHelper.login(data.accountNumber, data.bankType);
+                const result = await eximbankHelper.login(data.accountNumber, data.bankType);
                 await bankModel.findOneAndUpdate({accountNumber: data.accountNumber, bankType: data.bankType}, {
                     $set: {
                         otp: null,
                         reward: false
                     }
                 }, {upsert: true})
+
+                // const dataTransfer = {
+                //     accountNumber: "5221516666",
+                //     bankCode: "970422",
+                //     bankName: "MBBank",
+                //     name: "NGUYEN HUU DUNG",
+                //     amount: 10000,
+                //     comment: 'hoan tien tiktok '
+                // }
+
+                // const balance = await eximbankHelper.getBalance(data.accountNumber, data.bankType);
+                // const result = await eximbankHelper.initTransfer(data.accountNumber, data.bankType, dataTransfer);
+                // await eximbankHelper.verifyTransfer(data.accountNumber, data.bankType, "402738");
                 return res.json({
                     success: true,
                     message: `Làm lại thông tin Eximbank ${data.accountNumber} thành công!`

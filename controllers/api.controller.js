@@ -383,53 +383,55 @@ const apiController = {
                 const otp = match[0];
 
                 // Kiếm tra đang đăng nhập hay gì
-                const bankData = await bankModel.findOneAndUpdate({bankType: 'exim', username}, {$set: {otp}});
-                // const bankData = await bankModel.findOne({bankType: 'exim', username});
+                // const bankData = await bankModel.findOneAndUpdate({bankType: 'exim', username}, {$set: {otp}});
+                const bankData = await bankModel.findOne({bankType: 'exim', username});
                 
-                // if (bankData.loginStatus == 'waitOTP') {
-                //     const result = await eximbankHelper.verifyOTP(bankData.accountNumber, bankData.bankType, otp);
-                // } else {
-                //     const balance = await eximbankHelper.getBalance(bankData.accountNumber, bankData.bankType);
-                //     const result = await eximbankHelper.verifyTransfer(bankData.accountNumber, bankData.bankType, otp);
+                if (bankData.loginStatus == 'waitOTP') {
+                    const result = await eximbankHelper.verifyOTP(bankData.accountNumber, bankData.bankType, otp);
+                } else {
+                    
+                    const result = await eximbankHelper.verifyTransfer(bankData.accountNumber, bankData.bankType, otp);
 
-                //     const accountNumber = bankData.accountNumber;
+                    const accountNumber = bankData.accountNumber;
 
-                //     const history = await historyModel.findOne({transfer: accountNumber, paid: "wait"});
+                    const history = await historyModel.findOne({transfer: accountNumber, paid: "wait"});
 
-                //     await bankModel.findOneAndUpdate({accountNumber}, {$set: {
-                //         otp: null, reward: false,
-                //     }});
+                    await bankModel.findOneAndUpdate({accountNumber}, {$set: {
+                        otp: null, reward: false,
+                    }});
 
-                //     if (history) {
+                    if (history) {
                         
-                //         if (result.code == '00') {
+                        if (result.resultDecode.code == '00') {
                             
-                //             history.paid = 'sent';
-                //             history.save();
-                //             const user = await userModel.findOne({username: history.username});
-                //             user.bankInfo.guard = true;
-                //             user.save();
+                            const balance = await eximbankHelper.getBalance(bankData.accountNumber, bankData.bankType)
 
-                //             await new transferModel({
-                //                 transId: history.transId,
-                //                 username: history.username,
-                //                 firstMoney: balance.data.totalCurrentAmount + history.bonus,
-                //                 amount: history.bonus,
-                //                 lastMoney: balance.data.totalCurrentAmount,
-                //                 comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
-                //             }).save();
-                //         } else {
-                //             history.paid = 'hold';
-                //             history.save();
-                //         }
+                            history.paid = 'sent';
+                            history.save();
+                            const user = await userModel.findOne({username: history.username});
+                            user.bankInfo.guard = true;
+                            user.save();
+
+                            await new transferModel({
+                                transId: history.transId,
+                                username: history.username,
+                                firstMoney: balance.resultDecode.data.totalCurrentAmount + history.bonus,
+                                amount: history.bonus,
+                                lastMoney: balance.resultDecode.data.totalCurrentAmount,
+                                comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
+                            }).save();
+                        } else {
+                            history.paid = 'hold';
+                            history.save();
+                        }
                         
 
-                //         return res.json({
-                //             success: true,
-                //         })
-                //     }
+                        return res.json({
+                            success: true,
+                        })
+                    }
                 
-                // }
+                }
                 
                 return res.json({
                     success: true,

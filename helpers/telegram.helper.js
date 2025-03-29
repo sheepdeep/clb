@@ -10,7 +10,7 @@ module.exports = {
     sendText: async (token, chatID, message, parseMode = 'HTML', buttons = []) => {
         try {
 
-            const proxyUrl = 'http://user49033:0acDKxjSmq@36.50.26.110:49033'; // Replace with your proxy and credentials
+            const proxyUrl = 'http://user49033:0acDKxjSmq@36.50.26.110:49033';
 
             const agent = new HttpsProxyAgent(proxyUrl);
 
