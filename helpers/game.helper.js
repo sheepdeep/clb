@@ -24,7 +24,6 @@ exports.checkWin = async (phone, amount, transId, comment) => {
         let { gameName, gameType } = checkVaild;
         let rewardData = await rewardModel.find({ content: { $regex: `^${comment}$`, $options: 'i' } });
         let result, paid, win = false, won = false, bonus = 0;
-        let { amount } = rewardData;
         for (let rewardContent of rewardData) {
             let { numberTLS, resultType, amount } = rewardContent;
             let id = String(transId);
@@ -52,13 +51,13 @@ exports.checkWin = async (phone, amount, transId, comment) => {
         }
 
         if (dataSetting.x3 == 'active' && amount > 60000) {
-            bonus = amount;
+            bonus = rewardData.amount;
         } else if (dataSetting.x3 === 'close' && amount < 50000) {
-            bonus = amount;
+            bonus = rewardData.amount;
         } else if (dataSetting.x3 === 'close' && amount > 50000 && amount < 1000000) {
-            bonus = amount - 0.1;
+            bonus = rewardData.amount - 0.1;
         } else if (dataSetting.x3 === 'close' && amount > 1000000 && amount < 3000000) {
-            bonus = amount - 0.2;
+            bonus = rewardData.amount - 0.2;
         }
 
         result = win ? 'win' : 'lose';
