@@ -1,9 +1,11 @@
 const gameService = require('../services/game.service');
 const momoService = require('../services/momo.service');
 const rewardModel = require('../models/reward.model');
+const settingModel = require('../models/setting.model');
 
 exports.checkWin = async (phone, amount, transId, comment) => {
     try {
+        const dataSetting = await settingModel.findOne({});
         comment = comment ? comment.replace(/^\s+|\s+$/gm, '') : comment;
         // comment = String(amount).slice(-2);
         let checkVaild = await gameService.checkGame(comment);
@@ -22,7 +24,7 @@ exports.checkWin = async (phone, amount, transId, comment) => {
         let { gameName, gameType } = checkVaild;
         let rewardData = await rewardModel.find({ content: { $regex: `^${comment}$`, $options: 'i' } });
         let result, paid, win = false, won = false, bonus = 0;
-
+        let { amount } = rewardData;
         for (let rewardContent of rewardData) {
             let { numberTLS, resultType, amount } = rewardContent;
             let id = String(transId);
@@ -33,7 +35,7 @@ exports.checkWin = async (phone, amount, transId, comment) => {
                 for (let i = 0; i < numberTLS.length; i++) {
                     let number = String(numberTLS[i]);
                     if (String(id).slice(-number.length) == number || id == number){
-                        bonus = amount, win = true;
+                        win = true;
                         break;
                     }
                 }
@@ -41,14 +43,23 @@ exports.checkWin = async (phone, amount, transId, comment) => {
                 for (let i = 0; i < numberTLS.length; i++) {
                     let number = String(numberTLS[i]);
                     if (resultType == 'end' && id.slice(-number.length) == number || resultType != 'end' && id == number){
-                        bonus = amount, win = true;
+                        win = true;
                         break;
                     }
                 }
             }
             
         }
-        
+
+        if (dataSetting.x3 == 'active' && amount > 60000) {
+            bonus = amount;
+        } else if (dataSetting.x3 === 'close' && amount < 50000) {
+            bonus = amount;
+        } else if (dataSetting.x3 === 'close' && amount > 50000 && amount < 1000000) {
+            bonus = amount - 0.1;
+        } else if (dataSetting.x3 === 'close' && amount > 1000000 && amount < 3000000) {
+            bonus = amount - 0.2;
+        }
 
         result = win ? 'win' : 'lose';
         paid = win ? 'wait' : 'done';

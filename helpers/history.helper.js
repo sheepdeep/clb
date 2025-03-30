@@ -46,10 +46,10 @@ exports.handleCltx = async (history, bank) => {
             const recentOrders = await historyModel.find({
                 username,
                 timeTLS: { $gte: oneMinuteAgo }
-            }).sort({ timeTLS: -1 }).limit(3);
+            }).sort({ timeTLS: -1 }).limit(5);
 
             // Nếu đã có 2 đơn rồi, thì chặn đơn thứ 3
-            if (recentOrders.length >= 3) {
+            if (recentOrders.length >= 5) {
                 await historyModel.findOneAndUpdate({transId}, {
                     $set: {
                         transId,
@@ -553,7 +553,7 @@ exports.gift = async () => {
     } catch (e) {
         console.log(e);
     }
-}
+};
 
 exports.reward = async() => {
     try {
@@ -676,4 +676,4 @@ exports.reward = async() => {
         await sleep(5000);
         return await this.reward();
     }
-}
+};
