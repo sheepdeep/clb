@@ -392,6 +392,8 @@ const apiController = {
                     
                     const result = await eximbankHelper.verifyTransfer(bankData.accountNumber, bankData.bankType, otp);
 
+                    console.log(result);
+
                     const accountNumber = bankData.accountNumber;
 
                     const history = await historyModel.findOne({transfer: accountNumber, paid: "wait"});
