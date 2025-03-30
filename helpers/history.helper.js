@@ -598,7 +598,6 @@ exports.reward = async() => {
                     const balance = await eximbankHelper.getBalance(dataBank.accountNumber, dataBank.bankType);
 
                     if (!balance.success) {
-                        await eximbankHelper.login(dataBank.accountNumber, dataBank.bankType);
                         await sleep(5000);
                         return await this.reward();
                     }

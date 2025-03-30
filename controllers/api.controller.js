@@ -397,16 +397,17 @@ const apiController = {
                     const accountNumber = bankData.accountNumber;
 
                     const history = await historyModel.findOne({transfer: accountNumber, paid: "wait"});
+                    
+                    const balance = await eximbankHelper.getBalance(bankData.accountNumber, bankData.bankType)
 
                     await bankModel.findOneAndUpdate({accountNumber}, {$set: {
-                        otp: null, reward: false,
+                        otp: null, reward: false, balance: balance.resultDecode.data.totalCurrentAmount
                     }});
 
                     if (history) {
                         
                         if (result.resultDecode.code == '00') {
                             
-                            const balance = await eximbankHelper.getBalance(bankData.accountNumber, bankData.bankType)
 
                             history.paid = 'sent';
                             history.save();

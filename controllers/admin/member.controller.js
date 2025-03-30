@@ -188,7 +188,7 @@ const memberController = {
         try {
             let id = req.params.id;
 
-            if (res.locals.profile.level != 1) {
+            if (res.locals.profile.admin != 1) {
                 return res.json({
                     success: false,
                     message: 'Không có quyền thao tác!'

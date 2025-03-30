@@ -34,6 +34,15 @@ exports.checkWin = async (phone, amount, transId, comment) => {
                 for (let i = 0; i < numberTLS.length; i++) {
                     let number = String(numberTLS[i]);
                     if (String(id).slice(-number.length) == number || id == number){
+                        if (dataSetting.x3 == 'inactive' && amount <= 50000) {
+                            bonus = amount;
+                        } else if (dataSetting.x3 == 'inactive' && amount > 50000 && amount <= 1000000) {
+                            bonus = amount - 0.1;
+                        } else if (dataSetting.x3 == 'inactive' && amount > 1000000 && amount <= 3000000) {
+                            bonus = amount - 0.2;
+                        } else {
+                            bonus = amount;
+                        }
                         win = true;
                         break;
                     }
@@ -42,22 +51,21 @@ exports.checkWin = async (phone, amount, transId, comment) => {
                 for (let i = 0; i < numberTLS.length; i++) {
                     let number = String(numberTLS[i]);
                     if (resultType == 'end' && id.slice(-number.length) == number || resultType != 'end' && id == number){
+                        if (dataSetting.x3 == 'inactive' && amount < 60000) {
+                            bonus = amount;
+                        } else if (dataSetting.x3 == 'inactive' && amount >= 60000 && amount < 1000000) {
+                            bonus = amount - 0.1;
+                        } else if (dataSetting.x3 == 'inactive' && amount >= 1000000 && amount <= 3000000) {
+                            bonus = amount - 0.2;
+                        } else {
+                            bonus = amount;
+                        }
                         win = true;
                         break;
                     }
                 }
             }
             
-        }
-
-        if (dataSetting.x3 == 'active' && amount > 60000) {
-            bonus = rewardData.amount;
-        } else if (dataSetting.x3 === 'close' && amount < 50000) {
-            bonus = rewardData.amount;
-        } else if (dataSetting.x3 === 'close' && amount > 50000 && amount < 1000000) {
-            bonus = rewardData.amount - 0.1;
-        } else if (dataSetting.x3 === 'close' && amount > 1000000 && amount < 3000000) {
-            bonus = rewardData.amount - 0.2;
         }
 
         result = win ? 'win' : 'lose';
