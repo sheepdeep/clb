@@ -36,6 +36,7 @@ const bankSchema = mongoose.Schema({
     transType: String,
     errorLogin: Number,
     cookie: String,
+    contentQr: String,
     loginAt: Date
 }, {
     timestamps: true

@@ -4,13 +4,13 @@ const transferModel = require('../models/transfer.model');
 const settingModel = require('../models/setting.model');
 
 const historyService = {
-    moneyCount: async (phone, month = null) => {
+    moneyCount: async (accountNumber, month = null) => {
         const date = new Date();
-        const dataMonth = await transferModel.aggregate([{ $match: { phone, createdAt: { $gte: new Date(date.getFullYear(), (month || date.getMonth()), 1), $lt: new Date(date.getFullYear(), (month || date.getMonth()) + 1, 0) } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }]);
-        const dataDay = await transferModel.aggregate([{ $match: { phone, createdAt: { $gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' }, count: { $sum: 1 } } }]);
+        const dataMonth = await transferModel.aggregate([{ $match: { transfer: accountNumber, createdAt: { $gte: new Date(date.getFullYear(), (month || date.getMonth()), 1), $lt: new Date(date.getFullYear(), (month || date.getMonth()) + 1, 0) } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }]);
+        const dataDay = await transferModel.aggregate([{ $match: { transfer: accountNumber, createdAt: { $gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' }, count: { $sum: 1 } } }]);
 
         return ({
-            phone,
+            accountNumber,
             amountDay: !dataDay.length ? 0 : dataDay[0].amount,
             amountMonth: !dataMonth.length ? 0 : dataMonth[0].amount,
             count: !dataDay.length ? 0 : dataDay[0].count

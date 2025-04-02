@@ -258,6 +258,47 @@ const momoController = {
             next(err);
         }
     },
+    balance: async (req, res, next) => {
+        try {
+            let {id} = req.body;
+            let data = await bankModel.findById(id);
+
+            if (data.bankType == 'mbb') {
+                const result = await mbbankHelper.login(data.accountNumber, data.bankType);
+                return res.json(result);
+            } else if (data.bankType == 'exim') {
+                const result = await eximbankHelper.getBalance(data.accountNumber, data.bankType);
+
+                await bankModel.findOneAndUpdate({accountNumber: data.accountNumber, bankType: data.bankType}, {
+                    $set: {
+                        balance: result.resultDecode.data.totalCurrentAmount,
+                        otp: null,
+                        reward: false
+                    }
+                }, {upsert: true})
+                
+                return res.json({
+                    success: true,
+                    balance: result.resultDecode.data.totalCurrentAmount,
+                    message: `Lấy số dư thành công!`
+                });
+            } else {
+                await bankModel.findOneAndUpdate({accountNumber: data.accountNumber, bankType: data.bankType}, {
+                    $set: {
+                        otp: null,
+                        reward: false
+                    }
+                }, {upsert: true})
+                return res.json({
+                    success: true,
+                    message: `Làm lại thông tin NCB ${data.accountNumber} thành công!`
+                });
+            }
+
+        } catch (err) {
+            next(err);
+        }
+    },
     checkTrans: async (req, res, next) => {
         try {
             const banks = await bankModel.find().lean();

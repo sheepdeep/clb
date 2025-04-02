@@ -14,7 +14,8 @@ exports.checkWin = async (phone, amount, transId, comment) => {
             return ({
                 gameName: null,
                 gameType: null,
-                status: 'errorComment',
+                result: 'wrong',
+                paid: 'sent',
                 win: false,
                 won: false,
                 bonus: 0
@@ -34,31 +35,42 @@ exports.checkWin = async (phone, amount, transId, comment) => {
                 for (let i = 0; i < numberTLS.length; i++) {
                     let number = String(numberTLS[i]);
                     if (String(id).slice(-number.length) == number || id == number){
-                        if (dataSetting.x3 == 'inactive' && amount <= 50000) {
+                        if (amount <= 50000) {
                             bonus = amount;
-                        } else if (dataSetting.x3 == 'inactive' && amount > 50000 && amount <= 1000000) {
+                        } else if (amount > 50000 && amount <= 1000000) {
                             bonus = amount - 0.1;
-                        } else if (dataSetting.x3 == 'inactive' && amount > 1000000 && amount <= 3000000) {
+                        } else if (amount > 1000000 && amount <= 3000000) {
                             bonus = amount - 0.2;
-                        } else {
-                            bonus = amount;
                         }
                         win = true;
                         break;
                     }
                 }
+            } else if (gameType == 'CL_Game' || gameType == 'TX_Game') {
+                for (let i = 0; i < numberTLS.length; i++) {
+                    let number = String(numberTLS[i]);
+                    if (resultType == 'end' && id.slice(-number.length) == number || resultType != 'end' && id == number){
+                        if (amount < 60000) {
+                            bonus = amount;
+                        } else if (amount >= 60000 && amount < 1000000) {
+                            bonus = 2.6 - 0.1;
+                        } else if (amount >= 1000000 && amount <= 3000000) {
+                            bonus = 2.6 - 0.2;
+                        } 
+                        win = true;
+                        break;
+                    }
+                } 
             } else {
                 for (let i = 0; i < numberTLS.length; i++) {
                     let number = String(numberTLS[i]);
                     if (resultType == 'end' && id.slice(-number.length) == number || resultType != 'end' && id == number){
-                        if (dataSetting.x3 == 'inactive' && amount < 60000) {
+                        if (amount < 60000) {
                             bonus = amount;
-                        } else if (dataSetting.x3 == 'inactive' && amount >= 60000 && amount < 1000000) {
+                        } else if (amount >= 60000 && amount < 1000000) {
                             bonus = amount - 0.1;
-                        } else if (dataSetting.x3 == 'inactive' && amount >= 1000000 && amount <= 3000000) {
+                        } else if (amount >= 1000000 && amount <= 3000000) {
                             bonus = amount - 0.2;
-                        } else {
-                            bonus = amount;
                         }
                         win = true;
                         break;

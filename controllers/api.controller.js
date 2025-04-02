@@ -367,14 +367,10 @@ const apiController = {
             const messages = req.body.messages;            
             const dataMessage = JSON.parse(messages);
 
-            let digits = dataMessage[1].sim.replace(/\D/g, '');
-
-            // Giữ lại 9 số cuối cùng
-            let lastNineDigits = digits.slice(-9);
-
+            const username = dataMessage[0].sim;
             const message = dataMessage[0].message;
             const number = dataMessage[0].number;
-            const username = '0' + lastNineDigits;
+            
 
             if (number == 'Eximbank') {
 
@@ -388,7 +384,7 @@ const apiController = {
                 
                 if (bankData.loginStatus == 'waitOTP') {
                     const result = await eximbankHelper.verifyOTP(bankData.accountNumber, bankData.bankType, otp);
-                } else {
+                } else if(bankData.status == 'active'){
                     
                     const result = await eximbankHelper.verifyTransfer(bankData.accountNumber, bankData.bankType, otp);
 
@@ -407,8 +403,6 @@ const apiController = {
                     if (history) {
                         
                         if (result.resultDecode.code == '00') {
-                            
-
                             history.paid = 'sent';
                             history.save();
                             const user = await userModel.findOne({username: history.username});
@@ -417,12 +411,21 @@ const apiController = {
 
                             await new transferModel({
                                 transId: history.transId,
+                                receiver: user.bankInfo.accountNumber,
+                                transfer: bankData.accountNumber,
                                 username: history.username,
                                 firstMoney: balance.resultDecode.data.totalCurrentAmount + history.bonus,
                                 amount: history.bonus,
                                 lastMoney: balance.resultDecode.data.totalCurrentAmount,
                                 comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
                             }).save();
+                        } else if (result.resultDecode.des == 'Tài khoản không đủ duy trì số dư tối thiểu, Quý Khách vui lòng kiểm tra lại.') {
+                            logHelper.create("rewardErr", `${accountNumber} [Hết tiền trả thưởng]`)
+                            await bankModel.findOneAndUpdate({accountNumber}, {$set: {
+                                status: 'pending'
+                            }});
+                            history.paid = 'hold';
+                            history.save();
                         } else {
                             history.paid = 'hold';
                             history.save();

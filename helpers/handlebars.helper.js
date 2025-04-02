@@ -302,7 +302,7 @@ module.exports = {
                 src = `/themes/images/banks/ncb.png`;
                 break;
             case 'exim':
-                src = `/themes/images/banks/eximbank.png`;
+                src = `/themes/images/banks/exim.png`;
                 break;
             default:
                 src = `<span class="badges badge-danger">Lỗi</span>`;

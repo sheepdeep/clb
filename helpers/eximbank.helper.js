@@ -137,8 +137,10 @@ exports.login = async (accountNumber, bankType) => {
 
         // Nếu mã lỗi là '00', cập nhật thông tin tài khoản và trả về kết quả
         if (resultDecode.code == '00') {
+
             await bankModel.findOneAndUpdate({ accountNumber, bankType }, {
                 $set: {
+                    name: resultDecode.data.name,
                     accountNumber,
                     bankType,
                     status: 'pending',
@@ -369,9 +371,25 @@ exports.getBalance = async (accountNumber, bankType) => {
         const resultDecode = await this.decrypt_data(response.data)
 
         if (resultDecode.code == '00') {
+
+            let config = {
+                maxBodyLength: Infinity,
+                url: "https://api.vietqr.io/v2/generate",
+                method: "POST",
+                data: {
+                    accountNo: accountNumber,
+                    accountName: bankData.name,
+                    acqId: '970431',
+                    template: 'compact'
+                },
+            };
+
+            const responseQr = await axios(config);
+
             await bankModel.findOneAndUpdate({accountNumber, bankType}, {
                 $set: {
                     accessToken: response.headers['authorization'],
+                    contentQr: responseQr.data.data.qrCode,
                 }
             }, {upsert: true})
 
@@ -386,9 +404,8 @@ exports.getBalance = async (accountNumber, bankType) => {
             }
         }
     } catch (e) {
-        if (e.response.status === '403') {
-            this.login(accountNumber, bankType)
-        }
+        console.log(e);
+        this.login(accountNumber, bankType)
         return {
             success: false,
             message: 'Lấy số dư thất bại! ' + e.message
@@ -412,6 +429,7 @@ exports.initTransfer = async (accountNumber, bankType, dataTransfer) => {
             "authMethod": "SMS",
             "otpToken": "",
             "isCache": false,
+            "isExpress": 0,
             "maxRequestInCache": false,
             "sender": {
                 "accountNo": accountNumber
