@@ -569,6 +569,14 @@ exports.reward = async() => {
         // Tìm thấy được lịch sử cần trả thưởng
         if (history) {
 
+            if (history.bonus <= 0) {
+                history.paid = 'sent';
+                history.save();
+
+                await sleep(2000);
+                return await this.reward();
+            }
+
             const checkTrans = await transferModel.findOne({transId: history.transId}).lean();
 
             if (!checkTrans) {
@@ -585,42 +593,44 @@ exports.reward = async() => {
                 if (bankReward.length > 0) {
                     const user = await userModel.findOne({username: history.username});
 
-                    if(!user.bankInfo) {
+                    if(user.bankInfo.accountNumber) {
+                        const dataBank = await bankModel.findOne({accountNumber: bankReward[0].accountNumber});
+
+                        console.log(`Thực hiện trả thưởng #${history.transId} => ${dataBank.accountNumber}`)
+                        const balance = await eximbankHelper.getBalance(dataBank.accountNumber, dataBank.bankType);
+
+                        if (!balance.success) {
+                            await sleep(2000);
+                            return await this.reward();
+                        }
+                        
+                        const checkNumber = await eximbankHelper.checkBank(dataBank.accountNumber, dataBank.bankType, user.bankInfo.bankCode, user.bankInfo.accountNumber)
+
+                        const dataTransfer = {
+                            accountNumber: user.bankInfo.accountNumber,
+                            bankCode: user.bankInfo.bankCode,
+                            bankName: checkNumber.resultDecode.data.bankName,
+                            name: checkNumber.resultDecode.data.name,
+                            amount: history.bonus,
+                            comment: 'hoan tien tiktok ' + String(history.transId).slice(-4)
+                        }
+
+                        const resultInitTransfer = await eximbankHelper.initTransfer(dataBank.accountNumber, dataBank.bankType, dataTransfer)
+
+                        console.log(resultInitTransfer);
+
+                        if (resultInitTransfer.success) {
+                            history.transfer = dataBank.accountNumber;
+                            history.save();
+
+                            dataBank.reward = true;
+                            dataBank.save();
+                        }
+                    } else {
                         history.paid = 'bankerror';
                         history.save();
-                        await sleep(1000);
+                        await sleep(2000);
                         return await this.reward();
-                    }
-
-                    const dataBank = await bankModel.findOne({accountNumber: bankReward[0].accountNumber});
-
-                    console.log(`Thực hiện trả thưởng #${history.transId} => ${dataBank.accountNumber}`)
-                    const balance = await eximbankHelper.getBalance(dataBank.accountNumber, dataBank.bankType);
-
-                    if (!balance.success) {
-                        await sleep(5000);
-                        return await this.reward();
-                    }
-                    
-                    const checkNumber = await eximbankHelper.checkBank(dataBank.accountNumber, dataBank.bankType, user.bankInfo.bankCode, user.bankInfo.accountNumber)
-
-                    const dataTransfer = {
-                        accountNumber: user.bankInfo.accountNumber,
-                        bankCode: user.bankInfo.bankCode,
-                        bankName: checkNumber.resultDecode.data.bankName,
-                        name: checkNumber.resultDecode.data.name,
-                        amount: history.bonus,
-                        comment: 'hoan tien tiktok ' + String(history.transId).slice(-4)
-                    }
-
-                    const resultInitTransfer = await eximbankHelper.initTransfer(dataBank.accountNumber, dataBank.bankType, dataTransfer)
-
-                    if (resultInitTransfer.success) {
-                        history.transfer = dataBank.accountNumber;
-                        history.save();
-
-                        dataBank.reward = true;
-                        dataBank.save();
                     }
 
                     // let checkOTP = true;
@@ -663,16 +673,22 @@ exports.reward = async() => {
                     // }
 
                 }
+            } else {
+                history.paid = 'sent';
+                history.save();
+
+                await sleep(2000);
+                return await this.reward();
             }
         }
 
-        await sleep(5000);
+        await sleep(2000);
         return await this.reward();
 
     } catch (err) {
         console.log(err);
         logHelper.create("rewardErr", `Lỗi khi trả thưởng [${err.message}]`)
-        await sleep(5000);
+        await sleep(60000);
         return await this.reward();
     }
 };

@@ -212,6 +212,30 @@ exports.handleTransId = async (histories, bank, band = 0) => {
                 continue;
             }
 
+            const parts = user.ip.split('.'); // Tách IP thành mảng [171, 224, 20, 249]
+            const ip = parts.slice(0, 2).join('.');
+
+            let countUser = await userModel.aggregate([{ $match: { ip } }, { $group: { _id: null, count: { $sum: 1 } } }]);
+            if (countUser.length > 0 && countUser[0].count > 2) {
+                await historyModel.findOneAndUpdate({transId}, {
+                    $set: {
+                        username,
+                        transId,
+                        receiver: bank.accountNumber,
+                        amount,
+                        fullComment: description,
+                        result: 'lose',
+                        paid: 'sent',
+                        comment: description,
+                        description: 'SPAM TẠO NICK',
+                        timeCheck: new Date(),
+                        timeTLS: moment(transactionDate, 'DD/MM/YYYY HH:mm:ss').format()
+                    }
+                }, {upsert: true}).lean();
+                continue;
+            }
+            
+
             if (amount > 0) {
                 if (comment === dataSetting.xsmb.commentLo || comment === dataSetting.xsmb.commentDe || comment === dataSetting.xsmb.commentXien2) {
                     await historyHelper.handleXsmb(history, bank);

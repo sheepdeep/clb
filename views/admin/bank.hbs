@@ -96,6 +96,7 @@
                                                         <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                                     </span>
                                             </th>
+                                            <th>Tên</th>
                                             <th>Số tài khoản</th>
                                             <th>Ngân hàng</th>
                                             <th>Số Dư {{{ tableSort originalUrl.search 'balance' _sort }}}</th>
@@ -127,12 +128,12 @@
                                             <tr class="edit-one" data-id="{{ this._id }}">
                                                 <td>
                                                     <div class="table-actions hand p-2">
-                                                        <span class="badges badge-success qrc" data-bankcode="mbb" data-content="00020101021138530010A0000007270123000697042201090271120050208QRIBFTTA53037045802VN630480D5"
+                                                        <span class="badges badge-success qrc" data-bankcode="{{ this.bankType }}" data-content="{{ this.contentQr }}"
                                                               data-bs-toggle="tooltip" data-bs-placement="top"
                                                               data-bs-original-title="Lấy QR"><i
                                                                 class="fas fa-qrcode"></i></span>
                                                         <span class="badges badge-warning action-more"
-                                                              data-action="balance" data-id="{{ this.phone }}"
+                                                              data-action="balance" data-id="{{ this._id }}"
                                                               data-bs-toggle="tooltip" data-bs-placement="top"
                                                               data-bs-original-title="Cập nhập số dư"><i
                                                                 class="fas fa-coins"></i></span>
@@ -153,6 +154,7 @@
                                                                                               aria-hidden="true"></i></span>
                                                     </div>
                                                 </td>
+                                                <td>{{ this.name }}</td>
                                                 <td>{{ this.accountNumber }} <br /> ({{ this.otp }})</td>
                                                 <td><img width="50%" src="{{ bankImage this.bankType }}"></td>
                                                 <td class="balance">{{ numberFormat this.balance }}đ</td>
@@ -397,7 +399,7 @@
             switch (action) {
                 case 'balance':
                     _this.prop('disabled', true);
-                    axios.post('/api/v2/momo/balance', {phone})
+                    axios.post('{{adminPath}}/bank/balance', {id})
                             .then((result) => {
                                 let response = result.data;
 
@@ -438,12 +440,12 @@
         }
 
         $(document).on("click", ".qrc", function () {
+
             var bankCode = $(this).attr('data-bankcode');
             var bgc = "#11089c";
 
             var img = window.location.protocol + '//' + window.location.host + '/themes/images/banks/' + bankCode + '.png';
             var data = $(this).attr('data-content');
-            console.log(data);
             loadQR(data, img, bgc);
         });
 

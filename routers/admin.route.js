@@ -117,6 +117,7 @@ router.route(['/bank/:id', '/bank/:id'])
 router.route('/bank-checkTrans').get(loggedInAdmin, tableSort, bankController.checkTrans);
 
 router.post('/bank/refresh', [loggedInAdmin, isAdmin], bankController.refresh)
+router.post('/bank/balance', [loggedInAdmin, isAdmin], bankController.balance)
 
 router.route('/gift')
     .get(loggedInAdmin, tableSort, giftController.index)

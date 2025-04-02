@@ -5,6 +5,8 @@ const transferSchema = new mongoose.Schema({
         type: String,
         unique: true
     },
+    transfer: String,
+    receiver: String,
     username: {
         type: String,
         required: true
