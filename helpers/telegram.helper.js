@@ -26,8 +26,6 @@ module.exports = {
 
             let { data: response } = await axios(options);
 
-            console.log(response)
-
             return response.ok ? ({
                 success: true,
                 message: 'Gửi thành công!',

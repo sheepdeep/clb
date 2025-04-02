@@ -343,7 +343,12 @@ const settingSchema = new mongoose.Schema({
         turn: Number,
         chatId: String,
         turnTaiXiuRong: String,
-        secondTaiXiuRong: Number
+        secondTaiXiuRong: Number,
+        commentTaiRong: String,
+        commentXiuRong: String,
+        minTaiXiuRong: Number,
+        maxTaiXiuRong: Number,
+        ratio: Number,
     },
     giftDay: {
         status: {

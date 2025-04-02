@@ -605,26 +605,6 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Vòng quay</label>
-                                                <select name="wheel-status"
-                                                        class="form-control ih-medium ip-light">
-                                                    {{#select settings.wheel.status }}
-                                                        <option value="active">Bật</option>
-                                                        <option value="close">Tắt</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tên vòng quay</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="wheel-name"
-                                                       value="{{ settings.wheel.name }}">
-                                            </div>
-                                        </div>
                                         {{!-- Kết Thúc Hoàn Tiền Bill --}}
                                         {{!-- Bắt Đầu Theme Site --}}
                                         <div class="col-md-6">
@@ -974,7 +954,7 @@
                                 <h6 class="card-title hand" data-bs-toggle="tooltip" data-bs-placement="right"
                                     data-bs-original-title="Cập nhập vào {{ timeNow settings.updatedAt }}">
                                     <img src="../themes/admin/images/mini-game.png" alt="" width="35">
-                                    Cài Đặt Tài Xỉu
+                                    Cài Đặt Tài Xỉu Rồng
                                     <img src="../themes/admin/images/mini-game.png" class="d-md-none" width="35">
                                 </h6>
                             </div>
@@ -1005,7 +985,7 @@
                                             <div class="form-group">
                                                 <label for="" class="il-gray fs-14 fw-500 mb-10">Phiên</label>
                                                 <input type="text" class="form-control ih-medium ip-light"
-                                                       name="banTaiXiu-turn" value="{{ settings.banTaiXiu.turn }}"
+                                                       name="banTaiXiu-turnTaiXiuRong" value="{{ settings.banTaiXiu.turnTaiXiuRong }}"
                                                        placeholder="Nhập phiên chạy">
                                             </div>
                                         </div>
@@ -1013,7 +993,7 @@
                                             <div class="form-group">
                                                 <label for="" class="il-gray fs-14 fw-500 mb-10">Thời gian mặc định</label>
                                                 <input type="text" class="form-control ih-medium ip-light"
-                                                       name="banTaiXiu-secondDefault" value="{{ settings.banTaiXiu.secondDefault }}"
+                                                       name="banTaiXiu-secondTaiXiuRong" value="{{ settings.banTaiXiu.secondTaiXiuRong }}"
                                                        placeholder="Nhập thời gian mặc định">
                                             </div>
                                         </div>
@@ -1021,7 +1001,7 @@
                                             <div class="form-group">
                                                 <label for="" class="il-gray fs-14 fw-500 mb-10">Nội dung tài</label>
                                                 <input type="text" class="form-control ih-medium ip-light"
-                                                       name="banTaiXiu-commentTai" value="{{ settings.banTaiXiu.commentTai }}"
+                                                       name="banTaiXiu-commentTaiRong" value="{{ settings.banTaiXiu.commentTaiRong }}"
                                                        placeholder="Nhập nội dung tài">
                                             </div>
                                         </div>
@@ -1029,42 +1009,11 @@
                                             <div class="form-group">
                                                 <label for="" class="il-gray fs-14 fw-500 mb-10">Nội dung xỉu</label>
                                                 <input type="text" class="form-control ih-medium ip-light"
-                                                       name="banTaiXiu-commentXiu" value="{{ settings.banTaiXiu.commentXiu }}"
+                                                       name="banTaiXiu-commentXiuRong" value="{{ settings.banTaiXiu.commentXiuRong }}"
                                                        placeholder="Nhập nội dung xỉu">
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Loại Trả Thưởng</label>
-                                                <select name="banTaiXiu-rewardType" class="form-control ih-medium ip-light">
-                                                    {{#select settings.banTaiXiu.rewardType }}
-                                                        <option value="all">Trả Hết</option>
-                                                        <option value="limit">Giới Hạn</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label  for="" class="il-gray fs-14 fw-500 mb-10"
-                                                        data-bs-toggle="tooltip" data-bs-placement="top"
-                                                        data-bs-original-title="transId, status">Trả thưởng [COMMENT]</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="banTaiXiu-rewardGD"
-                                                       value="{{ settings.banTaiXiu.rewardGD }}"
-                                                       placeholder="Nhập nội dung trả thưởng GD">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Giới Hạn Trả</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="banTaiXiu-rewardLimit"
-                                                       value="{{ settings.banTaiXiu.rewardLimit }}"
-                                                       placeholder="Nhập nội dung trả thưởng GD">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="" class="il-gray fs-14 fw-500 mb-10">Tỉ lệ</label>
                                                 <input type="text" class="form-control ih-medium ip-light"
@@ -1073,21 +1022,21 @@
                                                        placeholder="Nhập tỉ lệ nhận thưởng">
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="" class="il-gray fs-14 fw-500 mb-10">Đặt tối thiểu</label>
                                                 <input type="text" class="form-control ih-medium ip-light"
-                                                       name="banTaiXiu-betMin"
-                                                       value="{{ settings.banTaiXiu.betMin }}"
+                                                       name="banTaiXiu-minTaiXiuRong"
+                                                       value="{{ settings.banTaiXiu.minTaiXiuRong }}"
                                                        placeholder="Nhập số tiền đặt cược tối thiểu">
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="" class="il-gray fs-14 fw-500 mb-10">Đặt tối đa</label>
                                                 <input type="text" class="form-control ih-medium ip-light"
-                                                       name="banTaiXiu-betMax"
-                                                       value="{{ settings.banTaiXiu.betMax }}"
+                                                       name="banTaiXiu-maxTaiXiuRong"
+                                                       value="{{ settings.banTaiXiu.maxTaiXiuRong }}"
                                                        placeholder="Nhập số tiền đặt cược tối đa">
                                             </div>
                                         </div>

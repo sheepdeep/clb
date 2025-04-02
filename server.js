@@ -83,20 +83,6 @@ io.on('connection', function (socket) {
     });
 });
 
-// TAIXIURONG SERVER
-io.of('/taixiu-rong').on('connection', (socket) => {
-    console.log('A user connected to server1 subdomain');
-
-    // Lắng nghe sự kiện từ client
-    socket.on('message', (data) => {
-        console.log('Message from client: ', data);
-    });
-
-    socket.on('disconnect', () => {
-        console.log('A user disconnected from server1 subdomain');
-    });
-});
-
 
 
 // SET TOKEN SETUP
