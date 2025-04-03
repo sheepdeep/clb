@@ -103,7 +103,7 @@ exports.run = async () => {
 
             socket.emit("taiXiuRong", dataEncode);
 
-            console.log('Phiên #' + dataSetting.banTaiXiu.turnTaiXiuRong + ' kết quả là ' + turn.xucxac1 + ' - ' + turn.xucxac2 + ' - ' + turn.xucxac3 + ' [' + resultText + ']');
+            console.log('Phiên #' + dataSetting.banTaiXiu.turnTaiXiuRong + ' kết quả là ' + xucxac1 + ' - ' + xucxac2 + ' - ' + xucxac3 + ' [' + resultText + ']');
 
             let textNoti = `🎲 <b>KẾT QUẢ PHIÊN #${turnOld.turn}</b> 🎲 \n\n🎯 <b>${numberIcons[xucxac1.toString()] || result} - ${numberIcons[xucxac2.toString()] || result} - ${numberIcons[xucxac3.toString()] || result} 🟰 ${resultText == 'tai' ? '🔴 TÀI' : '⚫️ XỈU'}</b> 🎯`;
             await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.banTaiXiu.chatId, textNoti, 'HTML');
@@ -149,21 +149,21 @@ exports.run = async () => {
         //     return await this.run();
         // }
         //
-        // if (turn.second <= 60) {
-        //     const dataPost = {
-        //         turn: turn.turn,
-        //         second: turn.second,
-        //         sumTai: turn.sumTai,
-        //         sumXiu: turn.sumXiu,
-        //         userTai: turn.userTai.length,
-        //         userXiu: turn.userXiu.length,
-        //         soiCau: await this.dataTurn(11),
-        //     }
-        //
-        //     let dataEncode = await securityHelper.encrypt(JSON.stringify(dataPost));
-        //
-        //     socket.emit("taiXiuRong", dataEncode);
-        // }
+        if (turn.second <= 60) {
+            const dataPost = {
+                turn: turn.turn,
+                second: turn.second,
+                sumTai: turn.sumTai,
+                sumXiu: turn.sumXiu,
+                userTai: turn.userTai.length,
+                userXiu: turn.userXiu.length,
+                soiCau: await this.dataTurn(11),
+            }
+
+            let dataEncode = await securityHelper.encrypt(JSON.stringify(dataPost));
+
+            socket.emit("taiXiuRong", dataEncode);
+        }
 
         await sleep(1 * 1000);
         return await this.run();

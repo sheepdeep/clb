@@ -5,6 +5,7 @@ const utils = require('../../helpers/utils.helper');
 const mbbankHelper = require('../../helpers/mbbank.helper');
 const ncbHelper = require('../../helpers/ncb.helper');
 const eximbankHelper = require('../../helpers/eximbank.helper');
+const acbHelper = require('../../helpers/acb.helper');
 
 const momoController = {
     index: async (req, res, next) => {
@@ -119,6 +120,10 @@ const momoController = {
 
             if (bankType === 'exim') {
                 return res.json(await eximbankHelper.login(accountNumber, bankType));
+            }
+
+            if (bankType === 'acb') {
+                return res.json(await acbHelper.login(accountNumber, bankType));
             }
 
             if (bankType === 'ncb') {

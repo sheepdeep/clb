@@ -1,6 +1,6 @@
-// const socket = io('http://localhost:3000', {
-//     transports: ['websocket'], // Chỉ sử dụng WebSocket
-// });
+const socket = io('http://localhost:3000', {
+    transports: ['websocket'], // Chỉ sử dụng WebSocket
+});
 
 $('#taiXiuRong').draggable({});
 

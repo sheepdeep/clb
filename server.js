@@ -17,6 +17,7 @@ const homeRoute = require('./routers/home.route');
 const errorHandler = require('./middlewares/error.middleware');
 const hbsHelper = require('./helpers/handlebars.helper');
 const historyHelper = require('./helpers/history.helper');
+const bankHelper = require('./helpers/bank.helper');
 
 let userCount = 0;
 
@@ -91,10 +92,12 @@ console.log(`TOKEN SETUP: ${process.env.TOKEN_SETUP.toUpperCase()}`)
 
 // Kết nối MongoDB
 db.connectDB();
-historyHelper.history();
-historyHelper.fakeBill();
-historyHelper.reward();
+// historyHelper.history();
+// historyHelper.fakeBill();
+// historyHelper.reward();
 // historyHelper.gift();
+
+bankHelper.generate_deep_link("970457", "902021186707", 100000, "QRILU9229743678SVND5C1V", "970422");
 
 app.use(homeRoute);
 // Error Handler

@@ -304,6 +304,9 @@ module.exports = {
             case 'exim':
                 src = `/themes/images/banks/exim.png`;
                 break;
+            case 'acb':
+                src = `/themes/images/banks/acb.png`;
+                break;
             default:
                 src = `<span class="badges badge-danger">Lỗi</span>`;
                 break;

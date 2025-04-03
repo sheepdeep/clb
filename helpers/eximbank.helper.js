@@ -1,4 +1,3 @@
-const puppeteer = require("puppeteer");
 const axios = require("axios");
 const path = require("path");
 const moment = require("moment");
@@ -172,7 +171,6 @@ exports.login = async (accountNumber, bankType) => {
     }
 };
 
-
 exports.verifyOTP = async (accountNumber, bankType, otp) => {
     try {
         
@@ -331,6 +329,91 @@ exports.checkBank = async (accountNumber, bankType, bankCode, receiver) => {
 exports.getBalance = async (accountNumber, bankType) => {
     try {
         
+        const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
+        console.log("Token lúc xác minh là " + bankData.accessToken)
+
+        const headers = await this.headerDefault({Authorization: bankData.accessToken})
+
+
+        const bodyData = {
+            ...bankData.dataDevice,
+            "ATS": moment().format('YYMMDDHHmmss'),
+            "clientId": "",
+            "authMethod": "SMS",
+            "mid": 11,
+            "isCache": false,
+            "maxRequestInCache": false,
+        }
+
+        const encrypted_data = await this.encrypt_data(bodyData)
+
+        let agent;
+        if (bankData.proxy) {
+            const proxyUrl = `http://${bankData.proxy}`;
+            agent = new HttpsProxyAgent(proxyUrl);  // Sử dụng proxy nếu có
+        }
+
+        let config = {
+            url: "https://edigi.eximbank.com.vn/ib/",
+            headers,
+            method: "POST",
+            data: encrypted_data,
+        };
+
+        if (agent) {
+            config.httpsAgent = agent;
+        }
+
+        const response = await axios(config);
+
+        const resultDecode = await this.decrypt_data(response.data)
+
+        if (resultDecode.code == '00') {
+
+            let config = {
+                maxBodyLength: Infinity,
+                url: "https://api.vietqr.io/v2/generate",
+                method: "POST",
+                data: {
+                    accountNo: accountNumber,
+                    accountName: bankData.name,
+                    acqId: '970431',
+                    template: 'compact'
+                },
+            };
+
+            const responseQr = await axios(config);
+
+            await bankModel.findOneAndUpdate({accountNumber, bankType}, {
+                $set: {
+                    accessToken: response.headers['authorization'],
+                    contentQr: responseQr.data.data.qrCode,
+                }
+            }, {upsert: true})
+
+            return {
+                success: true,
+                resultDecode
+            };
+        } else {
+            return {
+                message: resultDecode.des,
+                success: false
+            }
+        }
+    } catch (e) {
+        console.log(e);
+        this.login(accountNumber, bankType)
+        return {
+            success: false,
+            message: 'Lấy số dư thất bại! ' + e.message
+        };
+    }
+}
+
+exports.getHistory = async (accountNumber, bankType) => {
+    try {
+
         const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
         console.log("Token lúc xác minh là " + bankData.accessToken)
 

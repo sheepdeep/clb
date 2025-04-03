@@ -17,7 +17,7 @@ connectDB().then(() => {
 app.use(cors());
 
 io.on('connection', function (socket) {
-
+    console.log(socket)
 });
 
 taiXiuService.run();
