@@ -46,7 +46,7 @@ module.exports = {
     sendPhoto: async (token, chatID, message, image, parseMode = 'HTML') => {
         try {
 
-            const proxyUrl = 'http://user49033:0acDKxjSmq@36.50.26.110:49033'; // Replace with your proxy and credentials
+            // const proxyUrl = 'http://user49033:0acDKxjSmq@36.50.26.110:49033'; // Replace with your proxy and credentials
 
             const agent = new HttpsProxyAgent(proxyUrl);
 
@@ -56,7 +56,7 @@ module.exports = {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                httpsAgent: agent,
+                // httpsAgent: agent,
                 data: `chat_id=${chatID}&photo=${image}&caption=${message}&parse_mode=${parseMode}`
             };
 
@@ -107,12 +107,16 @@ module.exports = {
     },
     sendDice: async (token, chatID) => {
         try {
+
+            const proxyUrl = 'http://user49033:0acDKxjSmq@36.50.26.110:49033'; // Replace with your proxy and credentials
+
             let options = {
                 method: 'POST',
                 url: `https://api.telegram.org/bot${token}/sendDice`,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
+                httpsAgent: agent,
                 data: `chat_id=${chatID}`
             };
 

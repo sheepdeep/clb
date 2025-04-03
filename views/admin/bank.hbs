@@ -96,6 +96,7 @@
                                                         <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                                     </span>
                                             </th>
+                                            <th>Số điện thoại</th>
                                             <th>Tên</th>
                                             <th>Số tài khoản</th>
                                             <th>Ngân hàng</th>
@@ -115,6 +116,7 @@
                                             <th>Nhận Ngày</th>
                                             <th>Chuyển Tháng</th>
                                             <th>Nhận Tháng</th>
+                                            <th>Proxy</th>
                                             <th>Đăng nhập lúc {{{ tableSort originalUrl.search 'updatedAt' _sort }}}
                                             </th>
                                             <th>Cập Nhập {{{ tableSort originalUrl.search 'updatedAt' _sort }}}
@@ -154,6 +156,7 @@
                                                                                               aria-hidden="true"></i></span>
                                                     </div>
                                                 </td>
+                                                <td>{{ this.username }}</td>
                                                 <td>{{ this.name }}</td>
                                                 <td>{{ this.accountNumber }} <br /> ({{ this.otp }})</td>
                                                 <td><img width="50%" src="{{ bankImage this.bankType }}"></td>
@@ -244,6 +247,7 @@
                                                 </td>
                                                 <td><textarea class="form-control">{{ this.description }}</textarea>
                                                 </td>
+                                                <td>{{ this.proxy }}</td>
                                                 <td>{{ numberFormat this.amountDay }}đ</td>
                                                 <td>{{ numberFormat this.receiptDay }}đ</td>
                                                 <td>{{ numberFormat this.amountMonth }}đ</td>

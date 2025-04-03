@@ -93,7 +93,7 @@ const momoController = {
     },
     add: async (req, res, next) => {
         try {
-            const {username, password, accountNumber, bankType} = req.body;
+            const {username, password, accountNumber, bankType, proxy} = req.body;
             if (!username || !password || !accountNumber || !bankType) {
                 return res.json({
                     success: false,
@@ -109,6 +109,7 @@ const momoController = {
                     bankType,
                     status: 'pending',
                     loginStatus: 'wait',
+                    proxy,
                     reward: false
                 }
             }, {upsert: true})

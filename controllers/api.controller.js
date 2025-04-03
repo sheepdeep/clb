@@ -24,6 +24,7 @@ const transferModel = require('../models/transfer.model');
 const oldBank = require('../json/bank.json');
 const ncbBank = require('../json/ncb.bank.json');
 const eximbankHelper = require('../helpers/eximbank.helper');
+const logHelper = require('../helpers/log.helper');
 
 const apiController = {
     betGame: async (req, res, next) => {

@@ -22,6 +22,7 @@ exports.checkWin = async (phone, amount, transId, comment) => {
             })
         }
 
+        let amountTransId = amount;
         let { gameName, gameType } = checkVaild;
         let rewardData = await rewardModel.find({ content: { $regex: `^${comment}$`, $options: 'i' } });
         let result, paid, win = false, won = false, bonus = 0;
@@ -35,11 +36,11 @@ exports.checkWin = async (phone, amount, transId, comment) => {
                 for (let i = 0; i < numberTLS.length; i++) {
                     let number = String(numberTLS[i]);
                     if (String(id).slice(-number.length) == number || id == number){
-                        if (amount <= 50000) {
+                        if (amountTransId <= 50000) {
                             bonus = amount;
-                        } else if (amount > 50000 && amount <= 1000000) {
+                        } else if (amountTransId > 50000 && amountTransId <= 1000000) {
                             bonus = amount - 0.1;
-                        } else if (amount > 1000000 && amount <= 3000000) {
+                        } else if (amountTransId > 1000000 && amountTransId <= 3000000) {
                             bonus = amount - 0.2;
                         }
                         win = true;
@@ -50,11 +51,11 @@ exports.checkWin = async (phone, amount, transId, comment) => {
                 for (let i = 0; i < numberTLS.length; i++) {
                     let number = String(numberTLS[i]);
                     if (resultType == 'end' && id.slice(-number.length) == number || resultType != 'end' && id == number){
-                        if (amount < 60000) {
+                        if (amountTransId < 60000) {
                             bonus = amount;
-                        } else if (amount >= 60000 && amount < 1000000) {
+                        } else if (amountTransId >= 60000 && amountTransId < 1000000) {
                             bonus = 2.6 - 0.1;
-                        } else if (amount >= 1000000 && amount <= 3000000) {
+                        } else if (amountTransId >= 1000000 && amountTransId <= 3000000) {
                             bonus = 2.6 - 0.2;
                         } 
                         win = true;
@@ -65,11 +66,11 @@ exports.checkWin = async (phone, amount, transId, comment) => {
                 for (let i = 0; i < numberTLS.length; i++) {
                     let number = String(numberTLS[i]);
                     if (resultType == 'end' && id.slice(-number.length) == number || resultType != 'end' && id == number){
-                        if (amount < 60000) {
+                        if (amountTransId < 60000) {
                             bonus = amount;
-                        } else if (amount >= 60000 && amount < 1000000) {
+                        } else if (amountTransId >= 60000 && amountTransId < 1000000) {
                             bonus = amount - 0.1;
-                        } else if (amount >= 1000000 && amount <= 3000000) {
+                        } else if (amountTransId >= 1000000 && amountTransId <= 3000000) {
                             bonus = amount - 0.2;
                         }
                         win = true;
