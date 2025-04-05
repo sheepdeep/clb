@@ -66,6 +66,9 @@ exports.handleCltx = async (history, bank) => {
                     }
                 }, {upsert: true}).lean();
             } else {
+
+
+
                 await historyModel.findOneAndUpdate({transId}, {
                     $set: {
                         transId,
@@ -113,6 +116,8 @@ exports.handleTransId = async (transId) => {
             paid
         } = await gameHelper.checkWin(history.receiver, history.amount, history.transId, history.comment);
 
+
+
         if (await historyModel.findOne({
             transId: history.transId,
             $and: [
@@ -130,22 +135,6 @@ exports.handleTransId = async (transId) => {
             return;
         }
 
-        let commentData = [
-            {
-                name: 'transId',
-                value: history.transId,
-            },
-            {
-                name: 'comment',
-                value: history.comment,
-            },
-            {
-                name: 'amount',
-                value: history.amount,
-            },
-
-        ];
-        let rewardComment = await commentHelper.dataComment(dataSetting.commentSite.rewardGD, commentData);
         let user = await userModel.findOne({username: history.username}).lean();
 
         await historyModel.findOneAndUpdate({transId: history.transId}, {
@@ -155,6 +144,36 @@ exports.handleTransId = async (transId) => {
                     result,
                 }
             })
+
+        if(win == 'lose') {
+            const checkLoseDay = await historyModel.findOne({
+                username: history.username,
+                result: 'lose',
+                createdAt: { $gte: moment().startOf('day').toDate(), $lte: moment().endOf('day').toDate() }
+            });
+
+            if (!checkLoseDay && history.amount >= 50000 && history.amount <= 500000) {
+
+                const transId = `SBRF${Math.floor(Math.random() * (99999999 - 10000000) + 10000000)}`;
+                const bonus = Math.floor(history.amount * dataSetting.refund.won / 100);
+
+                await historyModel.findOneAndUpdate({transId}, {
+                    $set: {
+                        transId,
+                        username: history.username,
+                        receiver: history.receiver,
+                        gameName: history.gameName,
+                        gameType: history.gameType,
+                        amount: bonus,
+                        bonus,
+                        result: 'refund',
+                        paid: 'wait',
+                        comment: history.comment,
+                        description: `Hoàn tiền đơn thua ${history.transId}`,
+                    }
+                }, {upsert: true}).lean();
+            }
+        }
 
         let histories = await historyModel.find({username: user.username}, {
             _id: 0,
