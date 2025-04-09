@@ -69,7 +69,7 @@ exports.createTaskCaptcha = async() => {
     } catch(err) {
         console.log(err)
     }
-}
+};
 
 exports.login = async (accountNumber, bankType) => {
     try {
@@ -455,24 +455,9 @@ exports.getHistory = async (accountNumber, bankType) => {
 
         if (resultDecode.code == '00') {
 
-            let config = {
-                maxBodyLength: Infinity,
-                url: "https://api.vietqr.io/v2/generate",
-                method: "POST",
-                data: {
-                    accountNo: accountNumber,
-                    accountName: bankData.name,
-                    acqId: '970431',
-                    template: 'compact'
-                },
-            };
-
-            const responseQr = await axios(config);
-
             await bankModel.findOneAndUpdate({accountNumber, bankType}, {
                 $set: {
                     accessToken: response.headers['authorization'],
-                    contentQr: responseQr.data.data.qrCode,
                 }
             }, {upsert: true})
 

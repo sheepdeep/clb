@@ -212,8 +212,13 @@ exports.handleTransId = async (histories, bank, band = 0) => {
                 continue;
             }
 
-            const parts = user.ip.split('.'); // Tách IP thành mảng [171, 224, 20, 249]
-            const ip = parts.slice(0, 2).join('.');
+            let ip;
+            if (/^\d{1,3}(\.\d{1,3}){3}$/.test(ip)) {
+                const parts = ip.split('.');
+                ip = parts.slice(0, 2).join('.'); // Lấy 2 số đầu
+            }
+
+            ip = user.ip;
 
             let countUser = await userModel.aggregate([{ $match: { ip } }, { $group: { _id: null, count: { $sum: 1 } } }]);
             if (countUser.length > 0 && countUser[0].count > 2) {

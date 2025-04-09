@@ -24,6 +24,8 @@ const transferModel = require('../models/transfer.model');
 const oldBank = require('../json/bank.json');
 const ncbBank = require('../json/ncb.bank.json');
 const eximbankHelper = require('../helpers/eximbank.helper');
+const logHelper = require('../helpers/log.helper');
+const turnTaiXiuModel = require("../models/turn.taixiu-rong.model");
 
 const apiController = {
     betGame: async (req, res, next) => {
@@ -364,8 +366,11 @@ const apiController = {
     },
     sendOTP: async (req, res, next) => {
         try {
+            const dataSetting = await settingModel.findOne({}).lean();
             const messages = req.body.messages;            
-            const dataMessage = JSON.parse(messages);
+            const dataMessage = messages;
+
+            console.log(dataMessage)
 
             const username = dataMessage[0].sim;
             const message = dataMessage[0].message;
@@ -444,6 +449,63 @@ const apiController = {
                     message: 'Lỗi hệ thống!',
                 })
 
+            } else if (number == 'MBBANK') {
+
+                const dataMessageMB = message.split(' ');
+                const amount = dataMessageMB[3].replace(/[^\d]/g, '');
+                let numberUser, numberReward;
+
+                for (let i = 0; i < dataMessageMB.length; i++) {
+                    // Check if the word matches a username
+                    if (await userModel.findOne({ username: dataMessageMB[i].toLowerCase() })) {
+                        numberUser = i;  // Store index of the matching user
+                    }
+
+                    if (dataMessageMB[i].toUpperCase().replace(/[.-]/g, '') === dataSetting.banTaiXiu.commentTaiRong || dataMessageMB[i].toUpperCase().replace(/[.-]/g, '') === dataSetting.banTaiXiu.commentXiuRong) {
+                        numberReward = i;  // Store index of the matching reward
+                    }
+
+                }
+
+                // Kiểm tra username
+                const user = await userModel.findOne({username: dataMessageMB[numberUser]});
+                if (user) {
+                    const turn = await turnTaiXiuModel.findOne({status: 'running'}).lean();
+                    const checkBet = await historyModel.findOne({username: dataMessageMB[numberUser], transId: { $regex: turn.turn, $options: 'i' }});
+
+                    if (checkBet && checkBet.comment == dataMessageMB[numberReward].toUpperCase().replace(/[.-]/g, '') || !checkBet) {
+                        if (dataMessageMB[numberReward].toUpperCase().replace(/[.-]/g, '') === dataSetting.banTaiXiu.commentTaiRong || dataMessageMB[numberReward].toUpperCase().replace(/[.-]/g, '') === dataSetting.banTaiXiu.commentXiuRong) {
+                            await new historyModel({
+                                transId: `TXR${Math.floor(Math.random() * (99999 - 10000) + 10000)}_${turn.turn}`,
+                                username: dataMessageMB[numberUser],
+                                comment: dataMessageMB[numberReward],
+                                receiver: 'HIHI',
+                                amount: amount,
+                                bonus: 0,
+                                gameName: 'TXRONG',
+                                gameType: 'TXRONG',
+                                result: 'wait',
+                                paid: 'sent',
+                            }).save()
+                        }
+                    } else {
+                        await new historyModel({
+                            transId: `TXR${Math.floor(Math.random() * (99999 - 10000) + 10000)}_${turn.turn}`,
+                            username: dataMessageMB[numberUser],
+                            comment: dataMessageMB[numberReward],
+                            receiver: 'HIHI',
+                            amount: amount,
+                            bonus: 0,
+                            gameName: 'TXRONG',
+                            gameType: 'TXRONG',
+                            result: 'lose',
+                            description: 'Bạn không thể đặt cược 2 cửa!'
+                        }).save()
+                    }
+                }
+
+                // console.log(dataMessageMB);
+
             } else {
                 const regex = /\d+/g;  // Tìm mã OTP 6 chữ số
                 const match = message.match(regex);
@@ -470,6 +532,11 @@ const apiController = {
                     })
                 }
             }
+
+            return res.json({
+                success: true,
+                message: 'Lỗi hệ thống!',
+            })
             
         } catch (error) {
             res.status(401).send(error.message);

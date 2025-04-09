@@ -91,7 +91,7 @@ exports.handleCltx = async (history, bank) => {
     } catch (e) {
         console.log(e);
     }
-}
+};
 
 exports.handleTransId = async (transId) => {
     try {
@@ -205,7 +205,7 @@ exports.handleTransId = async (transId) => {
         await logHelper.create('handleTransId', `Xử lý giao dịch thất bại!\n* [ ${transId} ]\n* [ Có lỗi xảy ra ${err.message || err} ]`);
         return;
     }
-}
+};
 
 exports.handleXsmb = async (history, bank) => {
     try {
@@ -310,7 +310,7 @@ exports.handleXsmb = async (history, bank) => {
     } catch (e) {
         console.log(e);
     }
-}
+};
 
 exports.handleNumberXsmb = async (comment) => {
     try {
@@ -339,7 +339,7 @@ exports.handleNumberXsmb = async (comment) => {
             numbers: 0
         }
     }
-}
+};
 
 exports.handleDesc = async (description) => {
     const desc = description.split(' ');
@@ -349,15 +349,18 @@ exports.handleDesc = async (description) => {
 
     // Loop through the words in desc
     if (desc[0] == 'CUSTOMER') {
+
+        const user =  await userModel.findOne({ username: { $regex: desc[1].toUpperCase(), $options: "i" } }).lean();
+
         return {
-            username: desc[1],
+            username: user.username,
             comment: desc[2].toUpperCase().replace(/[.-]/g, '')
         };
     }
-    for (let i = 0; i < desc.length; i++) {
 
+    for (let i = 0; i < desc.length; i++) {
         // Check if the word matches a username
-        if (await userModel.findOne({username: desc[i].toLowerCase()})) {
+        if (await userModel.findOne({ username: desc[i].toLowerCase() })) {
             numberUser = i;  // Store index of the matching user
         }
 

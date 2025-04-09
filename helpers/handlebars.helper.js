@@ -270,6 +270,9 @@ module.exports = {
             case 'refund':
                 html = `<span class="badges badge-warning">Hoàn Tiền</span>`;
                 break;
+            case 'wrong':
+                html = `<span class="badges badge-danger">Sai Nội Dung</span>`;
+                break;
             default:
                 html = `<span class="badges badge-danger">Lỗi</span>`;
                 break;

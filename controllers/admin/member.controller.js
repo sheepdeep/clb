@@ -4,14 +4,18 @@ const authService = require('../../services/auth.service');
 const telegramHelper = require('../../helpers/telegram.helper');
 const historyService = require("../../services/history.service");
 const revenueService = require("../../services/revenue.service");
+const utils = require("../../helpers/utils.helper");
+const bankModel = require("../../models/bank.model");
 
 const memberController = {
     index: async (req, res, next) => {
         try {
-            let filters = {};
+
             let threads = [];
-            let _sort = { lastOnline: 'desc' };
-            res.locals._sort.column = 'created_at';
+            let filters = {};
+            let perPage = 10;
+            let page = req.query.page || 1;
+            let _sort = {updatedAt: 'desc'};
 
             if (res.locals.profile.admin != 1) {
                 res.redirect(`../`);
@@ -48,6 +52,8 @@ const memberController = {
             }
 
             let users = await userModel.find(filters).sort(_sort).lean();
+            let pageCount = await userModel.countDocuments(filters);
+            let pages = Math.ceil(pageCount / perPage);
 
             for (let data of users) {
                 threads.push({
@@ -59,7 +65,13 @@ const memberController = {
             }
 
             res.render('admin/members', {
-                title: 'Quản Lý Thành Viên', threads
+                title: 'Quản Lý Thành Viên', threads, perPage, pagination: {
+                    page,
+                    pageCount,
+                    limit: pages > 5 ? 5 : pages,
+                    query: utils.checkQuery(res.locals.originalUrl.search, ['page']),
+                    baseURL: res.locals.originalUrl.pathname
+                }
             })
         } catch (err) {
             next(err);

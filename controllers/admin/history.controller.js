@@ -132,10 +132,17 @@ const historyController = {
             for (let key in req.body) {
 
                 if (req.body.result == 'refund') {
+
                     const transId = `SBRF${Math.floor(Math.random() * (99999999 - 10000000) + 10000000)}`;
 
-                    const bonus = data.amount * dataSetting.refund.won / 100;
-                    await historyModel.findOneAndUpdate({transId}, {
+                    let bonus = 0;
+                    if (data.result == 'lose') {
+                        bonus = Math.floor(data.amount * dataSetting.refund.won / 100);
+                    } else if (data.result == 'wrong') {
+                        bonus = Math.floor(data.amount * dataSetting.refund.fail / 100);
+                    }
+
+                    await historyModel.findOneAndUpdate({transId}, { 
                         $set: {
                             transId,
                             username: data.username,

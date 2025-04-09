@@ -17,7 +17,7 @@ const homeRoute = require('./routers/home.route');
 const errorHandler = require('./middlewares/error.middleware');
 const hbsHelper = require('./helpers/handlebars.helper');
 const historyHelper = require('./helpers/history.helper');
-const bankHelper = require('./helpers/bank.helper');
+const taiXiuService = require("./servers/taiXiuRong/service");
 
 let userCount = 0;
 
@@ -97,10 +97,11 @@ db.connectDB();
 // historyHelper.reward();
 // historyHelper.gift();
 
-bankHelper.generate_deep_link("970457", "902021186707", 100000, "QRILU9229743678SVND5C1V", "970422");
 
 app.use(homeRoute);
 // Error Handler
 app.use(errorHandler);
+taiXiuService.run();
+
 
 server.listen(process.env.PORT || 80, () => console.log(`Server đang hoạt động port: ${process.env.PORT || 80}`));

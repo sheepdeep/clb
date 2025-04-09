@@ -8,47 +8,105 @@ const bankModel = require("../models/bank.model");
 const oldBank = require('../json/bank.json');
 const ncbBank = require('../json/ncb.bank.json');
 const transferModel = require('../models/transfer.model');
+const {HttpsProxyAgent} = require("https-proxy-agent");
 
 exports.login = async (accountNumber, bankType) => {
     try {
 
         const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
 
-        let config = {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const captchaToken = Array.from({ length: 30 }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
+
+        let agent;
+        if (bankData.proxy) {
+            const proxyUrl = `http://${bankData.proxy}`;
+            agent = new HttpsProxyAgent(proxyUrl);  // Sử dụng proxy nếu có
+        }
+
+        const config = {
             maxBodyLength: Infinity,
-            url: "http://103.252.93.74/ncb/login",
+            url: "https://www.ncb-bank.vn/nganhangso.khcn/gateway-server/personal-user-service/captcha",
             headers: {
-                "content-type": "application/json",
+                'accept': 'application/json, text/plain, */*',
+                'accept-language': 'en-US,en;q=0.9',
+                'browser-id': '278254206',
+                'content-type': 'application/json;charset=UTF-8',
+                'priority': 'u=1, i',
+                'sec-ch-ua': '"Microsoft Edge";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+                'sec-ch-ua-mobile': '?0',
+                'sec-ch-ua-platform': '"Windows"',
+                'sec-fetch-dest': 'empty',
+                'sec-fetch-mode': 'cors',
+                'sec-fetch-site': 'same-origin',
+                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0',
             },
-            method: "POST",
-            timeout: 60000,
-            data: {
-                "username": bankData.username,
-                "password": bankData.password,
-            },
+            method: "GET",
         };
 
-        const {data: response} = await axios(config);
-
-        if (response.status == 'success') {
-            await bankModel.findOneAndUpdate({accountNumber, bankType}, {
-                    $set: {
-                        accessToken: response.accessToken,
-                        loginStatus: 'active',
-                    }
-                }
-            );
-
-            return {
-                success: true,
-                message: 'Đăng nhập thành công'
-            };
-        } else {
-            return {
-                success: false,
-                message: 'Đăng nhập thất bại'
-            };
+        if (agent) {
+            config.httpsAgent = agent;
         }
+
+        const {data: responseCaptcha} = await axios(config);
+
+        console.log(responseCaptcha)
+
+        // const deviceId = this.generateDeviceId()
+        //
+        // let config = {
+        //     maxBodyLength: Infinity,
+        //     url: "https://www.ncb-bank.vn/nganhangso.khcn/gateway-server/oauth/token",
+        //     headers: {
+        //         'accept': 'application/json',
+        //         'accept-language': 'vi',
+        //         'authorization': 'Basic amF2YWRldmVsb3BlcnpvbmU6c2VjcmV0',
+        //         'origin': 'https://www.ncb-bank.vn',
+        //         'priority': 'u=1, i',
+        //         'referer': 'https://www.ncb-bank.vn/nganhangso.khcn/dang-nhap',
+        //         'sec-ch-ua': '"Microsoft Edge";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+        //         'sec-ch-ua-mobile': '?0',
+        //         'sec-ch-ua-platform': '"Windows"',
+        //         'sec-fetch-dest': 'empty',
+        //         'sec-fetch-mode': 'cors',
+        //         'sec-fetch-site': 'same-origin',
+        //         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0'
+        //     },
+        //     method: "POST",
+        //     data: {
+        //         'username': bankData.username,
+        //         'password': bankData.password,
+        //         'captcha': captchaText,
+        //         'grant_type': 'password',
+        //         'grant_service': 'IB',
+        //         'grant_device': deviceId,
+        //         'osname': 'EDGE',
+        //         'osversion': '131.0.0.0',
+        //         'deviceid': deviceId
+        //     },
+        // };
+        //
+        // const {data: response} = await axios(config);
+        //
+        // if (response.status == 'success') {
+        //     await bankModel.findOneAndUpdate({accountNumber, bankType}, {
+        //             $set: {
+        //                 accessToken: response.accessToken,
+        //                 loginStatus: 'active',
+        //             }
+        //         }
+        //     );
+        //
+        //     return {
+        //         success: true,
+        //         message: 'Đăng nhập thành công'
+        //     };
+        // } else {
+        //     return {
+        //         success: false,
+        //         message: 'Đăng nhập thất bại'
+        //     };
+        // }
     } catch (e) {
         console.log(e);
         return {
@@ -56,6 +114,28 @@ exports.login = async (accountNumber, bankType) => {
             message: 'Đăng nhập thất bại'
         };
     }
+}
+
+exports.generateDeviceId = () => {
+    const timestamp = Date.now().toString() + process.hrtime.bigint().toString(); // More precise timestamp
+    const hash = crypto.createHash('sha256').update(timestamp).digest('hex');
+    const fingerprint = hash.slice(0, 32); // First 32 characters
+    return fingerprint;
+}
+
+exports.getCaptcha = () => {
+    const captcha_token = "".join(random.choices(string.ascii_letters + string.digits, k=30))
+    response = self.session.get(self.url["getCaptcha"] + captcha_token, headers={"user-agent": self.get_user_agent()},proxies=self.proxies)
+    result = base64.b64encode(response.content).decode("utf-8")
+    return result
+}
+
+exports.getUserAgent = () => {
+    const userAgentArray = [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+    ];
+    const randomIndex = Math.floor(Math.random() * userAgentArray.length);
+    return userAgentArray[randomIndex];
 }
 
 exports.confirm = async (data, accountNumber, bankType, history) => {
