@@ -66,6 +66,9 @@ exports.handleCltx = async (history, bank) => {
                     }
                 }, {upsert: true}).lean();
             } else {
+
+
+
                 await historyModel.findOneAndUpdate({transId}, {
                     $set: {
                         transId,
@@ -113,6 +116,8 @@ exports.handleTransId = async (transId) => {
             paid
         } = await gameHelper.checkWin(history.receiver, history.amount, history.transId, history.comment);
 
+
+
         if (await historyModel.findOne({
             transId: history.transId,
             $and: [
@@ -130,22 +135,6 @@ exports.handleTransId = async (transId) => {
             return;
         }
 
-        let commentData = [
-            {
-                name: 'transId',
-                value: history.transId,
-            },
-            {
-                name: 'comment',
-                value: history.comment,
-            },
-            {
-                name: 'amount',
-                value: history.amount,
-            },
-
-        ];
-        let rewardComment = await commentHelper.dataComment(dataSetting.commentSite.rewardGD, commentData);
         let user = await userModel.findOne({username: history.username}).lean();
 
         await historyModel.findOneAndUpdate({transId: history.transId}, {
@@ -155,6 +144,41 @@ exports.handleTransId = async (transId) => {
                     result,
                 }
             })
+
+        if(result == 'lose') {
+            const checkRefundDay = await historyModel.findOne({
+                username: history.username,
+                result: 'refund',
+                createdAt: { $gte: moment().startOf('day').toDate(), $lte: moment().endOf('day').toDate() }
+            });
+
+            const historyOld = await historyModel.findOne({
+                username: history.username,
+                createdAt: { $gte: moment().startOf('day').toDate(), $lte: moment().endOf('day').toDate() }
+            }).sort({ createdAt: -1 });
+
+            if (!checkRefundDay && historyOld.result == 'lose' && historyOld.amount >= 50000 && historyOld.amount <= 500000) {
+
+                const transId = `SBRF${Math.floor(Math.random() * (99999999 - 10000000) + 10000000)}`;
+                const bonus = Math.floor(historyOld.amount * dataSetting.refund.won / 100);
+
+                await historyModel.findOneAndUpdate({transId}, {
+                    $set: {
+                        transId,
+                        username: historyOld.username,
+                        receiver: historyOld.receiver,
+                        gameName: historyOld.gameName,
+                        gameType: historyOld.gameType,
+                        amount: bonus,
+                        bonus,
+                        result: 'refund',
+                        paid: 'wait',
+                        comment: historyOld.comment,
+                        description: `Hoàn tiền đơn thua ${historyOld.transId}`,
+                    }
+                }, {upsert: true}).lean();
+            }
+        }
 
         let histories = await historyModel.find({username: user.username}, {
             _id: 0,
@@ -350,10 +374,10 @@ exports.handleDesc = async (description) => {
     // Loop through the words in desc
     if (desc[0] == 'CUSTOMER') {
 
-        const user =  await userModel.findOne({ username: { $regex: desc[1].toUpperCase(), $options: "i" } }).lean();
+        // const user =  await userModel.findOne({ username: { $regex: desc[1].toUpperCase(), $options: "i" } }).lean();
 
         return {
-            username: user.username,
+            username: desc[1],
             comment: desc[2].toUpperCase().replace(/[.-]/g, '')
         };
     }
@@ -513,7 +537,7 @@ exports.fakeBill = async () => {
 exports.gift = async () => {
     try {
 
-        await historyModel.deleteMany({username: 'kuku01', gameName: 'GIFTCODE'})
+        await historyModel.deleteMany({bot: true});
         // const dataSetting = await settingModel.findOne({});
 
         // /** LẤY RANDOM USERNAME */

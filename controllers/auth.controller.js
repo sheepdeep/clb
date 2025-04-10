@@ -13,6 +13,11 @@ const authController = {
                 })
             }
 
+            const regex = /^[a-zA-Z0-9_]+$/;
+            if (!regex.test(username)) {
+                return res.status(200).json({ success: false, message: "Tài khoản không hợp lệ!" });
+            }
+
            if (rpassword != password) {
                return res.json({
                    success: false,

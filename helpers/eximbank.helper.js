@@ -220,8 +220,6 @@ exports.verifyOTP = async (accountNumber, bankType, otp) => {
                 ...bankData.dataDevice,
             }
 
-            console.log(response.headers['authorization']);
-
             await bankModel.findOneAndUpdate({accountNumber, bankType}, {
                 $set: {
                     accountNumber,
@@ -309,7 +307,7 @@ exports.checkBank = async (accountNumber, bankType, bankCode, receiver) => {
 
             return {
                 resultDecode,
-                message: "Thêm tài khoản thành công. Đang thực hiện lấy OTP xác thực!",
+                message: "Kiểm tra thành công!",
                 success: true
             }
         } else {
@@ -386,6 +384,7 @@ exports.getBalance = async (accountNumber, bankType) => {
 
             await bankModel.findOneAndUpdate({accountNumber, bankType}, {
                 $set: {
+                    balance: resultDecode.data.totalCurrentAmount,
                     accessToken: response.headers['authorization'],
                     contentQr: responseQr.data.data.qrCode,
                 }
@@ -403,7 +402,10 @@ exports.getBalance = async (accountNumber, bankType) => {
         }
     } catch (e) {
         console.log(e);
-        this.login(accountNumber, bankType)
+
+        if (e.response && e.response.status === 403) {
+            await this.login(accountNumber, bankType);
+        }
         return {
             success: false,
             message: 'Lấy số dư thất bại! ' + e.message

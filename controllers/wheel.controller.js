@@ -31,9 +31,14 @@ const wheelController = {
                 let countPlay = await historyModel.aggregate([{
                     $match: {
                         username: res.locals.profile.username,
-                        gameType: {$exists: true, $ne: null},
-                        $and: [{$or: [{result: 'win'}, {result: 'lose'}]}],
+                        gameType: {
+                            $exists: true,
+                            $ne: null,
+                            $in: ["CL_Game", "TX_Game"]
+                        },
                         amount: { $gte: dataSetting.wheel.amount },
+                        
+                        $and: [{$or: [{result: 'win'}, {result: 'lose'}]}],
                         timeTLS: {$gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate()}
                     }
                 }, {$group: {_id: null, amount: {$sum: '$amount'}}}]);
@@ -66,8 +71,13 @@ const wheelController = {
             let countPlay = await historyModel.aggregate([{
                 $match: {
                     username: res.locals.profile.username,
-                    gameType: {$exists: true, $ne: null},
+                    gameType: {
+                        $exists: true,
+                        $ne: null,
+                        $in: ["CL_Game", "TX_Game"]
+                    },
                     amount: { $gte: dataSetting.wheel.amount },
+                    
                     $and: [{$or: [{result: 'win'}, {result: 'lose'}]}],
                     timeTLS: {$gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate()}
                 }

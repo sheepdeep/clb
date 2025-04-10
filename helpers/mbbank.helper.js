@@ -18,6 +18,7 @@ const commentHelper = require("./comment.helper");
 const telegramHelper = require("./telegram.helper");
 const securityHelper = require("./security.helper");
 const logHelper = require("./log.helper");
+const crypto = require('crypto');
 
 exports.solveCaptcha = async (apiUrl, base64Image) => {
     try {
@@ -44,80 +45,122 @@ exports.solveCaptcha = async (apiUrl, base64Image) => {
     }
 }
 
+exports.generate_device_id = () => {
+    return "s1rmi184-mbib-0000-0000-" + moment.tz("Asia/Ho_Chi_Minh").format("YYYYMMDDHHmmss") + "00"
+}
+
+
 exports.login = async (accountNumber, bankType) => {
 
     const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
 
-    const browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    });
-    const page = await browser.newPage();
-    let result;
-    try {
-        await page.goto("https://online.mbbank.com.vn", {
-            waitUntil: "networkidle2",
-        });
-        const captchaBase64 = await page.evaluate(() => {
-            const img = document.querySelector("img.ng-star-inserted");
-            return img ? img.src : null;
-        });
-        if (!captchaBase64) {
-            return {
-                success: false,
-                message: 'Không tìm thấy CAPTCHA'
-            };
-        }
-        const base64 = captchaBase64.replace(/^data:image\/png;base64,/, "");
-        const captchaSolution = await this.solveCaptcha(
-            "http://103.153.64.187:8277/api/captcha/mbbank",
-            base64
-        );
-        if (!captchaSolution) {
-            return {
-                success: false,
-                message: 'Không thể giải CAPTCHA'
-            };
-        }
-        await page.type("#user-id", bankData.username);
-        await page.type("#new-password", bankData.password);
-        await page.type('input[placeholder="NHẬP MÃ KIỂM TRA"]', captchaSolution);
-        page.on("response", async (response) => {
-            if (
-                response.url() ===
-                "https://online.mbbank.com.vn/api/retail_web/internetbanking/v2.0/doLogin" &&
-                response.status() === 200
-            ) {
-                result = await response.json();
-            }
-        });
-        await page.click("#login-btn");
-    } catch (error) {
-        console.error("Lỗi:", error.message);
-    } finally {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        await browser.close();
-        if (result && result.result && result.result.responseCode === "00") {
+    const time = moment.tz("Asia/Ho_Chi_Minh").format("YYYYMMDDHHmmss") + "00";
+    const deviceId = this.generate_device_id();
 
-            // saveTempData({ loginResult: result });
-            await bankModel.findOneAndUpdate({accountNumber, bankType}, {
-                    $set: {
-                        accessToken: result.sessionId,
-                        name: result.cust.defaultAccount.acctNm,
-                        dataDevice: {
-                            device: result.cust.deviceId
-                        },
-                        loginStatus: 'active'
-                    }
-                }
-            );
+    let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: "https://online.mbbank.com.vn/api/retail-web-internetbankingms/getCaptchaImage",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic RU1CUkVUQUlMV0VCOlNEMjM0ZGZnMzQlI0BGR0AzNHNmc2RmNDU4NDNm'
+        },
+        data: {
+            "refNo": `${bankData.username}-${time}`,
+            "deviceIdCommon": deviceId,
+            "sessionId": ""
+        },
+    };
 
-            return {
-                success: true,
-                message: 'Đăng nhập thành công'
-            };
-        }
+    const response = await axios(config);
+
+    const captchaText = await this.solveCaptcha("http://103.72.96.214:8277/api/captcha/mbbank", response.data.imageString);
+
+    const bodyData = {
+        "userId": bankData.username,
+        "password": crypto.createHash('md5').update(bankData.password).digest('hex'),
+        "captcha": captchaText,
+        "ibAuthen2faString": "c7a1beebb9400375bb187daa33de9659",
+        "sessionId": "",
+        "refNo": `${bankData.username}-${time}`,
+        "deviceIdCommon": deviceId,
     }
+
+    const request_data = await this.encrypt_data(bodyData)
+
+    const configLogin = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: "https://online.mbbank.com.vn/api/retail_web/internetbanking/v2.0/doLogin",
+        headers: {
+            'Cache-Control': 'max-age=0',
+            'Accept': 'application/json, text/plain, */*',
+            'Authorization': 'Basic RU1CUkVUQUlMV0VCOlNEMjM0ZGZnMzQlI0BGR0AzNHNmc2RmNDU4NDNm',
+            'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+            "Origin": "https://online.mbbank.com.vn",
+            "Referer": "https://online.mbbank.com.vn/pl/login?returnUrl=%2F",
+            "Content-Type": "application/json; charset=UTF-8",
+            'app': "MB_WEB",
+            "X-Request-Id": `${bankData.username}-${time}`,
+            "Deviceid": deviceId,
+            "refNo": `${bankData.username}-${time}`,
+            "elastic-apm-traceparent": "00-55b950e3fcabc785fa6db4d7deb5ef73-8dbd60b04eda2f34-01",
+            "Sec-Ch-Ua": '"Not.A/Brand";v="8", "Chromium";v="134", "Google Chrome";v="134"',
+            "Sec-Ch-Ua-Mobile": "?0",
+            "Sec-Ch-Ua-Platform": '"Windows"',
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Site": "same-origin",
+        },
+        data: request_data,
+    }
+
+    const {data: responseLogin} = await axios(configLogin);
+
+    if (responseLogin && responseLogin.result && responseLogin.result.responseCode === "00") {
+
+        // saveTempData({ loginResult: result });
+        await bankModel.findOneAndUpdate({accountNumber, bankType}, {
+                $set: {
+                    accessToken: responseLogin.sessionId,
+                    name: responseLogin.cust.defaultAccount.acctNm,
+                    dataDevice: {
+                        device: responseLogin.cust.deviceId
+                    },
+                    loginStatus: 'active'
+                }
+            }
+        );
+
+        return {
+            success: true,
+            message: 'Đăng nhập thành công'
+        };
+    }
+}
+
+exports.encrypt_data = async(data) => {
+    try {
+        let config = {
+            maxBodyLength: Infinity,
+            url: "https://mbcrypt1.pay2world.vip/encrypt",
+            headers: {
+                "content-type": "application/json",
+            },
+            method: "POST",
+            data
+        };
+
+        const {data: response} = await axios(config);
+
+        return response
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+exports.generate_ref_no = (username) => {
+    return username +'-'+ this.get_time_now()+'-'+ str(random.randint(10000, 99999))
 }
 
 exports.history = async (accountNumber, bankType, timeStart = null, timeEnd = null) => {
@@ -138,20 +181,11 @@ exports.history = async (accountNumber, bankType, timeStart = null, timeEnd = nu
         maxBodyLength: Infinity,
         url: "https://online.mbbank.com.vn/api/retail-transactionms/transactionms/get-account-transaction-history",
         headers: {
-            app: "MB_WEB",
-            Authorization: "Basic RU1CUkVUQUlMV0VCOlNEMjM0ZGZnMzQlI0BGR0AzNHNmc2RmNDU4NDNm",
-            Deviceid: bankData.dataDevice.device,
-            Host: "online.mbbank.com.vn",
-            Origin: "https://online.mbbank.com.vn",
-            Referer:
-                "https://online.mbbank.com.vn/information-account/source-account",
-            "elastic-apm-traceparent":
-                "00-a51b571404faaec6ef53aed9d6bfea9b-e3dae75d72250c39-01",
-            Refno: `${bankData.accountNumber}-${time}`,
-            "User-Agent":
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-            "X-Request-Id": `${bankData.accountNumber}-${time}`,
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic RU1CUkVUQUlMV0VCOlNEMjM0ZGZnMzQlI0BGR0AzNHNmc2RmNDU4NDNm',
+            'RefNo': `${bankData.accountNumber}-${time}`,
+            'Deviceid': bankData.dataDevice.device,
+            'X-Request-Id': `${bankData.accountNumber}-${time}`,
         },
         data: data,
     };
@@ -220,7 +254,7 @@ exports.handleTransId = async (histories, bank, band = 0) => {
 
             ip = user.ip;
 
-            let countUser = await userModel.aggregate([{ $match: { ip } }, { $group: { _id: null, count: { $sum: 1 } } }]);
+            let countUser = await userModel.aggregate([{ $match: { ip: { $regex: ip } } }, { $group: { _id: null, count: { $sum: 1 } } }]);
             if (countUser.length > 0 && countUser[0].count > 2) {
                 await historyModel.findOneAndUpdate({transId}, {
                     $set: {

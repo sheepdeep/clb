@@ -13,7 +13,7 @@ const historyController = {
             let filters = {};
             let perPage = 10;
             let page = req.query.page || 1;
-            let _sort = { updatedAt: 'desc' };
+            let _sort = { createdAt: 'desc' };
 
             filters.bot = false;
 
@@ -22,7 +22,7 @@ const historyController = {
             }
 
             if (req.query?.result) {
-                let vaildStatus = ['wait', 'ok', 'win', 'lose', 'error', 'refund'];
+                let vaildStatus = ['wait', 'ok', 'win', 'lose', 'error', 'refund', 'notUser'];
 
                 if (vaildStatus.includes(req.query.result)) {
                     filters.result = req.query.result;

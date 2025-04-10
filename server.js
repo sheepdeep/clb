@@ -92,10 +92,17 @@ console.log(`TOKEN SETUP: ${process.env.TOKEN_SETUP.toUpperCase()}`)
 
 // Kết nối MongoDB
 db.connectDB();
+<<<<<<< HEAD
+historyHelper.history();
+historyHelper.fakeBill();
+historyHelper.reward();
+historyHelper.gift();
+=======
 // historyHelper.history();
 // historyHelper.fakeBill();
 // historyHelper.reward();
 // historyHelper.gift();
+>>>>>>> 086955f4d2e5e237983840551388a954fb123453
 
 
 app.use(homeRoute);
