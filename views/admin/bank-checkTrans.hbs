@@ -69,7 +69,7 @@
                                         </thead>
                                         <tbody>
                                         {{#ifCond bankType '==' 'mbb'}}
-                                            {{#each histories}}
+                                            {{#each ../histories}}
                                             <tr class="edit-one" data-id="{{ this._id }}">
                                                 <td>{{ this.accountNo }}</td>
                                                 <td>

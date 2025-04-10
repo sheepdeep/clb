@@ -368,7 +368,7 @@ const apiController = {
         try {
             const dataSetting = await settingModel.findOne({}).lean();
             const messages = req.body.messages;            
-            const dataMessage = messages;
+            const dataMessage = JSON.parse(messages);
 
             console.log(dataMessage)
 
@@ -378,6 +378,7 @@ const apiController = {
             
 
             if (number == 'Eximbank') {
+
 
                 const regex = /\d+/g;  // Tìm mã OTP 6 chữ số
                 const match = message.match(regex);
