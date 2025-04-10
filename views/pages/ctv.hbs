@@ -68,10 +68,16 @@
                                             <tr>
                                                 <th>MỐC CHƠI</th>
                                                 <th>THƯỞNG</th>
-                                                <th>% NHẬN</th>
                                             </tr>
                                             </thead>
-                                            <tbody></tbody>
+                                            <tbody>
+                                            {{#each settings.referralGift.data}}
+                                                <tr>
+                                                    <td>{{numberFormat this.amount}}</td>
+                                                    <td>{{numberFormat this.bonus}}</td>
+                                                </tr>
+                                            {{/each}}
+                                            </tbody>
                                         </table>
                                     </div>
                                     <div class="scrollbar-track scrollbar-track-x show" style="display: none;">

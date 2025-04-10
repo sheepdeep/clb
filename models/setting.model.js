@@ -413,6 +413,9 @@ const settingSchema = new mongoose.Schema({
         dataWin: Object,
         dataLose: Object,
     },
+    referralGift: {
+        data: Object
+    },
     x3: String
 }, {
     timestamps: true

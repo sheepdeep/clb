@@ -754,7 +754,7 @@
                                                 <th><i class="fas fa-plus-circle hand create" data-value="missionData"
                                                         data-parent="missionData-" data-child="data"></i></th>
                                                 <th>Vị Trí</th>
-                                                <th>Tổng Cược Ngày</th>
+                                                <th>Tổng Cược</th>
                                                 <th>Tiền Thưởng</th>
                                             </tr>
                                         </thead>
@@ -781,6 +781,44 @@
                                                 </td>
                                             </tr>
                                             {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <label for="" class="il-gray fs-14 fw-500 mb-10">* THƯỞNG CTV [SETTING]</label>
+                                <div class="table-responsive">
+                                    <table class="table mb-3 table-bordered text-nowrap text-center">
+                                        <thead>
+                                        <tr class="userDatatable-header">
+                                            <th><i class="fas fa-plus-circle hand create" data-value="referralGift"
+                                                   data-parent="referralGift-" data-child="data"></i></th>
+                                            <th>Vị Trí</th>
+                                            <th>Tổng Cược Ngày</th>
+                                            <th>Tiền Thưởng</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="dataEnz" data-bs-parent="referralGift-" data-bs-child="data"
+                                               data-bs-position="true">
+                                        {{#each settings.referralGift.data}}
+                                            <tr>
+                                                <td>
+                                                    <div class="table-actions hand">
+                                                        <span class="badges badge-info" data-bs-action="edit"><i
+                                                                class="fas fa-pen"></i></span>
+                                                        <span class="badges badge-danger" data-bs-action="remove"><i
+                                                                class="fa fa-trash" aria-hidden="true"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td data-bs-position="true">{{ sum @index 1 }}</td>
+                                                <td data-bs-key="amount" data-bs-value="{{ this.amount }}"
+                                                    data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
+                                                        this.amount }}
+                                                </td>
+                                                <td data-bs-key="bonus" data-bs-value="{{ this.bonus }}"
+                                                    data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
+                                                        this.bonus }}
+                                                </td>
+                                            </tr>
+                                        {{/each}}
                                         </tbody>
                                     </table>
                                 </div>
@@ -1509,6 +1547,9 @@
                     html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-key="url" data-bs-value="" data-bs-type="text"><input type="text" class="form-control ih-medium ip-light"></td><td data-bs-key="html" data-bs-value="" data-bs-type="text"><input type="text" class="form-control ih-medium ip-light"></td><td data-bs-render="html"></td></tr>`;
                     break;
                 case 'missionData':
+                    html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
+                    break;
+                case 'referralGift':
                     html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
                     break;
                 case 'bonusTOP':
