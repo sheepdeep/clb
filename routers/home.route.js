@@ -59,6 +59,7 @@ router.use(async (req, res, next) => {
     res.locals.settings = await settingModel.findOne().lean();
     res.locals.originalUrl = req._parsedUrl;
     res.locals.adminPath = process.env.adminPath;
+    // req.session.referral = req.query.r;
     // res.locals.baseURL = `${req.protocol}://${req.hostname}`;
     next();
 })
@@ -75,6 +76,10 @@ router.get('/', notInstalled, loggedIn, async (req, res) => {
 
     if (res.locals.settings.siteStatus === 'maintenance') {
         return res.render('errors/maintenance');
+    }
+
+    if (req.query?.r) {
+        req.session.referral = req.query.r;
     }
 
     let games = await gameModel.find({display: 'show'}).lean();
@@ -192,6 +197,9 @@ router.route('/doimk')
 router.route('/chuoi')
     .get([notInstalled, loggedIn], eventController.consecutive)
     .post([notInstalled, loggedIn], profileController.update);
+
+router.route('/ctv')
+    .get([notInstalled, loggedIn], eventController.referrals)
 
 router.route('/dangxuat')
     .get([notInstalled, loggedIn], profileController.logout)

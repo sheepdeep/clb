@@ -235,22 +235,22 @@ const momoController = {
                         reward: false
                     }
                 }, {upsert: true})
-
-                // const dataTransfer = {
-                //     accountNumber: "5221516666",
-                //     bankCode: "970422",
-                //     bankName: "MBBank",
-                //     name: "NGUYEN HUU DUNG",
-                //     amount: 10000,
-                //     comment: 'hoan tien tiktok '
-                // }
-
-                // const balance = await eximbankHelper.getBalance(data.accountNumber, data.bankType);
-                // const result = await eximbankHelper.initTransfer(data.accountNumber, data.bankType, dataTransfer);
-                // await eximbankHelper.verifyTransfer(data.accountNumber, data.bankType, "402738");
                 return res.json({
                     success: true,
                     message: `Làm lại thông tin Eximbank ${data.accountNumber} thành công!`
+                });
+            } else if (data.bankType == 'vcb') {
+                const result = await vcbHelper.login(data.accountNumber, data.bankType);
+                await bankModel.findOneAndUpdate({accountNumber: data.accountNumber, bankType: data.bankType}, {
+                    $set: {
+                        otp: null,
+                        reward: false
+                    }
+                }, {upsert: true})
+
+                return res.json({
+                    success: true,
+                    message: `Làm lại thông tin VCB ${data.accountNumber} thành công!`
                 });
             } else {
                 await bankModel.findOneAndUpdate({accountNumber: data.accountNumber, bankType: data.bankType}, {
@@ -287,7 +287,7 @@ const momoController = {
                         reward: false
                     }
                 }, {upsert: true})
-                
+
                 return res.json({
                     success: true,
                     balance: result.resultDecode.data.totalCurrentAmount,

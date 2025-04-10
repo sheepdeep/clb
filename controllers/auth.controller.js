@@ -25,7 +25,17 @@ const authController = {
                })
            }
 
-            return res.json(await authService.register(username, password, req.ip, 0));
+           let referral;
+
+           // console.log(req.session.referral);
+
+           if (req.session.referral) {
+               referral = req.session.referral
+           } else {
+               referral = null
+           }
+
+            return res.json(await authService.register(username, password, req.ip, referral, 0));
 
         } catch (err) {
             console.log(err);
