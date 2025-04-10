@@ -145,31 +145,36 @@ exports.handleTransId = async (transId) => {
                 }
             })
 
-        if(win == 'lose') {
-            const checkLoseDay = await historyModel.findOne({
+        if(result == 'lose') {
+            const checkRefundDay = await historyModel.findOne({
                 username: history.username,
-                result: 'lose',
+                result: 'refund',
                 createdAt: { $gte: moment().startOf('day').toDate(), $lte: moment().endOf('day').toDate() }
             });
 
-            if (!checkLoseDay && history.amount >= 50000 && history.amount <= 500000) {
+            const historyOld = await historyModel.findOne({
+                username: history.username,
+                createdAt: { $gte: moment().startOf('day').toDate(), $lte: moment().endOf('day').toDate() }
+            }).sort({ createdAt: -1 });
+
+            if (!checkRefundDay && historyOld.result == 'lose' && historyOld.amount >= 50000 && historyOld.amount <= 500000) {
 
                 const transId = `SBRF${Math.floor(Math.random() * (99999999 - 10000000) + 10000000)}`;
-                const bonus = Math.floor(history.amount * dataSetting.refund.won / 100);
+                const bonus = Math.floor(historyOld.amount * dataSetting.refund.won / 100);
 
                 await historyModel.findOneAndUpdate({transId}, {
                     $set: {
                         transId,
-                        username: history.username,
-                        receiver: history.receiver,
-                        gameName: history.gameName,
-                        gameType: history.gameType,
+                        username: historyOld.username,
+                        receiver: historyOld.receiver,
+                        gameName: historyOld.gameName,
+                        gameType: historyOld.gameType,
                         amount: bonus,
                         bonus,
                         result: 'refund',
                         paid: 'wait',
-                        comment: history.comment,
-                        description: `Hoàn tiền đơn thua ${history.transId}`,
+                        comment: historyOld.comment,
+                        description: `Hoàn tiền đơn thua ${historyOld.transId}`,
                     }
                 }, {upsert: true}).lean();
             }
@@ -369,10 +374,10 @@ exports.handleDesc = async (description) => {
     // Loop through the words in desc
     if (desc[0] == 'CUSTOMER') {
 
-        const user =  await userModel.findOne({ username: { $regex: desc[1].toUpperCase(), $options: "i" } }).lean();
+        // const user =  await userModel.findOne({ username: { $regex: desc[1].toUpperCase(), $options: "i" } }).lean();
 
         return {
-            username: user.username,
+            username: desc[1],
             comment: desc[2].toUpperCase().replace(/[.-]/g, '')
         };
     }
@@ -532,7 +537,7 @@ exports.fakeBill = async () => {
 exports.gift = async () => {
     try {
 
-        await historyModel.deleteMany({username: 'kuku01', gameName: 'GIFTCODE'})
+        await historyModel.deleteMany({bot: true});
         // const dataSetting = await settingModel.findOne({});
 
         // /** LẤY RANDOM USERNAME */

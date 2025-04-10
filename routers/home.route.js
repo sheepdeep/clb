@@ -150,7 +150,7 @@ router.route('/xxtg')
 
 router.route('/nvngay')
     .get([notInstalled, loggedIn], missionController.index)
-    .post([notInstalled, loggedIn], missionController.accept);
+    .post([notInstalled, loggedIn, limiterGift], missionController.accept);
 
 router.route('/fan')
     .get([notInstalled, loggedIn], fanController.index)

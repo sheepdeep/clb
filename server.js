@@ -94,7 +94,7 @@ db.connectDB();
 historyHelper.history();
 historyHelper.fakeBill();
 historyHelper.reward();
-// historyHelper.gift();
+historyHelper.gift();
 
 app.use(homeRoute);
 // Error Handler
