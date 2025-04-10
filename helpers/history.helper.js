@@ -94,7 +94,7 @@ exports.handleCltx = async (history, bank) => {
     } catch (e) {
         console.log(e);
     }
-}
+};
 
 exports.handleTransId = async (transId) => {
     try {
@@ -229,7 +229,7 @@ exports.handleTransId = async (transId) => {
         await logHelper.create('handleTransId', `Xử lý giao dịch thất bại!\n* [ ${transId} ]\n* [ Có lỗi xảy ra ${err.message || err} ]`);
         return;
     }
-}
+};
 
 exports.handleXsmb = async (history, bank) => {
     try {
@@ -334,7 +334,7 @@ exports.handleXsmb = async (history, bank) => {
     } catch (e) {
         console.log(e);
     }
-}
+};
 
 exports.handleNumberXsmb = async (comment) => {
     try {
@@ -363,7 +363,7 @@ exports.handleNumberXsmb = async (comment) => {
             numbers: 0
         }
     }
-}
+};
 
 exports.handleDesc = async (description) => {
     const desc = description.split(' ');

@@ -1,4 +1,3 @@
-const puppeteer = require("puppeteer");
 const axios = require("axios");
 const path = require("path");
 const moment = require("moment");
@@ -70,7 +69,7 @@ exports.createTaskCaptcha = async() => {
     } catch(err) {
         console.log(err)
     }
-}
+};
 
 exports.login = async (accountNumber, bankType) => {
     try {
@@ -171,7 +170,6 @@ exports.login = async (accountNumber, bankType) => {
         };
     }
 };
-
 
 exports.verifyOTP = async (accountNumber, bankType, otp) => {
     try {
@@ -408,6 +406,76 @@ exports.getBalance = async (accountNumber, bankType) => {
         if (e.response && e.response.status === 403) {
             await this.login(accountNumber, bankType);
         }
+        return {
+            success: false,
+            message: 'Lấy số dư thất bại! ' + e.message
+        };
+    }
+}
+
+exports.getHistory = async (accountNumber, bankType) => {
+    try {
+
+        const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
+        console.log("Token lúc xác minh là " + bankData.accessToken)
+
+        const headers = await this.headerDefault({Authorization: bankData.accessToken})
+
+
+        const bodyData = {
+            ...bankData.dataDevice,
+            "ATS": moment().format('YYMMDDHHmmss'),
+            "clientId": "",
+            "authMethod": "SMS",
+            "mid": 11,
+            "isCache": false,
+            "maxRequestInCache": false,
+        }
+
+        const encrypted_data = await this.encrypt_data(bodyData)
+
+        let agent;
+        if (bankData.proxy) {
+            const proxyUrl = `http://${bankData.proxy}`;
+            agent = new HttpsProxyAgent(proxyUrl);  // Sử dụng proxy nếu có
+        }
+
+        let config = {
+            url: "https://edigi.eximbank.com.vn/ib/",
+            headers,
+            method: "POST",
+            data: encrypted_data,
+        };
+
+        if (agent) {
+            config.httpsAgent = agent;
+        }
+
+        const response = await axios(config);
+
+        const resultDecode = await this.decrypt_data(response.data)
+
+        if (resultDecode.code == '00') {
+
+            await bankModel.findOneAndUpdate({accountNumber, bankType}, {
+                $set: {
+                    accessToken: response.headers['authorization'],
+                }
+            }, {upsert: true})
+
+            return {
+                success: true,
+                resultDecode
+            };
+        } else {
+            return {
+                message: resultDecode.des,
+                success: false
+            }
+        }
+    } catch (e) {
+        console.log(e);
+        this.login(accountNumber, bankType)
         return {
             success: false,
             message: 'Lấy số dư thất bại! ' + e.message

@@ -16,7 +16,7 @@
                                 <h6 class="card-title">
                                     <a href="{{ originalUrl.pathname }}" class="text-dark">
                                         <img src="../themes/admin/images/wallet.png" alt="" width="35">
-                                        Kiểm tra lịch sử
+                                        Kiểm tra lịch sử {{bankType}}
                                         <img src="../themes/admin/images/wallet.png" class="d-md-none" width="35">
                                     </a>
                                 </h6>
@@ -58,11 +58,6 @@
                                             class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
                                         <thead class="badge-secondary text-white">
                                         <tr>
-                                            <th>
-                                                    <span data-bs-submit="momo" data-bs-action="add">
-                                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                                                    </span>
-                                            </th>
                                             <th>Số tài khoản</th>
                                             <th>Loại</th>
                                             <th>Số tiền</th>
@@ -73,36 +68,9 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {{#each histories}}
+                                        {{#ifCond bankType '==' 'mbb'}}
+                                            {{#each histories}}
                                             <tr class="edit-one" data-id="{{ this._id }}">
-                                                <td>
-                                                    <div class="table-actions hand p-2">
-                                                        <span class="badges badge-success qrc" data-bankcode="mbb" data-content="00020101021138530010A0000007270123000697042201090271120050208QRIBFTTA53037045802VN630480D5"
-                                                              data-bs-toggle="tooltip" data-bs-placement="top"
-                                                              data-bs-original-title="Lấy QR"><i
-                                                                class="fas fa-qrcode"></i></span>
-                                                        <span class="badges badge-warning action-more"
-                                                              data-action="balance" data-id="{{ this.phone }}"
-                                                              data-bs-toggle="tooltip" data-bs-placement="top"
-                                                              data-bs-original-title="Cập nhập số dư"><i
-                                                                class="fas fa-coins"></i></span>
-                                                        <span class="badges badge-success action-more"
-                                                              data-action="refresh" data-id="{{ this._id }}"
-                                                              data-bs-toggle="tooltip" data-bs-placement="top"
-                                                              data-bs-original-title="Cập nhập token"><i
-                                                                class="fas fa-redo-alt"></i></span>
-                                                        <a href="./home?_phone={{ this.phone }}"
-                                                        class="badges badge-info" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top"
-                                                        data-bs-original-title="Xem doanh thu số"><i
-                                                            class="fa fa-eye" aria-hidden="true"></i></a>
-                                                        <span class="badges badge-danger" data-bs-submit="bank"
-                                                              data-bs-action="remove" data-id="{{ this._id }}"
-                                                              data-bs-toggle="tooltip" data-bs-placement="top"
-                                                              data-bs-original-title="Xóa"><i class="fa fa-trash"
-                                                                                              aria-hidden="true"></i></span>
-                                                    </div>
-                                                </td>
                                                 <td>{{ this.accountNo }}</td>
                                                 <td>
                                                     {{#ifCond this.creditAmount '>' 0}}
@@ -112,7 +80,7 @@
                                                     {{/ifCond}}
                                                 </td>
                                                 <td>
-                                                    {{#ifCond this.creditAmount '>' 0}}
+                                                    {{#ifCond ../this.creditAmount '>' 0}}
                                                         <span class="text-success">{{ numberFormat ../this.creditAmount }}</span>
                                                     {{else}}
                                                         <span class="text-danger">{{ numberFormat ../this.debitAmount }}</span>
@@ -137,6 +105,45 @@
                                                 </td>
                                             </tr>
                                         {{/each}}
+                                        {{/ifCond}}
+                                        {{#ifCond bankType '==' 'acb'}}
+                                            {{#each ../histories}}
+                                                <tr class="edit-one" data-id="{{ this._id }}">
+                                                    <td>{{ this.account }}</td>
+                                                    <td>
+                                                        {{#ifCond this.type '==' 'IN'}}
+                                                            <span class="badge btn-success">Nhận tiền</span>
+                                                        {{else}}
+                                                            <span class="badge btn-danger">Trù tiền</span>
+                                                        {{/ifCond}}
+                                                    </td>
+                                                    <td>
+                                                        {{#ifCond this.type '==' 'IN'}}
+                                                            <span class="text-success">{{ numberFormat ../this.amount }}</span>
+                                                        {{else}}
+                                                            <span class="text-danger">{{ numberFormat ../this.amount }}</span>
+                                                        {{/ifCond}}
+                                                    </td>
+                                                    <td>{{ numberFormat this.availableBalance }}</td>
+                                                    <td>{{ this.transactionNumber }}</td>
+                                                    <td>{{ this.description }}</td>
+                                                    <td>{{ this.transactionDate }}</td>
+                                                </tr>
+                                            {{else}}
+                                                <tr>
+                                                    <td colspan="24">
+                                                        <div class="dm-empty text-center">
+                                                            <div class="dm-empty__image">
+                                                                <img src="../themes/admin/images/1.png" alt="Rỗng">
+                                                            </div>
+                                                            <div class="dm-empty__text">
+                                                                <p class="">Không có dữ liệu !</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {{/each}}
+                                        {{/ifCond}}
                                         </tbody>
                                     </table>
                                 </div>

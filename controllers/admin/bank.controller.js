@@ -5,6 +5,8 @@ const utils = require('../../helpers/utils.helper');
 const mbbankHelper = require('../../helpers/mbbank.helper');
 const ncbHelper = require('../../helpers/ncb.helper');
 const eximbankHelper = require('../../helpers/eximbank.helper');
+const acbHelper = require('../../helpers/acb.helper');
+const vcbHelper = require('../../helpers/vcb.helper');
 
 const momoController = {
     index: async (req, res, next) => {
@@ -120,6 +122,14 @@ const momoController = {
 
             if (bankType === 'exim') {
                 return res.json(await eximbankHelper.login(accountNumber, bankType));
+            }
+
+            if (bankType === 'vcb') {
+                return res.json(await vcbHelper.login(accountNumber, bankType));
+            }
+
+            if (bankType === 'acb') {
+                return res.json(await acbHelper.login(accountNumber, bankType));
             }
 
             if (bankType === 'ncb') {
@@ -304,6 +314,7 @@ const momoController = {
         try {
             const banks = await bankModel.find().lean();
 
+            let bankType;
             let histories = [];
             let startTime = req.query?.startTime ? moment(req.query.startTime).format('DD/MM/YYYY') : moment().subtract(3, "days").format("DD/MM/YYYY");
             let endTime = req.query?.endTime ? moment(req.query.endTime).format('DD/MM/YYYY') : moment().format("DD/MM/YYYY");
@@ -319,10 +330,17 @@ const momoController = {
 
                     histories = result;
 
+                } else {
+                    const result = await acbHelper.history(dataBank.accountNumber, dataBank.bankType, startTime, endTime);
+                    // await mbbankHelper.handleTransId(result, dataBank, 0);
+
+                    histories = result.histories;
                 }
+
+                bankType = dataBank.bankType;
             }
 
-            res.render('admin/bank-checkTrans', {banks, histories});
+            res.render('admin/bank-checkTrans', {banks, histories, bankType});
         } catch (e) {
             console.log(e);
         }

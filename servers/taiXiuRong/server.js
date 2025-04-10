@@ -17,10 +17,11 @@ connectDB().then(() => {
 app.use(cors());
 
 io.on('connection', function (socket) {
-
+    // console.log(socket)
 });
 
 taiXiuService.run();
+
 
 server.listen(process.env.TAIXIURONGPORT, () => console.log(`Server đang hoạt động port: ${process.env.TAIXIURONGPORT}`));
 

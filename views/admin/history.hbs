@@ -120,8 +120,8 @@
                                             <th>Người Chuyển</th>
                                             <th>Người Nhận</th>
                                             <th>Cập Nhập {{{ tableSort originalUrl.search 'updatedAt' _sort }}}</th>
-                                            <th>Thời Gian {{{ tableSort originalUrl.search 'createdAt' _sort }}}
-                                            </th>
+                                            <th>Thời Gian {{{ tableSort originalUrl.search 'createdAt' _sort }}}</th>
+                                            <th>Thời Gian Thực {{{ tableSort originalUrl.search 'timeTLS' _sort }}}</th>
                                         </tr>
                                         </thead>
                                         <tbody data-table="history">
@@ -215,6 +215,7 @@
                                                 <td>{{ this.receiver }}</td>
                                                 <td>{{ formatDate this.updatedAt 'DD-MM-YYYY HH:mm:ss'}}</td>
                                                 <td>{{ formatDate this.createdAt 'DD-MM-YYYY HH:mm:ss'}}</td>
+                                                <td>{{ formatDate this.timeTLS 'DD-MM-YYYY HH:mm:ss'}}</td>
                                             </tr>
                                         {{else}}
                                             <tr>
