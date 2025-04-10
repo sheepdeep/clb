@@ -413,25 +413,25 @@ exports.history = async () => {
                 await sleep(3 * 1000);
                 return await this.history();
             }
-    
+
             const histories = await mbbankHelper.history(bankData.accountNumber, bankData.bankType);
-    
+
             if (!histories) {
                 console.log(`Thực hiện đăng nhập tài khoản mbb ${bankData.accountNumber}`);
                 await mbbankHelper.login(bankData.accountNumber, bankData.bankType);
                 await sleep(15 * 1000);
                 return await this.history();
             }
-    
+
             await mbbankHelper.handleTransId(histories, bankData);
-    
+
             await sleep(3 * 1000);
             return await this.history();
         }
 
         await sleep(10 * 1000);
         return await this.history();
-       
+
 
     } catch (e) {
         // Thong bao loi
@@ -609,14 +609,14 @@ exports.reward = async() => {
             if (!checkTrans) {
                 // Lấy ngân hàng trả thưởng
                 const bankReward = await bankModel.aggregate([
-                    { 
+                    {
                         $match: { otp: null, reward: false, bankType: "exim", status: "active" } // Điều kiện lọc
                     },
-                    { 
+                    {
                         $sample: { size: 1 }
                     }
                 ]);
-                
+
                 if (bankReward.length > 0) {
                     const user = await userModel.findOne({username: history.username});
 
@@ -630,7 +630,7 @@ exports.reward = async() => {
                             await sleep(2000);
                             return await this.reward();
                         }
-                        
+
                         const checkNumber = await eximbankHelper.checkBank(dataBank.accountNumber, dataBank.bankType, user.bankInfo.bankCode, user.bankInfo.accountNumber)
 
                         const dataTransfer = {
@@ -663,13 +663,13 @@ exports.reward = async() => {
                     // let checkOTP = true;
                     // while(checkOTP) {
                     //     const dataBank = await bankModel.findOne({accountNumber: bankReward[0].accountNumber});
-                        
+
                     //     if (dataBank.otp) {
                     //         const result = await eximbankHelper.verifyTransfer(dataBank.accountNumber, dataBank.bankType, dataBank.otp);
 
                     //         console.log(result);
                     //         if (result.resultDecode.code == '00') {
-                                
+
                     //             history.paid = 'sent';
                     //             history.save();
                     //             user.bankInfo.guard = true;

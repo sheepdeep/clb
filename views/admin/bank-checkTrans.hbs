@@ -70,7 +70,11 @@
                                         <tbody>
                                         {{#ifCond bankType '==' 'mbb'}}
                                             {{#each ../histories}}
+<<<<<<< HEAD
                                             <tr class="edit-one" data-id="{{ this._id }}">
+=======
+                                                <tr class="edit-one" data-id="{{ this._id }}">
+>>>>>>> b679ccdc13043cfe4e7c393b5beb3fe0ee034285
                                                 <td>{{ this.accountNo }}</td>
                                                 <td>
                                                     {{#ifCond this.creditAmount '>' 0}}
@@ -80,7 +84,7 @@
                                                     {{/ifCond}}
                                                 </td>
                                                 <td>
-                                                    {{#ifCond ../this.creditAmount '>' 0}}
+                                                    {{#ifCond this.creditAmount '>' 0}}
                                                         <span class="text-success">{{ numberFormat ../this.creditAmount }}</span>
                                                     {{else}}
                                                         <span class="text-danger">{{ numberFormat ../this.debitAmount }}</span>

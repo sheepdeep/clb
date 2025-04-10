@@ -7,6 +7,7 @@ const gameModel = require("../models/game.model");
 const moment = require("moment/moment");
 const { v4: uuidv4 } = require('uuid');
 const eventHelper = require('../helpers/event.helper');
+const userModel = require("../models/user.model");
 
 const eventController = {
     wheel: async (req, res, next) => {
@@ -189,6 +190,53 @@ const eventController = {
             }
 
             res.render('pages/chuoi', {games, totalCount, totalCountMission});
+        } catch (e) {
+            console.log(e);
+        }
+    },
+    referrals: async function (req, res) {
+        try {
+            let games = await gameModel.find({ display: 'show' }).lean();
+
+            const startOfWeek = moment().startOf('isoWeek').toDate(); // Thứ 2
+            const endOfWeek = moment().endOf('isoWeek').toDate();     // Chủ nhật
+
+            let count = 0;
+
+            if (res.locals.profile) {
+                count = await userModel.countDocuments({
+                    referral: res.locals.profile.username,
+                    createdAt: { $gte: startOfWeek, $lte: endOfWeek }
+                });
+            }
+
+            const topReferrers = await userModel.aggregate([
+                {
+                    $match: {
+                        referral: { $exists: true, $ne: null },
+                        createdAt: { $gte: startOfWeek, $lte: endOfWeek }
+                    }
+                },
+                {
+                    $group: {
+                        _id: "$referral", // gom theo tên người giới thiệu
+                        count: { $sum: 1 } // đếm số người được giới thiệu
+                    }
+                },
+                {
+                    $sort: { count: -1 } // sắp xếp giảm dần
+                },
+                {
+                    $limit: 5 // lấy top 10 (tuỳ chỉnh)
+                }
+            ]);
+            const rankedReferrers = topReferrers.map((item, index) => ({
+                stt: index + 1,
+                username: `${item._id.slice(0, 6)}****`,
+                count: item.count
+            }));
+
+            res.render('pages/ctv', {games, count, rankedReferrers});
         } catch (e) {
             console.log(e);
         }

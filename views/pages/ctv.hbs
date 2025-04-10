@@ -1,0 +1,155 @@
+{{>header}}
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+<body>
+<div class="preloader"></div>
+<!-- header -->
+<header class="header">
+    <div class="header__content">
+        <!-- header logo -->
+        <a href="/" class="header__logo">
+            <img class="logo" src="{{ settings.logo }}" alt="{{ settings.nameSite }}"/>
+        </a>
+        <!-- end header logo -->
+        <!-- header menu btn -->
+        <button class="header__btn" type="button">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <!-- end header menu btn -->
+    </div>
+</header>
+<!-- end header -->
+<!-- sidebar -->
+{{>sidebar}}
+<!-- main content -->
+<main class="main">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- profile -->
+            {{>game}}
+            <!-- end profile -->
+            <!-- dashbox -->
+            <div class="col-12">
+                <div class="dashbox">
+                    <div class="dashbox__title">
+                        <h3 style="margin:0 auto;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5354 2.87868C16.3638 1.70711 14.4644 1.70711 13.2928 2.87868L11.8786 4.29289C11.8183 4.35317 11.7611 4.41538 11.707 4.47931C11.653 4.41539 11.5958 4.3532 11.5355 4.29293L10.1213 2.87871C8.94975 1.70714 7.05025 1.70714 5.87868 2.87871C4.70711 4.05029 4.70711 5.94978 5.87868 7.12136L6.75732 8H1V14H3V22H21V14H23V8H16.6567L17.5354 7.12132C18.707 5.94975 18.707 4.05025 17.5354 2.87868ZM14.707 7.12132L16.1212 5.70711C16.5117 5.31658 16.5117 4.68342 16.1212 4.29289C15.7307 3.90237 15.0975 3.90237 14.707 4.29289L13.2928 5.70711C12.9023 6.09763 12.9023 6.7308 13.2928 7.12132C13.6833 7.51184 14.3165 7.51184 14.707 7.12132ZM10.1213 5.70714L8.70711 4.29293C8.31658 3.9024 7.68342 3.9024 7.29289 4.29293C6.90237 4.68345 6.90237 5.31662 7.29289 5.70714L8.70711 7.12136C9.09763 7.51188 9.7308 7.51188 10.1213 7.12136C10.5118 6.73083 10.5118 6.09767 10.1213 5.70714ZM21 10V12H3V10H21ZM12.9167 14H19V20H12.9167V14ZM11.0834 14V20H5V14H11.0834Z" fill="currentColor"></path>
+                            </svg>
+                            GIỚI THIỆU NGƯỜI CHƠI
+                        </h3>
+                    </div>
+                    <div class="subpage-wrapper">
+                        <p>LINK GIỚI THIỆU CỦA BẠN:</p>
+                        {{#if profile}}
+                            <p>
+                        <span>
+                           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-browser-chrome" viewBox="0 0 16 16">
+                              <path fill-rule="evenodd" d="M16 8a8.001 8.001 0 0 1-7.022 7.94l1.902-7.098a2.995 2.995 0 0 0 .05-1.492A2.977 2.977 0 0 0 10.237 6h5.511A8 8 0 0 1 16 8ZM0 8a8 8 0 0 0 7.927 8l1.426-5.321a2.978 2.978 0 0 1-.723.255 2.979 2.979 0 0 1-1.743-.147 2.986 2.986 0 0 1-1.043-.7L.633 4.876A7.975 7.975 0 0 0 0 8Zm5.004-.167L1.108 3.936A8.003 8.003 0 0 1 15.418 5H8.066a2.979 2.979 0 0 0-1.252.243 2.987 2.987 0 0 0-1.81 2.59ZM8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>
+                           </svg>
+                           <code class="pd5">https://supbank.me/?r={{profile.username}}</code> <a href="javascript:void(0);" data-id="https://supbank.me/?r={{profile.username}}" data-msg="" class="mncp copy-bt">&nbsp;</a>
+                        </span>
+                            </p>
+                            <p>SỐ LƯỢT GIỚI THIỆU TRONG TUẦN: <span class="code-num">{{count}}</span></p>
+
+                        {{else}}
+                            <p>VUI LÒNG <a href="../dangnhap">ĐĂNG NHẬP</a> HOẶC <a href="../dangky">ĐĂNG KÝ</a> ĐỂ NHẬN LINK GIỚI THIỆU</p>
+                        {{/if}}
+
+                        <p><span class="code-num">GIỚI THIỆU NGƯỜI CHƠI</span> là chương trình giúp bạn nhận thưởng cho mỗi lượt giới thiệu người chơi đến với chúng tôi.<br>Bạn sẽ nhận được một khoản tiền khi người bạn giới thiệu đạt các mốc dưới đây.</p>
+                        <div class="col-12 col-xl-6 mg-auto">
+                            <div class="dashbox">
+                                <div class="dashbox__table-wrap dashbox__table-wrap--1" data-scrollbar="true" tabindex="-1" style="overflow: hidden; outline: none;">
+                                    <div class="scroll-content">
+                                        <table class="dashbox__table table__txt-center">
+                                            <thead>
+                                            <tr>
+                                                <th>MỐC CHƠI</th>
+                                                <th>THƯỞNG</th>
+                                                <th>% NHẬN</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                    <div class="scrollbar-track scrollbar-track-x show" style="display: none;">
+                                        <div class="scrollbar-thumb scrollbar-thumb-x" style="width: 642px; transform: translate3d(0px, 0px, 0px);"></div>
+                                    </div>
+                                    <div class="scrollbar-track scrollbar-track-y show" style="display: none;">
+                                        <div class="scrollbar-thumb scrollbar-thumb-y" style="height: 120px; transform: translate3d(0px, 0px, 0px);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-2"><i class="small-notes">MỐC CHƠI TÍNH TRONG NGÀY VÀ MỖI MỐC CHỈ ĐƯỢC NHẬN 1 LẦN DUY NHẤT.<br>TÀI KHOẢN PHẢI Ở TRẠNG THÁI 'BẢO VỆ BANK' VÀ ĐÃ LIÊN KẾT TELEGRAM<br>TÀI KHOẢN GIỚI THIỆU NẾU KHÔNG HOÀN THÀNH MỐC TRONG 7 NGÀY SẼ HỦY NGƯỜI GIỚI THIỆU.<br>CÁC TH CLONE/FAKE/GIỚI THIỆU CHÍNH MÌNH SẼ KHÔNG ĐƯỢC TÍNH. KHÔNG THỂ KN VỀ TÍNH NĂNG NÀY.</i></p>
+                        <p>TOP GIỚI THIỆU TUẦN:</p>
+                        <div class="col-12 col-xl-6 mg-auto">
+                            <div class="dashbox">
+                                <div class="dashbox__table-wrap dashbox__table-wrap--1" data-scrollbar="true" tabindex="-1" style="overflow: hidden; outline: none;">
+                                    <div class="scroll-content">
+                                        <table class="dashbox__table table__txt-center">
+                                            <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>NGƯỜI CHƠI</th>
+                                                <th>SỐ LƯỢT GT</th>
+                                                <th>THƯỞNG</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {{#each rankedReferrers}}
+                                                <tr>
+                                                    <td>{{this.stt}}</td>
+                                                    <td>{{this.username}}</td>
+                                                    <td>{{this.count}}</td>
+                                                    <td>????</td>
+                                                </tr>
+                                            {{/each}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="scrollbar-track scrollbar-track-x show" style="display: none;">
+                                        <div class="scrollbar-thumb scrollbar-thumb-x" style="width: 642px; transform: translate3d(0px, 0px, 0px);"></div>
+                                    </div>
+                                    <div class="scrollbar-track scrollbar-track-y show" style="display: none;">
+                                        <div class="scrollbar-thumb scrollbar-thumb-y" style="height: 419px; transform: translate3d(0px, 0px, 0px);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="modal-notes" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal__content modal__content--view">
+                            <div class="comments__autor">
+                                <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                                <span class="comments__name">SupBank Thông Báo</span>
+                            </div>
+                            <p class="comments__text"></p>
+                            <div class="modal__btns">
+                                <button class="modal__btn" id="startTaiXiuRong" data-bs-dismiss="modal" type="button"><span>Bắt đầu</span></button>
+                                <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Đóng</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- end main content -->
+<!-- view modal -->
+<script>
+    function resizeIframe(obj) {
+        var fh = obj.contentWindow.document.body.scrollHeight;
+        obj.style.height = Math.min(screen.height, fh) + 'px';
+    }
+</script>
+{{>footer}}
+<script src="../themes/tx.js"></script>
+{{{ settings.footerScript }}}

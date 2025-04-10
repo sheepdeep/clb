@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
         guard: Boolean
     },
     fan: Boolean,
+    referral: Object,
     permission: {
         editHis: Boolean,
         editComment: Boolean,

@@ -6,7 +6,7 @@ const userModel = require('../models/user.model');
 const settingModel = require('../models/setting.model');
 
 const authService = {
-    register: async (username, password, ip, level = 0, options) => {
+    register: async (username, password, ip, referral, level = 0, options) => {
         try {
 
             const dataSetting = await settingModel.findOne();
@@ -53,6 +53,7 @@ const authService = {
                 admin: false,
                 token: uuidv4().toUpperCase(),
                 permission: options,
+                referral
             }).save();
 
             return ({
