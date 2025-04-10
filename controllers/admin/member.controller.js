@@ -51,7 +51,8 @@ const memberController = {
                 res.locals._sort.type = req.query._sort;
             }
 
-            let users = await userModel.find(filters).sort(_sort).lean();
+            let users = await userModel.find(filters).skip((perPage * page) - perPage).sort(_sort).limit(perPage).lean();
+
             let pageCount = await userModel.countDocuments(filters);
             let pages = Math.ceil(pageCount / perPage);
 

@@ -11,7 +11,7 @@ const taiXiuRongSchema = new mongoose.Schema({
     xucxac2: Number,
     xucxac3: Number,
     result: Number,
-    resutltText: String,
+    resultText: String,
     userTai: Array,
     userXiu: Array,
     sumTai: Number,

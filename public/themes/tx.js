@@ -1,9 +1,6 @@
 $('#taiXiuRong').draggable({});
 
 
-// const socket = io('http://localhost:3000', {
-//     transports: ['websocket'], // Chỉ sử dụng WebSocket
-// });
 const Toast = Swal.mixin({
     toast: true,
     position: "top-end",
@@ -15,7 +12,6 @@ const Toast = Swal.mixin({
         toast.onmouseleave = Swal.resumeTimer;
     }
 });
-
 
 let betTai = 0, betXiu = 0;
 
@@ -97,53 +93,57 @@ $(document).ready(function () {
     });
 
     $('#taiXiuRong .wrap-cuoc-tai .click').click(function () {
+        if (!username) {
+            return Toast.fire({
+                icon: "error",
+                title: "Vui lòng đăng nhập tài khoản"
+            });
+        }
+        if (second < 5) {
+            return Toast.fire({
+                icon: "error",
+                title: "Vui lòng đợi phiên tiếp theo"
+            });
+        }
+
+        if (second > 60) {
+            return Toast.fire({
+                icon: "error",
+                title: "Vui lòng đợi phiên tiếp theo"
+            });
+        }
+
         $('#wrap-action-bet').removeClass('hidden');
         type = 'SRT';
         betXiu = 0;
-        if (!username) {
-            Toast.fire({
-                icon: "error",
-                title: "Vui lòng đăng nhập tài khoản"
-            });
-        }
-        if (second < 5) {
-            Toast.fire({
-                icon: "error",
-                title: "Vui lòng đợi phiên tiếp theo"
-            });
-        }
-
-        if (second > 60) {
-            Toast.fire({
-                icon: "error",
-                title: "Vui lòng đợi phiên tiếp theo"
-            });
-        }
+        upBetXiu();
     });
 
     $('#taiXiuRong .wrap-cuoc-xiu .click').click(function () {
-        $('#wrap-action-bet').removeClass('hidden');
-        type = 'SRX';
-        betTai = 0;
         if (!username) {
-            Toast.fire({
+            return Toast.fire({
                 icon: "error",
                 title: "Vui lòng đăng nhập tài khoản"
             });
         }
         if (second < 5) {
-            Toast.fire({
+            return Toast.fire({
                 icon: "error",
                 title: "Vui lòng đợi phiên tiếp theo"
             });
         }
 
         if (second > 60) {
-            Toast.fire({
+            return Toast.fire({
                 icon: "error",
                 title: "Vui lòng đợi phiên tiếp theo"
             });
         }
+
+        $('#wrap-action-bet').removeClass('hidden');
+        type = 'SRX';
+        betTai = 0;
+        upBetTai();
     });
 
     $('#taiXiuRong .btnBet').click(function () {
@@ -171,6 +171,21 @@ $(document).ready(function () {
                 title: "Số dư không đủ để thực hiện đặt cược!"
             });
         }
+        $.ajax({
+            url: '/bet-taixiu',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                amount: type == 'SRT' ? betTai : betXiu,
+                type
+            },
+            success: function (result) {
+                Toast.fire({
+                    icon: result.success ? "success" : "error",
+                    title: result.message
+                })
+            }
+        })
     });
 
     $('.wrap-bet img').click(function () {
@@ -214,7 +229,6 @@ function upBetTai() {
     let spanTai = "";
     const digitsTai = String(betTai).split("");
     let count = 0;
-
     // Duyệt từ phải qua trái
     for (let i = digitsTai.length - 1; i >= 0; i--) {
         const digit = digitsTai[i];

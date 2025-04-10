@@ -34,7 +34,7 @@ const rateLimit = require('express-rate-limit');
 const limiterGift = rateLimit({
     windowMs: 5 * 1000, // 1 phút
     max: 1, // Tối đa 5 request mỗi phút
-    message: { 
+    message: {
         success: false,
         message: 'Bạn đã gửi quá nhiều yêu cầu. Vui lòng thử lại sau 1 phút.'
     },
@@ -45,7 +45,7 @@ const limiterGift = rateLimit({
     handler: (req, res, options) => {
         const retryAfterHeader = res.getHeaders()['retry-after'];
          const retryAfter = parseInt(retryAfterHeader) || 60;
-         
+
         res.status(200).json({
             success: false,
             error: 'Quá nhiều yêu cầu',
@@ -205,6 +205,7 @@ router.route('/nohu')
     .post([notInstalled, isUser, limiterGift], jackpotController.wheel);
 
 router.post('/hopquamayman', [notInstalled, isUser, limiterGift], luckygiftController.getGift)
+router.post('/bet-taixiu', [notInstalled, isUser, limiterGift], taixiuController.bet)
 
 router.use((req, res, next) => {
     next({status: 404, message: `404 page not found!`});
