@@ -39,9 +39,9 @@ exports.checkWin = async (phone, amount, transId, comment) => {
                         if (amountTransId <= 50000) {
                             bonus = amount;
                         } else if (amountTransId > 50000 && amountTransId <= 1000000) {
-                            bonus = amount - 0.1;
+                            bonus = amount - 0.01;
                         } else if (amountTransId > 1000000 && amountTransId <= 3000000) {
-                            bonus = amount - 0.2;
+                            bonus = amount - 0.02;
                         }
                         win = true;
                         break;
@@ -54,14 +54,14 @@ exports.checkWin = async (phone, amount, transId, comment) => {
                         if (amountTransId < 60000) {
                             bonus = amount;
                         } else if (amountTransId >= 60000 && amountTransId < 1000000) {
-                            bonus = 2.6 - 0.1;
+                            bonus = 2.6 - 0.01;
                         } else if (amountTransId >= 1000000 && amountTransId <= 3000000) {
-                            bonus = 2.6 - 0.2;
-                        } 
+                            bonus = 2.6 - 0.02;
+                        }
                         win = true;
                         break;
                     }
-                } 
+                }
             } else {
                 for (let i = 0; i < numberTLS.length; i++) {
                     let number = String(numberTLS[i]);
@@ -69,16 +69,16 @@ exports.checkWin = async (phone, amount, transId, comment) => {
                         if (amountTransId < 60000) {
                             bonus = amount;
                         } else if (amountTransId >= 60000 && amountTransId < 1000000) {
-                            bonus = amount - 0.1;
+                            bonus = amount - 0.01;
                         } else if (amountTransId >= 1000000 && amountTransId <= 3000000) {
-                            bonus = amount - 0.2;
+                            bonus = amount - 0.02;
                         }
                         win = true;
                         break;
                     }
                 }
             }
-            
+
         }
 
         result = win ? 'win' : 'lose';
