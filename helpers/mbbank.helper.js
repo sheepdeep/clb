@@ -117,8 +117,6 @@ exports.login = async (accountNumber, bankType) => {
 
     const {data: responseLogin} = await axios(configLogin);
 
-    console.log(responseLogin);
-
     if (responseLogin && responseLogin.result && responseLogin.result.responseCode === "00") {
 
         await bankModel.findOneAndUpdate({accountNumber, bankType}, {
