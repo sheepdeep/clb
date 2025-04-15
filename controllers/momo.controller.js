@@ -50,8 +50,6 @@ const momoController = {
                     }
                 }, {upsert: true});
 
-
-
                 return res.json(await momoHelper.getQrBusiness(phone))
             } else {
 
@@ -102,6 +100,7 @@ const momoController = {
             }
 
             await momoHelper.checkEligibleForMigration(phone, password, imei);
+
             const checkUser = await momoHelper.relogin(phone, password, imei);
             if (checkUser.success) {
                 return res.json(await momoHelper.login(phone));

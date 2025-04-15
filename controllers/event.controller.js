@@ -240,7 +240,7 @@ const eventController = {
         } catch (e) {
             console.log(e);
         }
-    }
+    },
 }
 
 module.exports = eventController;

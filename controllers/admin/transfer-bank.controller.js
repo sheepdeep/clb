@@ -1,6 +1,6 @@
 const moment = require('moment');
 const crypto = require('crypto');
-const momoModel = require('../../models/bank.model');
+const momoModel = require('../../models/momo.model');
 const transferModel = require('../../models/transfer.model');
 const momoHelper = require('../../helpers/momo.helper');
 const telegramHelper = require('../../helpers/telegram.helper');

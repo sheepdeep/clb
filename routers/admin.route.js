@@ -21,6 +21,8 @@ const utils = require('../helpers/utils.helper');
 const payController = require("../controllers/admin/pay.controller");
 const vpsController = require('../controllers/admin/vps.controller');
 const sendController = require('../controllers/admin/send.controller');
+const zaloController = require('../controllers/admin/zalo.controller');
+
 const router = express.Router();
 
 router.get(['/', '/home', '/dashboard'], loggedInAdmin, async (req, res, next) => {
@@ -193,6 +195,15 @@ router.route('/block')
 
 /** Momo Router */
 router.get('/momo-list', loggedInAdmin, tableSort, momoController.index);
+
+// router.get('/zlp-list', loggedInAdmin, tableSort, zaloController.index);
+router.route('/zlp-list')
+    .get([loggedInAdmin, tableSort], zaloController.index)
+    .post(isAdmin, zaloController.add);
+
+router.route('/zlp-list/:id')
+    .put(isAdmin, zaloController.update)
+    // .post(isAdmin, zaloController.add);
 
 router.route(['/momo-list/:id', '/momo-lite/:id'])
     .put(isAdmin, momoController.update)

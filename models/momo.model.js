@@ -9,10 +9,6 @@ const momoSchema = mongoose.Schema({
     },
     password: String,
     passwordBusiness: String,
-    amount: {
-        type: Number,
-        default: 0
-    },
     limitDay: {
         type: Number,
         default: 20000000
@@ -24,14 +20,6 @@ const momoSchema = mongoose.Schema({
     number: {
         type: Number,
         default: 40
-    },
-    betMin: {
-        type: Number,
-        default: 5000
-    },
-    betMax: {
-        type: Number,
-        default: 500000
     },
     rkey: String,
     imei: String,
@@ -58,19 +46,12 @@ const momoSchema = mongoose.Schema({
     accessKey: String,
     secretKey: String,
     balance: Number,
-    transfer: {
-        type: Boolean,
-        default: false
-    },
-    receiver: {
-        type: Boolean,
-        default: false
-    },
     status: {
         type: String,
         default: 'active'
     },
     errorLogin: Number,
+    reward: Boolean,
     loginStatus: String,
     merchantId: String,
     brandName: String,

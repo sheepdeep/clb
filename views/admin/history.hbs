@@ -43,18 +43,6 @@
                                                         <option value="MISSION">Nhiệm vụ ngày</option>
                                                     </select>
                                                 </div>
-                                                <div
-                                                        class="form-group dm-select d-flex align-items-center adv-table-searchs__status mb-3 me-sm-30 me-0">
-                                                    <label
-                                                            class="d-flex align-items-center mb-sm-0 mb-2 fs-15 fw-500">Loại</label>
-                                                    <select name="io" class="form-control ms-sm-10 ms-0">
-                                                        {{#select io}}
-                                                            <option value="">Tất Cả</option>
-                                                            <option value="-1">Trừ Tiền</option>
-                                                            <option value="1">Nhận Tiền</option>
-                                                        {{/select}}
-                                                    </select>
-                                                </div>
                                                 <div class="form-group dm-select d-flex align-items-center adv-table-searchs__status mb-3 me-sm-30 me-0">
                                                     <label
                                                             class="d-flex align-items-center mb-sm-0 mb-2 fs-15 fw-500">Trạng
@@ -72,6 +60,20 @@
                                                             <option value="wrong">Sai Nội Dung</option>
                                                             <option value="notUser">Lỗi Thành Viên</option>
                                                             <option value="error">Tất Cả Lỗi</option>
+                                                        {{/select}}
+                                                    </select>
+                                                </div>
+                                                <div class="form-group dm-select d-flex align-items-center adv-table-searchs__status mb-3 me-sm-30 me-0">
+                                                    <label
+                                                            class="d-flex align-items-center mb-sm-0 mb-2 fs-15 fw-500">Trạng
+                                                        Thái Chuyển</label>
+                                                    <select name="paid" class="form-control ms-sm-10 ms-0">
+                                                        {{#select paid }}
+                                                            <option value="">Tất Cả</option>
+                                                            <option value="wait">WAIT</option>
+                                                            <option value="hold">HOLD</option>
+                                                            <option value="sent">SENT</option>
+                                                            <option value="bankerror">BANHERROR</option>
                                                         {{/select}}
                                                     </select>
                                                 </div>

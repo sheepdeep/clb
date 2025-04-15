@@ -89,7 +89,6 @@ const missionController = {
                 let newHistory = await new historyModel({
                     username: user.username,
                     receiver: user.username,
-                    transfer: `mission`,
                     transId,
                     comment: 'MISSION',
                     amount: totalCount,

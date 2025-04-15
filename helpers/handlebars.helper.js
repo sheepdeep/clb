@@ -290,6 +290,12 @@ module.exports = {
             case 'sent':
                 html = `<span class="badges badge-info">Đã chuyển</span>`;
                 break;
+            case 'hold':
+                html = `<span class="badges badge-danger">HOLD</span>`;
+                break;
+            case 'bankerror':
+                html = `<span class="badges badge-danger">CHƯA CÀI BANK</span>`;
+                break;
         }
 
         return html;

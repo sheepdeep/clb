@@ -18,6 +18,7 @@ const errorHandler = require('./middlewares/error.middleware');
 const hbsHelper = require('./helpers/handlebars.helper');
 const historyHelper = require('./helpers/history.helper');
 const taiXiuService = require("./servers/taiXiuRong/service");
+const zaloHelper = require('./helpers/zalo.helper');
 
 let userCount = 0;
 
@@ -92,17 +93,17 @@ console.log(`TOKEN SETUP: ${process.env.TOKEN_SETUP.toUpperCase()}`)
 
 // Kết nối MongoDB
 db.connectDB();
-historyHelper.history();
-historyHelper.fakeBill();
+// historyHelper.history();
+// historyHelper.fakeBill();
 historyHelper.reward();
-historyHelper.gift();
+// historyHelper.gift();
 
 
 app.use(homeRoute);
 // Error Handler
 app.use(errorHandler);
-taiXiuService.run();
-taiXiuService.handleTurn();
+// taiXiuService.run();
+// taiXiuService.handleTurn();
 
 
 server.listen(process.env.PORT || 80, () => console.log(`Server đang hoạt động port: ${process.env.PORT || 80}`));

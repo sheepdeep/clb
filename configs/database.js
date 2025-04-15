@@ -4,7 +4,7 @@ let isConnected = false; // Biến để kiểm tra trạng thái kết nối
 
 const connectDB = async () => {
     if (isConnected) {
-        console.log('Đã kết nối trước đó. Dùng kết nối hiện tại.');
+        // console.log('Đã kết nối trước đó. Dùng kết nối hiện tại.');
         return mongoose.connection;
     }
 
@@ -15,7 +15,7 @@ const connectDB = async () => {
             useNewUrlParser: true,
         });
         isConnected = conn.connections[0].readyState === 1;  // 1 = connected
-        console.log(`Kết nối MongoDB thành công: ${conn.connection.host}`);
+        // console.log(`Kết nối MongoDB thành công: ${conn.connection.host}`);
         return conn.connection;
     } catch (err) {
         console.error('Kết nối MongoDB thất bại:', err);

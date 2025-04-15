@@ -17,6 +17,8 @@ const rewardModel = require("../models/reward.model");
 const oldBank = require('../json/bank.json');
 const eximbankHelper = require('../helpers/eximbank.helper');
 const transferModel = require('../models/transfer.model');
+const momoModel = require('../models/momo.model');
+const momoHelper = require("./momo.helper");
 
 exports.handleCltx = async (history, bank) => {
     try {
@@ -584,6 +586,8 @@ exports.gift = async () => {
 
 exports.reward = async() => {
     try {
+
+        const dataSetting = await settingModel.findOne({});
         const history = await historyModel.findOne({
             paid: "wait",
             bot: false,
@@ -608,98 +612,14 @@ exports.reward = async() => {
 
             if (!checkTrans) {
                 // Lấy ngân hàng trả thưởng
-                const bankReward = await bankModel.aggregate([
-                    {
-                        $match: { otp: null, reward: false, bankType: "exim", status: "active" } // Điều kiện lọc
-                    },
-                    {
-                        $sample: { size: 1 }
-                    }
-                ]);
 
-                if (bankReward.length > 0) {
-                    const user = await userModel.findOne({username: history.username});
-
-                    if(user.bankInfo.accountNumber) {
-                        const dataBank = await bankModel.findOne({accountNumber: bankReward[0].accountNumber});
-
-                        console.log(`Thực hiện trả thưởng #${history.transId} => ${dataBank.accountNumber}`)
-                        const balance = await eximbankHelper.getBalance(dataBank.accountNumber, dataBank.bankType);
-
-                        if (!balance.success) {
-                            await sleep(2000);
-                            return await this.reward();
-                        }
-
-                        const checkNumber = await eximbankHelper.checkBank(dataBank.accountNumber, dataBank.bankType, user.bankInfo.bankCode, user.bankInfo.accountNumber)
-
-                        const dataTransfer = {
-                            accountNumber: user.bankInfo.accountNumber,
-                            bankCode: user.bankInfo.bankCode,
-                            bankName: checkNumber.resultDecode.data.bankName,
-                            name: checkNumber.resultDecode.data.name,
-                            amount: history.bonus,
-                            comment: 'hoan tien tiktok ' + String(history.transId).slice(-4)
-                        }
-
-                        const resultInitTransfer = await eximbankHelper.initTransfer(dataBank.accountNumber, dataBank.bankType, dataTransfer)
-
-                        console.log(resultInitTransfer);
-
-                        if (resultInitTransfer.success) {
-                            history.transfer = dataBank.accountNumber;
-                            history.save();
-
-                            dataBank.reward = true;
-                            dataBank.save();
-                        }
-                    } else {
-                        history.paid = 'bankerror';
-                        history.save();
-                        await sleep(2000);
-                        return await this.reward();
-                    }
-
-                    // let checkOTP = true;
-                    // while(checkOTP) {
-                    //     const dataBank = await bankModel.findOne({accountNumber: bankReward[0].accountNumber});
-
-                    //     if (dataBank.otp) {
-                    //         const result = await eximbankHelper.verifyTransfer(dataBank.accountNumber, dataBank.bankType, dataBank.otp);
-
-                    //         console.log(result);
-                    //         if (result.resultDecode.code == '00') {
-
-                    //             history.paid = 'sent';
-                    //             history.save();
-                    //             user.bankInfo.guard = true;
-                    //             user.save();
-
-                    //             await new transferModel({
-                    //                 transId: history.transId,
-                    //                 username: history.username,
-                    //                 firstMoney: balance.data.totalCurrentAmount,
-                    //                 amount: history.bonus,
-                    //                 lastMoney: balance.data.totalCurrentAmount - history.bonus,
-                    //                 comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
-                    //             }).save();
-
-                    //         } else {
-                    //             history.paid = 'hold';
-                    //             history.save();
-                    //         }
-
-                    //         await bankModel.findOneAndUpdate({accountNumber: dataBank.accountNumber}, {$set: {
-                    //             otp: null, reward: false, balance: balance.data.totalCurrentAmount - history.bonus
-                    //         }});
-
-                    //         break;
-                    //     }
-
-                    //     await sleep(1000);
-                    // }
-
+                if (dataSetting.history.dataType == 'exim') {
+                    await this.transferEximbank(history);
+                } else if (dataSetting.history.dataType == 'momo') {
+                    await this.transferMomo(history);
                 }
+
+
             } else {
                 history.paid = 'sent';
                 history.save();
@@ -719,3 +639,187 @@ exports.reward = async() => {
         return await this.reward();
     }
 };
+
+exports.transferEximbank = async (history) => {
+    try {
+        const bankReward = await bankModel.aggregate([
+            {
+                $match: { otp: null, reward: false, bankType: "exim", status: "active" } // Điều kiện lọc
+            },
+            {
+                $sample: { size: 1 }
+            }
+        ]);
+
+        if (bankReward.length > 0) {
+            const user = await userModel.findOne({username: history.username});
+
+            if(user.bankInfo.accountNumber) {
+                const dataBank = await bankModel.findOne({accountNumber: bankReward[0].accountNumber});
+
+                console.log(`Thực hiện trả thưởng #${history.transId} => ${dataBank.accountNumber}`)
+                const balance = await eximbankHelper.getBalance(dataBank.accountNumber, dataBank.bankType);
+
+                if (!balance.success) {
+                    await sleep(2000);
+                    return await this.reward();
+                }
+
+                const checkNumber = await eximbankHelper.checkBank(dataBank.accountNumber, dataBank.bankType, user.bankInfo.bankCode, user.bankInfo.accountNumber)
+
+                const dataTransfer = {
+                    accountNumber: user.bankInfo.accountNumber,
+                    bankCode: user.bankInfo.bankCode,
+                    bankName: checkNumber.resultDecode.data.bankName,
+                    name: checkNumber.resultDecode.data.name,
+                    amount: history.bonus,
+                    comment: 'hoan tien tiktok ' + String(history.transId).slice(-4)
+                }
+
+                const resultInitTransfer = await eximbankHelper.initTransfer(dataBank.accountNumber, dataBank.bankType, dataTransfer)
+
+                console.log(resultInitTransfer);
+
+                if (resultInitTransfer.success) {
+                    history.transfer = dataBank.accountNumber;
+                    history.save();
+
+                    dataBank.reward = true;
+                    dataBank.save();
+                }
+            } else {
+                history.paid = 'bankerror';
+                history.save();
+                await sleep(2000);
+                return await this.reward();
+            }
+
+            // let checkOTP = true;
+            // while(checkOTP) {
+            //     const dataBank = await bankModel.findOne({accountNumber: bankReward[0].accountNumber});
+
+            //     if (dataBank.otp) {
+            //         const result = await eximbankHelper.verifyTransfer(dataBank.accountNumber, dataBank.bankType, dataBank.otp);
+
+            //         console.log(result);
+            //         if (result.resultDecode.code == '00') {
+
+            //             history.paid = 'sent';
+            //             history.save();
+            //             user.bankInfo.guard = true;
+            //             user.save();
+
+            //             await new transferModel({
+            //                 transId: history.transId,
+            //                 username: history.username,
+            //                 firstMoney: balance.data.totalCurrentAmount,
+            //                 amount: history.bonus,
+            //                 lastMoney: balance.data.totalCurrentAmount - history.bonus,
+            //                 comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
+            //             }).save();
+
+            //         } else {
+            //             history.paid = 'hold';
+            //             history.save();
+            //         }
+
+            //         await bankModel.findOneAndUpdate({accountNumber: dataBank.accountNumber}, {$set: {
+            //             otp: null, reward: false, balance: balance.data.totalCurrentAmount - history.bonus
+            //         }});
+
+            //         break;
+            //     }
+
+            //     await sleep(1000);
+            // }
+
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.transferMomo = async (history) => {
+    try {
+        history = await historyModel.findById(history._id);
+
+        const bankReward = await momoModel.aggregate([
+            {
+                $match: { reward: false, status: 'active' } // Điều kiện lọc
+            },
+            {
+                $sample: { size: 1 }
+            }
+        ]);
+
+        if (bankReward.length > 0) {
+            const user = await userModel.findOne({username: history.username});
+
+            if(user.bankInfo.accountNumber) {
+                const dataBank = await momoModel.findOne({phone: bankReward[0].phone});
+
+                console.log(`Thực hiện trả thưởng #${history.transId} => ${dataBank.phone}`)
+
+                const dataTransfer = {
+                    bankAccountNumber: user.bankInfo.accountNumber,
+                    bankCode: user.bankInfo.bankCode,
+                    name: user.bankInfo.name,
+                    amount: history.bonus,
+                    comment: 'hoan tien tiktok ' + String(history.transId).slice(-4)
+                }
+
+                let resultInitTransfer = await momoHelper.moneyTransferBank(dataBank.phone, dataTransfer);
+
+                console.log(resultInitTransfer);
+
+                if (resultInitTransfer?.error === 'insufficient_balance') {
+                    history.paid = 'hold';
+                    history.transfer = dataBank.phone;
+                    history.save();
+                    dataBank.reward = false;
+                    dataBank.status = 'pending';
+                    dataBank.save();
+                    logHelper.create("rewardErr", `Momo ${dataBank.phone} [Hết tiền trả thưởng]`)
+                    await sleep(2000);
+                    return await this.reward();
+
+                }
+
+                if (resultInitTransfer.success) {
+
+                    await new transferModel({
+                        transId: history.transId,
+                        receiver: user.bankInfo.accountNumber,
+                        transfer: dataBank.phone,
+                        username: history.username,
+                        firstMoney: resultInitTransfer.data.firstMoney,
+                        amount: history.bonus,
+                        lastMoney: resultInitTransfer.data.lastMoney,
+                        comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
+                    }).save();
+
+                    // Bao ve bank
+                    user.bankInfo.guard = true;
+                    user.save();
+
+                    history.paid = 'sent';
+                    history.transfer = dataBank.phone;
+                    history.save();
+                    dataBank.reward = false;
+                    dataBank.save();
+
+                    await sleep(2000);
+                    return await this.reward();
+                }
+            } else {
+                history.paid = 'bankerror';
+                history.save();
+                await sleep(2000);
+                return await this.reward();
+            }
+
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}

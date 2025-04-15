@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const axios = require('axios');
 const moment = require('moment');
 const request = require('request');
-const momoModel = require('../models/bank.model');
+const momoModel = require('../models/momo.model');
 const proxyModel = require('../models/proxy.model');
 const transferModel = require('../models/transfer.model');
 const logHelper = require('../helpers/log.helper');
@@ -313,13 +313,13 @@ exports.curlMomo = async (url, phone, data, header = null) => {
 
             console.log('Proxy ' + phone + ' là ' + proxy.ipAddress);
 
-            const proxyUrl = `http://${proxy.username}:${proxy.password}@${proxy.ipAddress}:${proxy.port}`;
-            const agent = new HttpsProxyAgent(proxyUrl); // Use the correct casing
+            // const proxyUrl = `http://${proxy.username}:${proxy.password}@${proxy.ipAddress}:${proxy.port}`;
+            // const agent = new HttpsProxyAgent(proxyUrl); // Use the correct casing
 
             const options = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                httpsAgent: agent,
+                // httpsAgent: agent,
                 url: url,
                 headers: {
                     'Content-Type': 'application/json',
@@ -691,12 +691,6 @@ exports.relogin = async (phone, password, imei) => {
 exports.sendOTP = async (phone, password) => {
     try {
 
-        // const data = {
-        //     phone: phone
-        // }
-        //
-        // const response = await this.curlMomo('https://vsign.pro/api/v3/meomeo/getOTP',phone, data, {phone});
-
         console.log('Thực hiện gửi mã OTP về', phone)
 
         const options = {
@@ -713,9 +707,8 @@ exports.sendOTP = async (phone, password) => {
         }
         const {data: response} = await axios(options);
 
-        console.log(response);
-
         if (!response.status) {
+
             await momoModel.findOneAndUpdate({phone}, {
                 $set: {
                     phone,
@@ -750,21 +743,6 @@ exports.sendOTP = async (phone, password) => {
 
 exports.checkEligibleForMigration = async (phone, password, imei) => {
     try {
-
-        // const dataProxy = await this.checkProxy(phone);
-        // const proxy = dataProxy.proxy;
-        //
-        // if (!dataProxy.success) {
-        //     return {
-        //         success: false,
-        //         message: dataProxy.message
-        //     }
-        // }
-
-        // console.log('Proxy ' + phone + ' là ' + proxy.ipAddress);
-
-        // const proxyUrl = `http://${proxy.username}:${proxy.password}@${proxy.ipAddress}:${proxy.port}`;
-        // const agent = new HttpsProxyAgent(proxyUrl); // Use the correct casing
 
         const randomDevice = _.sample(DEVICE_LIST);
         const osVersion = _.sample([9, 10, 11, 12, 13]); // 9 => firmware 28
@@ -825,16 +803,6 @@ exports.checkEligibleForMigration = async (phone, password, imei) => {
             'user-agent': `${userAgentNoEndingZero}/0`,
             ...this.commonHeader,
         }
-
-        // const options = {
-        //     method: 'post',
-        //     maxBodyLength: Infinity,
-        //     httpsAgent: agent,
-        //     url: CHECK_USER_BE_MSG_LINK,
-        //     headers: headers,
-        //     data: momoData
-        // }
-        // // const {data: resultMoMo} = await axios(options);
 
         const resultMoMo = await this.curlMomo(CHECK_USER_BE_MSG_LINK, phone, momoData, headers);
 
@@ -1238,7 +1206,6 @@ exports.isJwtExpired = async (token) => {
 
     return now >= exp;
 }
-
 
 exports.checkSession = async (phone, refresh = false) => {
     const dataPhone = await momoModel.findOne({phone, accessToken: {$exists: true}});
@@ -1884,6 +1851,7 @@ exports.moneyTransfer = async (phone, dataTransfer) => {
         if (checkBalance.balance < dataTransfer.amount) {
             return ({
                 success: false,
+                error: 'insufficient_balance',
                 message: `Số dư ${phone} không đủ ${Intl.NumberFormat('en-US').format(dataTransfer.amount)}đ để chuyển khoản!`
             })
         }
@@ -2043,6 +2011,7 @@ exports.findBankAccount = async (phone, dataTransfer) => {
         if (checkBalance.balance < dataTransfer.amount) {
             return ({
                 success: false,
+                error: 'insufficient_balance',
                 message: `Số dư ${phone} không đủ ${Intl.NumberFormat('en-US').format(dataTransfer.amount)}đ để chuyển khoản!`
             })
         }
@@ -2245,6 +2214,7 @@ exports.moneyTransferBank = async (phone, dataTransfer) => {
         if (checkBalance.balance < dataTransfer.amount) {
             return ({
                 success: false,
+                error: 'insufficient_balance',
                 message: `Số dư ${phone} không đủ ${Intl.NumberFormat('en-US').format(dataTransfer.amount)}đ để chuyển khoản!`
             })
         }
@@ -2282,10 +2252,7 @@ exports.moneyTransferBank = async (phone, dataTransfer) => {
             logo
         }
 
-
         const resultMoMo = await this.INIT_TOBANK(phone, dataTransferNew);
-
-        console.log(resultMoMo);
 
         if (_.get(resultMoMo, 'result')) {
 
@@ -2323,26 +2290,17 @@ exports.moneyTransferBank = async (phone, dataTransfer) => {
 
             if (confirmResult.result) {
 
-                // return _.get(confirmResult, 'momoMsg.tranHisMsg')
-                await momoModel.findOneAndUpdate({phone}, {balance: confirmResult.momoMsg.tranHisMsg.originalAmount});
-                await new transferModel({
-                    transId: confirmResult.momoMsg.transId,
-                    phone,
-                    receiver: dataTransfer.bankAccountNumber + ' | ' + dataTransfer.bankCode,
-                    firstMoney: checkBalance.balance,
-                    lastMoney: confirmResult.momoMsg.tranHisMsg.originalAmount,
-                    amount: dataTransfer.amount,
-                    comment: dataTransfer.comment
-                }).save();
+                await momoModel.findOneAndUpdate({phone}, {balance: checkBalance.balance - confirmResult.momoMsg.tranHisMsg.originalAmount});
 
                 return {
+                    error: null,
                     success: true,
                     message: confirmResult.momoMsg.transId,
                     data: {
                         transId: confirmResult.momoMsg.transId,
                         phone,
                         firstMoney: checkBalance.balance,
-                        lastMoney: parseInt(confirmResult.momoMsg.tranHisMsg.originalAmount),
+                        lastMoney: checkBalance.balance - parseInt(confirmResult.momoMsg.tranHisMsg.originalAmount),
                         dataTransfer,
                     }
                 }

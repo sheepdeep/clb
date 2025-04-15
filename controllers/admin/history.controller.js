@@ -31,6 +31,16 @@ const historyController = {
                 }
             }
 
+            if (req.query?.paid) {
+                let vaildStatus = ['wait', 'hold', 'sent', 'bankerror'];
+
+                if (vaildStatus.includes(req.query.paid)) {
+                    filters.paid = req.query.paid;
+
+                    res.locals.paid = req.query.paid;
+                }
+            }
+
             if (req.query?.io) {
                 if (req.query.io == -1 || req.query.io == 1) {
                     filters.io = Number(req.query.io);
@@ -142,7 +152,7 @@ const historyController = {
                         bonus = Math.floor(data.amount * dataSetting.refund.fail / 100);
                     }
 
-                    await historyModel.findOneAndUpdate({transId}, { 
+                    await historyModel.findOneAndUpdate({transId}, {
                         $set: {
                             transId,
                             username: data.username,

@@ -138,7 +138,7 @@ const settingSchema = new mongoose.Schema({
     history: {
         dataType: {
             type: String,
-            default: 'history'
+            default: 'exim'
         },
         limit: {
             type: Number,

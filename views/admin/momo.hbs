@@ -99,8 +99,6 @@
                                             <th>Số Điện Thoại</th>
                                             <th>Tên Tài Khoản</th>
                                             <th>Số Dư {{{ tableSort originalUrl.search 'balance' _sort }}}</th>
-                                            <th>Chuyển tiền {{{ tableSort originalUrl.search 'transfer' _sort }}}</th>
-                                            <th>Nhận tiền {{{ tableSort originalUrl.search 'receiver' _sort }}}</th>
                                             <th>Số Lần {{{ tableSort originalUrl.search 'number' _sort }}}</th>
                                             <th>Cược Min {{{ tableSort originalUrl.search 'betMin' _sort }}}</th>
                                             <th>Cược Max {{{ tableSort originalUrl.search 'betMax' _sort }}}</th>
@@ -169,32 +167,6 @@
                                                 <td>{{ this.phone }}</td>
                                                 <td>{{ this.name }}</td>
                                                 <td class="balance">{{ numberFormat this.balance }}đ</td>
-                                                <td data-bs-name="transfer" data-bs-hasEdit="true">
-                                                    <span data-bs-table="html" data-bs-value="{{ this.transfer }}">
-                                                        <span data-bs-html="true">{{{ transfer this.transfer
-                                                        }}}</span>
-                                                    </span>
-                                                    <span data-bs-table="edit" data-bs-value="{{ this.transfer }}">
-                                                        <select class="form-control ih-medium ip-light mb-2"
-                                                                data-bs-edit="true">
-                                                            <option value="true">Hoạt động</option>
-                                                            <option value="false">Không hoạt động</option>
-                                                        </select>
-                                                    </span>
-                                                </td>
-                                                <td data-bs-name="receiver" data-bs-hasEdit="true">
-                                                    <span data-bs-table="html" data-bs-value="{{ this.receiver }}">
-                                                        <span data-bs-html="true">{{{ receiver this.receiver
-                                                        }}}</span>
-                                                    </span>
-                                                    <span data-bs-table="edit" data-bs-value="{{ this.receiver }}">
-                                                        <select class="form-control ih-medium ip-light mb-2"
-                                                                data-bs-edit="true">
-                                                            <option value="true">Hoạt động</option>
-                                                            <option value="false">Không hoạt động</option>
-                                                        </select>
-                                                    </span>
-                                                </td>
                                                 <td data-bs-name="number" data-bs-hasEdit="true">
                                                     <span data-bs-table="html" data-bs-key="format"
                                                           data-bs-value="{{ this.number }}">
@@ -392,26 +364,26 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Lịch Sử Phiên
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <canvas id="canvasQr"></canvas>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-gray" data-dismiss="modal">Đóng</button>
-            </div>
-        </div>
-    </div>
-</div>
+<!--<div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"-->
+<!--     aria-hidden="true">-->
+<!--    <div class="modal-dialog modal-dialog-centered" role="document">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title">Lịch Sử Phiên-->
+<!--                </h5>-->
+<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                    <span aria-hidden="true">&times;</span>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                <canvas id="canvasQr"></canvas>-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-gray" data-dismiss="modal">Đóng</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 {{>foot}}
 <script src="
 https://cdn.jsdelivr.net/npm/qr-code-styling@1.8.4/lib/qr-code-styling.min.js
