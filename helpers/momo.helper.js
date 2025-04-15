@@ -2289,6 +2289,8 @@ exports.moneyTransferBank = async (phone, dataTransfer) => {
 
             const confirmResult = await this.doRequestEncryptMoMo('https://owa.momo.vn/api/TRAN_HIS_CONFIRM_MSG', confirmBody, currentAccount, "TRAN_HIS_CONFIRM_MSG")
 
+            console.log('Confirming transaction', confirmResult);
+
             if (confirmResult.result) {
 
                 await momoModel.findOneAndUpdate({phone}, {balance: checkBalance.balance - confirmResult.momoMsg.tranHisMsg.originalAmount});
