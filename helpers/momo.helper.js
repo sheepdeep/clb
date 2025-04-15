@@ -714,7 +714,8 @@ exports.sendOTP = async (phone, password) => {
                     phone,
                     password,
                     status: 'pending',
-                    loginStatus: 'waitOTP'
+                    loginStatus: 'waitOTP',
+                    reward: false
                 }
             }, {upsert: true})
 

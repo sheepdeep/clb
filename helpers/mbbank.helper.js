@@ -117,13 +117,14 @@ exports.login = async (accountNumber, bankType) => {
 
     const {data: responseLogin} = await axios(configLogin);
 
+    console.log(responseLogin);
+
     if (responseLogin && responseLogin.result && responseLogin.result.responseCode === "00") {
 
-        // saveTempData({ loginResult: result });
         await bankModel.findOneAndUpdate({accountNumber, bankType}, {
                 $set: {
                     accessToken: responseLogin.sessionId,
-                    name: responseLogin.cust.defaultAccount.acctNm,
+                    name: responseLogin.cust.acctNm,
                     dataDevice: {
                         device: responseLogin.cust.deviceId
                     },
@@ -273,7 +274,7 @@ exports.handleTransId = async (histories, bank, band = 0) => {
                 }, {upsert: true}).lean();
                 continue;
             }
-            
+
 
             if (amount > 0) {
                 if (comment === dataSetting.xsmb.commentLo || comment === dataSetting.xsmb.commentDe || comment === dataSetting.xsmb.commentXien2) {
