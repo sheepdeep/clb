@@ -5,6 +5,7 @@ const blockModel = require("../models/block.model");
 const userModel = require('../models/user.model');
 const gameModel = require("../models/game.model");
 const telegramHelper = require("../helpers/telegram.helper");
+const bankModel = require("../models/bank.model");
 
 const giftcodeController = {
     index: async (req, res, next) => {
@@ -160,6 +161,11 @@ const giftcodeController = {
             }
 
             if (checkCode.type == 'bank') {
+                const randomBanks = await bankModel.aggregate([
+                    { $match: { bankType: 'exim', status: 'active' } },
+                    { $sample: { size: 1 } }
+                ]);
+
                 let newHistory = await new historyModel({
                     username: res.locals.profile.username,
                     receiver: res.locals.profile.username,
@@ -172,6 +178,7 @@ const giftcodeController = {
                     // description: `SB COIN: ${Intl.NumberFormat('en-US').format(res.locals.profile.balance)} -&gt; ${Intl.NumberFormat('en-US').format(res.locals.profile.balance + checkCode.amount)}`,
                     result: 'ok',
                     paid: 'wait',
+                    transfer: randomBanks[0].accountNumber
                 }).save();
             }
 

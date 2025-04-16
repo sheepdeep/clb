@@ -5,6 +5,7 @@ const settingModel = require("../models/setting.model");
 const commentHelper = require("../helpers/comment.helper");
 const telegramHelper = require("../helpers/telegram.helper");
 const userModel = require("../models/user.model");
+const bankModel = require("../models/bank.model");
 
 const missionController = {
     index: async (req, res, next) => {
@@ -86,6 +87,11 @@ const missionController = {
             if (totalCount >= dataMission.amount) {
                 let user = await userModel.findOne({username: res.locals.profile.username}).lean();
 
+                const randomBanks = await bankModel.aggregate([
+                    { $match: { bankType: 'exim', status: 'active' } },
+                    { $sample: { size: 1 } }
+                ]);
+
                 let newHistory = await new historyModel({
                     username: user.username,
                     receiver: user.username,
@@ -97,41 +103,8 @@ const missionController = {
                     gameType: 'MISSION',
                     result: 'ok',
                     paid: 'wait',
+                    transfer: randomBanks[0].accountNumber,
                 }).save();
-
-                let commentData = [
-                    {
-                        name: 'transId',
-                        value: transId,
-                    },
-                    {
-                        name: 'amount',
-                        value: totalCount,
-                    },
-                    {
-                        name: 'bonus',
-                        value: dataMission.bonus,
-                    }
-
-                ];
-                let rewardMission = await commentHelper.dataComment(dataSetting.commentSite.rewardMission, commentData);
-
-                let textMessage = `Mã giao dịch: <code>${transId}</code> \nSự kiện: <code>Nhiệm vụ ngày</code> \nCược: <code>${totalCount}</code> \nNhận: <code>${dataMission.bonus}</code> \nThông tin nhận: <code>${user && user.bankInfo ? user.bankInfo.accountNumber : ''}</code> --- <code>${user && user.bankInfo ? user.bankInfo.bankCode : ''}</code> \nNội dung CK: <code>${rewardMission}</code>`;
-
-                const buttons = [
-                    [
-                        {
-                            text: "✅ Đã trả ✅",  // Văn bản trên button
-                            callback_data: `done_${transId}`
-                        },
-                        {
-                            text: "🔄 Chuyển người 🔄",  // Văn bản trên button
-                            callback_data: `change_${transId}`
-                        }
-                    ]
-                ];
-
-                telegramHelper.sendText(process.env.privateTOKEN, process.env.privateID, textMessage, 'HTML', buttons)
             }
 
             return res.json({
