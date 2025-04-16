@@ -131,7 +131,7 @@ const bankService = {
             const amountDay = await transferModel.aggregate([{ $match: { transfer: dataBank.accountNumber, createdAt: { $gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' }, count: { $sum: 1 } } }]);
             const amountMonth = await transferModel.aggregate([{ $match: { transfer: dataBank.accountNumber, createdAt: { $gte: moment().startOf('month').toDate(), $lt: moment().endOf('month').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }]);
 
-            let [receiptDay, receiptMonth] = await Promise.all([historyModel.aggregate([{ $match: { receiver: dataBank.accountNumber, io: 1, timeTLS: { $gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }]), historyModel.aggregate([{ $match: { receiver: dataBank.accountNumber, io: 1, timeTLS: { $gte: moment().startOf('month').toDate(), $lt: moment().endOf('month').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }])]);
+            let [receiptDay, receiptMonth] = await Promise.all([historyModel.aggregate([{ $match: { receiver: dataBank.accountNumber, timeTLS: { $gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }]), historyModel.aggregate([{ $match: { receiver: dataBank.accountNumber, timeTLS: { $gte: moment().startOf('month').toDate(), $lt: moment().endOf('month').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }])]);
 
             !all && (dataBank = {
                 accountNumber: dataBank.accountNumber,
