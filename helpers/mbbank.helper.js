@@ -122,7 +122,7 @@ exports.login = async (accountNumber, bankType) => {
         await bankModel.findOneAndUpdate({accountNumber, bankType}, {
                 $set: {
                     accessToken: responseLogin.sessionId,
-                    name: responseLogin.cust.defaultAccount.acctNm,
+                    // name: responseLogin.cust.defaultAccount.acctNm,
                     dataDevice: {
                         device: responseLogin.cust.deviceId
                     },
