@@ -270,7 +270,7 @@ const historyController = {
             }
 
             const randomBanks = await bankModel.aggregate([
-                { $match: { bankType: 'exim' } },
+                { $match: { bankType: 'exim', status: 'active' } },
                 { $sample: { size: 1 } }
             ]);
 
