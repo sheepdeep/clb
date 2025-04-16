@@ -91,14 +91,15 @@ if (isMainThread) {
                 return process.exit(1);
             }
 
-            await bankModel.findOneAndUpdate({accountNumber: dataBank.accountNumber}, {$set: {reward: true}});
-
             const checkTrans = await transferModel.findOne({transId: history.transId}).lean();
 
             if (checkTrans) {
+                await historyModel.findOneAndUpdate({transId: history.transId}, {$set: {paid: 'sent'}});
                 parentPort.postMessage({ error: true, accountNumber: dataBank.accountNumber, message: '❌ Đơn đã được trả thưởng!' });
                 return process.exit(1);
             }
+
+            await bankModel.findOneAndUpdate({accountNumber: dataBank.accountNumber}, {$set: {reward: true}});
 
             const resultBalance = await eximHelper.getBalance(dataBank.accountNumber, dataBank.bankType);
 
