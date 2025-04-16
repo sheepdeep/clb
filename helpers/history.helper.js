@@ -377,6 +377,16 @@ exports.handleDesc = async (description) => {
     let numberUser = 0;  // Initialize with -1 (indicating no user found yet)
     let numberReward = 0;  // Initialize with -1 (indicating no reward found yet)
 
+    if (description.includes("-")) {
+        const desc = description.split('-');
+        const desc = desc[1].split(' ');
+
+        return {
+            username: desc[0],
+            comment: desc[1].toUpperCase().replace(/[.-]/g, '')
+        };
+    }
+
     // Loop through the words in desc
     if (desc[0] == 'CUSTOMER') {
 
