@@ -86,13 +86,13 @@ if (isMainThread) {
         try {
             const history = await historyModel.findOne({transfer: dataBank.accountNumber, paid: 'wait'}).lean();
 
-            await bankModel.findOneAndUpdate({accountNumber: dataBank.accountNumber}, {$set: {reward: true}});
-
             if (!history) {
                 parentPort.postMessage({error: true, accountNumber: dataBank.accountNumber, message: 'Không thấy đơn để chuyển tiền!'});
                 return process.exit(1);
             }
 
+            await bankModel.findOneAndUpdate({accountNumber: dataBank.accountNumber}, {$set: {reward: true}});
+            
             const checkTrans = await transferModel.findOne({transId: history.transId}).lean();
 
             if (checkTrans) {
