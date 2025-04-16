@@ -122,6 +122,7 @@ if (isMainThread) {
             const user = await userModel.findOne({ username: history.username });
             if (!user || !user.bankInfo) {
                 await historyModel.findOneAndUpdate({transId: history.transId}, {$set: {paid: 'bankerror'}});
+                await bankModel.findOneAndUpdate({accountNumber: dataBank.accountNumber}, {$set: {reward: false, otp: null}});
                 parentPort.postMessage({ error: true, accountNumber: dataBank.accountNumber, message: '❌ Không tìm thấy thông tin ngân hàng của user!' });
                 return process.exit(1);
             }
