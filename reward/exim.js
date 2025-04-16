@@ -113,6 +113,7 @@ if (isMainThread) {
             }
 
             if ((resultBalance.resultDecode.data.totalCurrentAmount - 50000) < history.bonus) {
+                await bankModel.findOneAndUpdate({accountNumber: dataBank.accountNumber}, {$set: {reward: false, otp: null, status: 'pending'}});
                 parentPort.postMessage({ error: true, accountNumber: dataBank.accountNumber, message: '❌ Hết tiền trả thưởng!' });
                 await telegramHelper.sendText(process.env.privateTOKEN, process.env.privateID, `Eximbank [${dataBank.accountNumber}] [Hết tiền trả thưởng]`);
                 return process.exit(1);
@@ -182,7 +183,7 @@ if (isMainThread) {
                     }
                 }
             } else {
-                await bankModel.findOneAndUpdate({accountNumber: dataBank.accountNumber}, {$set: {reward: falsez, otp: null}});
+                await bankModel.findOneAndUpdate({accountNumber: dataBank.accountNumber}, {$set: {reward: false, otp: null}});
                 parentPort.postMessage({ error: true, accountNumber: dataBank.accountNumber, message: `💸 Lỗi tạo đơn với số tiền ${Intl.NumberFormat('en-US').format(history.bonus || 0)} VNĐ!` });
                 return process.exit(1);
             }

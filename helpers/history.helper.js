@@ -136,11 +136,17 @@ exports.handleTransId = async (transId) => {
 
         let user = await userModel.findOne({username: history.username}).lean();
 
+        const randomBanks = await bankModel.aggregate([
+            { $match: { bankType: 'exim', status: 'active' } },
+            { $sample: { size: 1 } }
+        ]);
+
         await historyModel.findOneAndUpdate({transId: history.transId}, {
                 $set: {
                     bonus: Math.floor(history.amount * bonus),
                     paid,
                     result,
+                    transfer: randomBanks[0].accountNumber,
                 }
             })
 
@@ -173,6 +179,7 @@ exports.handleTransId = async (transId) => {
                         result: 'refund',
                         paid: 'wait',
                         comment: historyOld.comment,
+                        transfer: randomBanks[0].accountNumber,
                         description: `Hoàn tiền đơn thua ${historyOld.transId}`,
                     }
                 }, {upsert: true}).lean();
