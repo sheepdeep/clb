@@ -127,13 +127,13 @@ const momoService = {
     dataInfo: async (dataPhone, all) => {
         try {
             let { amountDay, amountMonth } = await historyService.moneyCount(dataPhone.phone);
-            let [receiptDay, receiptMonth] = await Promise.all([historyModel.aggregate([{ $match: { phone: dataPhone.phone, io: 1, timeTLS: { $gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }]), historyModel.aggregate([{ $match: { phone: dataPhone.phone, io: 1, timeTLS: { $gte: moment().startOf('month').toDate(), $lt: moment().endOf('month').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }])]);
+            let [receiptDay, receiptMonth] = await Promise.all([historyModel.aggregate([{ $match: { accountNumber: dataPhone.accountNumber, io: 1, timeTLS: { $gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }]), historyModel.aggregate([{ $match: { phone: dataPhone.phone, io: 1, timeTLS: { $gte: moment().startOf('month').toDate(), $lt: moment().endOf('month').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }])]);
 
             !all && (dataPhone = {
                 phone: dataPhone.phone,
                 name: dataPhone.name,
             });
-            
+
             return ({
                 ...dataPhone,
                 amountDay,

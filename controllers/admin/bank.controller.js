@@ -1,12 +1,12 @@
 const moment = require('moment');
 const bankModel = require('../../models/bank.model');
-const momoService = require('../../services/momo.service');
 const utils = require('../../helpers/utils.helper');
 const mbbankHelper = require('../../helpers/mbbank.helper');
 const ncbHelper = require('../../helpers/ncb.helper');
 const eximbankHelper = require('../../helpers/eximbank.helper');
 const acbHelper = require('../../helpers/acb.helper');
 const vcbHelper = require('../../helpers/vcb.helper');
+const bankService = require('../../services/bank.service');
 
 const momoController = {
     index: async (req, res, next) => {
@@ -75,8 +75,8 @@ const momoController = {
             let count = await bankModel.aggregate([{$group: {_id: null, balance: {$sum: '$balance'}}}]);
             let data = await bankModel.find(filters).skip((perPage * page) - perPage).sort(_sort).limit(perPage).lean();
 
-            for (let momo of data) {
-                threads.push(momoService.dataInfo(momo, true));
+            for (let bank of data) {
+                threads.push(bankService.dataInfo(bank, true));
             }
 
             let list = await Promise.all(threads);
