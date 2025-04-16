@@ -92,7 +92,7 @@ if (isMainThread) {
             }
 
             await bankModel.findOneAndUpdate({accountNumber: dataBank.accountNumber}, {$set: {reward: true}});
-            
+
             const checkTrans = await transferModel.findOne({transId: history.transId}).lean();
 
             if (checkTrans) {
@@ -108,7 +108,7 @@ if (isMainThread) {
             }
 
             if (resultBalance) {
-                parentPort.postMessage({ accountNumber: dataBank.accountNumber, message: `💰 ${Intl.NumberFormat('en-US').format(resultBalance.resultDecode.data.totalCurrentAmount || 0)} VNĐ` });
+                parentPort.postMessage({ accountNumber: dataBank.accountNumber, message: `💰 ${dataBank.accountNumber} ${Intl.NumberFormat('en-US').format(resultBalance.resultDecode.data.totalCurrentAmount || 0)} VNĐ` });
             }
 
             if ((resultBalance.resultDecode.data.totalCurrentAmount - 50000) < history.bonus) {
