@@ -121,13 +121,14 @@ if (isMainThread) {
 
             const user = await userModel.findOne({ username: history.username });
             if (!user || !user.bankInfo) {
+                await historyModel.findOneAndUpdate({transId: history.transId}, {$set: {paid: 'bankerror'}});
                 parentPort.postMessage({ error: true, accountNumber: dataBank.accountNumber, message: '❌ Không tìm thấy thông tin ngân hàng của user!' });
                 return process.exit(1);
             }
 
             const checkBank = oldBank.data.find(bank => bank.bin === user.bankInfo.bankCode);
             if (!checkBank) {
-                parentPort.postMessage({ error: true, accountNumber: dataBank.accountNumber, message: `❌ Không tìm thấy bankCode: ${user.bankInfo.bankCode}` });
+                parentPort.postMessage({ error: true, accountNumber: dataBank.accountNumber, message: `❌ Không tìm thấy bankCode` });
                 return process.exit(1);
             }
 
