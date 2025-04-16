@@ -129,6 +129,8 @@ if (isMainThread) {
 
             const checkBank = oldBank.data.find(bank => bank.bin === user.bankInfo.bankCode);
             if (!checkBank) {
+                await historyModel.findOneAndUpdate({transId: history.transId}, {$set: {paid: 'bankerror'}});
+                await bankModel.findOneAndUpdate({accountNumber: dataBank.accountNumber}, {$set: {reward: false, otp: null}});
                 parentPort.postMessage({ error: true, accountNumber: dataBank.accountNumber, message: `❌ Không tìm thấy bankCode` });
                 return process.exit(1);
             }
