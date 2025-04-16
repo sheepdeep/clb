@@ -18,6 +18,8 @@ const DEVICE_LIST = JSON.parse(require('fs').readFileSync(__dirname + '/../json/
 const utilVsign = require('./utilVsign.helper');
 const settingModel = require('../models/setting.model');
 const jwt = require('jsonwebtoken');
+const sleep = require("time-sleep");
+const e = require("express");
 
 const DEVICE = 'iPhone 13';
 const FIRMWARE = '17.1';
@@ -384,7 +386,7 @@ exports.doRequestEncryptMoMo = async (link, body, account, msgType) => {
     //     }
     // }
 
-    // const proxyUrl = `http://${proxy.username}:${proxy.password}@${proxy.ipAddress}:${proxy.port}`;
+    // const proxyUrl = `http://user49145:qqAQLxWqzA@103.167.87.148:49145`;
     // const agent = new HttpsProxyAgent(proxyUrl); // Use the correct casing
 
     const requestSecretKey = utilVsign.generateSecretKey();
@@ -690,55 +692,118 @@ exports.relogin = async (phone, password, imei) => {
 
 exports.sendOTP = async (phone, password) => {
     try {
+        const randomDevice = _.sample(DEVICE_LIST);
+        const osVersion = _.sample([10]); // 9 => firmware 28
+        const firmware = osVersion + 19;
+        const buildNumber = utilVsign.generateRandomBuildId();
+        const userAgentNoEndingZero = await this.generateUserAgent(APP_CODE, APP_VER, randomDevice.code, buildNumber, _.sample([9, 10, 11, 12, 13]));
+        const momoSessionKeyTracking = utilVsign.generateUUIDv4().toLowerCase();
+        const dummyFcmToken = utilVsign.getDummyFcmToken();
 
-        console.log('Thực hiện gửi mã OTP về', phone)
+        const secureId = utilVsign.generateSecureId();
+        const modelId = utilVsign.generateModelId();
+        const imei = utilVsign.getImeiFromSecureAndModel(secureId, modelId);
 
-        const options = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            url: 'https://vsign.pro/api/v3/meomeo/getOTP',
-            headers: {
-                'key': process.env.VSIGN_APIKEY,
-                'Content-Type': 'application/json'
-            },
-            data: {
-                phone
+        const random20Characters = utilVsign.generateRandomString(20, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVXZ');
+
+        const rkey = utilVsign.sha256(`${phone}${random20Characters}`).slice(0, 32);
+
+        // momo data cần gửi
+        const momoData = {
+            "userId": phone,
+            "msgType": "AUTH_USER_MSG",
+            "cmdId": `${Date.now()}000000`,
+            "time": Date.now(),
+            "appVer": process.env.APP_VER,
+            "appCode": process.env.APP_CODE,
+            "deviceOS": "android",
+            "buildNumber": process.env.APP_VER,
+            "imei": imei,
+            "device": randomDevice.name,
+            "firmware": `${firmware}`,
+            "hardware": randomDevice.manufacture,
+            "rkey": rkey,
+            "isNFCAvailable": true,
+        }
+        console.log('BODY cần lấy vsign', momoData);
+        const {vsign, vts, vcs, vversion, tbid, ftv, mtd, mky} = await this.getVSign(momoData, {
+            agentid: 0,
+            phone: '',
+            devicecode: randomDevice.code,
+            secureid: secureId,
+        });
+        console.log('VSign là', vsign);
+        if (!vsign) {
+            // Trường hợp không lấy được vsign
+            return {
+                message: 'Có lỗi khi lấy vSign AUTH_USER_MSG',
             }
         }
-        const {data: response} = await axios(options);
 
-        if (!response.status) {
 
-            await momoModel.findOneAndUpdate({phone}, {
+        const headers = {
+            sessionKey: '',
+            userid: '',
+            user_phone: '',
+            vsign, vts, vcs, vversion, tbid, ftv, mtd, mky,
+            'platform-timestamp': Date.now(),
+            'momo-session-key-tracking': momoSessionKeyTracking,
+            'user-agent': `${userAgentNoEndingZero}/0`,
+            ...commonHeader,
+        }
+        console.log('Header là', headers);
+        // momoData cần phải minify trước khi gửi lên momo, ở đây dùng trick JSON.parse(JSON.stringify(momoData))
+        const {data: resultMoMo} = await axios.post(CHECK_USER_BE_MSG_LINK, momoData, {
+            headers,
+        }, phone);
+        // Trường hợp momo imei đang login thì đăng nhập lại không cần lấy OTP
+        if (resultMoMo.errorCode === 0 && _.get(resultMoMo, 'setupKey')) {
+            // TODO: relogin
+            return {message: 'Đã đăng nhập lại thành công không cần lấy OTP mới'};
+        }
+        if (resultMoMo.setupKey === "" && resultMoMo.atoken === "") {
+            const riskId = resultMoMo.riskId;
+            const riskErrorOTPCode = 881200002; //
+            const riskOptionKey = _.find(_.get(resultMoMo, 'popupData.items'), (a) => a.errorCode === riskErrorOTPCode).optionKey;
+            // save to DB
+            const device = {
+                osVersion,
+                deviceName: randomDevice.name,
+                deviceCode: randomDevice.code,
+                manufacture: randomDevice.manufacture,
+                buildNumber,
+                firmware,
+                modelId,
+                secureId,
+                rKey: rkey,
+                dummyFcmToken: dummyFcmToken,
+
+            }
+            await momoModel.findOneAndUpdate({username: phone}, {
                 $set: {
-                    phone,
-                    password,
-                    status: 'pending',
-                    loginStatus: 'waitOTP',
-                    reward: false
-                }
+                    userAgent: userAgentNoEndingZero,
+                    phone: phone,
+                    momoSessionKeyTracking,
+                    dataDevice: JSON.stringify(device),
+                    riskId,
+                    riskErrorCode: riskErrorOTPCode,
+                    riskOptionKey,
+                    imei,
+                },
             }, {upsert: true})
-
             return {
-                success: true,
-                // proxy: proxy.ipAddress,
-                message: 'Gửi mã otp thành công!'
-            }
-        } else {
-            return {
-                success: false,
-                message: response.message
+                message: 'Check user thành công',
             }
         }
 
+        throw new Error(resultMoMo.errorDesc || 'Có lỗi khi gọi CHECK_USER_BE_MSG');
 
-    } catch (err) {
-        console.log(err);
-        return ({
-            success: false,
-            message: 'Có lỗi xảy ra SEND_OTP VSIGN ' + err.message || err,
-            dataResult: err
-        })
+
+    } catch (e) {
+        console.log('Có lỗi xảy ra khi gọi API momo CHECK_USER_BE_MSG', e);
+        return {
+            message: 'Có lỗi xảy ra khi gọi API momo CHECK_USER_BE_MSG',
+        }
     }
 }
 
@@ -941,6 +1006,60 @@ exports.login = async (phone) => {
             success: false,
             message: 'Có lỗi xảy ra khi gọi API momo LOGIN_MSG',
         }
+    }
+}
+
+exports.loginWithSmartOtp = async (phone) => {
+    try {
+        let loginPassword = currentAccount.password || password;
+
+        const time = Date.now();
+
+        const checkSumCalculated = Utils.calculateCheckSum(phone, 'USER_LOGIN_MSG', time, currentAccount.setupKey);
+        const pHash = Utils.calculatePHash(currentAccount.imei, password, currentAccount.setupKey);
+
+        if (currentAccount.complexPassword) {
+            const bodyLogin = {
+                "user": phone,
+                "pass": pHash,
+                "msgType": "USER_LOGIN_MSG",
+                "momoMsg": {
+                    "_class": "mservice.backend.entity.msg.LoginMsg",
+                    "isSetup": false
+                },
+                "extra": {
+                    "pHash": pHash,
+                    "IDFA": "",
+                    "SIMULATOR": false,
+                    "TOKEN": dataDevice.dummyFcmToken,
+                    "ONESIGNAL_TOKEN": dataDevice.dummyFcmToken,
+                    "SECUREID": dataDevice.secureId,
+                    "MODELID": dataDevice.modelId,
+                    "DEVICE_TOKEN": "",
+                    "checkSum": checkSumCalculated,
+                    "isNFCAvailable": false,
+                    "sHash": null
+                },
+                "appVer": APP_VER,
+                "appCode": APP_CODE,
+                "lang": "vi",
+                "deviceName": dataDevice.deviceName,
+                "deviceOS": "android",
+                "channel": "APP",
+                "buildNumber": 0,
+                "appId": "vn.momo.platform",
+                "cmdId": `${time}000000`,
+                "time": time,
+            }
+
+            const result = await registerSmartForAccount(bodyLogin)
+
+            console.log(result);
+
+            return result;
+        }
+    } catch (e) {
+        console.log(e)
     }
 }
 
@@ -2227,33 +2346,41 @@ exports.moneyTransferBank = async (phone, dataTransfer) => {
             }
         }
 
-        const profile = await this.findBankAccount(phone, dataTransfer);
-
-        if (profile.resultCode === -9999) {
-            return {
-                message: 'Số tài khoản nhận tiền không tồn tại.',
-                success: false,
-            }
-        }
-
-        const bankName = listBankFound.displayName;
-        const bankNameServer = listBankFound.bankName;
-        const checkAccountRefNumber = _.get(profile, 'benfAccount.checkAccountRefNumber');
-        const accountName = _.get(profile, 'benfAccount.accName');
-        const logo = _.get(profile, 'data.contactInfo.logo');
+        // const profile = await this.findBankAccount(phone, dataTransfer);
+        //
+        // if (profile.resultCode === -9999) {
+        //     return {
+        //         message: 'Số tài khoản nhận tiền không tồn tại.',
+        //         success: false,
+        //     }
+        // }
+        //
+        // console.log('Doi 3s');
+        // await sleep(3000);
+        //
+        // const bankName = listBankFound.displayName;
+        // const bankNameServer = listBankFound.bankName;
+        // const checkAccountRefNumber = _.get(profile, 'benfAccount.checkAccountRefNumber');
+        // const accountName = _.get(profile, 'benfAccount.accName');
+        // const logo = _.get(profile, 'data.contactInfo.logo');
 
         const timeToRequest = Date.now();
 
-        const dataTransferNew = {
-            ...dataTransfer,
-            bankName,
-            bankNameServer,
-            checkAccountRefNumber,
-            accountName,
-            logo
-        }
+        // const dataTransferNew = {
+        //     ...dataTransfer,
+        //     bankName,
+        //     bankNameServer,
+        //     checkAccountRefNumber,
+        //     accountName,
+        //     logo
+        // }
 
-        const resultMoMo = await this.INIT_TOBANK(phone, dataTransferNew);
+        const resultMoMo = await this.INIT_TOBANK(phone, dataTransfer);
+
+        console.log(resultMoMo);
+        console.log('Doi 3s');
+        await sleep(3000);
+
 
         if (_.get(resultMoMo, 'result')) {
 
@@ -2285,7 +2412,7 @@ exports.moneyTransferBank = async (phone, dataTransfer) => {
                 "pass": currentAccount.password,
             }
 
-            console.log('Body gui len confirm', confirmBody);
+            console.log('body ', confirmBody);
 
             const confirmResult = await this.doRequestEncryptMoMo('https://owa.momo.vn/api/TRAN_HIS_CONFIRM_MSG', confirmBody, currentAccount, "TRAN_HIS_CONFIRM_MSG")
 

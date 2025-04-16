@@ -1,5 +1,5 @@
 const moment = require('moment');
-const bankModel = require('../models/bank.model');
+const momoModel = require('../models/momo.model');
 const historyModel = require('../models/history.model');
 const historyService = require('../services/history.service');
 
@@ -7,23 +7,27 @@ const momoService = {
     getPhone: async (filter, limit = 5) => {
         let list = [];
         let threads = [];
-        let phones = await bankModel.find({bankType: 'mbb'}, { _id: 0, bankType: 1, accountNumber: 1, name: 1, bonus: 1, number: 1, betMin: 1, betMax: 1, status: 1 }).limit(limit).sort({ betMin: 'asc' }).lean();
+        let phones = await momoModel.find(filter, { _id: 0, name: 1, phone: 1, bonus: 1, limitDay: 1, limitMonth: 1, number: 1, betMin: 1, betMax: 1, status: 1 }).limit(limit).sort({ betMin: 'asc' }).lean();
 
-        let data = await Promise.all(phones);
+        phones.map(obj => threads.push(historyService.moneyCount(obj.phone)));
+
+        let data = await Promise.all(threads);
 
         for (let momo of data) {
             list.push({
                 ...momo,
+                ...phones.find(obj => obj.phone == momo.phone)
             })
         }
 
         return list;
     },
-    phoneRunTransfer: async (limit = 5) => await momoModel.find({ transfer: true, status: 'active', loginStatus: 'active' }).limit(limit).sort({ betMin: 'asc' }),
-    phoneRun: async (limit = 5) => await momoModel.find({ receiver: true, status: 'active', loginStatus: 'active' }).limit(limit).sort({ betMin: 'asc' }),
+    phoneRun: async (limit = 5) => await momoModel.find({ status: 'active', loginStatus: 'active' }).limit(limit).sort({ betMin: 'asc' }),
     limitBet: async (phone, amount) => {
         try {
-            let dataPhone = await bankModel.findOne({ phone });
+            let dataPhone = await momoModel.findOne({ phone });
+
+            console.log(`${phone}: ${amount} > ${dataPhone.betMax}: ${amount > dataPhone.betMax} hoặc ${amount} < ${dataPhone.betMin}: ${amount < dataPhone.betMin}`)
 
             return amount > dataPhone.betMax || amount < dataPhone.betMin;
         } catch (err) {
@@ -65,7 +69,7 @@ const momoService = {
             }
 
             if (oldType == 'limit') {
-                let dataPhone = await momoModel.findOne({  transfer: true, status: 'active', loginStatus: 'active' });
+                let dataPhone = await momoModel.findOne({ status: 'active', loginStatus: 'active' });
 
                 if (!dataPhone) {
                     return;
@@ -80,7 +84,6 @@ const momoService = {
                         $match: {
                             status: 'active',
                             loginStatus: 'active',
-                            transfer: true,
                             amount: { $gte: amount }
                         }
                     },
@@ -116,28 +119,6 @@ const momoService = {
 
                 return await momoService.limitCheck(dataPhone[0].phone, amount) == 0 ? dataPhone[0].phone : await momoService.phoneActive(oldType, amount);
             }
-
-            if (oldType == 'transfer') {
-                let dataPhone = await momoModel.aggregate([
-                    {
-                        $match: {
-                            status: 'active',
-                            loginStatus: 'active',
-                            transfer: true,
-                            amount: { $gte: amount }
-                        }
-                    },
-                    {
-                        $sample: { size: 1 }
-                    }
-                ]);
-
-                if (!dataPhone.length) {
-                    return;
-                }
-
-                return await momoService.limitCheck(dataPhone[0].phone, amount) == 0 ? dataPhone[0].phone : await momoService.phoneActive(oldType, amount);
-            }
         } catch (err) {
             console.log(err);
             return;
@@ -145,12 +126,12 @@ const momoService = {
     },
     dataInfo: async (dataPhone, all) => {
         try {
-            let { amountDay, amountMonth } = await historyService.moneyCount(dataPhone.accountNumber);
-            let [receiptDay, receiptMonth] = await Promise.all([historyModel.aggregate([{ $match: { receiver: dataPhone.accountNumber, bot: false, timeTLS: { $gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }]), historyModel.aggregate([{ $match: { receiver: dataPhone.accountNumber, bot: false, timeTLS: { $gte: moment().startOf('month').toDate(), $lt: moment().endOf('month').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }])]);
+            let { amountDay, amountMonth } = await historyService.moneyCount(dataPhone.phone);
+            let [receiptDay, receiptMonth] = await Promise.all([historyModel.aggregate([{ $match: { phone: dataPhone.phone, io: 1, timeTLS: { $gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }]), historyModel.aggregate([{ $match: { phone: dataPhone.phone, io: 1, timeTLS: { $gte: moment().startOf('month').toDate(), $lt: moment().endOf('month').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }])]);
 
             !all && (dataPhone = {
-                accountNumber: dataPhone.accountNumber,
-                // name: dataPhone.name,
+                phone: dataPhone.phone,
+                name: dataPhone.name,
             });
             
             return ({

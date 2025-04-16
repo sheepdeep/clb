@@ -122,7 +122,7 @@ const momoController = {
                 })
             }
 
-            res.json(await momoHelper.refreshToken(phone));
+            console.log(await momoHelper.login(phone));
         } catch (err) {
             next(err);
         }
