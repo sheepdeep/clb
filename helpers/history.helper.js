@@ -372,6 +372,7 @@ exports.handleNumberXsmb = async (comment) => {
 };
 
 exports.handleDesc = async (description) => {
+
     const desc = description.split(' ');
 
     let numberUser = 0;  // Initialize with -1 (indicating no user found yet)

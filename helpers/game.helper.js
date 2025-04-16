@@ -1,5 +1,5 @@
 const gameService = require('../services/game.service');
-const momoService = require('../services/momo.service');
+const bankService = require('../services/bank.service');
 const rewardModel = require('../models/reward.model');
 const settingModel = require('../models/setting.model');
 
@@ -84,7 +84,7 @@ exports.checkWin = async (phone, amount, transId, comment) => {
         result = win ? 'win' : 'lose';
         paid = win ? 'wait' : 'done';
         !win && (won = true);
-        await momoService.limitBet(phone, amount) && (result = "exceed");
+        await bankService.limitBet(phone, amount) && (result = "exceed");
 
         return {
             gameName,

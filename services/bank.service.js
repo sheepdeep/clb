@@ -26,7 +26,7 @@ const bankService = {
     phoneRun: async (limit = 5) => await bankModel.find({ status: 'active', loginStatus: 'active' }).limit(limit).sort({ betMin: 'asc' }),
     limitBet: async (phone, amount) => {
         try {
-            let dataPhone = await bankModel.findOne({ phone });
+            let dataPhone = await bankModel.findOne({ accountNumber: phone });
 
             console.log(`${phone}: ${amount} > ${dataPhone.betMax}: ${amount > dataPhone.betMax} hoặc ${amount} < ${dataPhone.betMin}: ${amount < dataPhone.betMin}`)
 
