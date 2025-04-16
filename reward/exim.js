@@ -181,7 +181,12 @@ if (isMainThread) {
                         }
                     }
                 }
+            } else {
+                await bankModel.findOneAndUpdate({accountNumber: dataBank.accountNumber}, {$set: {reward: falsez, otp: null}});
+                parentPort.postMessage({ error: true, accountNumber: dataBank.accountNumber, message: `💸 Lỗi tạo đơn với số tiền ${Intl.NumberFormat('en-US').format(history.bonus || 0)} VNĐ!` });
+                return process.exit(1);
             }
+
 
 
         } catch (err) {

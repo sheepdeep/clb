@@ -580,10 +580,9 @@ exports.initTransfer = async (accountNumber, bankType, dataTransfer) => {
             }
         }
     } catch (e) {
-        console.log(e);
         return {
             success: false,
-            message: 'Đăng nhập thất bại'
+            message: 'Tạo đơn tất bại'
         };
     }
 }
