@@ -4,7 +4,7 @@ const historyModel = require('../models/history.model');
 const historyService = require('../services/history.service');
 const transferModel = require('../models/transfer.model');
 
-const momoService = {
+const bankService = {
     getPhone: async (filter, limit = 5) => {
         let list = [];
         let threads = [];
@@ -129,12 +129,12 @@ const momoService = {
         try {
             const date = new Date();
             const amountDay = await transferModel.aggregate([{ $match: { transfer: dataBank.accountNumber, createdAt: { $gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' }, count: { $sum: 1 } } }]);
-            const amountMonth = await transferModel.aggregate([{ $match: { transfer: dataBank.accountNumber, createdAt: { $gte: new Date(date.getFullYear(), (month || date.getMonth()), 1), $lt: new Date(date.getFullYear(), (month || date.getMonth()) + 1, 0) } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }]);
+            const amountMonth = await transferModel.aggregate([{ $match: { transfer: dataBank.accountNumber, createdAt: { $gte: moment().startOf('month').toDate(), $lt: moment().endOf('month').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }]);
 
             let [receiptDay, receiptMonth] = await Promise.all([historyModel.aggregate([{ $match: { receiver: dataBank.accountNumber, io: 1, timeTLS: { $gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }]), historyModel.aggregate([{ $match: { receiver: dataBank.accountNumber, io: 1, timeTLS: { $gte: moment().startOf('month').toDate(), $lt: moment().endOf('month').toDate() } } }, { $group: { _id: null, amount: { $sum: '$amount' } } }])]);
 
             !all && (dataBank = {
-                phone: dataBank.phone,
+                accountNumber: dataBank.accountNumber,
                 name: dataBank.name,
             });
 
@@ -158,4 +158,4 @@ const momoService = {
     }
 }
 
-module.exports = momoService;
+module.exports = bankService;
