@@ -379,11 +379,11 @@ exports.handleDesc = async (description) => {
 
     if (description.includes("-")) {
         const desc = description.split('-');
-        const desc = desc[1].split(' ');
+        const newDesc = desc[1].split(' ');
 
         return {
-            username: desc[0],
-            comment: desc[1].toUpperCase().replace(/[.-]/g, '')
+            username: newDesc[0],
+            comment: newDesc[1].toUpperCase().replace(/[.-]/g, '')
         };
     }
 
