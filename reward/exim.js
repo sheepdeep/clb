@@ -21,6 +21,8 @@ if (isMainThread) {
 
             if (banks.length === 0) {
                 console.log('❗Không có tài khoản nào.');
+                await sleep(3000);
+                await startWorkers();
                 return;
             }
 
