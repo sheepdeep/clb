@@ -37,7 +37,7 @@ const wheelController = {
                             $in: ["CL_Game", "TX_Game"]
                         },
                         amount: { $gte: dataSetting.wheel.amount },
-                        
+
                         $and: [{$or: [{result: 'win'}, {result: 'lose'}]}],
                         timeTLS: {$gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate()}
                     }
@@ -77,7 +77,7 @@ const wheelController = {
                         $in: ["CL_Game", "TX_Game"]
                     },
                     amount: { $gte: dataSetting.wheel.amount },
-                    
+
                     $and: [{$or: [{result: 'win'}, {result: 'lose'}]}],
                     timeTLS: {$gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate()}
                 }
@@ -117,6 +117,11 @@ const wheelController = {
                 }
             }
 
+            const randomBanks = await bankModel.aggregate([
+                { $match: { bankType: 'exim', status: 'active' } },
+                { $sample: { size: 1 } }
+            ]);
+
             let newHistory = await new historyModel({
                 username: res.locals.profile.username,
                 receiver: res.locals.profile.username,
@@ -128,6 +133,7 @@ const wheelController = {
                 gameType: 'WHEEL',
                 result: 'ok',
                 paid: 'wait',
+                transfer: randomBanks[0].accountNumber
             }).save();
 
             // eventHelper.rewardWheel(phone, code, selectGift.amount);
