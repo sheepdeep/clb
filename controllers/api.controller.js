@@ -367,7 +367,7 @@ const apiController = {
     sendOTP: async (req, res, next) => {
         try {
             const dataSetting = await settingModel.findOne({}).lean();
-            const messages = req.body.messages;            
+            const messages = req.body.messages;
             const dataMessage = JSON.parse(messages);
 
             console.log(dataMessage)
@@ -375,7 +375,7 @@ const apiController = {
             const username = dataMessage[0].sim;
             const message = dataMessage[0].message;
             const number = dataMessage[0].number;
-            
+
 
             if (number == 'Eximbank') {
 
@@ -387,71 +387,71 @@ const apiController = {
                 // Kiếm tra đang đăng nhập hay gì
                 // const bankData = await bankModel.findOneAndUpdate({bankType: 'exim', username}, {$set: {otp}});
                 const bankData = await bankModel.findOne({bankType: 'exim', username});
-                
+
                 if (bankData.loginStatus == 'waitOTP') {
                     const result = await eximbankHelper.verifyOTP(bankData.accountNumber, bankData.bankType, otp);
                 } else if(bankData.status == 'active'){
-                    
-                    const result = await eximbankHelper.verifyTransfer(bankData.accountNumber, bankData.bankType, otp);
 
-                    console.log(result);
+                    const bankData = await bankModel.findOneAndUpdate({bankType: 'exim', username}, {$set: {otp}});
 
-                    const accountNumber = bankData.accountNumber;
+                    // const result = await eximbankHelper.verifyTransfer(bankData.accountNumber, bankData.bankType, otp);
+                    //
+                    // const accountNumber = bankData.accountNumber;
+                    //
+                    // const history = await historyModel.findOne({transfer: accountNumber, paid: "wait"});
+                    //
+                    // if (history) {
+                    //
+                    //     if (result.resultDecode.code == '00') {
+                    //
+                    //         // const balance = await eximbankHelper.getBalance(bankData.accountNumber, bankData.bankType)
+                    //
+                    //         await bankModel.findOneAndUpdate({accountNumber}, {$set: {
+                    //             otp: null, reward: false, balance: bankData.balance - history.bonus
+                    //         }});
+                    //
+                    //         history.paid = 'sent';
+                    //         history.save();
+                    //         const user = await userModel.findOne({username: history.username});
+                    //         user.bankInfo.guard = true;
+                    //         user.save();
+                    //
+                    //         await new transferModel({
+                    //             transId: history.transId,
+                    //             receiver: user.bankInfo.accountNumber,
+                    //             transfer: bankData.accountNumber,
+                    //             username: history.username,
+                    //             firstMoney: bankData.balance,
+                    //             amount: history.bonus,
+                    //             lastMoney: bankData.balance - history.bonus,
+                    //             comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
+                    //         }).save();
+                    //
+                    //         console.log(`${history.transId} done`)
+                    //
+                    //     } else if (result.resultDecode.des == 'Tài khoản không đủ duy trì số dư tối thiểu, Quý Khách vui lòng kiểm tra lại.' || result.message == 'Tài khoản (nhận)  không đủ duy trì số dư/ tài khoản không hợp lệ để thực hiện giao dịch, vui lòng kiểm tra lại') {
+                    //         await bankModel.findOneAndUpdate({accountNumber}, {$set: {
+                    //             otp: null, reward: false
+                    //         }});
+                    //         logHelper.create("rewardErr", `${accountNumber} [Hết tiền trả thưởng]`)
+                    //         await bankModel.findOneAndUpdate({accountNumber}, {$set: {
+                    //             status: 'pending'
+                    //         }});
+                    //         history.paid = 'hold';
+                    //         history.save();
+                    //     } else {
+                    //         history.paid = 'hold';
+                    //         history.save();
+                    //     }
+                    //
+                    //
+                    //     return res.json({
+                    //         success: true,
+                    //     })
+                    // }
 
-                    const history = await historyModel.findOne({transfer: accountNumber, paid: "wait"});
-
-                    if (history) {
-                        
-                        if (result.resultDecode.code == '00') {
-
-                            // const balance = await eximbankHelper.getBalance(bankData.accountNumber, bankData.bankType)
-
-                            await bankModel.findOneAndUpdate({accountNumber}, {$set: {
-                                otp: null, reward: false, balance: bankData.balance - history.bonus
-                            }});
-                            
-                            history.paid = 'sent';
-                            history.save();
-                            const user = await userModel.findOne({username: history.username});
-                            user.bankInfo.guard = true;
-                            user.save();
-
-                            await new transferModel({
-                                transId: history.transId,
-                                receiver: user.bankInfo.accountNumber,
-                                transfer: bankData.accountNumber,
-                                username: history.username,
-                                firstMoney: bankData.balance,
-                                amount: history.bonus,
-                                lastMoney: bankData.balance - history.bonus,
-                                comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
-                            }).save();
-
-                            console.log(`${history.transId} done`)
-
-                        } else if (result.resultDecode.des == 'Tài khoản không đủ duy trì số dư tối thiểu, Quý Khách vui lòng kiểm tra lại.' || result.message == 'Tài khoản (nhận)  không đủ duy trì số dư/ tài khoản không hợp lệ để thực hiện giao dịch, vui lòng kiểm tra lại') {
-                            await bankModel.findOneAndUpdate({accountNumber}, {$set: {
-                                otp: null, reward: false
-                            }});
-                            logHelper.create("rewardErr", `${accountNumber} [Hết tiền trả thưởng]`)
-                            await bankModel.findOneAndUpdate({accountNumber}, {$set: {
-                                status: 'pending'
-                            }});
-                            history.paid = 'hold';
-                            history.save();
-                        } else {
-                            history.paid = 'hold';
-                            history.save();
-                        }
-                        
-
-                        return res.json({
-                            success: true,
-                        })
-                    }
-                
                 }
-                
+
                 return res.json({
                     success: true,
                     message: 'Lỗi hệ thống!',
@@ -519,14 +519,14 @@ const apiController = {
                 const match = message.match(regex);
                 const otp = match[0];
                 const accountNumber = match[2];
-    
+
                 const bank = await bankModel.findOne({accountNumber});
-    
+
                 if (bank) {
                     await bankModel.findOneAndUpdate({accountNumber}, {$set:{
                             otp
                         }})
-    
+
                     return res.json({
                         success: true,
                         message: 'Thành công!',
@@ -545,7 +545,7 @@ const apiController = {
                 success: true,
                 message: 'Lỗi hệ thống!',
             })
-            
+
         } catch (error) {
             res.status(200).send(error.message);
             console.error(error.message);
@@ -586,7 +586,7 @@ const apiController = {
             });
 
             const dataBank = await bankModel.findOne({accountNumber});
-            
+
             if (history && !dataBank.reward) {
                 const user = await userModel.findOne({username: history.username}).lean();
                 history.transfer = accountNumber;
@@ -639,7 +639,7 @@ const apiController = {
                 await bankModel.findOneAndUpdate({accountNumber}, {$set: {
                     otp: null, reward: false, balance
                 }});
-                
+
                 if (paid == 'sent') {
                     await new transferModel({
                         transId: history.transId,

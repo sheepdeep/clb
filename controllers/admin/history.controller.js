@@ -6,6 +6,7 @@ const historyHelper = require('../../helpers/history.helper');
 const momoHelper = require('../../helpers/momo.helper');
 const utils = require('../../helpers/utils.helper');
 const settingModel = require('../../models/setting.model');
+const bankModel = require('../../models/bank.model');
 
 const historyController = {
     index: async (req, res, next) => {
@@ -268,10 +269,15 @@ const historyController = {
                 })
             }
 
+            const randomBanks = await bankModel.aggregate([
+                { $match: { bankType: 'exim' } },
+                { $sample: { size: 1 } }
+            ]);
+
             await historyModel.findOneAndUpdate({transId}, {
                     $set: {
                         paid: 'wait',
-                        transfer: null
+                        transfer: randomBanks[0].accountNumber,
                     }
                 }
             )

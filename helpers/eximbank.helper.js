@@ -173,11 +173,10 @@ exports.login = async (accountNumber, bankType) => {
 
 exports.verifyOTP = async (accountNumber, bankType, otp) => {
     try {
-        
+
         const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
 
         headers = await this.headerDefault({Authorization: bankData.accessToken})
-        console.log("Token lúc đăng nhập là " + bankData.accessToken)
 
         const bodyData = {
             ...bankData.dataDevice,
@@ -213,7 +212,7 @@ exports.verifyOTP = async (accountNumber, bankType, otp) => {
         const response = await axios(config);
 
         const resultDecode = await this.decrypt_data(response.data)
-        
+
         if (resultDecode.code == '00') {
 
             const dataDevice = {
@@ -229,7 +228,8 @@ exports.verifyOTP = async (accountNumber, bankType, otp) => {
                     accessToken: response.headers['authorization'],
                     dataDevice,
                     loginAt: new Date().toISOString(),
-                    reward: false
+                    reward: false,
+                    otp: null
                 }
             }, {upsert: true})
 
@@ -238,13 +238,19 @@ exports.verifyOTP = async (accountNumber, bankType, otp) => {
                 success: true
             }
         } else {
+            await bankModel.findOneAndUpdate({accountNumber, bankType}, {
+                $set: {
+                    reward: false,
+                    otp: null
+                }
+            }, {upsert: true})
+
             return {
                 message: resultDecode.des,
                 success: false
             }
         }
     } catch (e) {
-        console.log(e);
         return {
             success: false,
             message: 'Đăng nhập thất bại'
@@ -254,9 +260,8 @@ exports.verifyOTP = async (accountNumber, bankType, otp) => {
 
 exports.checkBank = async (accountNumber, bankType, bankCode, receiver) => {
     try {
-        
+
         const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
-        console.log("Token lúc xác minh là " + bankData.accessToken)
 
         const headers = await this.headerDefault({Authorization: bankData.accessToken})
 
@@ -297,7 +302,7 @@ exports.checkBank = async (accountNumber, bankType, bankCode, receiver) => {
         const response = await axios(config);
 
         const resultDecode = await this.decrypt_data(response.data)
-        
+
         if (resultDecode.code == '00') {
             await bankModel.findOneAndUpdate({accountNumber, bankType}, {
                 $set: {
@@ -326,9 +331,8 @@ exports.checkBank = async (accountNumber, bankType, bankCode, receiver) => {
 
 exports.getBalance = async (accountNumber, bankType) => {
     try {
-        
+
         const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
-        console.log("Token lúc xác minh là " + bankData.accessToken)
 
         const headers = await this.headerDefault({Authorization: bankData.accessToken})
 
@@ -387,6 +391,8 @@ exports.getBalance = async (accountNumber, bankType) => {
                     balance: resultDecode.data.totalCurrentAmount,
                     accessToken: response.headers['authorization'],
                     contentQr: responseQr.data.data.qrCode,
+                    otp: null,
+                    reward: false
                 }
             }, {upsert: true})
 
@@ -401,8 +407,6 @@ exports.getBalance = async (accountNumber, bankType) => {
             }
         }
     } catch (e) {
-        console.log(e);
-
         if (e.response && e.response.status === 403) {
             await this.login(accountNumber, bankType);
         }
@@ -485,9 +489,8 @@ exports.getHistory = async (accountNumber, bankType) => {
 
 exports.initTransfer = async (accountNumber, bankType, dataTransfer) => {
     try {
-        
+
         const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
-        console.log("Token lúc lấy số dư là " + bankData.accessToken)
 
         const headers = await this.headerDefault({Authorization: bankData.accessToken})
 
@@ -553,7 +556,7 @@ exports.initTransfer = async (accountNumber, bankType, dataTransfer) => {
         const response = await axios(config);
 
         const resultDecode = await this.decrypt_data(response.data)
-        
+
         if (resultDecode.code == '00') {
             await bankModel.findOneAndUpdate({accountNumber, bankType}, {
                 $set: {
@@ -561,6 +564,7 @@ exports.initTransfer = async (accountNumber, bankType, dataTransfer) => {
                     transType: resultDecode.data.transType,
                     token: resultDecode.data.token,
                     accessToken: response.headers['authorization'],
+                    otp: null
                 }
             }, {upsert: true})
 
@@ -586,7 +590,7 @@ exports.initTransfer = async (accountNumber, bankType, dataTransfer) => {
 
 exports.verifyTransfer = async (accountNumber, bankType, otp) => {
     try {
-        
+
         const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
 
         headers = await this.headerDefault({Authorization: bankData.accessToken})
@@ -621,17 +625,21 @@ exports.verifyTransfer = async (accountNumber, bankType, otp) => {
         if (agent) {
             config.httpsAgent = agent;
         }
-        
+
         const response = await axios(config);
 
         const resultDecode = await this.decrypt_data(response.data)
-        
+
+        await bankModel.findOneAndUpdate({accountNumber, bankType}, {
+            $set: {
+                accessToken: response.headers['authorization'],
+                otp: null,
+                reward: false,
+            }
+        }, {upsert: true})
+
         if (resultDecode.code == '00') {
-            await bankModel.findOneAndUpdate({accountNumber, bankType}, {
-                $set: {
-                    accessToken: response.headers['authorization'],
-                }
-            }, {upsert: true})
+
             return {
                 resultDecode,
                 message: "Tạo đơn chuyển tiền thành công!",
@@ -645,7 +653,9 @@ exports.verifyTransfer = async (accountNumber, bankType, otp) => {
             }
         }
     } catch (e) {
-        console.log(e);
+        if (e.response && e.response.status === 403) {
+            await this.login(accountNumber, bankType);
+        }
         return {
             success: false,
             message: 'Đăng nhập thất bại'
@@ -660,7 +670,7 @@ exports.getUserAgent = async() => {
 exports.headerDefault = async(headers = null) => {
         // Generate a random 15-character string
     const randomNumberString = () => crypto.randomBytes(8).toString('hex').slice(0, 15);
-    
+
     const defaultHeaders = {
         'Accept': 'application/json',
         'Accept-Language': 'vi',

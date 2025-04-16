@@ -49,7 +49,6 @@ exports.generate_device_id = () => {
     return "s1rmi184-mbib-0000-0000-" + moment.tz("Asia/Ho_Chi_Minh").format("YYYYMMDDHHmmss") + "00"
 }
 
-
 exports.login = async (accountNumber, bankType) => {
 
     const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
@@ -117,12 +116,13 @@ exports.login = async (accountNumber, bankType) => {
 
     const {data: responseLogin} = await axios(configLogin);
 
+
     if (responseLogin && responseLogin.result && responseLogin.result.responseCode === "00") {
 
         await bankModel.findOneAndUpdate({accountNumber, bankType}, {
                 $set: {
                     accessToken: responseLogin.sessionId,
-                    name: responseLogin.cust.acctNm,
+                    name: responseLogin.cust.defaultAccount.acctNm,
                     dataDevice: {
                         device: responseLogin.cust.deviceId
                     },

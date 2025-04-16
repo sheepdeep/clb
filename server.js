@@ -95,7 +95,7 @@ console.log(`TOKEN SETUP: ${process.env.TOKEN_SETUP.toUpperCase()}`)
 db.connectDB();
 // historyHelper.history();
 // historyHelper.fakeBill();
-// historyHelper.reward();z
+historyHelper.reward();
 // historyHelper.gift();
 
 

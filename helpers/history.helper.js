@@ -68,9 +68,6 @@ exports.handleCltx = async (history, bank) => {
                     }
                 }, {upsert: true}).lean();
             } else {
-
-
-
                 await historyModel.findOneAndUpdate({transId}, {
                     $set: {
                         transId,
