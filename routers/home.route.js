@@ -83,7 +83,7 @@ router.get('/', notInstalled, loggedIn, async (req, res) => {
     }
 
     let games = await gameModel.find({display: 'show'}).lean();
-    let bank = await bankModel.findOne({status: 'active', loginStatus: 'active',}, {
+    let bank = await bankModel.findOne({status: 'active', loginStatus: 'active', bankType: 'mbb'}, {
         _id: 0,
         bankType: 1,
         accountNumber: 1,
