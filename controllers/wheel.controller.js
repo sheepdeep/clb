@@ -77,7 +77,6 @@ const wheelController = {
                         $in: ["CL_Game", "TX_Game"]
                     },
                     amount: { $gte: dataSetting.wheel.amount },
-
                     $and: [{$or: [{result: 'win'}, {result: 'lose'}]}],
                     timeTLS: {$gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate()}
                 }

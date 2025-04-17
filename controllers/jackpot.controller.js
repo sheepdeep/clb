@@ -22,8 +22,7 @@ const jackpotController = {
                 let countPlay = await historyModel.aggregate([{
                     $match: {
                         username: res.locals.profile.username,
-                        gameType: {$exists: true, $ne: null},
-                        $and: [{$or: [{result: 'win'}, {result: 'lose'}]}],
+                        result: { $ne: 'ok' },
                         amount: { $gte: dataSetting.luckyCard.amount },
                         timeTLS: {$gte: moment().startOf('day').toDate(), $lt: moment().endOf('day').toDate()}
                     }
