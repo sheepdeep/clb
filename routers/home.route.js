@@ -210,7 +210,7 @@ router.route('/wheel')
 
 router.route('/nohu')
     .get([notInstalled, loggedIn], jackpotController.index)
-    .post([notInstalled, isUser, limiterGift], jackpotController.wheel);
+    .post([notInstalled, isUser, limiterGift], jackpotController.jackpot);
 
 router.post('/hopquamayman', [notInstalled, isUser, limiterGift], luckygiftController.getGift)
 router.post('/bet-taixiu', [notInstalled, isUser, limiterGift], taixiuController.bet)

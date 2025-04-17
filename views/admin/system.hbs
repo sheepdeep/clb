@@ -931,13 +931,12 @@
                                         </tbody>
                                     </table>
                                 </div>
-
                                 <label for="" class="il-gray fs-14 fw-500 mb-10">* VÒNG QUAY [EVENT]</label>
                                 <div class="table-responsive">
                                     <table class="table mb-3 table-bordered text-nowrap text-center">
                                         <thead>
                                         <tr class="userDatatable-header">
-                                            <th><i class="fas fa-plus-circle hand create" data-value="gift"
+                                            <th><i class="fas fa-plus-circle hand create" data-value="wheel"
                                                    data-parent="wheel-" data-child="gift"></i></th>
                                             <th>Vị Trí</th>
                                             <th>Tỉ lệ</th>
@@ -964,6 +963,57 @@
                                                 <td data-bs-key="ratio" data-bs-value="{{ this.ratio }}"
                                                     data-bs-type="number" data-bs-more="numberFormat">{{
                                                 this.ratio }}
+                                                </td>
+                                                <td data-bs-key="name" data-bs-value="{{ this.name }}"
+                                                    data-bs-type="text" data-bs-more="numberFormat">{{
+                                                this.name }}
+                                                </td>
+                                                <td data-bs-key="amount" data-bs-value="{{ this.amount }}"
+                                                    data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
+                                                        this.amount }}
+                                                </td>
+                                            </tr>
+                                        {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <label for="" class="il-gray fs-14 fw-500 mb-10">* LẬT THẺ [EVENT]</label>
+                                <div class="table-responsive">
+                                    <table class="table mb-3 table-bordered text-nowrap text-center">
+                                        <thead>
+                                        <tr class="userDatatable-header">
+                                            <th><i class="fas fa-plus-circle hand create" data-value="luckyCard"
+                                                   data-parent="luckyCard-" data-child="gift"></i></th>
+                                            <th>Vị Trí</th>
+                                            <th>Tỉ lệ</th>
+                                            <th>Ảnh</th>
+                                            <th>Tên thưởng</th>
+                                            <th>Tiền Thưởng</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="dataEnz" data-bs-parent="luckyCard-" data-bs-child="gift"
+                                               data-bs-position="true">
+                                        {{#each settings.luckyCard.gift}}
+                                            <tr>
+                                                <td>
+                                                    <div class="table-actions hand">
+                                                        <span class="badges badge-info" data-bs-action="edit"><i
+                                                                class="fas fa-pen"></i></span>
+                                                        <span class="badges badge-danger" data-bs-action="remove"><i
+                                                                class="fa fa-trash" aria-hidden="true"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td data-bs-key="pos" data-bs-value="{{ this.pos }}"
+                                                    data-bs-type="number" data-bs-more="numberFormat">{{
+                                                this.pos }}
+                                                </td>
+                                                <td data-bs-key="ratio" data-bs-value="{{ this.ratio }}"
+                                                    data-bs-type="number" data-bs-more="numberFormat">{{
+                                                this.ratio }}
+                                                </td>
+                                                <td data-bs-key="img" data-bs-value="{{ this.img }}"
+                                                    data-bs-type="text">{{
+                                                this.img }}
                                                 </td>
                                                 <td data-bs-key="name" data-bs-value="{{ this.name }}"
                                                     data-bs-type="text" data-bs-more="numberFormat">{{
@@ -1050,6 +1100,36 @@
                                                 <label for="" class="il-gray fs-14 fw-500 mb-10">Tỉ lệ</label>
                                                 <input type="text" class="form-control ih-medium ip-light"
                                                        name="wheel-amount" value="{{ settings.wheel.amount }}"
+                                                       placeholder="Nhập nội dung">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Lật thẻ</label>
+                                                <select name="luckyCard-status"
+                                                        class="form-control ih-medium ip-light">
+                                                    {{#select settings.luckyCard.status }}
+                                                        <option value="active">Bật</option>
+                                                        <option value="close">Tắt</option>
+                                                    {{/select }}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tên lật thẻ</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="luckyCard-name" value="{{ settings.luckyCard.name}}"
+                                                       placeholder="Nhập tên vòng quay">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tỉ lệ</label>
+                                                <input type="text" class="form-control ih-medium ip-light"
+                                                       name="luckyCard-amount" value="{{ settings.luckyCard.amount }}"
                                                        placeholder="Nhập nội dung">
                                             </div>
                                         </div>
@@ -1562,8 +1642,14 @@
                 case 'fakeData':
                     html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="phone" data-bs-value="" data-bs-type="text"><input type="text" class="form-control ih-medium ip-light"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
                     break;
+                case 'wheel':
+                    html = `<tr><td><div class="hand table-actions"><span class="badge-success badges"data-bs-action=add><i class="fa-save fas"></i></span></div><td data-bs-key=pos data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=ratio data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=name data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=amount data-bs-type=number data-bs-value=""data-bs-more=numberFormat><input class="form-control ih-medium ip-light"type=number>`;
+                    break;
                 case 'gift':
                     html = `<tr><td><div class="hand table-actions"><span class="badge-success badges"data-bs-action=add><i class="fa-save fas"></i></span></div><td data-bs-key=pos data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=ratio data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=name data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=amount data-bs-type=number data-bs-value=""data-bs-more=numberFormat><input class="form-control ih-medium ip-light"type=number>`;
+                    break;
+                case 'luckyCard':
+                    html = `<tr><td><div class="hand table-actions"><span class="badge-success badges" data-bs-action="add"><i class="fa-save fas"></i></span></div><td data-bs-key="pos" data-bs-type="text" data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key="ratio" data-bs-type="text" data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key="img" data-bs-type="text" data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key="name" data-bs-type="text" data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key="amount" data-bs-type="number" data-bs-value="" data-bs-more="numberFormat"><input class="form-control ih-medium ip-light" type="number">`;
                     break;
                 default:
                     swal('Thông Báo', 'Dữ liệu không hợp lệ!', 'error');

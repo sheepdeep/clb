@@ -23,6 +23,7 @@ const vpsController = require('../controllers/admin/vps.controller');
 const sendController = require('../controllers/admin/send.controller');
 const zaloController = require('../controllers/admin/zalo.controller');
 const refundController = require('../controllers/admin/refund.controller');
+const topController = require('../controllers/admin/top.controller');
 
 const router = express.Router();
 
@@ -217,6 +218,10 @@ router.route('/transfer-to-bank')
 router.route('/refund')
     .get(loggedInAdmin, refundController.index)
     .post(isAdmin, refundController.refund)
+
+router.route('/top')
+    .get(loggedInAdmin, topController.index)
+    .post(isAdmin, topController.refund)
 
 router.route('/transfer')
     .get(loggedInAdmin, transferController.index)

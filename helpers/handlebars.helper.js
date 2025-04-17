@@ -46,6 +46,7 @@ module.exports = {
         let array = data.split(',');
         return array[Math.floor(Math.random() * array.length)];
     },
+    splitNumber: (number) => number.toString().split(''),
     tableSort: (query, column, sort) => {
         query = utils.checkQuery(query, ['column', '_sort']);
 

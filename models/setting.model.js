@@ -416,7 +416,14 @@ const settingSchema = new mongoose.Schema({
     referralGift: {
         data: Object
     },
-    x3: String
+    x3: String,
+    luckyCard: {
+        name: String,
+        status: String,
+        gift: Array,
+        noti: String,
+        amount: Number,
+    },
 }, {
     timestamps: true
 })

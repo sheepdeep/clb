@@ -18,6 +18,47 @@
         <!-- end header menu btn -->
     </div>
 </header>
+<style>
+    .flip-wrapper {
+        width: 200px;
+        height: 300px;
+        margin: 0 auto;
+        perspective: 1000px;
+    }
+
+    .card {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform-style: preserve-3d;
+        background-color: #28282D;
+    }
+
+    .card.spin {
+        animation: spinAnimation 3s ease-in-out forwards;
+    }
+
+    @keyframes spinAnimation {
+        0% { transform: rotateY(0deg); }
+        100% { transform: rotateY(1440deg); } /* 4 vòng */
+    }
+
+    .card-face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 12px;
+        backface-visibility: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .front {
+        /*background: transparent;*/
+        z-index: 2;
+    }
+</style>
 <!-- end header -->
 <!-- sidebar -->
 {{>sidebar}}
@@ -36,25 +77,32 @@
                     <div class="subpage-wrapper">
                         <p>SỐ TIỀN HIỆN TẠI TRONG HŨ ĐANG CHỜ BẠN!</p>
                         <div class="mb-4">
-                            <code class="code-ex">8</code>
-                            <code class="code-ex">1</code>
-                            <code class="code-ex">2</code>
-                            <code class="code-ex">1</code>
-                            <code class="code-ex">9</code>
-                            <code class="code-ex">7</code>
-                            <code class="code-ex">5</code>
+                            {{#with (splitNumber settings.jackpotCount)}}
+                                {{#each this}}
+                                    <code class="code-ex">{{this}}</code>
+                                {{/each}}
+                            {{/with}}
                         </div>
                         <div class="text-center mb-3">
-                            <a href="http://t.me/kugame_bot" target="_blank" class="lnk__btn">QUAY MIỄN PHÍ NGAY</a>
+                            <a target="_blank" class="lnk__btn" onclick="flipImage()">LẬT THẺ NGAY</a>
                         </div>
+                        <p class="text-center err" id="err-msg"></p>
                         <p class="text-center">
                             Jackpot là phần quà dành cho những người chơi may mắn.<br>
-                            Bạn hoàn toàn có thể sở hữu MIỄN PHÍ thông qua việc quay Slot trên Telegram của KUBANK.GG<br>
-                            Bạn có thể nhận được lượt quay MIỄN PHÍ khi chơi game trên KUBANK.GG<br>
+                            <span>TỔNG CHƠI TRONG NGÀY: </span> <span class="code-num"><b>{{ numberFormat totalCount }}</b></span> <br />
+                            <span>TỔNG LƯỢT QUAY TRONG NGÀY: </span> <span class="code-num"><b>{{ numberFormat totalJackpot }}</b></span> <br />
                             CHÚC BẠN MAY MẮN!!!!
                         </p>
-
-
+                        <div class="row text-center">
+                            <div class="flip-wrapper">
+                                <div id="card" class="card">
+                                    <div class="card-face front">
+                                        <img id="cardFrontImg" src="/themes/images/latthe.png" width="200" height="300" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
                         <div class="text-center">
                             <p class="small-notes"><i>HỆ THỐNG LIÊN TỤC PHÁT CODE NGẪU NHIÊN - MIỄN PHÍ MỖI 10-15P TẠI <a href="https://t.me/BANKTXCL">GROUP TELEGRAM</a></i></p>
                         </div>
@@ -99,5 +147,47 @@
     </div>
 </div>
 <script>$(".nav-item button").click(function(){window.location.href="/?g="+$(this).attr("data-bs-target").slice(1)})</script>
+<script>
+    function flipImage() {
+
+        const card = document.getElementById('card');
+        const frontImg = document.getElementById('cardFrontImg');
+
+        frontImg.src = "/themes/images/latthe.png";
+
+        $.ajax({
+            url: '/nohu',
+            datatype:'json',
+            type: 'post',
+            success: function (data) {
+                if (!data.success) {
+                    $('#err-msg').html(`<p class="text-${data.success ? 'success' : 'danger'}">${data.message}</p>`)
+                    roll_check = true;
+                    return;
+                }
+                if (data.success) {
+                    if (!card.classList.contains('spin')) {
+                        card.classList.add('spin');
+                        card.style.backgroundColor = '#28282D';
+                        // Sau 3s mới hiện phần quà
+                        setTimeout(() => {
+                            card.classList.remove('spin');
+                            frontImg.src = data.gift.image;
+                            $('#err-msg').html(`<p class="text-success">${data.message}</p>`)
+                            // reward.classList.remove('hidden');
+                        }, 2800);
+                    }
+                }
+            },
+            error: function(){
+                $('#err-msg').html(`<p class="text-danger">Có lỗi xảy ra. Vui lòng thử lại!</p>`)
+
+            }
+        })
+
+        // Nếu chưa lật
+
+    }
+</script>
 {{>footer}}
 {{{ settings.footerScript }}}

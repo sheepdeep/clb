@@ -122,19 +122,21 @@ const wheelController = {
                 { $sample: { size: 1 } }
             ]);
 
-            let newHistory = await new historyModel({
-                username: res.locals.profile.username,
-                receiver: res.locals.profile.username,
-                transId: `SBW${Math.floor(Math.random() * (99999999 - 10000000) + 10000000)}`,
-                amount: selectGift.amount,
-                bonus: selectGift.amount,
-                comment: "WHEEL",
-                gameName: 'WHEEL',
-                gameType: 'WHEEL',
-                result: 'ok',
-                paid: 'wait',
-                transfer: randomBanks[0].accountNumber
-            }).save();
+            if (selectGift.amount > 0) {
+                let newHistory = await new historyModel({
+                    username: res.locals.profile.username,
+                    receiver: res.locals.profile.username,
+                    transId: `SBW${Math.floor(Math.random() * (99999999 - 10000000) + 10000000)}`,
+                    amount: selectGift.amount,
+                    bonus: selectGift.amount,
+                    comment: "WHEEL",
+                    gameName: 'WHEEL',
+                    gameType: 'WHEEL',
+                    result: 'ok',
+                    paid: 'wait',
+                    transfer: randomBanks[0].accountNumber
+                }).save();
+            }
 
             // eventHelper.rewardWheel(phone, code, selectGift.amount);
 
