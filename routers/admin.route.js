@@ -22,6 +22,7 @@ const payController = require("../controllers/admin/pay.controller");
 const vpsController = require('../controllers/admin/vps.controller');
 const sendController = require('../controllers/admin/send.controller');
 const zaloController = require('../controllers/admin/zalo.controller');
+const refundController = require('../controllers/admin/refund.controller');
 
 const router = express.Router();
 
@@ -212,6 +213,10 @@ router.route(['/momo-list/:id', '/momo-lite/:id'])
 router.route('/transfer-to-bank')
     .get(loggedInAdmin, transferBankController.index)
     .post(isAdmin, transferBankController.transfer)
+
+router.route('/refund')
+    .get(loggedInAdmin, refundController.index)
+    .post(isAdmin, refundController.refund)
 
 router.route('/transfer')
     .get(loggedInAdmin, transferController.index)

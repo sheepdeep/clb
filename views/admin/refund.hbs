@@ -16,7 +16,7 @@
                                 <h6 class="card-title">
                                     <a href="{{ originalUrl.pathname }}" class="text-dark">
                                         <img src="../themes/admin/images/transfer.png" alt="" width="35">
-                                        Chuyển Tiền
+                                        Hoàn tiền
                                         <img src="../themes/admin/images/transfer.png" class="d-md-none" width="35">
                                     </a>
                                 </h6>
@@ -24,37 +24,20 @@
                             <div class="card-body">
                                 <form action="" method="post" class="form-axios">
                                     <div class="form-group">
-                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Số Điện Thoại</label>
-                                        <select name="phone" class="form-control ih-medium ip-light select2">
-                                            {{#each phones}}
-                                                <option value="{{ this.phone }}">{{ this.phone }} - {{ numberFormat
-                                                        this.balance
-                                                }}đ</option>
-                                            {{/each}}
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Ngân hàng</label>
-                                        <select name="bankCode" class="form-control ih-medium ip-light select2">
-                                            {{#each banks}}
-                                                <option value="{{ this.bankCode }}">{{ this.shortBankName }} - {{ this.bankName }}</option>
-                                            {{/each}}
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Số tài khoản</label>
-                                        <input type="text" name="accountNumber" class="form-control ih-medium ip-light"
+                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Mã giao dịch</label>
+                                        <input type="text" name="transId" class="form-control ih-medium ip-light"
                                                placeholder="Nhập số tài khoản">
                                     </div>
                                     <div class="form-group">
-                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Số Tiền</label>
-                                        <input type="number" name="amount" class="form-control ih-medium ip-light"
+                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Tài khoản</label>
+                                        <input type="text" name="username" class="form-control ih-medium ip-light"
                                                placeholder="Nhập số tiền cần chuyển">
                                     </div>
                                     <div class="form-group">
-                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Nội Dung</label>
-                                        <input type="text" name="comment" class="form-control ih-medium ip-light"
-                                               placeholder="Nhập nội dung cần chuyển">
+                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Lý do</label>
+                                        <select name="type" class="form-control ih-medium ip-light select2">
+                                            <option value="wrong">Sai nội dung</option>
+                                        </select>
                                     </div>
                                     <div class="row gutters-xs mb-3">
                                         <label for="" class="il-gray fs-14 fw-500 mb-10">OTP</label>
@@ -71,8 +54,7 @@
                                     </div>
                                     <div class="content-center">
                                         <button type="submit" class="btn btn-primary"><i
-                                                class="fas fa-exchange-alt"></i> Chuyển
-                                            Tiền</button>
+                                                class="fas fa-exchange-alt"></i> Hoàn tiền</button>
                                     </div>
                                 </form>
                             </div>
