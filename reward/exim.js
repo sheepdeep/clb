@@ -137,6 +137,12 @@ if (isMainThread) {
 
             const checkNumber = await eximbankHelper.checkBank(dataBank.accountNumber, dataBank.bankType, user.bankInfo.bankCode, user.bankInfo.accountNumber)
 
+            if (!checkBank) {
+                await bankModel.findOneAndUpdate({accountNumber: dataBank.accountNumber}, {$set: {reward: false, otp: null}});
+                parentPort.postMessage({ error: true, accountNumber: dataBank.accountNumber, message: `💸 Lỗi kiểm tra tài khoản với số tiền ${Intl.NumberFormat('en-US').format(history.bonus || 0)} VNĐ!` });
+                return process.exit(1);
+            }
+
             const dataTransfer = {
                 accountNumber: user.bankInfo.accountNumber,
                 bankCode: user.bankInfo.bankCode,
@@ -197,7 +203,7 @@ if (isMainThread) {
         } catch (err) {
             parentPort.postMessage({
                 error: true,
-                zaloId: dataBank?.accountNumber,
+                accountNumber: dataBank?.accountNumber,
                 message: err.message
             });
         }
