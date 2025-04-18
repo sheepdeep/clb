@@ -1,6 +1,5 @@
 $('#taiXiuRong').draggable({});
 
-
 const Toast = Swal.mixin({
     toast: true,
     position: "top-end",
@@ -14,6 +13,8 @@ const Toast = Swal.mixin({
 });
 
 let betTai = 0, betXiu = 0;
+let btnNan = localStorage.getItem('btnNan');
+let nan = localStorage.getItem('nan');
 
 $(document).ready(function () {
     let second = 0;
@@ -26,6 +27,7 @@ $(document).ready(function () {
         $('#taiXiuRong #turn').text(`#${dataDecode.turn}`);
 
         if (second >= 0 && second <= 60) {
+            localStorage.setItem('nan', 'chua');
             $('#taiXiuRong .wrap-dice').html('');
             const digits = second.toString().split('');
             let span = '';
@@ -40,39 +42,44 @@ $(document).ready(function () {
             //Nan Xuc Xac
             $('#taiXiuRong .wrap-dice').html(`<img class="dice-1" src="../themes/images/taiXiuRong/dice/dice-${dataDecode.dice1}.png"><img class="dice-2" src="../themes/images/taiXiuRong/dice/dice-${dataDecode.dice2}.png"><img class="dice-3" src="../themes/images/taiXiuRong/dice/dice-${dataDecode.dice3}.png">`)
             $('.wrap-second').addClass('hidden').html('');
-            $("#btnBat").removeClass('hidden').draggable({
-                // containment: "window",
-                drag: function (event, ui) {
-                    const currentDate = new Date();
-                    let y2 = ui.position.top;
-                    let x2 = ui.position.left;
 
-                    if (Math.abs(y2) < 320 || Math.abs(x2) > 660) {
+            if (btnNan == 'nan' && nan == 'chua') {
+                $("#btnBat").removeClass('hidden').draggable({
+                    // containment: "window",
+                    drag: function (event, ui) {
+                        const currentDate = new Date();
+                        let y2 = ui.position.top;
+                        let x2 = ui.position.left;
 
-                        $('#btnBat').addClass('hidden');
+                        if (Math.abs(y2) < 320 || Math.abs(x2) > 660) {
 
-                        if (!audioOpenPlayed) {
-                            const audio = new Audio("/themes/taixiu/music/open.mp3");
-                            audio.play();
-                            audioOpenPlayed = true;
+                            $('#btnBat').addClass('hidden');
+                            localStorage.setItem('nan', 'roi');
+
+                            if (!audioOpenPlayed) {
+                                const audio = new Audio("/themes/taixiu/music/open.mp3");
+                                audio.play();
+                                audioOpenPlayed = true;
+                            }
+
+                            if (resultTx <= 10) {
+                                $('.xiu-win').removeClass('hidden');
+                                $(".xiu-b").css("animation", "zoomout .4s ease-in-out infinite alternate");
+                            }
+                            if (resultTx >= 11) {
+                                $('.tai-win').removeClass('hidden');
+                                $(".tai-b").css("animation", "zoomout .4s ease-in-out infinite alternate");
+                            }
+                            $('#historyTx').html('');
+                            resultHistoryImg.forEach(item => {
+                                $('#historyTx').html(item);
+                            });
+                            setCookie("daNan", "1", 3600 * 24 * 365);
                         }
-
-                        if (resultTx <= 10) {
-                            $('.xiu-win').removeClass('hidden');
-                            $(".xiu-b").css("animation", "zoomout .4s ease-in-out infinite alternate");
-                        }
-                        if (resultTx >= 11) {
-                            $('.tai-win').removeClass('hidden');
-                            $(".tai-b").css("animation", "zoomout .4s ease-in-out infinite alternate");
-                        }
-                        $('#historyTx').html('');
-                        resultHistoryImg.forEach(item => {
-                            $('#historyTx').html(item);
-                        });
-                        setCookie("daNan", "1", 3600 * 24 * 365);
                     }
-                }
-            });
+                });
+            }
+
             const secondCountdown = second - 60;
             const digits = secondCountdown.toString().split('');
             let span = '';
@@ -265,7 +272,6 @@ function upBetXiu() {
     $("#taiXiuRong .wrap-your-bet-xiu").html(spanXiu);
 
 }
-
 
 function showNotificationTaiXiuRong(message) {
 

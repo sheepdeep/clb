@@ -23,10 +23,10 @@ const topController = {
                 const startOfWeek = moment().isoWeekYear(year).isoWeek(week).startOf('isoWeek').toDate();
                 const endOfWeek = moment().isoWeekYear(year).isoWeek(week).endOf('isoWeek').toDate();
 
-                list = await historyModel.aggregate([{ $match: { result: 'win', updatedAt: { $gte: startOfWeek, $lt: endOfWeek } } }, { $group: { _id: "$username", amount: { $sum: '$amount' } } }, { $sort: { amount: -1 } }, { $limit: dataTOP.length }]);
+                list = await historyModel.aggregate([{ $match: { result: { $in: ['win', 'lose'] }, createdAt: { $gte: startOfWeek, $lt: endOfWeek } } }, { $group: { _id: "$username", amount: { $sum: '$amount' } } }, { $sort: { amount: -1 } }, { $limit: dataTOP.length }]);
 
             } else {
-                list = await historyModel.aggregate([{ $match: { result: 'win', updatedAt: { $gte: moment().startOf('week').toDate(), $lt: moment().endOf('week').add('week').toDate() } } }, { $group: { _id: "$username", amount: { $sum: '$amount' } } }, { $sort: { amount: -1 } }, { $limit: dataTOP.length }]);
+                list = await historyModel.aggregate([{ $match: { result: { $in: ['win', 'lose'] }, createdAt: { $gte: moment().startOf('week').toDate(), $lt: moment().endOf('week').add('week').toDate() } } }, { $group: { _id: "$username", amount: { $sum: '$amount' } } }, { $sort: { amount: -1 } }, { $limit: dataTOP.length }]);
             }
 
             for (let [index, data] of list.entries()) {
