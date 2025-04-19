@@ -40,7 +40,7 @@ const refundController = {
             }
 
 
-            if (!check) {
+            if (check) {
                 if (!otp) {
                     return res.json({
                         success: false,

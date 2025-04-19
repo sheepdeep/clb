@@ -195,6 +195,9 @@ router.route('/block')
     .get(loggedInAdmin, tableSort, blockController.index)
     .post(isAdmin, blockController.add);
 
+router.route('/block/:id')
+    .delete(isAdmin, blockController.remove);
+
 /** Momo Router */
 router.get('/momo-list', loggedInAdmin, tableSort, momoController.index);
 

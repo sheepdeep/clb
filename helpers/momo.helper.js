@@ -2321,6 +2321,7 @@ exports.moneyTransferBank = async (phone, dataTransfer) => {
 
             const confirmResult = await this.doRequestEncryptMoMo('https://owa.momo.vn/api/TRAN_HIS_CONFIRM_MSG', confirmBody, currentAccount, "TRAN_HIS_CONFIRM_MSG")
 
+            console.log(confirmResult);
             if (confirmResult.result) {
 
                 // return _.get(confirmResult, 'momoMsg.tranHisMsg')
