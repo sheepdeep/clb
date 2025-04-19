@@ -384,7 +384,7 @@ exports.handleDesc = async (description) => {
 
         return {
             username: newDesc[0],
-            comment: newDesc[1].toUpperCase().replace(/[.-]/g, '')
+            comment: newDesc[1].toUpperCase().replace(/\./g, '')
         };
     }
 
