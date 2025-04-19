@@ -382,11 +382,10 @@ exports.handleDesc = async (description) => {
         const desc = description.split('.');
         const newDesc = desc[3].split(' ');
 
-        console.log(newDesc);
 
         return {
             username: newDesc[0],
-            comment: newDesc[1].toUpperCase().replace(/\./g, '')
+            comment: newDesc[2].toUpperCase().replace(/\./g, '')
         };
     }
 
