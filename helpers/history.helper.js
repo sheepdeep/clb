@@ -378,6 +378,16 @@ exports.handleDesc = async (description) => {
     let numberUser = 0;  // Initialize with -1 (indicating no user found yet)
     let numberReward = 0;  // Initialize with -1 (indicating no reward found yet)
 
+    if (description.includes("MBVCB")) {
+        const desc = description.split('.');
+        const newDesc = desc[3].split(' ');
+
+        return {
+            username: newDesc[0],
+            comment: newDesc[1].toUpperCase().replace(/[.-]/g, '')
+        };
+    }
+
     if (description.includes("-")) {
         const desc = description.split('-');
         const newDesc = desc[1].split(' ');

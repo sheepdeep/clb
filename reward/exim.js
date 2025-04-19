@@ -104,6 +104,7 @@ if (isMainThread) {
             const resultBalance = await eximHelper.getBalance(dataBank.accountNumber, dataBank.bankType);
 
             if (!resultBalance.success) {
+                await bankModel.findOneAndUpdate({accountNumber: dataBank.accountNumber}, {$set: {reward: false, otp: null}});
                 parentPort.postMessage({ error: true, accountNumber: dataBank.accountNumber, message: '❌ Hết thời gian đăng nhập!' });
                 return process.exit(1);
             }
