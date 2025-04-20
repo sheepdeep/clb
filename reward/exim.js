@@ -54,8 +54,8 @@ if (isMainThread) {
 
             await Promise.all(workerPromises);
 
-            console.log('✅ Tất cả worker hoàn thành, chờ 3 giây rồi chạy tiếp...');
-            await sleep(3000);
+            console.log('✅ Tất cả worker hoàn thành, chờ 1 giây rồi chạy tiếp...');
+            await sleep(1000);
             await startWorkers(); // Chạy lại sau delay
         }
 
