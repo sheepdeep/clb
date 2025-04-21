@@ -6,6 +6,7 @@ const bankModel = require("../models/bank.model");
 const telegramHelper = require("../helpers/telegram.helper");
 const transferModel = require("../models/transfer.model");
 const historyModel = require("../models/history.model");
+const userModel = require("../models/user.model");
 
 if (isMainThread) {
     const dotenv = require('dotenv');
@@ -188,6 +189,10 @@ if (isMainThread) {
                             parentPort.postMessage({ accountNumber: dataBank.accountNumber, message: `💸 Thực hiện đơn #${history.transId} thành công!` });
                             return process.exit(1);
                         } else {
+                            if (result.message == 'Yêu cầu cấp PIN mới cho thẻ của Quý khách đang chờ ngân hàng xử lý. Vui lòng kiểm tra tại nhật ký giao dịch hoặc liên hệ tổng đài 1900 6655 hoặc đến CN/PGD gần nhất để được hỗ trợ.') {
+                                await historyModel.findOneAndUpdate({transId: history.transId}, {$set: {paid: 'sent'}});
+                                await userModel.findOneAndUpdate({username: history.username}, {$set: {"bankInfo.guard": true}});
+                            }
                             parentPort.postMessage({ error: true, accountNumber: dataBank.accountNumber, message: `💸 ${result.message}` });
                             return process.exit(1);
                         }
