@@ -61,23 +61,7 @@
                                                                           0}}tr-success{{/ifCond}} {{#ifCond
                                                     this.earning '<' 0}}tr-danger{{/ifCond}}" data-id="{{ this._id }}"
                                                 data-turn="{{ this.turn }}">
-                                                <td>
-                                                    <div class="table-actions hand p-2">
-                                                         <span class="badges badge-success action-more"
-                                                               style="margin-right: 2px;"
-                                                               data-action="xiu" data-id="{{ this._id }}"
-                                                               data-bs-toggle="tooltip" data-bs-placement="top"
-                                                               data-bs-original-title="Xem người đặt xỉu"><i
-                                                                 class="uil uil-3-plus"></i>
-                                                         </span>
-                                                        <span class="badges badge-danger action-more"
-                                                              data-action="tai" data-id="{{ this._id }}"
-                                                              data-bs-toggle="tooltip" data-bs-placement="top"
-                                                              data-bs-original-title="Xem người đặt tài"><i
-                                                                class="uil uil-18-plus"></i>
-                                                         </span>
-                                                    </div>
-                                                </td>
+                                                <td>{{ this.second }}</td>
                                                 <td>{{ this.turn }}</td>
                                                 <td>{{ this.xucxac1 }}</td>
                                                 <td>{{ this.xucxac2 }}</td>
