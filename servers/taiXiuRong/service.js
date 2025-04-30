@@ -63,7 +63,7 @@ exports.run = async () => {
             let turnOld = await turnTaiXiuModel.findOne({turn: parseInt(dataSetting.banTaiXiu.turnTaiXiuRong) - 1}).lean();
 
             const dataPost = {
-                turn: turnOld.turn ? '' : turnOld.turn,
+                turn: turnOld.turn ? turnOld.turn : '',
                 second: turn.second,
                 sumTai: turnOld.sumTai,
                 sumXiu: turnOld.sumXiu,
