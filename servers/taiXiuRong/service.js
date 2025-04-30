@@ -318,8 +318,8 @@ exports.handleTurn = async () => {
 
                 if (comment === checkTurn.resultText) {
                     await historyModel.findByIdAndUpdate(history._id, {
-                        bonus: history.amount * dataSetting.banTaiXiu.ratio,
-                        description: `Bạn đã đặt cược <span class="code-num">${Intl.NumberFormat('en-US').format(history.amount)}</span> vnđ tại phòng chơi của <span class="code-num">TX Rồng</span>. (SB: ${Intl.NumberFormat('en-US').format(user.balance + history.amount)} -&gt; ${Intl.NumberFormat('en-US').format(user.balance)}) [THẮNG] [${checkTurn.xucxac1} - ${checkTurn.xucxac2} - ${checkTurn.xucxac3} = ${checkTurn.result}] (SB: ${Intl.NumberFormat('en-US').format(user.balance)} -&gt; ${Intl.NumberFormat('en-US').format(user.balance + (history.amount * dataSetting.banTaiXiu.ratio))})`,
+                        bonus: Math.floor(history.amount * dataSetting.banTaiXiu.ratio),
+                        description: `Bạn đã đặt cược <span class="code-num">${Intl.NumberFormat('en-US').format(history.amount)}</span> vnđ tại phòng chơi của <span class="code-num">TX Rồng</span>. (SB: ${Intl.NumberFormat('en-US').format(user.balance + history.amount)} -&gt; ${Intl.NumberFormat('en-US').format(user.balance)}) [THẮNG] [${checkTurn.xucxac1} - ${checkTurn.xucxac2} - ${checkTurn.xucxac3} = ${checkTurn.result}] (SB: ${Intl.NumberFormat('en-US').format(user.balance)} -&gt; ${Intl.NumberFormat('en-US').format(user.balance + Math.floor((history.amount * dataSetting.banTaiXiu.ratio)))})`,
                         result: 'win',
                         paid: 'sent'
                     })
