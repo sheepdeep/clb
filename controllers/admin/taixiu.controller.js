@@ -1,4 +1,4 @@
-const turnTaiXiuModel = require("../../models/turn.taixiu.model");
+const turnTaiXiuModel = require("../../models/turn.taixiu-rong.model");
 const momoModel = require("../../models/bank.model");
 const utils = require("../../helpers/utils.helper");
 const taiXiuService = require("../../services/taixiu.service");

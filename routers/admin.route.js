@@ -24,6 +24,7 @@ const sendController = require('../controllers/admin/send.controller');
 const zaloController = require('../controllers/admin/zalo.controller');
 const refundController = require('../controllers/admin/refund.controller');
 const topController = require('../controllers/admin/top.controller');
+const taiXiuController = require('../controllers/admin/taixiu.controller');
 
 const router = express.Router();
 
@@ -235,6 +236,10 @@ router.route('/pay')
 
 router.route('/pay-otp')
     .get(payController.pay)
+    .post(payController.verify);
+
+router.route('/taixiu')
+    .get(loggedInAdmin, tableSort, taiXiuController.index)
     .post(payController.verify);
 
 router.route('/vps')
