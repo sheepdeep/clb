@@ -36,13 +36,6 @@ const taixiuController = {
                 })
             }
 
-            if (amount > res.locals.profile.balance) {
-                return res.json({
-                    success: false,
-                    message: "Số dư không đủ để thực hiện đặt cược!"
-                })
-            }
-
             if (!res.locals.profile) {
                 return res.json({
                     success: false,
@@ -53,6 +46,20 @@ const taixiuController = {
             const user = await userModel.findOne({username: res.locals.profile.username});
             const checkHistory = await historyModel.findOne({username: user.username, gameType: "TXRONG", result: 'wait'});
             let balance = user.balance - amount;
+
+            if (amount > user.balance) {
+                return res.json({
+                    success: false,
+                    message: "Số dư không đủ để thực hiện đặt cược!"
+                })
+            }
+
+            if (user.balance === 0) {
+                return res.json({
+                    success: false,
+                    message: 'Số dư của bạn không đủ. Vui lòng <a href="/sbcoin" target="_blank">NẠP THÊM</a> để tiếp tục chơi.'
+                })
+            }
 
             if (checkHistory && checkHistory.comment != type) {
                 // const newHistory =  await new historyModel({
