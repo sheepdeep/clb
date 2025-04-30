@@ -58,6 +58,7 @@ exports.run = async () => {
                 second: parseInt(turn.second - 1)
             }
         });
+
         if (turn.second > 60) {
 
             let turnOld = await turnTaiXiuModel.findOne({turn: parseInt(dataSetting.banTaiXiu.turnTaiXiuRong) - 1}).lean();
@@ -165,6 +166,8 @@ exports.run = async () => {
         return await this.run();
     } catch (e) {
         console.log(e);
+        await sleep(1 * 1000);
+        return await this.run();
     }
 }
 
