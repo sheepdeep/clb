@@ -106,8 +106,8 @@ module.exports = {
     sendDice: async (token, chatID) => {
         try {
 
-            // const proxyUrl = 'http://user49033:0acDKxjSmq@36.50.26.110:49033'; // Replace with your proxy and credentials
-            // const agent = new HttpsProxyAgent(proxyUrl);
+            const proxyUrl = 'http://user49033:0acDKxjSmq@36.50.26.110:49033'; // Replace with your proxy and credentials
+            const agent = new HttpsProxyAgent(proxyUrl);
 
             let options = {
                 method: 'POST',
@@ -115,7 +115,7 @@ module.exports = {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                // httpsAgent: agent,
+                httpsAgent: agent,
                 data: `chat_id=${chatID}`
             };
 
