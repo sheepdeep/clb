@@ -6,6 +6,7 @@ const userModel = require('../models/user.model');
 const gameModel = require("../models/game.model");
 const telegramHelper = require("../helpers/telegram.helper");
 const bankModel = require("../models/bank.model");
+const settingModel = require("../models/setting.model");
 
 const giftcodeController = {
     index: async (req, res, next) => {
@@ -21,6 +22,7 @@ const giftcodeController = {
         try {
 
             let {code} = req.body;
+            const dataSetting = await settingModel.findOne({});
 
             if (!code) {
                 return res.json({
@@ -181,6 +183,10 @@ const giftcodeController = {
                     transfer: randomBanks[0].accountNumber
                 }).save();
             }
+
+            const message = `<b>🎉 Xin chúc mừng người chơi ${res.locals.profile.username.slice(0, 4)}**** đã nhận thưởng GIFTCODE thành công.</b>\n\n<b>💵 GIFTCODE: <code>${code}</code> có trị giá ${Intl.NumberFormat('en-US').format(checkCode.amount)} VNĐ</b>\n\n<b>Truy cập SUPBANK.ME để trải nghiệm</b>`;
+
+            await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, "HTML");
 
             return res.json({
                 success: true,

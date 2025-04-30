@@ -45,6 +45,13 @@ const xucxactgController = {
                 })
             }
 
+            if (user.balance === 0) {
+                return res.json({
+                    success: false,
+                    message: 'Số dư của bạn không đủ. Vui lòng <a href="/sbcoin" target="_blank">NẠP THÊM</a> để tiếp tục chơi.'
+                })
+            }
+
             if (amount > user.balance) {
                 return res.json({
                     success: false,

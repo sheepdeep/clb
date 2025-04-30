@@ -61,12 +61,6 @@ exports.run = async () => {
         if (turn.second > 60) {
 
             let turnOld = await turnTaiXiuModel.findOne({turn: parseInt(dataSetting.banTaiXiu.turnTaiXiuRong) - 1}).lean();
-            // let maxEntryXiu, maxEntryTai
-            // maxEntryTai = turnOld.userTai.reduce((max, entry) => entry.amount > max.amount ? entry : max, turnOld.userTai[0]);
-            // maxEntryXiu = turnOld.userXiu.reduce((max, entry) => entry.amount > max.amount ? entry : max, turnOld.userXiu[0]);
-
-            let result = parseInt(turnOld.result);
-            let resultText;
 
             const dataPost = {
                 turn: turnOld.turn,
@@ -75,7 +69,7 @@ exports.run = async () => {
                 sumXiu: turnOld.sumXiu,
                 userTai: turnOld.userTai.length,
                 userXiu: turnOld.userXiu.length,
-                soiCau: await this.dataTurn(11),
+                soiCau: await this.dataTurn(15),
                 dice1: turnOld.xucxac1,
                 dice2: turnOld.xucxac2,
                 dice3: turnOld.xucxac3,
@@ -95,20 +89,17 @@ exports.run = async () => {
                 sumXiu: turn.sumXiu,
                 userTai: turn.userTai.length,
                 userXiu: turn.userXiu.length,
-                soiCau: await this.dataTurn(11),
+                soiCau: await this.dataTurn(15),
             }
+
 
             let dataEncode = await securityHelper.encrypt(JSON.stringify(dataPost));
 
             socket.emit("taiXiuRong", dataEncode);
         }
-
         if (turn.second <= 0) {
 
             let turnOld = await turnTaiXiuModel.findOne({turn: dataSetting.banTaiXiu.turnTaiXiuRong}).lean();
-            // let maxEntryXiu, maxEntryTai
-            // maxEntryTai = turnOld.userTai.reduce((max, entry) => entry.amount > max.amount ? entry : max, turnOld.userTai[0]);
-            // maxEntryXiu = turnOld.userXiu.reduce((max, entry) => entry.amount > max.amount ? entry : max, turnOld.userXiu[0]);
 
             let xucxac1 = await telegramHelper.sendDice(dataSetting.telegram.token, dataSetting.banTaiXiu.chatId)
             xucxac1 = xucxac1.data.result.dice.value;
@@ -154,7 +145,7 @@ exports.run = async () => {
                 sumXiu: turn.sumXiu,
                 userTai: turn.userTai.length,
                 userXiu: turn.userXiu.length,
-                soiCau: await this.dataTurn(11),
+                soiCau: await this.dataTurn(15),
             }
 
             let dataEncode = await securityHelper.encrypt(JSON.stringify(dataPost));

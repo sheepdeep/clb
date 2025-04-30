@@ -64,14 +64,6 @@
     width: 3.6%;
 }
 
-#taiXiuRong .nan {
-    position: absolute;
-    margin-left: -6%;
-    margin-top: 11.8%;
-    width: 3.6%;
-}
-
-
 #taiXiuRong .wrap-second {
     position: absolute;
     width: 16.2%;
@@ -607,4 +599,55 @@
     background-size: auto;
     clip-path: polygon(58.38% 39.77%, 66.16% 36.77%, 69.16% 13.28%, 58.38% 13.28%);
     transform: rotate(-90deg);
+}
+
+#taiXiuRong .khong-nan {
+    position: absolute;
+    margin-left: -48.3%;
+    margin-top: 11.8%;
+    width: 50%;
+    clip-path: polygon(36.11% 63.89%, 49.21% 64.89%, 49.21% 72.85%, 35.11% 72.85%);
+    transform: rotate(-90deg);
+}
+
+#taiXiuRong .nan {
+    position: absolute;
+    margin-left: -13%;
+    margin-top: -0.2%;
+    width: 50%;
+    clip-path: polygon(0.33% 67.18%, 13.29% 67.39%, 13% 80.22%, 1% 75.75%);
+}
+
+#taiXiuRong .wrap-history {
+    display: flex;
+    width: 49%;
+    height: 5%;
+    margin-top: -4.8%;
+    position: absolute;
+    margin-left: 25.2%;
+}
+
+/*#taiXiuRong .wrap-history .tai {*/
+/*    position: absolute;*/
+/*    clip-path: polygon(26.78% 63.56%, 37.05% 63.61%, 37.05% 68.84%, 26.65% 68.79%);*/
+/*}*/
+
+/*#taiXiuRong .wrap-history .xiu {*/
+/*    position: absolute;*/
+/*    clip-path: polygon(26.76% 68.84%, 34.96% 68.84%, 34.96% 72.32%, 26.76% 72.32%);*/
+/*}*/
+
+.wrap-history img {
+    width: 100%;
+    margin-left: 5px;
+}
+
+.wrap-history img:last-child {
+    animation: flashAnimation 0.5s infinite;
+}
+
+@keyframes flashAnimation {
+    0% { scale: 1; }
+    50% { scale: 1.4; }
+    100% { scale: 1; }
 }

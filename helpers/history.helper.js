@@ -19,6 +19,7 @@ const eximbankHelper = require('../helpers/eximbank.helper');
 const transferModel = require('../models/transfer.model');
 const momoModel = require('../models/momo.model');
 const momoHelper = require("./momo.helper");
+const giftModel = require('../models/gift.model');
 
 exports.handleCltx = async (history, bank) => {
     try {
@@ -122,6 +123,7 @@ exports.handleTransId = async (transId) => {
             $and: [
                 {
                     $or: [
+                        {result: "ok"},
                         {result: "win"},
                         {result: "lose"},
                         {result: "notUser"},
@@ -562,49 +564,34 @@ exports.fakeBill = async () => {
     }
 };
 
+exports.generateRandomAlphanumeric = (length) => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}
+
 exports.gift = async () => {
     try {
+        const code = "SB" + await this.generateRandomAlphanumeric(12);
+        const bankReceiver = await bankModel.findOne({bankType: 'mbb'}).lean();
+        const dataSetting = await settingModel.findOne({});
 
-        await historyModel.deleteMany({bot: true});
-        // const dataSetting = await settingModel.findOne({});
+        await new giftModel({
+            code,
+            amount: Math.floor(Math.random() * (20000 - 10000 + 1)) + 10000,
+            playCount: bankReceiver.min,
+            limit: 1,
+            status: 'active',
+            type: 'balance',
+            expiredAt: moment().add(1, 'days').toDate()
+        }).save();
 
-        // /** LẤY RANDOM USERNAME */
-        // const randomRecord = await historyModel.aggregate([
-        //     {
-        //         $match: {
-        //             result: 'lose',  // Lọc các kết quả thua
-        //             bot: false,  // Lọc không phải bot
-        //             timeTLS: {  // Giả sử trường 'createdAt' là trường chứa thời gian bạn cần lọc
-        //                 $gte: moment(moment().format('YYYY-MM-DD')).startOf('day').toDate(),  // Từ đầu ngày hôm nay
-        //                 $lt: moment(moment().format('YYYY-MM-DD')).endOf('day').toDate()  // Đến cuối ngày hôm nay
-        //             }
-        //         }
-        //     },
-        //     {
-        //         $sample: { size: 1 }  // Lấy ngẫu nhiên 1 bản ghi
-        //     }
-        // ]);
-        // const history = randomRecord[0];
+        const message = `<b>🎁 SUPBANK.ME PHÁT CODE 🎁</b>\n\n<b>💵 GIFTCODE: <code>${code}</code></b>\n\n<b>Truy cập SUPBANK.ME để trải nghiệm</b>`;
+        console.log(await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, "HTML"));
 
-        // if (history) {
-        //     const user = await userModel.findOne({username: history.username});
-        //     let photo = 'https://img.upanh.tv/2025/03/12/uri_ifs___M_3cb0a230-1036-4403-aa89-621d70997dfc.jpg';
-
-        //     if (user.telegram?.chatId) {
-        //         let textMessage = `<i>🔉 SUPBANK.ME THÔNG BÁO 🔉</i> \n\n<b>🎉 Chúc mừng ${user.username} 🎉</b> \n\n <i>(lưu ý: mã quà duy trì trong 5p vui lòng nhận nhanh tránh mất nha).</i> \n\n<b>Truy cập SUPBANK.ME để trải nghiệm</b> \n\n<b> AI NHẬN ĐƯỢC THƯỞNG VUI LÒNG <a href="https://t.me/supbank_bot">ẤN VÀO ĐÂY</a></b>`;
-
-        //         await telegramHelper.sendPhoto(dataSetting.telegram.token, user.telegram?.chatId, textMessage, photo, 'HTML');
-        //     }
-
-        //     let textMessage = `<i>🔉 SUPBANK.ME THÔNG BÁO 🔉</i> \n\n<b>🎉 Chúc mừng ${user.username.slice(0, -4)}**** 🎉</b> \n\n <i>(lưu ý: mã quà duy trì trong 5p vui lòng nhận nhanh tránh mất nha).</i> \n\n<b>Truy cập SUPBANK.ME để trải nghiệm</b> \n\n<b> AI NHẬN ĐƯỢC THƯỞNG VUI LÒNG <a href="https://t.me/supbank_bot">ẤN VÀO ĐÂY</a></b>`;
-
-        //     await telegramHelper.sendPhoto(dataSetting.telegram.token, dataSetting.telegram.chatId, textMessage, photo, 'HTML');
-        // }
-
-        // await sleep(60 * 60000);
-        // return await this.gift();
-
-        await historyModel.deleteMany({transId: 'FT25077331094540'})
     } catch (e) {
         console.log(e);
     }

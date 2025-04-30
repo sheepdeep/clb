@@ -96,8 +96,9 @@ db.connectDB();
 historyHelper.history();
 // historyHelper.fakeBill();
 // historyHelper.reward();
-// historyHelper.gift();
-
+setInterval(() => {
+    historyHelper.gift();
+}, 15 * 60 * 1000);
 
 app.use(homeRoute);
 // Error Handler

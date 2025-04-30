@@ -6,6 +6,7 @@ const settingModel = require("../models/setting.model");
 const userModel = require("../models/user.model");
 const moment = require("moment");
 const {v4: uuidv4} = require("uuid");
+const telegramHelper = require("../helpers/telegram.helper");
 
 const wheelController = {
     index: async (req, res, next) => {
@@ -138,6 +139,10 @@ const wheelController = {
             }
 
             // eventHelper.rewardWheel(phone, code, selectGift.amount);
+
+            const message = `<b>🎉 Xin chúc mừng người chơi ${res.locals.profile.username.slice(0, 4)}**** đã nhận thưởng từ vòng quay may mắn thành công.</b>\n\n<b>💵 WHEEL: có trị giá ${Intl.NumberFormat('en-US').format(selectGift.amount)} VNĐ</b>\n\n<b>Truy cập SUPBANK.ME để trải nghiệm</b>`;
+
+            await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, "HTML");
 
             return res.json({
                 success: true,

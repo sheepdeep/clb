@@ -228,6 +228,7 @@ exports.handleTransId = async (histories, bank, band = 0) => {
             const {username, comment} = await historyHelper.handleDesc(description);
 
             let user = await userModel.findOne({username}).lean();
+
             if (!user) {
 
                 await historyModel.findOneAndUpdate({transId}, {
@@ -273,8 +274,36 @@ exports.handleTransId = async (histories, bank, band = 0) => {
                 continue;
             }
 
-
             if (amount > 0) {
+                if (comment === dataSetting.paymentComment) {
+
+                    const result = await bankService.limitBet(bank.accountNumber, amount)
+                    if (!result) {
+                        await userModel.findOneAndUpdate({username}, {$set: {
+                                balance: user.balance + amount,
+                            }});
+                        await historyModel.findOneAndUpdate({transId}, {
+                            $set: {
+                                transId,
+                                username: user.username,
+                                receiver: bank.accountNumber,
+                                gameName: 'RECHARGE',
+                                gameType: `RECHARGE`,
+                                amount,
+                                fullComment: description,
+                                result: 'ok',
+                                paid: 'sent',
+                                isCheck: false,
+                                comment,
+                                timeTLS: new Date(),
+                                description: `Bạn đã nạp tiềnn vào tài khoản <span class="code-num">${Intl.NumberFormat('en-US').format(amount)}</span> vnđ. (SB: ${Intl.NumberFormat('en-US').format(user.balance)} -&gt; ${Intl.NumberFormat('en-US').format(user.balance + amount)})`,
+                            }
+                        }, {upsert: true}).lean();
+                    }
+
+                    continue;
+                }
+
                 if (comment === dataSetting.xsmb.commentLo || comment === dataSetting.xsmb.commentDe || comment === dataSetting.xsmb.commentXien2) {
                     await historyHelper.handleXsmb(history, bank);
                     continue;
