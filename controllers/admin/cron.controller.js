@@ -93,6 +93,7 @@ const cronController = {
                     let data = await momoHelper.INIT_TOBANK(result[0].phone, dataTransfer);
 
                     if (data.success) {
+                        const balance = await momoHelper.balance(result[0].phone);
                         dataRewardSuccess.push(dataTransfer);
                         await historyModel.findByIdAndUpdate(history._id, {paid: 'sent', transfer: result[0].phone, transferType: 'momo'});
                         await userModel.findOneAndUpdate({username: history.username}, {$set: {"bankInfo.guard": true}});
@@ -103,10 +104,9 @@ const cronController = {
                             username: history.username,
                             firstMoney: result[0].balance,
                             amount: history.bonus,
-                            lastMoney: result[0].balance - history.bonus,
+                            lastMoney: balance.balance,
                             comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
                         }).save();
-
                     } else {
                         await historyModel.findByIdAndUpdate(history._id, {paid: 'hold'});
                         dataRewardError.push(dataTransfer);
