@@ -51,6 +51,11 @@ const momoSchema = mongoose.Schema({
         default: 'active'
     },
     errorLogin: Number,
+    riskId: String,
+    riskErrorCode: String,
+    riskOptionKey: String,
+    rkeyOTP: String,
+    aToken: String,
     reward: Boolean,
     loginStatus: String,
     merchantId: String,
@@ -59,6 +64,7 @@ const momoSchema = mongoose.Schema({
     typeBusiness: String,
     businessForms: Object,
     baseQr: String,
+    lastLogined: Date
 }, {
     timestamps: true
 })

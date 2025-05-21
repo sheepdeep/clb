@@ -384,7 +384,6 @@ exports.handleDesc = async (description) => {
         const desc = description.split('.');
         const newDesc = desc[3].split(' ');
 
-
         return {
             username: newDesc[0],
             comment: newDesc[2].toUpperCase().replace(/\./g, '')
@@ -603,50 +602,7 @@ exports.gift = async () => {
 exports.reward = async() => {
     try {
 
-        const dataSetting = await settingModel.findOne({});
-        const history = await historyModel.findOne({
-            paid: "wait",
-            bot: false,
-            $or: [
-            { transfer: null },
-            { transfer: { $exists: false } },
-            ],
-        });
-
-        // Tìm thấy được lịch sử cần trả thưởng
-        if (history) {
-
-            if (history.bonus <= 0) {
-                history.paid = 'sent';
-                history.save();
-
-                await sleep(2000);
-                return await this.reward();
-            }
-
-            const checkTrans = await transferModel.findOne({transId: history.transId}).lean();
-
-            if (!checkTrans) {
-                // Lấy ngân hàng trả thưởng
-
-                if (dataSetting.history.dataType == 'exim') {
-                    await this.transferEximbank(history);
-                } else if (dataSetting.history.dataType == 'momo') {
-                    await this.transferMomo(history);
-                }
-
-
-            } else {
-                history.paid = 'sent';
-                history.save();
-
-                await sleep(2000);
-                return await this.reward();
-            }
-        }
-
-        await sleep(2000);
-        return await this.reward();
+        const history = await historyModel.findOne({status: 'wait'});
 
     } catch (err) {
         console.log(err);
@@ -837,5 +793,13 @@ exports.transferMomo = async (history) => {
         }
     } catch (error) {
         console.log(error);
+    }
+}
+
+exports.transferZalo = async (history) => {
+    try {
+
+    } catch (e) {
+
     }
 }

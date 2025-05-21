@@ -171,16 +171,16 @@ module.exports = {
 
         switch (status) {
             case 'active':
-                html = `<span class="badges badge-success">Hoạt Động</span>`;
+                html = `<span class="kt-badge kt-badge-success kt-badge-outline rounded-[30px]"><span class="kt-badge-dot size-1.5"></span>Hoạt Động</span></span>`;
                 break;
             case 'limit':
-                html = `<span class="badges badge-info">Giới Hạn</span>`;
+                html = `<span class="kt-badge kt-badge-info kt-badge-outline rounded-[30px]"><span class="kt-badge-dot size-1.5"></span>Giới Hạn</span></span>`;
                 break;
             case 'pending':
-                html = `<span class="badges badge-warning">Tạm Dừng</span>`;
+                html = `<span class="kt-badge kt-badge-warning kt-badge-outline rounded-[30px]"><span class="kt-badge-dot size-1.5"></span>Tạm Dừng</span></span>`;
                 break;
             default:
-                html = `<span class="badges badge-danger">Lỗi Số</span>`;
+                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]"><span class="kt-badge-dot size-1.5"></span>Lỗi Số</span></span>`;
                 break;
         }
 
@@ -191,25 +191,25 @@ module.exports = {
 
         switch (status) {
             case 'refreshError':
-                html = `<span class="badges badge-danger">Lỗi Refresh</span>`;
+                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Lỗi Refresh</span>`;
                 break;
             case 'waitLogin':
-                html = `<span class="badges badge-warning">Đợi Đăng Nhập</span>`;
+                html = `<span class="kt-badge kt-badge-warning kt-badge-outline rounded-[30px]">Đợi Đăng Nhập</span>`;
                 break;
             case 'errorLogin':
-                html = `<span class="badges badge-danger">Lỗi Đăng Nhập</span>`;
+                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Lỗi Đăng Nhập</span>`;
                 break;
             case 'active':
-                html = `<span class="badges badge-success">Hoạt Động</span>`;
+                html = `<span class="kt-badge kt-badge-success kt-badge-outline rounded-[30px]">Hoạt Động</span>`;
                 break;
             case 'waitOTP':
-                html = `<span class="badges badge-warning">Đợi OTP</span>`;
+                html = `<span class="kt-badge kt-badge-warning kt-badge-outline rounded-[30px]">Đợi OTP</span>`;
                 break;
             case 'waitSend':
-                html = `<span class="badges badge-warning">Đợi Gửi OTP</span>`;
+                html = `<span class="kt-badge kt-badge-warning kt-badge-outline rounded-[30px]">Đợi Gửi OTP</span>`;
                 break;
             default:
-                html = `<span class="badges badge-danger">Lỗi</span>`;
+                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Lỗi</span>`;
                 break;
         }
 
@@ -220,10 +220,10 @@ module.exports = {
 
         switch (status) {
             case true:
-                html = `<span class="badges badge-success">Hoạt động</span>`;
+                html = `<span class="kt-badge kt-badge-success kt-badge-outline rounded-[30px]">Hoạt động</span>`;
                 break;
             default:
-                html = `<span class="badges badge-danger">Không hoạt động</span>`;
+                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Không hoạt động</span>`;
                 break;
         }
 
@@ -234,10 +234,10 @@ module.exports = {
 
         switch (status) {
             case true:
-                html = `<span class="badges badge-success">Họat động</span>`;
+                html = `<span class="kt-badge kt-badge-success kt-badge-outline rounded-[30px]">Họat động</span>`;
                 break;
             default:
-                html = `<span class="badges badge-danger">Không hoạt động</span>`;
+                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Không hoạt động</span>`;
                 break;
         }
 
@@ -248,34 +248,34 @@ module.exports = {
 
         switch (status) {
             case 'wait':
-                html = `<span class="badges badge-info">Đợi Xử Lý</span>`;
+                html = `<span class="kt-badge kt-badge-info kt-badge-outline rounded-[30px]">Đợi Xử Lý</span>`;
                 break;
             case 'win':
-                html = `<span class="badges badge-success">Thắng Cược</span>`;
+                html = `<span class="kt-badge kt-badge-success kt-badge-outline rounded-[30px]">Thắng Cược</span>`;
                 break;
             case 'ok':
-                html = `<span class="badges badge-success">OK</span>`;
+                html = `<span class="kt-badge kt-badge-success kt-badge-outline rounded-[30px]">OK</span>`;
                 break;
             case 'lose':
-                html = `<span class="badges badge-light">Thua Cược</span>`;
+                html = `<span class="kt-badge kt-badge-light kt-badge-outline rounded-[30px]">Thua Cược</span>`;
                 break;
             case 'notUser':
-                html = `<span class="badges badge-danger">Lỗi Thành Viên</span>`;
+                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Lỗi Thành Viên</span>`;
                 break;
             case 'block':
-                html = `<span class="badges badge-dark">Chặn Thành Viên</span>`;
+                html = `<span class="kt-badge kt-badge-dark kt-badge-outline rounded-[30px]">Chặn Thành Viên</span>`;
                 break;
             case 'handwork':
-                html = `<span class="badges badge-warning">Thủ Công</span>`;
+                html = `<span class="kt-badge kt-badge-warning kt-badge-outline rounded-[30px]">Thủ Công</span>`;
                 break;
             case 'refund':
-                html = `<span class="badges badge-warning">Hoàn Tiền</span>`;
+                html = `<span class="kt-badge kt-badge-warning kt-badge-outline rounded-[30px]">Hoàn Tiền</span>`;
                 break;
             case 'wrong':
-                html = `<span class="badges badge-danger">Sai Nội Dung</span>`;
+                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Sai Nội Dung</span>`;
                 break;
             default:
-                html = `<span class="badges badge-danger">Lỗi</span>`;
+                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Lỗi</span>`;
                 break;
         }
 
@@ -286,16 +286,16 @@ module.exports = {
 
         switch (status) {
             case 'wait':
-                html = `<span class="badges badge-warning">Đợi Chuyển</span>`;
+                html = `<span class="kt-badge kt-badge-warning kt-badge-outline rounded-[30px]">Đợi Chuyển</span>`;
                 break;
             case 'sent':
-                html = `<span class="badges badge-info">Đã chuyển</span>`;
+                html = `<span class="kt-badge kt-badge-info kt-badge-outline rounded-[30px]">Đã chuyển</span>`;
                 break;
             case 'hold':
-                html = `<span class="badges badge-danger">HOLD</span>`;
+                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">HOLD</span>`;
                 break;
             case 'bankerror':
-                html = `<span class="badges badge-danger">CHƯA CÀI BANK</span>`;
+                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">CHƯA CÀI BANK</span>`;
                 break;
         }
 
@@ -318,7 +318,7 @@ module.exports = {
                 src = `/themes/images/banks/acb.png`;
                 break;
             default:
-                src = `<span class="badges badge-danger">Lỗi</span>`;
+                src = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Lỗi</span>`;
                 break;
         }
 

@@ -1,7 +1,7 @@
 const crypto = require('crypto');
+const NodeRSA = require('node-rsa');
 const _ = require('lodash');
-const {v4: uuidV4} = require('uuid');
-
+const { v4: uuidV4 } = require('uuid');
 const BANK_LIST = [
     {
         "order": 0,
@@ -9,16 +9,11 @@ const BANK_LIST = [
         "bankName": "NH TMCP Ngoai Thuong VN",
         "shortBankName": "VCB",
         "displayName": "Vietcombank",
-        "whiteLists": [
-            "0969432326",
-            "0938538403",
-            "0983231099",
-            "01697548505"
-        ],
+        "whiteLists": [],
         "available": true,
         "isPopular": true,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_vietcombank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "VCB, Vietcombank, Ngoại Thương Việt Nam",
         "backgroundColor": "#027244",
         "isNewBank": false
@@ -33,7 +28,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": true,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_mbbank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "MBBank, Quân đội",
         "backgroundColor": "#141ED2",
         "isNewBank": false
@@ -48,7 +43,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": true,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_vietinbank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Vietinbank, VTB, Công thương Việt Nam",
         "backgroundColor": "#005691",
         "isNewBank": false
@@ -63,7 +58,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": true,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_techcombank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Techcombank, Kỹ thương Việt Nam",
         "backgroundColor": "#000",
         "isNewBank": false
@@ -78,7 +73,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": true,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_agribank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Agribank, Nông nghiệp, Nông nghiệp và phát triển nông thôn",
         "backgroundColor": "#AE1C3F",
         "isNewBank": false
@@ -89,14 +84,11 @@ const BANK_LIST = [
         "bankName": "NH TMCP Dau Tu va Phat Trien VN",
         "shortBankName": "BIDV",
         "displayName": "BIDV",
-        "whiteLists": [
-            "0969432326",
-            "0938538403"
-        ],
+        "whiteLists": [],
         "available": true,
         "isPopular": true,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_bidv.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "BIDV, Đầu tư và phát triển, Đầu tư và phát triển Việt Nam",
         "backgroundColor": "#00524E",
         "isNewBank": false
@@ -111,7 +103,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": true,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_sacombank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Sacombank, Sài Gòn Thương Tín",
         "backgroundColor": "#0A4595",
         "isNewBank": false
@@ -123,10 +115,10 @@ const BANK_LIST = [
         "shortBankName": "ACB",
         "displayName": "ACB",
         "whiteLists": [],
-        "available": false,
+        "available": true,
         "isPopular": true,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_acb.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "ACB, Á Châu",
         "backgroundColor": "#0070FF",
         "isNewBank": false
@@ -141,7 +133,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": true,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_vpbank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "VPBank, Việt Nam Thịnh Vượng, Thịnh Vượng, VPB",
         "backgroundColor": "#00B74F",
         "isNewBank": false
@@ -156,7 +148,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": true,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_tpbank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "TPBank, Tiên Phong",
         "backgroundColor": "#5E2E86",
         "isNewBank": false
@@ -171,7 +163,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": true,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_vib.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Quốc tế, VIB, Quốc tế Việt Nam",
         "backgroundColor": "#00509d",
         "isNewBank": false
@@ -186,7 +178,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": true,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_shb.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "SHB, Sài Gòn Hà Nội, Sài Gòn - Hà Nội",
         "backgroundColor": "#F58220",
         "isNewBank": false
@@ -201,7 +193,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_ibk_bank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "IBK, Industrial Bank of Korea-IBK",
         "backgroundColor": "#0056A3",
         "isNewBank": false
@@ -216,7 +208,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_abbank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "An Bình, ABBank, ABB",
         "backgroundColor": "#00AE9F",
         "isNewBank": false
@@ -231,7 +223,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_viet_a.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Việt Á, Viet A Bank, VietABank",
         "backgroundColor": "#1B4486",
         "isNewBank": false
@@ -246,7 +238,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_shinhan.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Shinhan Bank, Shinhan, SVB",
         "backgroundColor": "#00397F",
         "isNewBank": false
@@ -261,7 +253,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_eximbank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Eximbank, Xuất nhật khẩu, Xuất nhập khẩu Việt Nam",
         "backgroundColor": "#0098CE",
         "isNewBank": false
@@ -276,7 +268,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_bao_viet.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Bảo Việt, BaoVietBank, BaoViet Bank",
         "backgroundColor": "#0079C1",
         "isNewBank": false
@@ -291,7 +283,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_scb.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "SCB, TMCP Sài Gòn, Sài Gòn",
         "backgroundColor": "#1724A9",
         "isNewBank": false
@@ -306,7 +298,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_pvcombank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Đại Chúng, PVCombank, PVCB, Đại Chúng Việt Nam",
         "backgroundColor": "#0672BA",
         "isNewBank": false
@@ -321,9 +313,264 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_oceanbank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "OceanBank, Đại dương, TMCP Đại Dương",
         "backgroundColor": "#004C97",
+        "isNewBank": false
+    },
+    {
+        "order": 56,
+        "bankCode": "963666",
+        "bankName": "NH BNP Paribas - Chi nhanh TP. HCM",
+        "shortBankName": "BNPHCM",
+        "displayName": "BNP HCM",
+        "whiteLists": [],
+        "available": true,
+        "isPopular": false,
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_bnp.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "BNP",
+        "backgroundColor": "#196f3d",
+        "isNewBank": false
+    },
+    {
+        "order": 56,
+        "bankCode": "999888",
+        "bankName": "NH Chinh sach Xa hoi",
+        "shortBankName": "VBSP",
+        "displayName": "VBSP",
+        "whiteLists": [],
+        "available": true,
+        "isPopular": false,
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_vbsp.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "ngân hàng chính sách",
+        "backgroundColor": "#1B9E51",
+        "isNewBank": false
+    },
+    {
+        "order": 57,
+        "bankCode": "963668",
+        "bankName": "NH BNP Paribas - Chi nhanh Ha Noi",
+        "shortBankName": "BNPHN",
+        "displayName": "BNP HN",
+        "whiteLists": [],
+        "available": true,
+        "isPopular": false,
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_bnp.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "BNP",
+        "backgroundColor": "#196f3d",
+        "isNewBank": false
+    },
+    {
+        "order": 57,
+        "bankCode": "970467",
+        "bankName": "NH KEB HANA - Chi nhanh Ha Noi",
+        "shortBankName": "KEB HANA HN",
+        "displayName": "KEB HANA HN",
+        "whiteLists": [],
+        "available": true,
+        "isPopular": false,
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_kebhana.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "kebhana hà nội",
+        "backgroundColor": "#3A8475",
+        "isNewBank": false
+    },
+    {
+        "order": 58,
+        "bankCode": "970466",
+        "bankName": "NH KEB HANA - Chi nhanh TP.HCM",
+        "shortBankName": "KEB HANA HCM",
+        "displayName": "KEB HANA HCM",
+        "whiteLists": [],
+        "available": true,
+        "isPopular": false,
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_kebhana.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "kabhana hồ chí minh",
+        "backgroundColor": "#3A8475",
+        "isNewBank": false
+    },
+    {
+        "order": 59,
+        "bankCode": "971011",
+        "bankName": "Trung tâm dịch vụ tài chính số VNPT – Chi nhánh Tổng công ty truyền thông",
+        "shortBankName": "VNPT Money",
+        "displayName": "VNPT Money",
+        "whiteLists": [],
+        "available": true,
+        "isPopular": false,
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_vnpt_money.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "vnptmoney",
+        "backgroundColor": "#0559E3",
+        "isNewBank": false
+    },
+    {
+        "order": 60,
+        "bankCode": "971005",
+        "bankName": "Tổng CT Dịch vụ Số Viettel – CN Tập đoàn Công nghiệp Viễn thông Quân đội",
+        "shortBankName": "Viettel Money",
+        "displayName": "Viettel Money",
+        "whiteLists": [],
+        "available": true,
+        "isPopular": false,
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_viettel_money.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "viettelpay, viettel pay, viettelmoney",
+        "backgroundColor": "#EE0033",
+        "isNewBank": false
+    },
+    {
+        "order": 61,
+        "bankCode": "977777",
+        "bankName": "Công ty Tài chính TNHH MTV Mirae Asset (Việt Nam)",
+        "shortBankName": "MAFC",
+        "displayName": "MAFC",
+        "whiteLists": [],
+        "available": true,
+        "isPopular": false,
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_mafc.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "mirae asset bank, miraeasset",
+        "backgroundColor": "#E66410",
+        "isNewBank": false
+    },
+    {
+        "order": 62,
+        "bankCode": "533948",
+        "bankName": "NH Citibank, N.A - Chi nhánh Hà Nội",
+        "shortBankName": "CITIBANK VIETNAM",
+        "displayName": "CITIBANK VIETNAM",
+        "whiteLists": [],
+        "available": true,
+        "isPopular": false,
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_citibank.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "mirae asset bank, miraeasset",
+        "backgroundColor": "#0167A3",
+        "isNewBank": false
+    },
+    {
+        "order": 65,
+        "bankCode": "168999",
+        "bankName": "Cathay United Bank – Chi nhánh TP. HCM",
+        "shortBankName": "CUBHCM",
+        "displayName": "CUBHCM",
+        "whiteLists": [],
+        "available": true,
+        "isPopular": false,
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_cub.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "cathay bank, cathay",
+        "backgroundColor": "#01A84F",
+        "isNewBank": false
+    },
+    {
+        "order": 66,
+        "bankCode": "971032",
+        "bankName": "Trung tâm Dịch vụ số Mobifone – Chi nhánh Tổng Công ty viễn thông Mobifone",
+        "shortBankName": "MVAS",
+        "displayName": "MVAS",
+        "whiteLists": [],
+        "available": true,
+        "isPopular": false,
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_mvas.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "mobi phone, mobi fone",
+        "backgroundColor": "#1E6AD7",
+        "isNewBank": false
+    },
+    {
+        "order": 67,
+        "bankCode": "555666",
+        "bankName": "NH Đầu tư và Phát triển Campuchia – Chi nhánh Hà Nội",
+        "shortBankName": "BIDC",
+        "displayName": "BIDC",
+        "whiteLists": [],
+        "available": true,
+        "isPopular": false,
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_bidc.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "cam pu chia, campuchia",
+        "backgroundColor": "#285F5D",
+        "isNewBank": false
+    },
+    {
+        "order": 68,
+        "bankCode": "963368",
+        "bankName": "Công ty Tài chính TNHH MTV Shinhan Việt Nam",
+        "shortBankName": "SVFC",
+        "displayName": "SVFC",
+        "whiteLists": [],
+        "available": true,
+        "isPopular": false,
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_shinhan_finance.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "Sin han, Shin han",
+        "backgroundColor": "#387FCA",
+        "isNewBank": false
+    },
+    {
+        "order": 69,
+        "bankCode": "963688",
+        "bankName": "NH Bank of China (Hongkong) Limited – Chi nhánh TP.HCM",
+        "shortBankName": "BOCHK",
+        "displayName": "BOCHK",
+        "whiteLists": [],
+        "available": true,
+        "isPopular": false,
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_bochk.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "Chi na bank",
+        "backgroundColor": "#C53355",
+        "isNewBank": false
+    },
+    {
+        "order": 70,
+        "bankCode": "963311",
+        "bankName": "NH So Vikki by HDBank",
+        "shortBankName": "Vikki by HDBank",
+        "displayName": "Vikki by HDBank",
+        "whiteLists": [],
+        "available": true,
+        "isPopular": false,
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_vikki.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "Vi ki, Vik ki",
+        "backgroundColor": "#0101FF",
+        "isNewBank": false
+    },
+    {
+        "order": 71,
+        "bankCode": "963399",
+        "bankName": "NH So UMEE by Kienlongbank",
+        "shortBankName": "UMEE",
+        "displayName": "UMEE",
+        "whiteLists": [],
+        "available": true,
+        "isPopular": false,
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_umee.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "ume, u me, umi, u mi",
+        "backgroundColor": "#00085E",
+        "isNewBank": false
+    },
+    {
+        "order": 72,
+        "bankCode": "963369",
+        "bankName": "NH So Liobank by OCB",
+        "shortBankName": "Liobank",
+        "displayName": "Liobank",
+        "whiteLists": [],
+        "available": true,
+        "isPopular": false,
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_lio.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "lio, li o bank, li o banh",
+        "backgroundColor": "#834ADD",
         "isNewBank": false
     },
     {
@@ -336,7 +583,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_nam_a_1.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Nam Á, NamABank",
         "backgroundColor": "#0064A7",
         "isNewBank": false
@@ -351,7 +598,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_hdbank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "HD Bank, HDBank, Phát triển Thành phố Hồ Chí Minh",
         "backgroundColor": "#8D1913",
         "isNewBank": false
@@ -366,7 +613,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_publicbank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Public Bank, PBVN",
         "backgroundColor": "#AC0100",
         "isNewBank": false
@@ -381,7 +628,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_hong_leon_bank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Hongleongbank, Hong Leong Bank",
         "backgroundColor": "#002D62",
         "isNewBank": false
@@ -396,7 +643,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_pgbank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "PG Bank, Xăng Dầu Petrolimex, Petrolimex",
         "backgroundColor": "#034EA0",
         "isNewBank": false
@@ -411,7 +658,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_coop_bank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Co op Bank, Co-opBank, Hợp tác, hợp tác xã",
         "backgroundColor": "#00377A",
         "isNewBank": false
@@ -426,7 +673,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_ncb.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "NCB, Quốc Dân",
         "backgroundColor": "#004E96",
         "isNewBank": false
@@ -441,7 +688,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_indovina.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Indovina Bank, Trách nhiệm hữu hạn Indovina, IVB",
         "backgroundColor": "#006FBA",
         "isNewBank": false
@@ -456,7 +703,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_gpbank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "GPBank, GP Bank",
         "backgroundColor": "#004A8F",
         "isNewBank": false
@@ -471,7 +718,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_saigonbank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Sài Gòn, Saigonbank, Sai Gon Bank",
         "backgroundColor": "#2164A4",
         "isNewBank": false
@@ -486,7 +733,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_msb.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Maritime Bank, Hàng Hải, Hàng Hải Việt Nam",
         "backgroundColor": "#FF671F",
         "isNewBank": false
@@ -494,16 +741,16 @@ const BANK_LIST = [
     {
         "order": 177,
         "bankCode": "970449",
-        "bankName": "NH TMCP Buu Dien Lien Viet",
+        "bankName": "NH TMCP Loc Phat Viet Nam",
         "shortBankName": "LVPB",
         "displayName": "LPBank",
         "whiteLists": [],
         "available": true,
         "isPopular": false,
-        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_lienvietpostbank.png",
-        "bankFee": "3.300đ + 0.65%",
-        "bankNameSearch": "Liên Việt, LienVietPostBank, Lien Viet Post Bank, LPB, LVB, LPBank",
-        "backgroundColor": "#EE7625",
+        "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_lienvietpostbank_1.png",
+        "bankFee": "3.300đ + 0.8%",
+        "bankNameSearch": "Liên Việt, LienVietPostBank, Lien Viet Post Bank, LPB, LVB, LPBank, loc phat, locphat, lộc phát",
+        "backgroundColor": "#6f3619",
         "isNewBank": false
     },
     {
@@ -516,7 +763,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_kienlong.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Kienlongbank, Kiên Long, Kien Long Bank",
         "backgroundColor": "#EF4D23",
         "isNewBank": false
@@ -531,7 +778,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_woori.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Woori Bank, Wooribank, wori, worri",
         "backgroundColor": "#0471D1",
         "isNewBank": false
@@ -546,7 +793,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_seabank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Seabank, Đông Nam Á",
         "backgroundColor": "#8D0C11",
         "isNewBank": false
@@ -561,7 +808,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_uob.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "NH TNHH MTV United Overseas Bank (UOB)",
         "backgroundColor": "#001F67",
         "isNewBank": false
@@ -576,7 +823,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_standard_chartered.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Standard Chartered, SC",
         "backgroundColor": "#008738",
         "isNewBank": false
@@ -591,7 +838,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_ocb.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "OCB, Phương Đông",
         "backgroundColor": "#008c44",
         "isNewBank": false
@@ -606,7 +853,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_cimb.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "CIMB",
         "backgroundColor": "#790008",
         "isNewBank": false
@@ -621,7 +868,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_ban_viet_2.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Bản Việt, Viet Capital Bank, BVBank",
         "backgroundColor": "#123985",
         "isNewBank": false
@@ -636,7 +883,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_dong_a.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Đông Á, Dong A Bank, DAB, DongA Bank",
         "backgroundColor": "#0066CC",
         "isNewBank": false
@@ -651,7 +898,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_viet_nga.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "VRB, Việt Nga, Liên doanh Việt - Nga, viet nam russia",
         "backgroundColor": "#194CAD",
         "isNewBank": false
@@ -666,7 +913,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_bac_a.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Bắc Á, Bac A Bank",
         "backgroundColor": "#1E1E1E",
         "isNewBank": false
@@ -681,7 +928,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_viet_bank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Vietbank, Việt Bank, Việt Nam Thương Tín",
         "backgroundColor": "#005489",
         "isNewBank": false
@@ -696,7 +943,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_cake.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "CAKE",
         "backgroundColor": "#2A217A",
         "isNewBank": false
@@ -711,7 +958,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_ubank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Ubank",
         "backgroundColor": "#211F5F",
         "isNewBank": false
@@ -726,7 +973,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_nonghyu.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "NonghyupBank - HN",
         "backgroundColor": "#3473D6",
         "isNewBank": false
@@ -741,7 +988,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_kookmin_hn.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "KBHN",
         "backgroundColor": "#504235",
         "isNewBank": false
@@ -756,7 +1003,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_kookmin_hcm.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "KBHCM",
         "backgroundColor": "#504235",
         "isNewBank": false
@@ -771,7 +1018,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_dbs.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "DBS-HCM",
         "backgroundColor": "#000",
         "isNewBank": false
@@ -786,7 +1033,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_cbbank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "CBBANK",
         "backgroundColor": "#034DA2",
         "isNewBank": false
@@ -797,11 +1044,17 @@ const BANK_LIST = [
         "bankName": "NH Dai chung TNHH Kasikornbank - Chi nhanh TP. HCM",
         "shortBankName": "KBank",
         "displayName": "KBank",
-        "whiteLists": [],
+        "whiteLists": [
+            "01625110595",
+            "0969432326",
+            "0938538403",
+            "0909556490",
+            "0901199694"
+        ],
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_kbank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "KBank",
         "backgroundColor": "#504235",
         "isNewBank": false
@@ -816,7 +1069,7 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_hsbc.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "HSBC",
         "backgroundColor": "#000",
         "isNewBank": false
@@ -831,25 +1084,43 @@ const BANK_LIST = [
         "available": true,
         "isPopular": false,
         "logo": "https://static.momocdn.net/app/img/momo_app_v2/new_version/All_team/bank/ic_timobank.png",
-        "bankFee": "3.300đ + 0.65%",
+        "bankFee": "3.300đ + 0.8%",
         "bankNameSearch": "Timo",
         "backgroundColor": "#563D82",
         "isNewBank": false
     }
-];
+]
 
 // hàm decrypt
-const aes256cbcDecrypt = (data, key) => {
-    let iv = Buffer.alloc(16);
+const aes256cbcDecrypt = (data, key, ivSet) => {
+    let iv = ivSet ? Buffer.from(ivSet, 'utf-8') : Buffer.alloc(16);
     let cipher = crypto.createDecipheriv("aes-256-cbc", key.substring(0, 32), iv);
     return cipher.update(data, "base64") + cipher.final("utf8");
 }
 
 // hàm encrypt
-const aes256cbcEncrypt = (data, key) => {
-    let iv = Buffer.alloc(16);
+const aes256cbcEncrypt = (data, key, ivSet) => {
+    let iv = ivSet ? Buffer.from(ivSet, 'utf-8') : Buffer.alloc(16);
     let cipher = crypto.createCipheriv("aes-256-cbc", key.substr(0, 32), iv);
     return Buffer.concat([cipher.update(data, "utf8"), cipher.final()]).toString("base64");
+}
+function decryptAES(encryptedText, key) {
+    const decipher = crypto.createDecipheriv('aes-128-cbc', key, Buffer.alloc(16, 0));
+
+    let decrypted = decipher.update(encryptedText, 'base64', 'utf8');
+    decrypted += decipher.final('utf8');
+
+    return decrypted;
+}
+
+function encryptAES(text, key) {
+    const iv = Buffer.alloc(16, 0); // Initialization vector (if used during encryption)
+
+    const cipher = crypto.createCipheriv('aes-128-cbc', key, iv);
+    let encrypted = cipher.update(text, 'utf8', 'base64');
+    encrypted += cipher.final('base64');
+
+    return encrypted;
 }
 
 
@@ -928,7 +1199,10 @@ const generateSecureId = () => generateRandomString(16).toLowerCase();
 const generateModelId = () => generateRandomString(64).toLowerCase();
 
 const generateSecretKey = () => crypto.randomBytes(32).toString("hex").substring(32);
-
+const sha256 = (str) => crypto.createHash('sha256').update(str).digest('hex');
+const parseJwt = (token) => {
+    return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+}
 
 module.exports = {
     calculateCheckSum,
@@ -946,5 +1220,7 @@ module.exports = {
     calculatePHash,
     generateSecretKey,
     getRKeyFromPhoneAndRandomKey,
-    BANK_LIST
+    BANK_LIST,
+    sha256,
+    parseJwt
 }

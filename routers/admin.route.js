@@ -209,7 +209,15 @@ router.route('/zlp-list')
 
 router.route('/zlp-list/:id')
     .put(isAdmin, zaloController.update)
-    // .post(isAdmin, zaloController.add);
+    .delete(isAdmin, zaloController.remove);
+
+router.route('/zlp/balance')
+    .post(isAdmin, zaloController.balance)
+
+router.route('/zlp-to-bank')
+    .get([isAdmin, loggedInAdmin], zaloController.transferToBank)
+    .post(isAdmin, transferBankController.zaloToBank)
+
 
 router.route(['/momo-list/:id', '/momo-lite/:id'])
     .put(isAdmin, momoController.update)

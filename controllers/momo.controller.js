@@ -83,28 +83,32 @@ const momoController = {
                 })
             }
 
-            res.json(await momoHelper.confirmOTP(phone, password, otp));
+            const currentMomo = await momoModel.findOne({phone}).lean();
+            if (currentMomo && currentMomo.accessToken) {
+                return res.json({success: false, message: 'MoMo đã được thiết lập trước đó'})
+            }
+
+            // if (currentMomo && currentMomo.status !== "waitOTP") {
+            //     return res.json({success: false, message: 'Vui lòng lấy OTP trước'});
+            // }
+
+            res.json(await momoHelper.regDeviceMsg(phone, password, password, otp));
         } catch (err) {
             next(err);
         }
     },
     login: async (req, res, next) => {
         try {
-            let {phone, password, imei} = req.body;
+            let {phone, password} = req.body;
 
-            if (!phone || !password || !imei) {
+            if (!phone || !password) {
                 return res.json({
                     success: false,
                     message: 'Vui lòng nhập đầy đủ thông tin!'
                 })
             }
 
-            await momoHelper.checkEligibleForMigration(phone, password, imei);
-
-            const checkUser = await momoHelper.relogin(phone, password, imei);
-            if (checkUser.success) {
-                return res.json(await momoHelper.login(phone));
-            }
+            const checkUser = await momoHelper.relogin(phone, password);
 
             res.json(checkUser);
         } catch (err) {
@@ -122,7 +126,7 @@ const momoController = {
                 })
             }
 
-            console.log(await momoHelper.login(phone));
+            return res.json(await momoHelper.refreshToken(phone));
         } catch (err) {
             next(err);
         }

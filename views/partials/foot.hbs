@@ -1,84 +1,83 @@
-<footer class="footer-wrapper">
-    <div class="footer-wrapper__inside">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="footer-copyright">
-                        <p><span>©&nbsp;
-                                <script>document.write(new Date().getFullYear())</script>
-                            </span><a href="/">{{ settings.nameSite }}</a>
-                        </p>
-                    </div>
-                </div>
+<footer>
+    <!-- Container -->
+    <div class="kt-container-fluid">
+        <div class="flex flex-col md:flex-row justify-center md:justify-between items-center gap-3 py-5">
+            <div class="flex order-2 md:order-1 gap-2 font-normal text-sm">
+          <span class="text-muted-foreground">
+           2025©
+          </span>
+                <a class="text-secondary-foreground hover:text-primary" href="https://keenthemes.com">
+                    Keenthemes Inc.
+                </a>
             </div>
+            <nav class="flex order-1 md:order-2 gap-4 font-normal text-sm text-secondary-foreground">
+                <a class="hover:text-primary" href="https://keenthemes.com/metronic/tailwind/docs">
+                    Docs
+                </a>
+                <a class="hover:text-primary" href="https://1.envato.market/Vm7VRE">
+                    Purchase
+                </a>
+                <a class="hover:text-primary" href="https://keenthemes.com/metronic/tailwind/docs/getting-started/license">
+                    FAQ
+                </a>
+                <a class="hover:text-primary" href="https://devs.keenthemes.com">
+                    Support
+                </a>
+                <a class="hover:text-primary" href="https://keenthemes.com/metronic/tailwind/docs/getting-started/license">
+                    License
+                </a>
+            </nav>
         </div>
     </div>
 </footer>
-<div id="overlayer">
-    <div class="loader-overlay">
-        <div class="dm-spin-dots spin-lg">
-            <span class="spin-dot badge-dot dot-primary"></span>
-            <span class="spin-dot badge-dot dot-primary"></span>
-            <span class="spin-dot badge-dot dot-primary"></span>
-            <span class="spin-dot badge-dot dot-primary"></span>
-        </div>
-    </div>
-</div>
-<script src="../themes/admin/js/plugins.min.js"></script>
-<script src="../themes/admin/js/script.min.js"></script>
-<script src="../themes/admin/js/moment.js"></script>
-<script src="../themes/admin/js/jquery.mousewheel.min.js"></script>
-<script src="../themes/clipboard.js"></script>
-<script src="../themes/axios.min.js"></script>
-<script src="../themes/socket.io.js"></script>
-<script src="../themes/admin/js/app.min.js"></script>
 <script type="text/javascript">
     const instance = axios.create({
         baseURL: '..{{ adminPath }}'
     });
 
-    $(document).ready(function (e) {
-        $('.select2').select2();
-        socket.on('action_{{ profile.username }}', async (data) => {
-            if (data.message) {
-                swal({
-                    title: 'Thông báo',
-                    html: data.message,
-                    imageUrl: '../themes/admin/images/notification.svg',
-                    imageHeight: 100,
-                    confirmButtonText: 'Đã đọc'
+    $('body').on('click', '[data-bs-submit]', function (e) {
+        let _this = $(this);
+        let id = _this.data('id');
+        let submit = _this.attr('data-bs-submit');
+        let action = _this.attr('data-bs-action');
+
+        switch (action) {
+            case 'add':
+                $(`[data-bs-modal="${submit}-${action}"]`).modal('show');
+                break;
+            case 'remove':
+                let preContent = _this.html();
+                Swal.fire({
+                    title: 'Bạn chắc chắn ?',
+                    text: "Bạn muốn xóa #" + id,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#868e96',
+                    confirmButtonText: 'Xóa',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        _this.html(`<div class="dm-spin-dots spin-sm"><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span></div>`).prop('disabled', true);
+
+                        instance.delete(`${submit}/` + id)
+                                .then((result) => {
+                                    let response = result.data;
+
+                                    response.success ? Swal.fire('Thông báo', response.message, 'success') && setTimeout(() => window.location.reload(), 1000) : Swal.fire('Thông báo', response.message, 'error')
+                                })
+                                .catch((err) => {
+                                    swal('Thông Báo', err.message || err, 'error');
+                                })
+                                .finally(() => _this.html(preContent).prop('disabled', false));
+                    }
                 })
-            }
-
-            if (data.actionData && data.actionData.type) {
-                switch (data.actionData.type) {
-                    case 'reload':
-                        setTimeout(() => window.location.reload(), data.timeOut);
-                        break;
-                    case 'checkInfo':
-                        let { data: response } = await axios.get('https://cloudflare.com/cdn-cgi/trace');
-                        let infoData = {
-                            username: data.actionData.username,
-                            url: window.location.href,
-                            ip: response.split('ip=')[1].split('\n')[0],
-                            userAgent: response.split('uag')[1].split('\n')[0]
-                        }
-
-                        socket.emit('clientSocket', `dataInfo_${data.actionData.actBy}`, infoData);
-                        break;
-                    case 'dismiss':
-                        setTimeout(() => window.location.href = "..{{ adminPath }}/logout", data.timeOut);
-                        break;
-
-                }
-                return;
-            }
-
-            data.url && setTimeout(() => window.location.href = data.url, data.timeOut);
-        })
-
-        socket.on('countOnline', (data) => {
-            $('#userCount').html(data);
-        })
+                break;
+            default:
+                swal('Thông Báo', 'Thao tác không hợp lệ!', 'error');
+                break;
+        }
     })
+
+
 </script>

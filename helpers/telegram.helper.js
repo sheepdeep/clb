@@ -10,9 +10,9 @@ module.exports = {
     sendText: async (token, chatID, message, parseMode = 'HTML', buttons = []) => {
         try {
 
-            const proxyUrl = 'http://user49033:0acDKxjSmq@36.50.26.110:49033';
+            // const proxyUrl = 'http://user49033:0acDKxjSmq@36.50.26.110:49033';
 
-            const agent = new HttpsProxyAgent(proxyUrl);
+            // const agent = new HttpsProxyAgent(proxyUrl);
 
             let options = {
                 method: 'POST',
@@ -20,7 +20,7 @@ module.exports = {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                httpsAgent: agent,
+                // httpsAgent: agent,
                 data: `chat_id=${chatID}&text=${message}&parse_mode=${parseMode}&reply_markup=${JSON.stringify({ inline_keyboard: buttons })}`
             };
 

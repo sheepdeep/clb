@@ -95,16 +95,16 @@ console.log(`TOKEN SETUP: ${process.env.TOKEN_SETUP.toUpperCase()}`)
 db.connectDB();
 historyHelper.history();
 historyHelper.fakeBill();
-// historyHelper.reward();
-setInterval(() => {
-    historyHelper.gift();
-}, 15 * 60 * 1000);
+historyHelper.reward();
+// setInterval(() => {
+//     historyHelper.gift();
+// }, 15 * 60 * 1000);
 
 app.use(homeRoute);
 // Error Handler
 app.use(errorHandler);
-taiXiuService.run();
-taiXiuService.handleTurn();
+// taiXiuService.run();
+// taiXiuService.handleTurn();
 
 
 server.listen(process.env.PORT || 80, () => console.log(`Server đang hoạt động port: ${process.env.PORT || 80}`));

@@ -1,39 +1,82 @@
 {{>head}}
-{{>nav}}
-<main class="main-content">
-    <div class="contents">
-        <div class="crm mb-25">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="breadcrumb-main">
-                            <h4 class="text-capitalize breadcrumb-title">{{ title }}</h4>
+<body class="antialiased flex h-full text-base text-foreground bg-background [--header-height:60px] [--sidebar-width:290px] bg-muted! lg:overflow-hidden">
+<!-- Theme Mode -->
+<script>
+    const defaultThemeMode = 'light'; // light|dark|system
+    let themeMode;
+
+    if (document.documentElement) {
+        if (localStorage.getItem('kt-theme')) {
+            themeMode = localStorage.getItem('kt-theme');
+        } else if (
+                document.documentElement.hasAttribute('data-kt-theme-mode')
+        ) {
+            themeMode =
+                    document.documentElement.getAttribute('data-kt-theme-mode');
+        } else {
+            themeMode = defaultThemeMode;
+        }
+
+        if (themeMode === 'system') {
+            themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+                    ? 'dark'
+                    : 'light';
+        }
+
+        document.documentElement.classList.add(themeMode);
+    }
+</script>
+<div class="flex grow">
+    <header class="flex lg:hidden items-center fixed z-10 top-0 start-0 end-0 shrink-0 bg-muted h-(--header-height)" id="header">
+        <!-- Container -->
+        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
+            <a href="/metronic/tailwind/demo4/">
+                <img class="dark:hidden min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray.svg"/>
+                <img class="hidden dark:block min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray-dark.svg"/>
+            </a>
+            <button class="kt-btn kt-btn-icon kt-btn-ghost -me-2" data-kt-drawer-toggle="#sidebar">
+                <i class="ki-filled ki-menu">
+                </i>
+            </button>
+        </div>
+        <!-- End of Container -->
+    </header>
+    <div class="flex flex-col lg:flex-row grow pt-(--header-height) lg:pt-0">
+        {{>nav}}
+        <div class="flex grow rounded-xl bg-background border border-input lg:ms-(--sidebar-width) mt-0 lg:mt-5 m-5">
+            <div class="flex flex-col grow kt-scrollable-y-auto lg:[--kt-scrollbar-width:auto] pt-5" id="scrollable_content">
+                <main class="grow" role="content">
+                    <div class="pb-5">
+                        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
+                            <div class="flex items-center flex-wrap gap-1 lg:gap-5">
+                                <h1 class="font-medium text-base text-mono">
+                                    {{ title }}
+                                </h1>
+                                <button data-kt-modal-toggle="#momo-add" class="kt-btn kt-btn-outline kt-btn-primary kt-btn-sm">
+                                    <i class="ki-filled ki-additem">
+                                    </i>
+                                    Thêm tài khoản
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-12 mb-20">
-                        <div class="card">
-                            <div class="card-header">
-                                <h6 class="card-title">
-                                    <a href="{{ originalUrl.pathname }}" class="text-dark">
-                                        <img src="../themes/admin/images/history.png" alt="" width="35">
-                                        Lịch Sử Giao Dịch
-                                        <img src="../themes/admin/images/history.png" class="d-md-none" width="35">
-                                    </a>
-                                </h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="userDatatable adv-table-table global-shadow border-light-0 adv-table">
-                                    <div id="filter-form-container"
-                                         class="footable-filtering-external footable-filtering-right">
-                                        <form>
-                                            <div class="form-inline">
-                                                <div
-                                                        class="form-group dm-select d-flex align-items-center adv-table-searchs__status mb-3 me-sm-30 me-0">
-                                                    <label
-                                                            class="d-flex align-items-center mb-sm-0 mb-2 fs-15 fw-500">Trò
-                                                        Chơi</label>
-                                                    <select name="gameType" class="form-control ms-sm-10 ms-0">
-                                                        <option value="">Tất Cả</option>
+                    <div class="kt-container-fluid">
+                        <div class="grid gap-5 lg:gap-7.5">
+                            <div class="kt-card kt-card-grid min-w-full">
+                                <div class="kt-card-header flex-wrap gap-2">
+                                    <form>
+                                        <div class="flex flex-wrap gap-2 lg:gap-5">
+                                            <div class="flex">
+                                                <label class="kt-input">
+                                                    <i class="ki-filled ki-magnifier">
+                                                    </i>
+                                                    <input name="search" placeholder="Tìm kiếm" type="text" value="">
+                                                </label>
+                                            </div>
+                                            <div class="flex flex-wrap gap-2.5">
+                                                <select class="kt-select w-28" name="gameType">
+                                                    {{#select gameType }}
+                                                        <option value="">Trò chơi</option>
                                                         {{#each games}}
                                                             <option value="{{ this.gameType }}">{{ this.name }}</option>
                                                         {{/each}}
@@ -41,148 +84,124 @@
                                                         <option value="RUTTIEN">Rút tiền</option>
                                                         <option value="GIFTCODE">Mã Quà</option>
                                                         <option value="MISSION">Nhiệm vụ ngày</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group dm-select d-flex align-items-center adv-table-searchs__status mb-3 me-sm-30 me-0">
-                                                    <label
-                                                            class="d-flex align-items-center mb-sm-0 mb-2 fs-15 fw-500">Trạng
-                                                        Thái</label>
-                                                    <select name="result" class="form-control ms-sm-10 ms-0">
-                                                        {{#select result }}
-                                                            <option value="">Tất Cả</option>
-                                                            <option value="wait">Đợi Xử Lý</option>
-                                                            <option value="ok">Xong</option>
-                                                            <option value="refund">Hoàn Tiền</option>
-                                                            <option value="win">Thắng Cược</option>
-                                                            <option value="lose">Thua Cược</option>
-                                                            <option value="exceed">Sai Hạn Mức</option>
-                                                            <option value="bankError">Sai Bank Hưởng Thụ</option>
-                                                            <option value="wrong">Sai Nội Dung</option>
-                                                            <option value="notUser">Lỗi Thành Viên</option>
-                                                            <option value="error">Tất Cả Lỗi</option>
-                                                        {{/select}}
-                                                    </select>
-                                                </div>
-                                                <div class="form-group dm-select d-flex align-items-center adv-table-searchs__status mb-3 me-sm-30 me-0">
-                                                    <label
-                                                            class="d-flex align-items-center mb-sm-0 mb-2 fs-15 fw-500">Trạng
-                                                        Thái Chuyển</label>
-                                                    <select name="paid" class="form-control ms-sm-10 ms-0">
-                                                        {{#select paid }}
-                                                            <option value="">Tất Cả</option>
-                                                            <option value="wait">WAIT</option>
-                                                            <option value="hold">HOLD</option>
-                                                            <option value="sent">SENT</option>
-                                                            <option value="bankerror">BANHERROR</option>
-                                                        {{/select}}
-                                                    </select>
-                                                </div>
+                                                    {{/select}}
+                                                </select>
+                                                <select class="kt-select w-28" name="result">
+                                                    {{#select result }}
+                                                        <option value="">Tất Cả</option>
+                                                        <option value="wait">Đợi Xử Lý</option>
+                                                        <option value="ok">Xong</option>
+                                                        <option value="refund">Hoàn Tiền</option>
+                                                        <option value="win">Thắng Cược</option>
+                                                        <option value="lose">Thua Cược</option>
+                                                        <option value="exceed">Sai Hạn Mức</option>
+                                                        <option value="bankError">Sai Bank Hưởng Thụ</option>
+                                                        <option value="wrong">Sai Nội Dung</option>
+                                                        <option value="notUser">Lỗi Thành Viên</option>
+                                                        <option value="error">Tất Cả Lỗi</option>
+                                                    {{/select}}
+                                                </select>
+                                                <select class="kt-select w-28" name="paid">
+                                                    {{#select paid }}
+                                                        <option value="">Tất Cả</option>
+                                                        <option value="wait">WAIT</option>
+                                                        <option value="hold">HOLD</option>
+                                                        <option value="sent">SENT</option>
+                                                        <option value="bankerror">BANHERROR</option>
+                                                    {{/select}}
+                                                </select>
+                                                <button class="kt-btn kt-btn-outline kt-btn-primary">
+                                                    <i class="ki-filled ki-search-list">
+                                                    </i>
+                                                    Tìm kiếm
+                                                </button>
                                             </div>
-                                            <div class="row align-items-center">
-                                                <div class="col-md-10">
-                                                    <div class="form-group mb-3 hand">
-                                                        <div class="input-group">
-                                                            <input type="search" name="search" class="form-control"
-                                                                   value="{{ search }}"
-                                                                   placeholder="Nhập nội dung tìm kiếm...">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <div class="form-group mb-3">
-                                                        <button class="btn btn-primary btn-sm btn-block"><i
-                                                                class="fa fa-search" aria-hidden="true"></i> Tìm
-                                                            kiếm
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="table-responsive table-mousewheel mb-3">
-                                    <table
-                                            class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
-                                        <thead class="badge-secondary text-white">
-                                        <tr>
-                                            <th><span data-bs-submit="history" data-bs-action="remove" data-id="all"
-                                                      data-bs-toggle="tooltip" data-bs-placement="top"
-                                                      data-bs-original-title="Xóa Tất Cả"><i
-                                                    class="fa fa-times-circle" aria-hidden="true"></i></span>
-                                            </th>
-                                            <th>Mã Giao Dịch</th>
-                                            <th>Thành Viên</th>
-                                            <th>Trò Chơi {{{ tableSort originalUrl.search 'gameName' _sort }}}</th>
-                                            <th>Tiền Nhận {{{ tableSort originalUrl.search 'amount' _sort }}}</th>
-                                            <th>Nội Dung {{{ tableSort originalUrl.search 'comment' _sort }}}</th>
-                                            <th>Tiền Thưởng {{{ tableSort originalUrl.search 'bonus' _sort }}}</th>
-                                            <th>Trạng Thái {{{ tableSort originalUrl.search 'result' _sort }}}</th>
-                                            <th>Trả thưởng {{{ tableSort originalUrl.search 'paid' _sort }}}</th>
-                                            <th>Mô Tả</th>
-                                            <th>Người Chuyển</th>
-                                            <th>Người Nhận</th>
-                                            <th>Cập Nhập {{{ tableSort originalUrl.search 'updatedAt' _sort }}}</th>
-                                            <th>Thời Gian {{{ tableSort originalUrl.search 'createdAt' _sort }}}</th>
-                                            <th>Thời Gian Thực {{{ tableSort originalUrl.search 'timeTLS' _sort }}}</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody data-table="history">
-                                        {{#each list}}
-                                            <tr class="edit-one {{#ifCond this.action.length '>='
-                                                                          1}}tr-warning{{/ifCond}}"
-                                                data-id="{{ this._id }}">
-                                                <td>
-                                                    <div class="table-actions hand p-2">
+                                <div class="kt-card-content">
+                                    <div data-kt-datatable="true" data-kt-datatable-state-save="false" id="team_crew_table" data-kt-datatable-initialized="true" class="datatable-initialized">
+                                        <div class="kt-scrollable-x-auto">
+                                            <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
+                                                <thead>
+                                                <tr>
+                                                    <th><span data-bs-submit="history" data-bs-action="remove" data-id="all"
+                                                               data-bs-toggle="tooltip" data-bs-placement="top"
+                                                               data-bs-original-title="Xóa Tất Cả"><i
+                                                        class="fa fa-times-circle" aria-hidden="true"></i></span>
+                                                </th>
+                                                    <th class="min-w-[150px]">Mã Giao Dịch</th>
+                                                    <th class="min-w-[150px]">Thành Viên</th>
+                                                    <th class="min-w-[150px]">Trò Chơi {{{ tableSort originalUrl.search 'gameName' _sort }}}</th>
+                                                    <th class="min-w-[150px]">Tiền Nhận {{{ tableSort originalUrl.search 'amount' _sort }}}</th>
+                                                    <th class="min-w-[150px]">Nội Dung {{{ tableSort originalUrl.search 'comment' _sort }}}</th>
+                                                    <th class="min-w-[150px]">Tiền Thưởng {{{ tableSort originalUrl.search 'bonus' _sort }}}</th>
+                                                    <th class="min-w-[150px]">Trạng Thái {{{ tableSort originalUrl.search 'result' _sort }}}</th>
+                                                    <th class="min-w-[150px]">Trả thưởng {{{ tableSort originalUrl.search 'paid' _sort }}}</th>
+                                                    <th class="min-w-[300px]">Mô Tả</th>
+                                                    <th class="min-w-[150px]">Người Chuyển</th>
+                                                    <th class="min-w-[150px]">Người Nhận</th>
+                                                    <th class="min-w-[150px]">Cập Nhập {{{ tableSort originalUrl.search 'updatedAt' _sort }}}</th>
+                                                    <th class="min-w-[150px]">Thời Gian {{{ tableSort originalUrl.search 'createdAt' _sort }}}</th>
+                                                    <th class="min-w-[150px]">Thời Gian Thực {{{ tableSort originalUrl.search 'timeTLS' _sort }}}</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody data-table="history">
+                                                {{#each list}}
+                                                    <tr class="edit-one {{#ifCond this.action.length '>='
+                                                                                  1}}tr-warning{{/ifCond}}"
+                                                        data-id="{{ this._id }}">
+                                                        <td>
+                                                            <div class="table-actions hand p-2">
                                                         <span class="badges badge-info checkAction"
                                                               data-id="{{ this.transId }}" data-bs-toggle="tooltip"
                                                               data-bs-placement="top"
                                                               data-bs-original-title="Xem ai đã thao tác"><i
                                                                 class="fa fa-info-circle" aria-hidden="true"></i></span>
-                                                        <span class="badges badge-warning reCheck"
-                                                              data-id="{{ this.transId }}" data-bs-toggle="tooltip"
-                                                              data-bs-placement="top"
-                                                              data-bs-original-title="Kiểm tra lại giao dịch bằng API"><i
-                                                                class="fa fa-question" aria-hidden="true"></i></span>
-                                                        <span class="badges badge-secondary rework"
-                                                              data-id="{{ this.transId }}" data-bs-toggle="tooltip"
-                                                              data-bs-placement="top"
-                                                              data-bs-original-title="Trả thưởng lại"><i
-                                                                class="fa fa-trophy" aria-hidden="true"></i></span>
-                                                        <span class="badges badge-danger" data-bs-submit="history"
-                                                              data-bs-action="remove" data-id="{{ this._id }}"
-                                                              data-bs-toggle="tooltip" data-bs-placement="top"
-                                                              data-bs-original-title="Xóa"><i class="fa fa-trash"
-                                                                                              aria-hidden="true"></i></span>
-                                                    </div>
-                                                </td>
-                                                <td><span class="badges badge-secondary">{{ this.transId }}</span></td>
-                                                <td>{{ this.username }}</td>
-                                                <td>
-                                                    {{#if this.gameName}}
-                                                        <span class="badges badge-dark">{{ this.gameName }}</span>
-                                                    {{else}}
-                                                        <span class="badges badge-warning">Không Rõ</span>
-                                                    {{/if}}
-                                                </td>
-                                                <td>{{ numberFormat this.amount }}đ</td>
-                                                <td data-bs-name="comment" data-bs-hasEdit="true">
-                                                    <span data-bs-table="html" data-bs-value="{{ this.comment }}">
-                                                        <textarea class="form-control" data-bs-html="true">{{
-                                                        this.comment }}</textarea>
-                                                    </span>
-                                                    <span data-bs-table="edit" data-bs-value="{{ this.comment }}">
-                                                        <textarea class="form-control mb-2" rows="3"
+                                                                <span class="badges badge-warning reCheck"
+                                                                      data-id="{{ this.transId }}" data-bs-toggle="tooltip"
+                                                                      data-bs-placement="top"
+                                                                      data-bs-original-title="Kiểm tra lại giao dịch bằng API"><i
+                                                                        class="fa fa-question" aria-hidden="true"></i></span>
+                                                                <span class="badges badge-secondary rework"
+                                                                      data-id="{{ this.transId }}" data-bs-toggle="tooltip"
+                                                                      data-bs-placement="top"
+                                                                      data-bs-original-title="Trả thưởng lại"><i
+                                                                        class="fa fa-trophy" aria-hidden="true"></i></span>
+                                                                <span class="badges badge-danger" data-bs-submit="history"
+                                                                      data-bs-action="remove" data-id="{{ this._id }}"
+                                                                      data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                      data-bs-original-title="Xóa"><i class="fa fa-trash"
+                                                                                                      aria-hidden="true"></i></span>
+                                                            </div>
+                                                        </td>
+                                                        <td><span class="kt-badge kt-badge-secondary">{{ this.transId }}</span></td>
+                                                        <td>{{ this.username }}</td>
+                                                        <td>
+                                                            {{#if this.gameName}}
+                                                                <span class="kt-badge kt-badge-dark">{{ this.gameName }}</span>
+                                                            {{else}}
+                                                                <span class="kt-badge kt-badge--warning">Không Rõ</span>
+                                                            {{/if}}
+                                                        </td>
+                                                        <td>{{ numberFormat this.amount }}đ</td>
+                                                        <td data-bs-name="comment" data-bs-hasEdit="true">
+                                                        <span data-bs-table="html" data-bs-value="{{ this.comment }}">
+                                                            <textarea class="kt-textarea" data-bs-html="true">{{this.comment }}</textarea>
+                                                        </span>
+                                                            <span data-bs-table="edit" data-bs-value="{{ this.comment }}" class="hidden">
+                                                        <textarea class="kt-textarea mb-2" rows="3"
                                                                   data-bs-edit="true">{{ this.comment }}</textarea>
                                                     </span>
-                                                </td>
-                                                <td>{{ numberFormat this.bonus }}đ</td>
-                                                <td data-bs-name="result" data-bs-hasEdit="true">
+                                                        </td>
+                                                        <td>{{ numberFormat this.bonus }}đ</td>
+                                                        <td data-bs-name="result" data-bs-hasEdit="true">
                                                     <span data-bs-table="html" data-bs-value="{{ this.result }}">
                                                         <span data-bs-html="true">{{{ historyStatus
                                                                 this.result }}}</span>
                                                     </span>
-                                                    <span data-bs-table="edit" data-bs-value="{{ this.result }}">
-                                                        <select class="form-control ih-medium ip-light mb-2"
+                                                            <span data-bs-table="edit" data-bs-value="{{ this.result }}" class="hidden">
+                                                        <select class="kt-select"
                                                                 data-bs-edit="true">
                                                             <option value="wait">Đợi Xử Lý</option>
                                                             <option value="withdraw">Rút Tiền</option>
@@ -196,268 +215,172 @@
                                                             <option value="notUser">Lỗi Thành Viên</option>
                                                         </select>
                                                     </span>
-                                                </td>
-                                                <td data-bs-name="paid" data-bs-hasEdit="true">
+                                                        </td>
+                                                        <td data-bs-name="paid" data-bs-hasEdit="true">
                                                     <span data-bs-table="html" data-bs-value="{{ this.paid }}">
                                                         <span data-bs-html="true">{{{ historyPaidAdmin
                                                                 this.paid }}}</span>
                                                     </span>
-                                                    <span data-bs-table="edit" data-bs-value="{{ this.paid }}">
-                                                        <select class="form-control ih-medium ip-light mb-2"
+                                                            <span data-bs-table="edit" data-bs-value="{{ this.paid }}" class="hidden">
+                                                        <select class="kt-select"
                                                                 data-bs-edit="true">
                                                             <option value="wait">Đợi chuyển</option>
                                                             <option value="refund">Hoàn tiền</option>
                                                             <option value="sent">Đã chuyển</option>
                                                         </select>
                                                     </span>
-                                                </td>
-                                                <td><textarea class="form-control">{{ this.description }}</textarea>
-                                                </td>
-                                                <td>{{ this.transfer }}</td>
-                                                <td>{{ this.receiver }}</td>
-                                                <td>{{ formatDate this.updatedAt 'DD-MM-YYYY HH:mm:ss'}}</td>
-                                                <td>{{ formatDate this.createdAt 'DD-MM-YYYY HH:mm:ss'}}</td>
-                                                <td>{{ formatDate this.timeTLS 'DD-MM-YYYY HH:mm:ss'}}</td>
-                                            </tr>
-                                        {{else}}
-                                            <tr>
-                                                <td colspan="12">
-                                                    <div class="dm-empty text-center">
-                                                        <div class="dm-empty__image">
-                                                            <img src="../themes/admin/images/1.png" alt="Rỗng">
-                                                        </div>
-                                                        <div class="dm-empty__text">
-                                                            <p class="">Không có dữ liệu !</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        {{/each}}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="d-flex justify-content-end">
-                                    <nav class="dm-page">
-                                        <ul class="dm-pagination d-flex">
-                                            <li class="dm-pagination__item">
-                                                {{#paginate pagination type="previous"}}
-                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
-                                                    class="dm-pagination__link pagination-control {{#if disabled}}
-                                                    disabled{{/if}}">
-                                                    <span class="la la-angle-left"></span>
+                                                        </td>
+                                                        <td><textarea class="kt-textarea">{{ this.description }}</textarea>
+                                                        </td>
+                                                        <td>{{ this.transfer }}</td>
+                                                        <td>{{ this.receiver }}</td>
+                                                        <td>{{ formatDate this.updatedAt 'DD-MM-YYYY HH:mm:ss'}}</td>
+                                                        <td>{{ formatDate this.createdAt 'DD-MM-YYYY HH:mm:ss'}}</td>
+                                                        <td>{{ formatDate this.timeTLS 'DD-MM-YYYY HH:mm:ss'}}</td>
+                                                    </tr>
+                                                {{else}}
+                                                    <tr>
+                                                        <td colspan="24" class="text-center py-10">
+                                                            <div class="flex flex-col justify-center items-center gap-4 min-h-[150px]">
+                                                                <img src="../themes/admin/images/1.png" alt="Rỗng" class="w-20 h-20 object-contain" />
+                                                                <p class="text-gray-500 text-base">Không có dữ liệu!</p>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {{/each}}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="kt-card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-secondary-foreground text-sm font-medium">
+                                            <div class="flex items-center gap-2 order-2 md:order-1">
+                                                Show
+                                                <select class="kt-select w-16 page-selection" name="perPage" data-query="{{ checkQuery originalUrl.search 'perPage' }}">
+                                                    {{#select perPage }}
+                                                        <option value="5">5</option>
+                                                        <option value="10">10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="30">30</option>
+                                                        <option value="50">50</option>
+                                                    {{/select}}
+                                                </select>
+                                                per page
+                                            </div>
+                                            <div class="flex items-center gap-4 order-1 md:order-2">
+                                                <div class="kt-datatable-pagination">
+                                                    {{#paginate pagination type="previous"}}
+                                                    <a class="kt-datatable-pagination-button kt-datatable-pagination-prev {{#if disabled}}disabled{{/if}}" href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}">
+                                                        <svg class="rtl:transform rtl:rotate-180 size-3.5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M8.86501 16.7882V12.8481H21.1459C21.3724 12.8481 21.5897 12.7581 21.7498 12.5979C21.91 12.4378 22 12.2205 22 11.994C22 11.7675 21.91 11.5503 21.7498 11.3901C21.5897 11.2299 21.3724 11.1399 21.1459 11.1399H8.86501V7.2112C8.86628 7.10375 8.83517 6.9984 8.77573 6.90887C8.7163 6.81934 8.63129 6.74978 8.53177 6.70923C8.43225 6.66869 8.32283 6.65904 8.21775 6.68155C8.11267 6.70405 8.0168 6.75766 7.94262 6.83541L2.15981 11.6182C2.1092 11.668 2.06901 11.7274 2.04157 11.7929C2.01413 11.8584 2 11.9287 2 11.9997C2 12.0707 2.01413 12.141 2.04157 12.2065C2.06901 12.272 2.1092 12.3314 2.15981 12.3812L7.94262 17.164C8.0168 17.2417 8.11267 17.2953 8.21775 17.3178C8.32283 17.3403 8.43225 17.3307 8.53177 17.2902C8.63129 17.2496 8.7163 17.18 8.77573 17.0905C8.83517 17.001 8.86628 16.8956 8.86501 16.7882Z" fill="currentColor"></path>
+                                                        </svg>
                                                     </a>
-                                                {{/paginate}}
-                                                {{#paginate pagination type="middle" limit=pagination.limit}}
-                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
-                                                    class="dm-pagination__link {{#if active}}active{{/if}}"><span
-                                                        class="page-number">{{n}}</span>
+                                                    {{/paginate}}
+                                                    {{#paginate pagination type="middle" limit=pagination.limit}}
+                                                        <a class="kt-datatable-pagination-button {{#if active}}active{{/if}}" href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}">{{n}}</a>
+                                                    {{/paginate}}
+                                                    {{#paginate pagination type="next"}}
+                                                    <a class="kt-datatable-pagination-button kt-datatable-pagination-next {{#if disabled}}disabled{{/if}}" href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}">
+                                                            <svg class="rtl:transform rtl:rotate-180 size-3.5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M15.135 7.21144V11.1516H2.85407C2.62756 11.1516 2.41032 11.2415 2.25015 11.4017C2.08998 11.5619 2 11.7791 2 12.0056C2 12.2321 2.08998 12.4494 2.25015 12.6096C2.41032 12.7697 2.62756 12.8597 2.85407 12.8597H15.135V16.7884C15.1337 16.8959 15.1648 17.0012 15.2243 17.0908C15.2837 17.1803 15.3687 17.2499 15.4682 17.2904C15.5677 17.3309 15.6772 17.3406 15.7822 17.3181C15.8873 17.2956 15.9832 17.242 16.0574 17.1642L21.8402 12.3814C21.8908 12.3316 21.931 12.2722 21.9584 12.2067C21.9859 12.1412 22 12.0709 22 11.9999C22 11.9289 21.9859 11.8586 21.9584 11.7931C21.931 11.7276 21.8908 11.6683 21.8402 11.6185L16.0574 6.83565C15.9832 6.75791 15.8873 6.70429 15.7822 6.68179C15.6772 6.65929 15.5677 6.66893 15.4682 6.70948C15.3687 6.75002 15.2837 6.81959 15.2243 6.90911C15.1648 6.99864 15.1337 7.10399 15.135 7.21144Z" fill="currentColor"></path>
+                                                        </svg>
                                                     </a>
-                                                {{/paginate}}
-                                                {{#paginate pagination type="next"}}
-                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
-                                                    class="dm-pagination__link pagination-control {{#if disabled}}
-                                                    disabled{{/if}}">
-                                                    <span class="la la-angle-right"></span>
-                                                    </a>
-                                                {{/paginate}}
-                                            </li>
-                                            <li class="dm-pagination__item">
-                                                <div class="paging-option">
-                                                    <select name="perPage" class="page-selection"
-                                                            data-query="{{ checkQuery originalUrl.search 'perPage' }}">
-                                                        {{#select perPage }}
-                                                            <option value="10">10/page</option>
-                                                            <option value="20">20/page</option>
-                                                            <option value="40">40/page</option>
-                                                            <option value="60">60/page</option>
-                                                            <option value="100">100/page</option>
-                                                            <option value="200">200/page</option>
-                                                            <option value="500">500/page</option>
-                                                        {{/select}}
-                                                    </select>
+                                                    {{/paginate}}
                                                 </div>
-                                            </li>
-                                        </ul>
-                                    </nav>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
-<!-- Modal Add Block -->
-<div class="modal fade" data-bs-modal="rework" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"></h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="#" method="post" class="form-axios">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="" class="il-gray fs-14 fw-500 mb-10">Mã Giao Dịch</label>
-                        <input type="text" name="transId" class="form-control ih-medium ip-light" readonly="true">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary btn-sm">Thực Hiện</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<div class="modal fade" data-bs-modal="reCheck" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Kiểm Tra Giao Dịch</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="btn-group dm-button-group btn-group-normal nav mb-3" role="tablist">
-                    <a class="btn btn-sm btn-outline-light color-light nav-link active" id="web-tab"
-                       data-bs-toggle="tab" href="#web" role="tab" aria-selected="true">WEB</a>
-                    <a class="btn btn-sm btn-outline-light color-light nav-link" id="api-tab" data-bs-toggle="tab"
-                       href="#api" role="tab" aria-selected="false">API</a>
-                </div>
-                <div class="nav-controller-content tab-content">
-                    <div class="tab-pane fade show active" id="web" role="tabpanel" aria-labelledby="web-tab">
-                        <div class="tab-slide-content">
-                            <div class="table-responsive mb-3">
-                                <table
-                                        class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
-                                    <thead class="badge-secondary text-white">
-                                    <tr>
-                                        <th>Thể Loại</th>
-                                        <th>Giá Trị</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody class="web"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="api" role="tabpanel" aria-labelledby="api-tab">
-                        <div class="tab-slide-content">
-                            <div class="table-responsive mb-3">
-                                <table
-                                        class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
-                                    <thead class="badge-secondary text-white">
-                                    <tr>
-                                        <th>Thể Loại</th>
-                                        <th>Giá Trị</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody class="api"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
+                </main>
+                {{>foot}}
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" data-bs-modal="checkAction" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"></h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="table-responsive mb-3">
-                    <table class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
-                        <thead class="badge-secondary text-white">
-                        <tr>
-                            <th>Người Thao Tác</th>
-                            <th>Thể Loại</th>
-                            <th>Giá Trị</th>
-                            <th>Thời Gian</th>
-                        </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
-            </div>
-        </div>
-    </div>
-</div>
-{{>foot}}
+<script src="../themes/admin/assets/js/core.bundle.js">
+</script>
+<script src="../themes/admin/assets/vendors/ktui/ktui.min.js">
+</script>
 <script type="text/javascript">
     $(document).ready(function (e) {
-        $('body').on('click', '.rework', function (e) {
-            let transId = $(this).data('id');
 
-            $('[name="transId"]').val(transId);
-            $('[data-bs-modal="rework"] h5.modal-title').html(`Trả Thưởng Giao Dịch #${transId}`);
-            $('[data-bs-modal="rework"]').modal('show')
+        $('body').on('click', '.action-more', function (e) {
+            let _this = $(this);
+            let action = _this.data('action');
+            let id = _this.data('id');
+
+            switch (action) {
+                case 'balance':
+                    _this.prop('disabled', true);
+                    axios.post('{{adminPath}}/bank/balance', {id})
+                            .then((result) => {
+                                let response = result.data;
+
+                                response.success ? swal('Thông Báo', response.message, 'success') && _this.parent().parent().parent().find('td.amount').html(`${Intl.NumberFormat('en-US').format(response.balance)}đ`) : swal('Thông Báo', response.message, 'error');
+                            })
+                            .catch(err => swal('Thông Báo', `Có lỗi xảy ra ${err.message || err}`, 'warning'))
+                            .finally(() => _this.prop('disabled', false))
+                    break;
+                case 'refresh':
+                    _this.prop('disabled', true);
+                    axios.post('{{adminPath}}/bank/refresh', {id})
+                            .then((result) => {
+                                let response = result.data;
+
+                                response.success ? swal('Thông Báo', response.message, 'success') : swal('Thông Báo', response.message, 'error');
+                            })
+                            .catch(err => swal('Thông Báo', `Có lỗi xảy ra ${err.message || err}`, 'warning'))
+                            .finally(() => _this.prop('disabled', false))
+                    break;
+                default:
+                    swal('Thông Báo', 'Thao tác không hợp lệ!', 'warning');
+                    break;
+            }
         })
 
-        $('body').on('click', '.reCheck', function (e) {
-            let transId = $(this).data('id');
+        function loadQR(data, img, bgc) {
+            qrCode = new QRCodeStyling({
+                width: 400,
+                height: 400,
+                data: data,
+                image: img,
+                dotsOptions: {color: bgc, type: "rounded"},
+                backgroundOptions: {color: "#FFF"},
+                imageOptions: {crossOrigin: "anonymous", margin: 5, imageSize: 0.5},
+            });
+            $("#canvasQr").html(""), qrCode.append(document.getElementById("canvasQr"));
+            $('[data-bs-modal="qrModal"]').modal('show')
+        }
 
-            loadAjax('start');
-            instance.post('/history/reCheck', {transId})
+        $(document).on("click", ".qrc", function () {
+
+            var bankCode = $(this).attr('data-bankcode');
+            var bgc = "#11089c";
+
+            var img = window.location.protocol + '//' + window.location.host + '/themes/images/banks/' + bankCode + '.png';
+            var data = $(this).attr('data-content');
+            loadQR(data, img, bgc);
+        });
+
+        $('body').on('submit', '#formAdd', function (e) {
+            e.preventDefault();
+            let data = $(this).serialize();
+
+
+            axios.post(`{{ adminPath }}/bank`, data)
                     .then((result) => {
-                        let response = result.data;
+                        let res = result.data;
 
-                        if (!response.success) {
-                            swal('Thông Báo', response.message, 'error');
-                            return;
-                        }
+                        res.success ? swal('Thông báo', res.message, 'success') && setTimeout(() => window.location.reload(), 1500) : swal('Thông báo', res.message, 'error');
 
-                        $('[data-bs-modal="reCheck"] tbody.web').html('').append(`<tr><td>Mã giao dịch</td><td class="text-info">#${response.data[0].transId}</td></tr><tr><td>Người nhận</td><td class="text-warning">${response.data[0].targetId}</td></tr><tr><td>Người chuyển</td><td class="text-primary">${response.data[0].partnerId}</td></tr><tr><td>Tiền cược</td><td class="text-danger">${Intl.NumberFormat('en-US').format(response.data[0].amount)}đ</td></tr><tr><td>Nội dung</td><td class="text-success">${response.data[0].comment}</td></tr><tr><td>Thời gian</td><td class="text-secondary">${moment(response.data[0].timeTLS).format('DD-MM-YYYY HH:mm:ss')}</td></tr>`);
-                        $('[data-bs-modal="reCheck"] tbody.api').html('').append(`<tr><td>Mã giao dịch</td><td class="text-info">#${response.data[1].transId}</td></tr><tr><td>Người nhận</td><td class="text-warning">${response.data[1].targetId}</td></tr><tr><td>Người chuyển</td><td class="text-primary">${response.data[1].partnerId}</td></tr><tr><td>Tiền cược</td><td class="text-danger">${Intl.NumberFormat('en-US').format(response.data[1].amount)}đ</td></tr><tr><td>Nội dung</td><td class="text-success">${response.data[1].comment}</td></tr><tr><td>Thời gian</td><td class="text-secondary">${moment(response.data[1].timeTLS).format('DD-MM-YYYY HH:mm:ss')}</td></tr>`);
-                        $('[data-bs-modal="reCheck"').modal('show');
                     })
-                    .catch(err => {
-                        swal('Thông Báo', err.message || err, 'warning');
+                    .catch((err) => {
+                        $('textarea[name=error]').textContent(err.dataResult);
+                        swal('Thông Báo', err.message || err, 'error');
                     })
-                    .finally(() => loadAjax('stop'));
-        })
-
-        $('body').on('click', '.checkAction', function (e) {
-            let transId = $(this).data('id');
-
-            loadAjax('start');
-            instance.post('/history/checkAction', {transId})
-                    .then((result) => {
-                        let response = result.data;
-
-                        if (!response.success) {
-                            swal('Thông Báo', response.message, 'error');
-                            return;
-                        }
-
-                        $('[data-bs-modal="checkAction"] h5.modal-title').html(`Thao Tác Chỉnh Sửa #${transId}`)
-                        $('[data-bs-modal="checkAction"] tbody').html('').append(response.data.map((obj) => `<tr><td>${obj.username}</td><td>${obj.key}</td><td>${obj.value}</td><td>${moment(obj.createdAt).format('DD-MM-YYYY HH:mm:ss')}</td></tr>`));
-                        $('[data-bs-modal="checkAction"').modal('show');
-                    })
-                    .catch(err => {
-                        swal('Thông Báo', err.message || err, 'warning');
-                    })
-                    .finally(() => loadAjax('stop'));
         })
     })
 </script>
+</body>
+</html>

@@ -1,21 +1,31 @@
-<!doctype html>
-<html lang="vi">
-
+<!DOCTYPE html>
+<html class="h-full" data-kt-theme="true" data-kt-theme-mode="light" dir="ltr" lang="en">
 <head>
-    <title>{{#if title}}{{ title }} - {{ settings.defaultTitle }}{{else}}{{ settings.defaultTitle }}{{/if}}</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="title"
-        content="{{#if title}}{{ title }} - {{ settings.defaultTitle }}{{else}}{{ settings.defaultTitle }}{{/if}}" />
-    <meta name="description" content="{{ settings.description }}" />
-    <meta name="keywords" content="{{ settings.keywords }}" />
-    <meta name="robots" content="index, follow">
-    <link href="{{ settings.favicon }}" rel="shortcut icon" type="image/x-icon" />
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="../themes/admin/css/plugin.min.css">
-    <link rel="stylesheet" href="../themes/admin/css/style.css">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.0/css/line.css">
+    <title>
+        {{#if title}}{{ title }} - {{ settings.defaultTitle }}{{else}}{{ settings.defaultTitle }}{{/if}}
+    </title>
+    <meta charset="utf-8"/>
+    <meta content="follow, index" name="robots"/>
+    <link href="https://keenthemes.com/metronic/tailwind/demo4/" rel="canonical"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+    <link href="{{ settings.favicon }}" rel="shortcut icon"/>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
+    <link href="../themes/admin/assets/vendors/apexcharts/apexcharts.css" rel="stylesheet"/>
+    <link href="../themes/admin/assets/vendors/keenicons/styles.bundle.css" rel="stylesheet"/>
+    <link href="../themes/admin/assets/css/styles.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="../themes/axios.min.js"></script>
+    <script src="../themes/socket.io.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../themes/admin/js/app.min.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-52YZ3XGZJ6">
+    </script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-52YZ3XGZJ6');
+    </script>
 </head>

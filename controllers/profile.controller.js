@@ -80,6 +80,13 @@ const profileController = {
 
             const user = await userModel.findOne({username: res.locals.profile.username});
 
+            if (user.balance <= 0) {
+                return res.json({
+                    success: false,
+                    message: `Số tiền không hợp lệ. Số tiền rút thiểu là <span class="code-num">${Intl.NumberFormat('en-US').format(dataSetting.withdraw.withdrawMin)}</span> và tối đa không vượt quá <span class="code-num">Số Dư Hiện Tại</span>.`
+                })
+            }
+
             let totalPlay = await historyModel.aggregate([{
                 $match: {
                     username: res.locals.profile.username,

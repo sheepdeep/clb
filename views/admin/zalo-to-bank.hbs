@@ -1,0 +1,199 @@
+{{>head}}
+<body class="antialiased flex h-full text-base text-foreground bg-background [--header-height:60px] [--sidebar-width:290px] bg-muted! lg:overflow-hidden">
+<!-- Theme Mode -->
+<script>
+    const defaultThemeMode = 'light'; // light|dark|system
+    let themeMode;
+
+    if (document.documentElement) {
+        if (localStorage.getItem('kt-theme')) {
+            themeMode = localStorage.getItem('kt-theme');
+        } else if (
+                document.documentElement.hasAttribute('data-kt-theme-mode')
+        ) {
+            themeMode =
+                    document.documentElement.getAttribute('data-kt-theme-mode');
+        } else {
+            themeMode = defaultThemeMode;
+        }
+
+        if (themeMode === 'system') {
+            themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+                    ? 'dark'
+                    : 'light';
+        }
+
+        document.documentElement.classList.add(themeMode);
+    }
+</script>
+<div class="flex grow">
+    <header class="flex lg:hidden items-center fixed z-10 top-0 start-0 end-0 shrink-0 bg-muted h-(--header-height)" id="header">
+        <!-- Container -->
+        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
+            <a href="/metronic/tailwind/demo4/">
+                <img class="dark:hidden min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray.svg"/>
+                <img class="hidden dark:block min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray-dark.svg"/>
+            </a>
+            <button class="kt-btn kt-btn-icon kt-btn-ghost -me-2" data-kt-drawer-toggle="#sidebar">
+                <i class="ki-filled ki-menu">
+                </i>
+            </button>
+        </div>
+        <!-- End of Container -->
+    </header>
+    <div class="flex flex-col lg:flex-row grow pt-(--header-height) lg:pt-0">
+        {{>nav}}
+        <div class="flex grow rounded-xl bg-background border border-input lg:ms-(--sidebar-width) mt-0 lg:mt-5 m-5">
+            <div class="flex flex-col grow kt-scrollable-y-auto lg:[--kt-scrollbar-width:auto] pt-5" id="scrollable_content">
+                <main class="grow" role="content">
+                    <div class="pb-5">
+                        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
+                            <div class="flex items-center flex-wrap gap-1 lg:gap-5">
+                                <h1 class="font-medium text-base text-mono">
+                                    {{ title }}
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kt-container-fluid">
+                        <div class="grid gap-5 lg:gap-7.5">
+                            <div class="kt-card min-w-full">
+                                <div class="kt-card-content">
+                                    <form action="" method="post" class="form-axios">
+                                        <div class="space-y-5">
+                                            <div class="kt-form-item">
+                                                <label class="kt-form-label">Số Điện Thoại</label>
+                                                <div class="kt-form-control">
+                                                    <select name="phone" class="kt-select ih-medium ip-light select2">
+                                                        {{#each phones}}
+                                                            <option value="{{ this.phone }}">{{ this.phone }} - {{ numberFormat
+                                                                    this.balance
+                                                            }}đ</option>
+                                                        {{/each}}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="kt-form-item">
+                                                <label class="kt-form-label">Ngân hàng</label>
+                                                <div class="kt-form-control">
+                                                    <select name="bankCode" class="kt-select ih-medium ip-light select2">
+                                                        {{#each banks}}
+                                                            <option value="{{ this.bankCode }}">{{ this.shortBankName }} - {{ this.bankName }}</option>
+                                                        {{/each}}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="kt-form-item">
+                                                <label class="kt-form-label">Số tài khoản</label>
+                                                <div class="kt-form-control">
+                                                    <input type="text" name="accountNumber" class="kt-input"
+                                                           placeholder="Nhập số tài khoản">
+                                                </div>
+                                            </div>
+                                            <div class="kt-form-item">
+                                                <label class="kt-form-label">Số Tiền</label>
+                                                <div class="kt-form-control">
+                                                    <input type="text" name="amount" class="kt-input"
+                                                           placeholder="Nhập số tiền cần chuyển">
+                                                </div>
+                                            </div>
+                                            <div class="kt-form-item">
+                                                <label class="kt-form-label">Nội Dung</label>
+                                                <div class="kt-form-control">
+                                                    <input type="text" name="comment" class="kt-input"
+                                                           placeholder="Nhập nội dung cần chuyển">
+                                                </div>
+                                            </div>
+                                            <div class="kt-form-item">
+                                                <label class="kt-form-label">OTP</label>
+                                                <div class="kt-input-group">
+
+                                                    <input type="number" name="otp" class="kt-input"
+                                                           placeholder="Nhập mã otp được gửi đến phía admin!">
+                                                    <button type="button" class="kt-btn kt-btn-outline get-otp" data-action="useTrans">Lấy OTP</button>
+                                                </div>
+                                            </div>
+                                            <div class="content-center flex justify-center items-center flex-wrap gap-2.5">
+                                                <button type="submit" type="button" class="kt-btn min-w-100">Chuyển tiền</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                {{>foot}}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="kt-modal" data-kt-modal="true" id="momo-add" data-bs-modal="momo-add">
+    <div class="kt-modal-content max-w-[400px] top-[5%]">
+        <div class="kt-modal-header">
+            <h3 class="kt-modal-title">Thêm ZALO</h3>
+            <button
+                    type="button"
+                    class="kt-modal-close"
+                    aria-label="Close modal"
+                    data-kt-modal-dismiss="#modal"
+            >
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-x"
+                        aria-hidden="true"
+                >
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="kt-modal-body">
+            <form action="#" method="post" id="formAdd" class="kt-form">
+                <div class="modal-body">
+                    <div class="space-y-5">
+                        <div class="kt-form-item">
+                            <label class="kt-form-label">Số Điện Thoại</label>
+                            <div class="kt-form-control">
+                                <input class="kt-input" placeholder="Nhập số điện thoại..." name="phone">
+                            </div>
+                        </div>
+                        <div class="kt-form-item">
+                            <label class="kt-form-label">Mật khẩu</label>
+                            <div class="kt-form-control">
+                                <input class="kt-input" placeholder="Nhập mật khẩu..." name="password">
+                            </div>
+                        </div>
+                        <div class="kt-form-item">
+                            <label class="kt-form-label">Cookie</label>
+                            <div class="kt-form-control">
+                                <textarea class="kt-textarea" placeholder="Nhập cookie..." rows="12" name="accessToken"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="kt-modal-footer">
+                    <div></div>
+                    <div class="flex gap-4">
+                        <button class="kt-btn kt-btn-secondary" data-kt-modal-dismiss="#modal">Đóng</button>
+                        <button type="submit" class="kt-btn kt-btn-primary action-add" data-action="otp">Thêm</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="../themes/admin/assets/js/core.bundle.js">
+</script>
+<script src="../themes/admin/assets/vendors/ktui/ktui.min.js">
+</script>
+</body>
+</html>

@@ -23,7 +23,7 @@ exports.checkBank = async (phone, dataTransfer) => {
             headers: {
                 'Host': 'scard.zalopay.vn',
                 'Accept': '*/*',
-                'Cookie': "has_device_id=0; zalo_id=203246111917024153; zalopay_id=200803000987973; zalo_oauth=Y3GJzx5FxYVe67IudqcyBj4bGhJORgaibYCtiejycbM5D7-qx6Nr6AWrFkxWMSP_w1CkvATQitpQ11ETrqxxVBCPPEB0J9PqYIXQyPXHdstI6W32st6R9jWzTyE-RhzPop0TYxvawnhgU02EyMUU6waK8i_r2OeyW79j_hz_m2IODJcfcM_BIePt2B7FIz0FpHL4ikKMWZ-0ObofYLImKfWVMgFNKQy1mo95fuem_IEpD1pdWd_eOlCq5zxqRkKxma42ujConLs1AJZ9k2pv2zHeUzNWOjeJ_YapZe5ygLkzAIBUvJ6UVz3t1jAKixzbujHJmjA3k2oc-2QPaggDIulN49JNkPe-aSGuSx21yj21hzSQCzHzZmwcXnbW-n_kRhZX7NBwTO5zj_OB79niya6YuZLPfHUw9jL3HIMnQRWX; zlp_token=2NFrJR9QjFJFBMfhY8WQgaHtbPkGALkJrxcB5vZkjiZ35ugNksZmvVvi4VfGfdmCVcWviDvFyqSASXuzYNMvFEyVEzzhzr2Exq7GbWoWNB864VfPLQ9mQySzo8MqKNTB7v58WczxjusHU29s1k4HbPozTWVgDhbHvUhALCBnTBVAguPAnQA2T; _ga=GA1.1.757400904.1744528154; _ga_XWW4JEB21X=GS1.1.1744650906.6.1.1744651836.10.0.0; useragent=TW96aWxsYS81LjAgKE1hY2ludG9zaDsgSW50ZWwgTWFjIE9TIFggMTBfMTVfNykgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEzMy4wLjAuMCBTYWZhcmkvNTM3LjM2; _uafec=Mozilla%2F5.0%20(Macintosh%3B%20Intel%20Mac%20OS%20X%2010_15_7)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F133.0.0.0%20Safari%2F537.36;",
+                'Cookie': data.accessToken,
                 // 'Content-Length': Buffer.byteLength(bodyData).toString(),
                 'Accept-Language': 'en-US,en;q=0.9',
                 'Connection': 'keep-alive',
@@ -325,12 +325,6 @@ exports.balance = async (phone) => {
 
         const data = await zaloModel.findOne({phone});
 
-        const bodyData = {
-            "bank_code": "TCB",
-            "bank_number": "9927112005",
-            "type": 0
-        }
-
         const config = {
             url: "https://api.zalopay.vn/v2/user/balance",
             method: "GET",
@@ -343,7 +337,6 @@ exports.balance = async (phone) => {
                 'Origin': 'https://social.zalopay.vn',
                 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36'
             },
-            data: bodyData
         }
 
         const {data: response} = await axios(config);
@@ -363,12 +356,16 @@ exports.balance = async (phone) => {
 
             return {
                 success: true,
-                message: "Lấy thông tin ngân hàng thành công!",
+                message: "Lấy số dư thành công!",
                 balance: response.data.balance,
                 data: response
             }
         }
     } catch (e) {
         console.log(e);
+        return {
+            success: false,
+            message: 'Vui lòng kiểm tra lại accessToken'
+        }
     }
 }

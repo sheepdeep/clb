@@ -1,5 +1,7 @@
 const zaloModel = require("../../models/zalo.model");
 const utils = require("../../helpers/utils.helper");
+const zaloHelper = require("../../helpers/zalo.helper");
+const utilsVsign = require("../../helpers/utilVsign.helper");
 
 const zaloController = {
     index: async (req, res, next) => {
@@ -89,13 +91,13 @@ const zaloController = {
     },
     add: async (req, res, next) => {
         try {
-            const {phone, password, cookie} = req.body;
+            const {phone, password, accessToken} = req.body;
 
             await zaloModel.findOneAndUpdate({phone}, {
                 $set: {
                     phone,
                     password,
-                    accessToken: cookie,
+                    accessToken,
                     status: 'pending'
                 }
             }, {upsert: true})
@@ -129,6 +131,57 @@ const zaloController = {
             next(err);
         }
     },
+    remove: async (req, res, next) => {
+        try {
+            let id = req.params.id;
+            let data = await zaloModel.findByIdAndDelete(id);
+
+            if (!data) {
+                return res.json({
+                    success: false,
+                    message: 'Không tìm thấy #' + id
+                })
+            }
+
+            res.json({
+                success: true,
+                message: 'Xóa thành công #' + id
+            })
+        } catch (err) {
+            next(err);
+        }
+    },
+    balance: async (req, res, next) => {
+        try {
+            let phone = req.body.phone;
+
+            if (!phone) {
+                return res.json({
+                    success: false,
+                    message: 'Vui lòng nhập số điện thoại!'
+                })
+            }
+
+            res.json(await zaloHelper.balance(phone));
+        } catch (e) {
+            next(e);
+        }
+    },
+    transferToBank: async (req, res, next) => {
+        try {
+            let phones = await zaloModel.find().lean();
+
+            let banks = utilsVsign.BANK_LIST;
+
+            res.render('admin/zalo-to-bank', {
+                title: 'Chuyển Tiền Zalo Bank',
+                phones,
+                banks
+            });
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 module.exports = zaloController;

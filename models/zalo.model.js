@@ -12,6 +12,7 @@ const momoSchema = mongoose.Schema({
     limitDay: Number,
     limitMonth: Number,
     accessToken: String,
+    number: Number,
     status: String,
 }, {
     timestamps: true

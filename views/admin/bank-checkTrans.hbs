@@ -1,297 +1,278 @@
 {{>head}}
-{{>nav}}
-<main class="main-content">
-    <div class="contents">
-        <div class="crm mb-25">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="breadcrumb-main">
-                            <h4 class="text-capitalize breadcrumb-title">{{ title }}</h4>
+<body class="antialiased flex h-full text-base text-foreground bg-background [--header-height:60px] [--sidebar-width:290px] bg-muted! lg:overflow-hidden">
+<!-- Theme Mode -->
+<script>
+    const defaultThemeMode = 'light'; // light|dark|system
+    let themeMode;
+
+    if (document.documentElement) {
+        if (localStorage.getItem('kt-theme')) {
+            themeMode = localStorage.getItem('kt-theme');
+        } else if (
+                document.documentElement.hasAttribute('data-kt-theme-mode')
+        ) {
+            themeMode =
+                    document.documentElement.getAttribute('data-kt-theme-mode');
+        } else {
+            themeMode = defaultThemeMode;
+        }
+
+        if (themeMode === 'system') {
+            themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+                    ? 'dark'
+                    : 'light';
+        }
+
+        document.documentElement.classList.add(themeMode);
+    }
+</script>
+<div class="flex grow">
+    <header class="flex lg:hidden items-center fixed z-10 top-0 start-0 end-0 shrink-0 bg-muted h-(--header-height)" id="header">
+        <!-- Container -->
+        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
+            <a href="/metronic/tailwind/demo4/">
+                <img class="dark:hidden min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray.svg"/>
+                <img class="hidden dark:block min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray-dark.svg"/>
+            </a>
+            <button class="kt-btn kt-btn-icon kt-btn-ghost -me-2" data-kt-drawer-toggle="#sidebar">
+                <i class="ki-filled ki-menu">
+                </i>
+            </button>
+        </div>
+        <!-- End of Container -->
+    </header>
+    <div class="flex flex-col lg:flex-row grow pt-(--header-height) lg:pt-0">
+        {{>nav}}
+        <div class="flex grow rounded-xl bg-background border border-input lg:ms-(--sidebar-width) mt-0 lg:mt-5 m-5">
+            <div class="flex flex-col grow kt-scrollable-y-auto lg:[--kt-scrollbar-width:auto] pt-5" id="scrollable_content">
+                <main class="grow" role="content">
+                    <div class="pb-5">
+                        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
+                            <div class="flex items-center flex-wrap gap-1 lg:gap-5">
+                                <h1 class="font-medium text-base text-mono">
+                                    {{ title }}
+                                </h1>
+                                <button data-kt-modal-toggle="#momo-add" class="kt-btn kt-btn-outline kt-btn-primary kt-btn-sm">
+                                    <i class="ki-filled ki-additem">
+                                    </i>
+                                    Thêm tài khoản
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-12 mb-20">
-                        <div class="card">
-                            <div class="card-header">
-                                <h6 class="card-title">
-                                    <a href="{{ originalUrl.pathname }}" class="text-dark">
-                                        <img src="../themes/admin/images/wallet.png" alt="" width="35">
-                                        Kiểm tra lịch sử {{bankType}}
-                                        <img src="../themes/admin/images/wallet.png" class="d-md-none" width="35">
-                                    </a>
-                                </h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="userDatatable adv-table-table global-shadow border-light-0 adv-table">
-                                    <div id="filter-form-container"
-                                         class="footable-filtering-external footable-filtering-right">
-                                        <form>
-                                            <div class="form-inline">
-                                                <div
-                                                        class="form-group dm-select d-flex align-items-center adv-table-searchs__status mb-3 me-sm-30 me-0">
-                                                    <label class="d-flex align-items-center mb-sm-0 mb-2 fs-15 fw-500">Số tài khoản</label>
-                                                    <select name="accountNumber" class="form-control ms-sm-10 ms-0">
-                                                        {{#each banks}}
-                                                            <option value="{{ this.accountNumber }}">{{ this.accountNumber }} - {{ uppercase this.bankType }}</option>
-                                                        {{/each}}
-                                                    </select>
+                    <div class="kt-container-fluid">
+                        <div class="grid gap-5 lg:gap-7.5">
+                            <div class="kt-card kt-card-grid min-w-full">
+                                <div class="kt-card-header flex-wrap gap-2">
+                                    <form>
+                                        <div class="flex flex-wrap gap-2 lg:gap-5">
+
+                                            <div class="flex flex-wrap gap-2.5">
+                                                <select class="kt-select w-28" name="accountNumber">
+                                                    {{#each banks}}
+                                                        <option value="{{ this.accountNumber }}">{{ this.accountNumber }} - {{ uppercase this.bankType }}</option>
+                                                    {{/each}}
+                                                </select>
+                                                <div class="form-group d-flex align-items-center mb-3 me-sm-30 me-0">
+                                                    <input type="date" name="startTime" class="kt-input">
                                                 </div>
                                                 <div class="form-group d-flex align-items-center mb-3 me-sm-30 me-0">
-                                                    <label for="" class="form-label color-dark fw-500">Bắt đầu</label>
-                                                    <input type="date" name="startTime" class="form-control ih-medium ip-light">
+                                                    <input type="date" name="endTime" class="kt-input">
                                                 </div>
-                                                <div class="form-group d-flex align-items-center mb-3 me-sm-30 me-0">
-                                                    <label for="" class="form-label color-dark fw-500">Kết thúc</label>
-                                                    <input type="date" name="endTime" class="form-control ih-medium ip-light">
-                                                </div>
-                                                <div class="form-group mb-3">
-                                                    <button class="btn btn-primary btn-sm btn-block"><i
-                                                            class="fa fa-search" aria-hidden="true"></i> Tìm kiếm
-                                                    </button>
-                                                </div>
+                                                <button class="kt-btn kt-btn-outline kt-btn-primary">
+                                                    <i class="ki-filled ki-search-list">
+                                                    </i>
+                                                    Tìm kiếm
+                                                </button>
                                             </div>
-                                        </form>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="kt-card-content">
+                                    <div data-kt-datatable="true" data-kt-datatable-state-save="false" id="team_crew_table" data-kt-datatable-initialized="true" class="datatable-initialized">
+                                        <div class="kt-scrollable-x-auto">
+                                            <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
+                                                <thead>
+                                                <tr>
+                                                    <th>Số tài khoản</th>
+                                                    <th>Loại</th>
+                                                    <th>Số tiền</th>
+                                                    <th>Số Dư Cuối</th>
+                                                    <th>Mã giao dịch</th>
+                                                    <th>Nội dung</th>
+                                                    <th>Thời Gian</th>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                {{#ifCond bankType '==' 'mbb'}}
+                                                    {{#each ../histories}}
+                                                        <tr class="edit-one" data-id="{{ this._id }}">
+                                                            <td>{{ this.accountNo }}</td>
+                                                            <td>
+                                                                {{#ifCond this.creditAmount '>' 0}}
+                                                                    <span class="badge btn-success">Nhận tiền</span>
+                                                                {{else}}
+                                                                    <span class="badge btn-danger">Trù tiền</span>
+                                                                {{/ifCond}}
+                                                            </td>
+                                                            <td>
+                                                                {{#ifCond this.creditAmount '>' 0}}
+                                                                    <span class="text-success">{{ numberFormat ../this.creditAmount }}</span>
+                                                                {{else}}
+                                                                    <span class="text-danger">{{ numberFormat ../this.debitAmount }}</span>
+                                                                {{/ifCond}}
+                                                            </td>
+                                                            <td>{{ numberFormat this.availableBalance }}</td>
+                                                            <td>{{ this.refNo }}</td>
+                                                            <td>{{ this.description }}</td>
+                                                            <td>{{ this.transactionDate }}</td>
+                                                        </tr>
+                                                    {{else}}
+                                                        <tr>
+                                                            <td colspan="24" class="text-center py-10">
+                                                                <div class="flex flex-col justify-center items-center gap-4 min-h-[150px]">
+                                                                    <img src="../themes/admin/images/1.png" alt="Rỗng" class="w-20 h-20 object-contain" />
+                                                                    <p class="text-gray-500 text-base">Không có dữ liệu!</p>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    {{/each}}
+                                                {{/ifCond}}
+                                                {{#ifCond bankType '==' 'acb'}}
+                                                    {{#each ../histories}}
+                                                        <tr class="edit-one" data-id="{{ this._id }}">
+                                                            <td>{{ this.account }}</td>
+                                                            <td>
+                                                                {{#ifCond this.type '==' 'IN'}}
+                                                                    <span class="badge btn-success">Nhận tiền</span>
+                                                                {{else}}
+                                                                    <span class="badge btn-danger">Trù tiền</span>
+                                                                {{/ifCond}}
+                                                            </td>
+                                                            <td>
+                                                                {{#ifCond this.type '==' 'IN'}}
+                                                                    <span class="text-success">{{ numberFormat ../this.amount }}</span>
+                                                                {{else}}
+                                                                    <span class="text-danger">{{ numberFormat ../this.amount }}</span>
+                                                                {{/ifCond}}
+                                                            </td>
+                                                            <td>{{ numberFormat this.availableBalance }}</td>
+                                                            <td>{{ this.transactionNumber }}</td>
+                                                            <td>{{ this.description }}</td>
+                                                            <td>{{ this.transactionDate }}</td>
+                                                        </tr>
+                                                    {{else}}
+                                                        <tr>
+                                                            <td colspan="24" class="text-center py-10">
+                                                                <div class="flex flex-col justify-center items-center gap-4 min-h-[150px]">
+                                                                    <img src="../themes/admin/images/1.png" alt="Rỗng" class="w-20 h-20 object-contain" />
+                                                                    <p class="text-gray-500 text-base">Không có dữ liệu!</p>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    {{/each}}
+                                                {{/ifCond}}
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                        <div class="kt-card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-secondary-foreground text-sm font-medium">
+                                            <div class="flex items-center gap-2 order-2 md:order-1">
+                                                Show
+                                                <select class="kt-select w-16" data-kt-datatable-size="true" name="perpage"><option value="5">5</option><option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="50">50</option></select>
+                                                per page
+                                            </div>
+                                            <div class="flex items-center gap-4 order-1 md:order-2">
+                                                <span data-kt-datatable-info="true">1-10 of 34</span>
+                                                <div class="kt-datatable-pagination" data-kt-datatable-pagination="true"><button class="kt-datatable-pagination-button kt-datatable-pagination-prev disabled" disabled="">
+                                                    <svg class="rtl:transform rtl:rotate-180 size-3.5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M8.86501 16.7882V12.8481H21.1459C21.3724 12.8481 21.5897 12.7581 21.7498 12.5979C21.91 12.4378 22 12.2205 22 11.994C22 11.7675 21.91 11.5503 21.7498 11.3901C21.5897 11.2299 21.3724 11.1399 21.1459 11.1399H8.86501V7.2112C8.86628 7.10375 8.83517 6.9984 8.77573 6.90887C8.7163 6.81934 8.63129 6.74978 8.53177 6.70923C8.43225 6.66869 8.32283 6.65904 8.21775 6.68155C8.11267 6.70405 8.0168 6.75766 7.94262 6.83541L2.15981 11.6182C2.1092 11.668 2.06901 11.7274 2.04157 11.7929C2.01413 11.8584 2 11.9287 2 11.9997C2 12.0707 2.01413 12.141 2.04157 12.2065C2.06901 12.272 2.1092 12.3314 2.15981 12.3812L7.94262 17.164C8.0168 17.2417 8.11267 17.2953 8.21775 17.3178C8.32283 17.3403 8.43225 17.3307 8.53177 17.2902C8.63129 17.2496 8.7163 17.18 8.77573 17.0905C8.83517 17.001 8.86628 16.8956 8.86501 16.7882Z" fill="currentColor"></path>
+                                                    </svg>
+                                                </button><button class="kt-datatable-pagination-button active disabled" disabled="">1</button><button class="kt-datatable-pagination-button">2</button><button class="kt-datatable-pagination-button">3</button><button class="kt-datatable-pagination-button kt-datatable-pagination-more">...</button><button class="kt-datatable-pagination-button kt-datatable-pagination-next">
+                                                    <svg class="rtl:transform rtl:rotate-180 size-3.5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M15.135 7.21144V11.1516H2.85407C2.62756 11.1516 2.41032 11.2415 2.25015 11.4017C2.08998 11.5619 2 11.7791 2 12.0056C2 12.2321 2.08998 12.4494 2.25015 12.6096C2.41032 12.7697 2.62756 12.8597 2.85407 12.8597H15.135V16.7884C15.1337 16.8959 15.1648 17.0012 15.2243 17.0908C15.2837 17.1803 15.3687 17.2499 15.4682 17.2904C15.5677 17.3309 15.6772 17.3406 15.7822 17.3181C15.8873 17.2956 15.9832 17.242 16.0574 17.1642L21.8402 12.3814C21.8908 12.3316 21.931 12.2722 21.9584 12.2067C21.9859 12.1412 22 12.0709 22 11.9999C22 11.9289 21.9859 11.8586 21.9584 11.7931C21.931 11.7276 21.8908 11.6683 21.8402 11.6185L16.0574 6.83565C15.9832 6.75791 15.8873 6.70429 15.7822 6.68179C15.6772 6.65929 15.5677 6.66893 15.4682 6.70948C15.3687 6.75002 15.2837 6.81959 15.2243 6.90911C15.1648 6.99864 15.1337 7.10399 15.135 7.21144Z" fill="currentColor"></path>
+                                                    </svg>
+                                                </button></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="table-responsive table-mousewheel mb-3">
-                                    <table
-                                            class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
-                                        <thead class="badge-secondary text-white">
-                                        <tr>
-                                            <th>Số tài khoản</th>
-                                            <th>Loại</th>
-                                            <th>Số tiền</th>
-                                            <th>Số Dư Cuối</th>
-                                            <th>Mã giao dịch</th>
-                                            <th>Nội dung</th>
-                                            <th>Thời Gian</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {{#ifCond bankType '==' 'mbb'}}
-                                            {{#each ../histories}}
-                                            <tr class="edit-one" data-id="{{ this._id }}">
-                                                <td>{{ this.accountNo }}</td>
-                                                <td>
-                                                    {{#ifCond this.creditAmount '>' 0}}
-                                                        <span class="badge btn-success">Nhận tiền</span>
-                                                    {{else}}
-                                                        <span class="badge btn-danger">Trù tiền</span>
-                                                    {{/ifCond}}
-                                                </td>
-                                                <td>
-                                                    {{#ifCond this.creditAmount '>' 0}}
-                                                        <span class="text-success">{{ numberFormat ../this.creditAmount }}</span>
-                                                    {{else}}
-                                                        <span class="text-danger">{{ numberFormat ../this.debitAmount }}</span>
-                                                    {{/ifCond}}
-                                                </td>
-                                                <td>{{ numberFormat this.availableBalance }}</td>
-                                                <td>{{ this.refNo }}</td>
-                                                <td>{{ this.description }}</td>
-                                                <td>{{ this.transactionDate }}</td>
-                                            </tr>
-                                        {{else}}
-                                            <tr>
-                                                <td colspan="24">
-                                                    <div class="dm-empty text-center">
-                                                        <div class="dm-empty__image">
-                                                            <img src="../themes/admin/images/1.png" alt="Rỗng">
-                                                        </div>
-                                                        <div class="dm-empty__text">
-                                                            <p class="">Không có dữ liệu !</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        {{/each}}
-                                        {{/ifCond}}
-                                        {{#ifCond bankType '==' 'acb'}}
-                                            {{#each ../histories}}
-                                                <tr class="edit-one" data-id="{{ this._id }}">
-                                                    <td>{{ this.account }}</td>
-                                                    <td>
-                                                        {{#ifCond this.type '==' 'IN'}}
-                                                            <span class="badge btn-success">Nhận tiền</span>
-                                                        {{else}}
-                                                            <span class="badge btn-danger">Trù tiền</span>
-                                                        {{/ifCond}}
-                                                    </td>
-                                                    <td>
-                                                        {{#ifCond this.type '==' 'IN'}}
-                                                            <span class="text-success">{{ numberFormat ../this.amount }}</span>
-                                                        {{else}}
-                                                            <span class="text-danger">{{ numberFormat ../this.amount }}</span>
-                                                        {{/ifCond}}
-                                                    </td>
-                                                    <td>{{ numberFormat this.availableBalance }}</td>
-                                                    <td>{{ this.transactionNumber }}</td>
-                                                    <td>{{ this.description }}</td>
-                                                    <td>{{ this.transactionDate }}</td>
-                                                </tr>
-                                            {{else}}
-                                                <tr>
-                                                    <td colspan="24">
-                                                        <div class="dm-empty text-center">
-                                                            <div class="dm-empty__image">
-                                                                <img src="../themes/admin/images/1.png" alt="Rỗng">
-                                                            </div>
-                                                            <div class="dm-empty__text">
-                                                                <p class="">Không có dữ liệu !</p>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            {{/each}}
-                                        {{/ifCond}}
-                                        </tbody>
-                                    </table>
-                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </main>
+                {{>foot}}
             </div>
         </div>
     </div>
-</main>
-<!-- Modal Add Momo -->
-<div class="modal fade" data-bs-modal="momo-add" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"><i class="fas fa-plus-circle"></i> Thêm Tài Khoản</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="#" method="post" id="formAdd">
+</div>
+<div class="kt-modal" data-kt-modal="true" id="momo-add" data-bs-modal="momo-add">
+    <div class="kt-modal-content max-w-[400px] top-[5%]">
+        <div class="kt-modal-header">
+            <h3 class="kt-modal-title">Thêm ZALO</h3>
+            <button
+                    type="button"
+                    class="kt-modal-close"
+                    aria-label="Close modal"
+                    data-kt-modal-dismiss="#modal"
+            >
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-x"
+                        aria-hidden="true"
+                >
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="kt-modal-body">
+            <form action="#" method="post" id="formAdd" class="kt-form">
                 <div class="modal-body">
-                    <div class=form-group>
-                        <label class="fs-14 fw-500 il-gray mb-10" for="">Tài khoản</label>
-                        <input class="form-control ih-medium ip-light" name="username" placeholder="Nhập tài khoản...">
-                    </div>
-                    <div class=form-group>
-                        <label class="fs-14 fw-500 il-gray mb-10" for="">Mật khẩu</label>
-                        <input class="form-control ih-medium ip-light" name="password" placeholder="Nhập mật khẩu...">
-                    </div>
-                    <div class=form-group>
-                        <label class="fs-14 fw-500 il-gray mb-10" for="">Số tài khoản</label>
-                        <input class="form-control ih-medium ip-light" name="accountNumber" placeholder="Nhập số tài khoản...">
-                    </div>
-                    <div class=form-group>
-                        <label class="fs-14 fw-500 il-gray mb-10" for="">Loại ngân hàng</label>
-                        <input class="form-control ih-medium ip-light" name="bankType" placeholder="Nhập loại ngân hàng...">
+                    <div class="space-y-5">
+                        <div class="kt-form-item">
+                            <label class="kt-form-label">Số Điện Thoại</label>
+                            <div class="kt-form-control">
+                                <input class="kt-input" placeholder="Nhập số điện thoại..." name="phone">
+                            </div>
+                        </div>
+                        <div class="kt-form-item">
+                            <label class="kt-form-label">Mật khẩu</label>
+                            <div class="kt-form-control">
+                                <input class="kt-input" placeholder="Nhập mật khẩu..." name="password">
+                            </div>
+                        </div>
+                        <div class="kt-form-item">
+                            <label class="kt-form-label">Cookie</label>
+                            <div class="kt-form-control">
+                                <textarea class="kt-textarea" placeholder="Nhập cookie..." rows="12" name="accessToken"></textarea>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary btn-sm action-add" data-action="add">Thêm</button>
+                <div class="kt-modal-footer">
+                    <div></div>
+                    <div class="flex gap-4">
+                        <button class="kt-btn kt-btn-secondary" data-kt-modal-dismiss="#modal">Đóng</button>
+                        <button type="submit" class="kt-btn kt-btn-primary action-add" data-action="otp">Thêm</button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<div class="modal fade" data-bs-modal="qrModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
-        <div class="modal-content radius-xl">
-            <div class="modal-header">
-                <h5 class="modal-title">Mã </h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class=text-center id=canvasQr>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
-            </div>
-        </div>
-    </div>
-</div>
-{{>foot}}
-<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.1/lib/qr-code-styling.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function (e) {
-
-        $('body').on('click', '.action-more', function (e) {
-            let _this = $(this);
-            let action = _this.data('action');
-            let id = _this.data('id');
-
-            switch (action) {
-                case 'balance':
-                    _this.prop('disabled', true);
-                    axios.post('/api/v2/momo/balance', {phone})
-                            .then((result) => {
-                                let response = result.data;
-
-                                response.success ? swal('Thông Báo', response.message, 'success') && _this.parent().parent().parent().find('td.amount').html(`${Intl.NumberFormat('en-US').format(response.balance)}đ`) : swal('Thông Báo', response.message, 'error');
-                            })
-                            .catch(err => swal('Thông Báo', `Có lỗi xảy ra ${err.message || err}`, 'warning'))
-                            .finally(() => _this.prop('disabled', false))
-                    break;
-                case 'refresh':
-                    _this.prop('disabled', true);
-                    axios.post('{{adminPath}}/bank/refresh', {id})
-                            .then((result) => {
-                                let response = result.data;
-
-                                response.success ? swal('Thông Báo', response.message, 'success') : swal('Thông Báo', response.message, 'error');
-                            })
-                            .catch(err => swal('Thông Báo', `Có lỗi xảy ra ${err.message || err}`, 'warning'))
-                            .finally(() => _this.prop('disabled', false))
-                    break;
-                default:
-                    swal('Thông Báo', 'Thao tác không hợp lệ!', 'warning');
-                    break;
-            }
-        })
-
-        function loadQR(data, img, bgc) {
-            qrCode = new QRCodeStyling({
-                width: 400,
-                height: 400,
-                data: data,
-                image: img,
-                dotsOptions: {color: bgc, type: "rounded"},
-                backgroundOptions: {color: "#FFF"},
-                imageOptions: {crossOrigin: "anonymous", margin: 5, imageSize: 0.5},
-            });
-            $("#canvasQr").html(""), qrCode.append(document.getElementById("canvasQr"));
-            $('[data-bs-modal="qrModal"]').modal('show')
-        }
-
-        $(document).on("click", ".qrc", function () {
-            var bankCode = $(this).attr('data-bankcode');
-            var bgc = "#11089c";
-
-            var img = window.location.protocol + '//' + window.location.host + '/themes/images/banks/' + bankCode + '.png';
-            var data = $(this).attr('data-content');
-            console.log(data);
-            loadQR(data, img, bgc);
-        });
-
-        $('body').on('submit', '#formAdd', function (e) {
-            e.preventDefault();
-            let data = $(this).serialize();
-
-
-            axios.post(`{{ adminPath }}/bank`, data)
-                    .then((result) => {
-                        let res = result.data;
-
-                        res.success ? swal('Thông báo', res.message, 'success') && setTimeout(() => window.location.reload(), 1500) : swal('Thông báo', res.message, 'error');
-
-                    })
-                    .catch((err) => {
-                        $('textarea[name=error]').textContent(err.dataResult);
-                        swal('Thông Báo', err.message || err, 'error');
-                    })
-        })
-    })
+<script src="../themes/admin/assets/js/core.bundle.js">
 </script>
+<script src="../themes/admin/assets/vendors/ktui/ktui.min.js">
+</script>
+</body>
+</html>

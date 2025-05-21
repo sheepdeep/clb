@@ -15,7 +15,11 @@ const blockModel = require("../../models/block.model");
 const gameHelper = require("../../helpers/game.helper");
 const commentHelper = require("../../helpers/comment.helper");
 const telegramHelper = require("../../helpers/telegram.helper");
+const transferModel = require('../../models/transfer.model');
 const moment = require("moment/moment");
+const oldBank = require('../../json/bank.json');
+const momoHelper = require("../../helpers/momo.helper");
+const momoModel = require('../../models/momo.model');
 
 const cronController = {
     history: async (req, res, next) => {
@@ -48,114 +52,67 @@ const cronController = {
     reward: async (req, res, next) => {
         try {
             const dataSetting = await settingModel.findOne({});
-            const histories = await historyModel.find({result: 'wait'}).lean();
+            const histories = await historyModel.find({paid: 'wait'}).lean();
 
             var startTime = performance.now();
+
+            const dataRewardSuccess = [];
+            const dataRewardError = [];
+
             for (let history of histories) {
 
-
-                if (await blockModel.findOne({username: history.username, status: 'active'})) {
-                    await historyModel.findOneAndUpdate({transId: history.transId}, {$set: {status: 'userBlock'}});
-                    console.log(`${history.username} đã bị chặn, bỏ qua!`);
-                    return;
-                }
-
-                let {
-                    gameName,
-                    bonus,
-                    result,
-                    win,
-                    paid
-                } = await gameHelper.checkWin(history.receiver, history.amount, history.transId, history.comment);
-
-                if (await historyModel.findOne({
-                    transId: history.transId,
-                    $and: [
-                        {
-                            $or: [
-                                {result: "win"},
-                                {result: "lose"},
-                                {result: "notUser"}
-                            ]
-                        }
-                    ]
-                })) {
-                    console.log('Mã giao dịch này đang xử lý hoặc đã xử lý, bỏ qua! #' + history.transId);
-                    continue;
-                }
-
-                // if (dataHistory.status === 'limitBet' || dataHistory.status === 'errorComment' || status === 'errorComment' || status === 'limitBet') {
-                // }
-
-                let commentData = [
-                    {
-                        name: 'transId',
-                        value: history.transId,
-                    },
-                    {
-                        name: 'comment',
-                        value: history.comment,
-                    },
-                    {
-                        name: 'amount',
-                        value: history.amount,
+                if (history.amount <= 50000) {
+                    const checkTrans = await transferModel.findOne({transId: history.transId}).lean();
+                    if (checkTrans) {
+                        continue;
                     }
-                ];
-                let rewardComment = await commentHelper.dataComment(dataSetting.commentSite.rewardGD, commentData);
-                let user = await userModel.findOne({username: history.username}).lean();
 
-                await historyModel.findOneAndUpdate({transId: history.transId}, {
-                        $set: {
-                            bonus: Math.floor(history.amount * bonus),
-                            paid,
-                            result,
-                        }
+                    const user = await userModel.findOne({ username: history.username });
+                    if (!user || !user.bankInfo) {
+                        await historyModel.findByIdAndUpdate(history._id, {paid: 'bankerror'});
+                        continue;
                     }
-                )
 
-                if (win) {
-                    // Gui thong tin chuyen tien
-                    let textMessage = `Mã giao dịch: <code>${history.transId}</code> \nNội dung: <code>${history.comment}</code> \nTrò chơi: <code>${gameName}</code> \nCược: <code>${history.amount}</code> \nNhận: <code>${Math.round(history.amount * bonus)}</code> \nThông tin nhận: <code>${user && user.bankInfo ? user.bankInfo.accountNumber : ''}</code> --- <code>${user && user.bankInfo ? user.bankInfo.bankCode : ''}</code> \nNội dung CK: <code>${rewardComment}</code>`;
+                    const checkBank = oldBank.data.find(bank => bank.bin === user.bankInfo.bankCode);
 
-                    const buttons = [
-                        [
-                            {
-                                text: "✅ Đã trả ✅",  // Văn bản trên button
-                                callback_data: `done_${history.transId}`
-                            },
-                            {
-                                text: "🔄 Chuyển người 🔄",  // Văn bản trên button
-                                callback_data: `change_${history.transId}`
-                            }
-                        ]
-
-                    ];
+                    const dataTransfer = {
+                        accountNumber: user.bankInfo.accountNumber,
+                        bankCode: checkBank.bin,
+                        bankName: checkBank.shortName,
+                        amount: history.bonus,
+                        comment: 'hoan tien tiktok ' + String(history.transId).slice(-4)
+                    };
 
 
-                    telegramHelper.sendText(process.env.privateTOKEN, process.env.privateID, textMessage, 'HTML', buttons)
+                    const result = await momoModel.aggregate([
+                        { $match: { status: 'active', loginStatus: 'active' } },
+                        { $sample: { size: 1 } }
+                    ]);
+
+
+                    let data = await momoHelper.INIT_TOBANK(result[0].phone, dataTransfer);
+
+                    if (data.success) {
+                        dataRewardSuccess.push(dataTransfer);
+                        await historyModel.findByIdAndUpdate(history._id, {paid: 'sent', transfer: result[0].phone, transferType: 'momo'});
+                        await userModel.findOneAndUpdate({username: history.username}, {$set: {"bankInfo.guard": true}});
+                        await new transferModel({
+                            transId: history.transId,
+                            receiver: user.bankInfo.accountNumber,
+                            transfer: result[0].phone,
+                            username: history.username,
+                            firstMoney: result[0].balance,
+                            amount: history.bonus,
+                            lastMoney: result[0].balance - history.bonus,
+                            comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
+                        }).save();
+
+                    } else {
+                        await historyModel.findByIdAndUpdate(history._id, {paid: 'hold'});
+                        dataRewardError.push(dataTransfer);
+                    }
                 }
 
-                let histories = await historyModel.find({username: user.username}, {
-                    _id: 0,
-                    transId: 1,
-                    amount: 1,
-                    comment: 1,
-                    gameType: 1,
-                    result: 1,
-                    paid: 1,
-                    description: 1,
-                    createdAt: 1
-                }).sort({createdAt: -1}).limit(10).lean();
-
-                let dataPost = {
-                    success: true,
-                    username: user.username,
-                    histories
-                };
-
-                let dataEncode = await securityHelper.encrypt(JSON.stringify(dataPost));
-
-                socket.emit('cltx', dataEncode);
             }
 
             var endTime = performance.now()
@@ -163,6 +120,8 @@ const cronController = {
             res.status(200).json({
                 success: true,
                 message: `Done, ${Math.round((endTime - startTime) / 1000)}s`,
+                dataRewardSuccess,
+                dataRewardError
             })
 
         } catch (e) {

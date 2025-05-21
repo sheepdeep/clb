@@ -4,6 +4,7 @@ const historySchema = new mongoose.Schema({
     username: String,
     receiver: String,
     transfer: String,
+    transferType: String,
     transId: String,
     amount: Number,
     bonus: Number,
