@@ -309,7 +309,7 @@ const historyController = {
                 })
             }
 
-            let data = await historyModel.findOne({ transId }).lean();
+            let data = await historyModel.findOneAndUpdate({ transId }, {resutl: 'wait'});
 
             if (!data) {
                 return res.json({
@@ -318,29 +318,11 @@ const historyController = {
                 })
             }
 
-
+            await historyHelper.handleTransId(transId);
 
             return res.json({
                 success: true,
-                message: 'Lấy thành công!',
-                data: [
-                    {
-                        transId: data.transId,
-                        targetId: data.targetId,
-                        partnerId: data.partnerId,
-                        amount: data.amount,
-                        comment: data.comment,
-                        timeTLS: data.timeTLS
-                    },
-                    {
-                        transId: detail.data.transId,
-                        targetId: detail.data.targetId,
-                        partnerId: detail.data.partnerId,
-                        amount: detail.data.amount,
-                        comment: detail.data.comment,
-                        timeTLS: detail.data.time
-                    }
-                ]
+                message: 'Thực hiện lại thành công!'
             })
 
         } catch (err) {

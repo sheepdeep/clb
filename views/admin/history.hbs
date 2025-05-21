@@ -125,11 +125,6 @@
                                             <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
                                                 <thead>
                                                 <tr>
-                                                    <th><span data-bs-submit="history" data-bs-action="remove" data-id="all"
-                                                               data-bs-toggle="tooltip" data-bs-placement="top"
-                                                               data-bs-original-title="Xóa Tất Cả"><i
-                                                        class="fa fa-times-circle" aria-hidden="true"></i></span>
-                                                </th>
                                                     <th class="min-w-[150px]">Mã Giao Dịch</th>
                                                     <th class="min-w-[150px]">Thành Viên</th>
                                                     <th class="min-w-[150px]">Trò Chơi {{{ tableSort originalUrl.search 'gameName' _sort }}}</th>
@@ -144,6 +139,7 @@
                                                     <th class="min-w-[150px]">Cập Nhập {{{ tableSort originalUrl.search 'updatedAt' _sort }}}</th>
                                                     <th class="min-w-[150px]">Thời Gian {{{ tableSort originalUrl.search 'createdAt' _sort }}}</th>
                                                     <th class="min-w-[150px]">Thời Gian Thực {{{ tableSort originalUrl.search 'timeTLS' _sort }}}</th>
+                                                    <th class="min-w-[60px]"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody data-table="history">
@@ -151,30 +147,6 @@
                                                     <tr class="edit-one {{#ifCond this.action.length '>='
                                                                                   1}}tr-warning{{/ifCond}}"
                                                         data-id="{{ this._id }}">
-                                                        <td>
-                                                            <div class="table-actions hand p-2">
-                                                        <span class="badges badge-info checkAction"
-                                                              data-id="{{ this.transId }}" data-bs-toggle="tooltip"
-                                                              data-bs-placement="top"
-                                                              data-bs-original-title="Xem ai đã thao tác"><i
-                                                                class="fa fa-info-circle" aria-hidden="true"></i></span>
-                                                                <span class="badges badge-warning reCheck"
-                                                                      data-id="{{ this.transId }}" data-bs-toggle="tooltip"
-                                                                      data-bs-placement="top"
-                                                                      data-bs-original-title="Kiểm tra lại giao dịch bằng API"><i
-                                                                        class="fa fa-question" aria-hidden="true"></i></span>
-                                                                <span class="badges badge-secondary rework"
-                                                                      data-id="{{ this.transId }}" data-bs-toggle="tooltip"
-                                                                      data-bs-placement="top"
-                                                                      data-bs-original-title="Trả thưởng lại"><i
-                                                                        class="fa fa-trophy" aria-hidden="true"></i></span>
-                                                                <span class="badges badge-danger" data-bs-submit="history"
-                                                                      data-bs-action="remove" data-id="{{ this._id }}"
-                                                                      data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                      data-bs-original-title="Xóa"><i class="fa fa-trash"
-                                                                                                      aria-hidden="true"></i></span>
-                                                            </div>
-                                                        </td>
                                                         <td><span class="kt-badge kt-badge-secondary">{{ this.transId }}</span></td>
                                                         <td>{{ this.username }}</td>
                                                         <td>
@@ -237,6 +209,39 @@
                                                         <td>{{ formatDate this.updatedAt 'DD-MM-YYYY HH:mm:ss'}}</td>
                                                         <td>{{ formatDate this.createdAt 'DD-MM-YYYY HH:mm:ss'}}</td>
                                                         <td>{{ formatDate this.timeTLS 'DD-MM-YYYY HH:mm:ss'}}</td>
+                                                        <td>
+                                                            <div class="kt-menu" data-kt-menu="true">
+                                                            <div class="kt-menu-item kt-menu-item-dropdown" data-kt-menu-item-offset="0, 10px" data-kt-menu-item-placement="bottom-end" data-kt-menu-item-placement-rtl="bottom-start" data-kt-menu-item-toggle="dropdown" data-kt-menu-item-trigger="click">
+                                                                <button class="kt-menu-toggle kt-btn kt-btn-sm kt-btn-icon kt-btn-ghost">
+                                                                    <i class="ki-filled ki-dots-vertical text-lg">
+                                                                    </i>
+                                                                </button>
+                                                                <div class="kt-menu-dropdown kt-menu-default w-full max-w-[175px]" data-kt-menu-dismiss="true" data-popper-placement="bottom-end" style="z-index: 105; position: fixed; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-61px, 287px, 0px);">
+                                                                    <div class="kt-menu-item reCheck" data-action="reCheck" data-id="{{ this.transId }}">
+                                                                        <a class="kt-menu-link" href="#">
+                                                                              <span class="kt-menu-icon">
+                                                                                   <i class="ki-filled ki-password-check">
+                                                                                   </i>
+                                                                              </span>
+                                                                            <span  class="kt-menu-title">Kiểm tra lại</span>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="kt-menu-separator">
+                                                                    </div>
+                                                                    <div class="kt-menu-item" data-bs-submit="zlp-list"
+                                                                         data-bs-action="remove" data-id="{{ this._id }}">
+                                                                        <a class="kt-menu-link" href="#">
+                                                                              <span class="kt-menu-icon text-danger">
+                                                                                   <i class="ki-filled ki-trash">
+                                                                                   </i>
+                                                                              </span>
+                                                                            <span class="kt-menu-title">Xoá tài khoản</span>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        </td>
                                                     </tr>
                                                 {{else}}
                                                     <tr>
@@ -353,33 +358,19 @@
             $('[data-bs-modal="qrModal"]').modal('show')
         }
 
-        $(document).on("click", ".qrc", function () {
+        $('body').on('click', '.reCheck', function (e) {
+            let transId = $(this).data('id');
 
-            var bankCode = $(this).attr('data-bankcode');
-            var bgc = "#11089c";
-
-            var img = window.location.protocol + '//' + window.location.host + '/themes/images/banks/' + bankCode + '.png';
-            var data = $(this).attr('data-content');
-            loadQR(data, img, bgc);
-        });
-
-        $('body').on('submit', '#formAdd', function (e) {
-            e.preventDefault();
-            let data = $(this).serialize();
-
-
-            axios.post(`{{ adminPath }}/bank`, data)
+            axios.post(`{{ adminPath }}/history/reCheck`, { transId })
                     .then((result) => {
-                        let res = result.data;
+                        let response = result.data;
 
-                        res.success ? swal('Thông báo', res.message, 'success') && setTimeout(() => window.location.reload(), 1500) : swal('Thông báo', res.message, 'error');
-
+                        response.success ? Swal.fire('Thông Báo', response.message, 'success') : Swal.fire('Thông Báo', response.message, 'error');
                     })
                     .catch((err) => {
-                        $('textarea[name=error]').textContent(err.dataResult);
-                        swal('Thông Báo', err.message || err, 'error');
+
                     })
-        })
+        });
     })
 </script>
 </body>
