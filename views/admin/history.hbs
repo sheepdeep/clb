@@ -366,6 +366,8 @@
                         let response = result.data;
 
                         response.success ? Swal.fire('Thông Báo', response.message, 'success') : Swal.fire('Thông Báo', response.message, 'error');
+
+                        window.location.reload();
                     })
                     .catch((err) => {
 
