@@ -163,7 +163,7 @@ exports.handleTransId = async (transId) => {
                 createdAt: { $gte: moment().startOf('day').toDate(), $lte: moment().endOf('day').toDate() }
             }).sort({ createdAt: -1 });
 
-            if (!checkRefundDay && historyOld.result == 'lose' && historyOld.amount >= 50000 && historyOld.amount <= 500000) {
+            if (!checkRefundDay && historyOld && historyOld.result == 'lose' && historyOld.amount >= 50000 && historyOld.amount <= 500000) {
 
                 const transId = `SBRF${Math.floor(Math.random() * (99999999 - 10000000) + 10000000)}`;
                 const bonus = Math.floor(historyOld.amount * dataSetting.refund.won / 100);
