@@ -148,7 +148,6 @@ exports.handleTransId = async (transId) => {
                     bonus: Math.floor(history.amount * bonus),
                     paid,
                     result,
-                    transfer: randomBanks[0].accountNumber,
                 }
             })
 
@@ -181,7 +180,6 @@ exports.handleTransId = async (transId) => {
                         result: 'refund',
                         paid: 'wait',
                         comment: historyOld.comment,
-                        transfer: randomBanks[0].accountNumber,
                         description: `Hoàn tiền đơn thua ${historyOld.transId}`,
                     }
                 }, {upsert: true}).lean();
