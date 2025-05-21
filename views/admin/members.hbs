@@ -1,112 +1,140 @@
 {{>head}}
-{{>nav}}
-<main class="main-content">
-    <div class="contents">
-        <div class="crm mb-25">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="breadcrumb-main">
-                            <h4 class="text-capitalize breadcrumb-title">{{ title }}</h4>
+<body class="antialiased flex h-full text-base text-foreground bg-background [--header-height:60px] [--sidebar-width:290px] bg-muted! lg:overflow-hidden">
+<!-- Theme Mode -->
+<script>
+    const defaultThemeMode = 'light'; // light|dark|system
+    let themeMode;
+
+    if (document.documentElement) {
+        if (localStorage.getItem('kt-theme')) {
+            themeMode = localStorage.getItem('kt-theme');
+        } else if (
+                document.documentElement.hasAttribute('data-kt-theme-mode')
+        ) {
+            themeMode =
+                    document.documentElement.getAttribute('data-kt-theme-mode');
+        } else {
+            themeMode = defaultThemeMode;
+        }
+
+        if (themeMode === 'system') {
+            themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+                    ? 'dark'
+                    : 'light';
+        }
+
+        document.documentElement.classList.add(themeMode);
+    }
+</script>
+<div class="flex grow">
+    <header class="flex lg:hidden items-center fixed z-10 top-0 start-0 end-0 shrink-0 bg-muted h-(--header-height)" id="header">
+        <!-- Container -->
+        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
+            <a href="/metronic/tailwind/demo4/">
+                <img class="dark:hidden min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray.svg"/>
+                <img class="hidden dark:block min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray-dark.svg"/>
+            </a>
+            <button class="kt-btn kt-btn-icon kt-btn-ghost -me-2" data-kt-drawer-toggle="#sidebar">
+                <i class="ki-filled ki-menu">
+                </i>
+            </button>
+        </div>
+        <!-- End of Container -->
+    </header>
+    <div class="flex flex-col lg:flex-row grow pt-(--header-height) lg:pt-0">
+        {{>nav}}
+        <div class="flex grow rounded-xl bg-background border border-input lg:ms-(--sidebar-width) mt-0 lg:mt-5 m-5">
+            <div class="flex flex-col grow kt-scrollable-y-auto lg:[--kt-scrollbar-width:auto] pt-5" id="scrollable_content">
+                <main class="grow" role="content">
+                    <div class="pb-5">
+                        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
+                            <div class="flex items-center flex-wrap gap-1 lg:gap-5">
+                                <h1 class="font-medium text-base text-mono">
+                                    {{ title }}
+                                </h1>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-12 mb-20">
-                        <div class="card">
-                            <div class="card-header">
-                                <h6 class="card-title">
-                                    <a href="{{ originalUrl.pathname }}" class="text-dark">
-                                        <img src="../themes/admin/images/members.png" alt="" width="35">
-                                        Danh Sách Thành Viên
-                                        <img src="../themes/admin/images/members.png" class="d-md-none" width="35">
-                                    </a>
-                                </h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="userDatatable adv-table-table global-shadow border-light-0 adv-table">
-                                    <div id="filter-form-container"
-                                        class="footable-filtering-external footable-filtering-right">
-                                        <form>
-                                            <div class="form-group footable-filtering-search mb-3 hand">
-                                                <div class="input-group">
-                                                    <input type="search" class="form-control" name="search"
-                                                        placeholder="Tìm kiếm..." value="{{ search }}">
-                                                </div>
+                    <div class="kt-container-fluid">
+                        <div class="grid gap-5 lg:gap-7.5">
+                            <div class="kt-card kt-card-grid min-w-full">
+                                <div class="kt-card-header flex-wrap gap-2">
+                                    <form>
+                                        <div class="flex flex-wrap gap-2 lg:gap-5">
+                                            <div class="flex">
+                                                <label class="kt-input">
+                                                    <i class="ki-filled ki-magnifier">
+                                                    </i>
+                                                    <input name="search" placeholder="Tìm kiếm" type="text" value="{{ search }}">
+                                                </label>
                                             </div>
-                                        </form>
-                                    </div>
+                                            <div class="flex flex-wrap gap-2.5">
+                                                <button class="kt-btn kt-btn-outline kt-btn-primary">
+                                                    <i class="ki-filled ki-search-list">
+                                                    </i>
+                                                    Tìm kiếm
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="table-responsive mb-3">
-                                    <table
-                                        class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
-                                        <thead class="badge-secondary text-white">
-                                            <tr>
-                                                <th>
-                                                    <span data-bs-submit="members" data-bs-action="add">
-                                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                                                    </span>
-                                                </th>
-                                                <th>Họ Và Tên</th>
-                                                <th>Tên Đăng Nhập</th>
-                                                <th>Số Dư</th>
-                                                <th>VIP </th>
-                                                <th>Thông Tin Bank</th>
-                                                <th>Telegram</th>
-                                                <th>TOKEN</th>
-                                                <th>Doanh Thu Ngày</th>
-                                                <th>Doanh Thu Tháng</th>
-                                                <th>Doanh Thu </th>
-                                                <th>IP</th>
-                                                <th>Đăng Nhập Cuối {{{ tableSort originalUrl.search 'lastOnline' _sort }}}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody data-table="members">
-                                            {{#each threads}}
-                                            <tr class="edit-one" data-id="{{ this._id }}">
-                                                <td>
-                                                    <div class="table-actions hand">
-                                                        <span class="badges badge-info editUser"
-                                                            data-id="{{ this._id }}" data-bs-toggle="tooltip"
-                                                            data-bs-placement="top"
-                                                            data-bs-original-title="Chỉnh sửa quyền thành viên"><i
-                                                                class="fas fa-pen"></i></span>
-                                                        <span class="badges badge-danger" data-bs-submit="members"
-                                                            data-bs-action="remove" data-id="{{ this._id }}"><i
-                                                                class="fa fa-trash" aria-hidden="true"></i></span>
-                                                    </div>
-                                                </td>
-                                                <td data-bs-name="name" data-bs-hasEdit="true">
+                                <div class="kt-card-content">
+                                    <div data-kt-datatable="true" data-kt-datatable-state-save="false" id="team_crew_table" data-kt-datatable-initialized="true" class="datatable-initialized">
+                                        <div class="kt-scrollable-x-auto">
+                                            <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
+                                                <thead>
+                                                <tr>
+                                                    <th>Họ Và Tên</th>
+                                                    <th>Tên Đăng Nhập</th>
+                                                    <th>Số Dư</th>
+                                                    <th>VIP </th>
+                                                    <th>Thông Tin Bank</th>
+                                                    <th>Telegram</th>
+                                                    <th>TOKEN</th>
+                                                    <th>Doanh Thu Ngày</th>
+                                                    <th>Doanh Thu Tháng</th>
+                                                    <th>Doanh Thu </th>
+                                                    <th>IP</th>
+                                                    <th>Đăng Nhập Cuối {{{ tableSort originalUrl.search 'lastOnline' _sort }}}</th>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                {{#each threads}}
+                                                    <tr class="edit-one" data-id="{{ this._id }}">
+                                                        <td data-bs-name="name" data-bs-hasEdit="true">
                                                     <span data-bs-table="html" data-bs-value="{{ this.name }}">
                                                         <span data-bs-html="true">{{ this.name }}</span>
                                                     </span>
-                                                    <span data-bs-table="edit" data-bs-value="{{ this.name }}">
+                                                            <span data-bs-table="edit" data-bs-value="{{ this.name }}">
                                                         <input type="text" class="form-control ih-medium ip-light mb-2"
-                                                            data-bs-edit="true">
+                                                               data-bs-edit="true">
                                                     </span>
-                                                </td>
-                                                <td><a href="{{../adminPath}}/history?&search={{ this.username }}">{{ this.username }}</a></td>
-                                                <td>{{ numberFormat this.balance }}</td>
-                                                <td data-bs-name="level" data-bs-hasEdit="true">
+                                                        </td>
+                                                        <td><a href="{{../adminPath}}/history?&search={{ this.username }}">{{ this.username }}</a></td>
+                                                        <td>{{ numberFormat this.balance }}</td>
+                                                        <td data-bs-name="level" data-bs-hasEdit="true">
                                                     <span data-bs-table="html" data-bs-value="{{ this.level }}">
                                                         <span data-bs-html="true">
                                                             {{#ifCond this.level '==' '1'}}
-                                                            <span class="badges badge-success">Quản Trị Viên</span>
+                                                                <span class="badges badge-success">Quản Trị Viên</span>
                                                             {{else}}
-                                                            <span class="badges badge-warning">Cộng Tác Viên</span>
+                                                                <span class="badges badge-warning">Cộng Tác Viên</span>
                                                             {{/ifCond}}
                                                         </span>
                                                     </span>
-                                                    <span data-bs-table="edit" data-bs-value="{{ this.level }}">
+                                                            <span data-bs-table="edit" data-bs-value="{{ this.level }}">
                                                         <select class="form-control ih-medium ip-light mb-2"
-                                                            data-bs-edit="true">
+                                                                data-bs-edit="true">
                                                             <option value="1">Quản Trị Viên</option>
                                                             <option value="2">Cộng Tác Viên</option>
                                                         </select>
                                                     </span>
-                                                </td>
-                                                <td data-bs-name="bankInfo.guard" data-bs-hasEdit="true">
-                                                    <code>{{ this.bankInfo.accountNumber }}</code> - <code>{{ this.bankInfo.accountName }}</code> - <code>{{ bankName this.bankInfo.bankCode }}</code>
-                                                    <br>
-                                                    <span data-bs-table="html" data-bs-value="{{ this.bankInfo.guard }}">
+                                                        </td>
+                                                        <td data-bs-name="bankInfo.guard" data-bs-hasEdit="true">
+                                                            <code>{{ this.bankInfo.accountNumber }}</code> - <code>{{ this.bankInfo.accountName }}</code> - <code>{{ bankName this.bankInfo.bankCode }}</code>
+                                                            <br>
+                                                            <span data-bs-table="html" data-bs-value="{{ this.bankInfo.guard }}">
                                                         <span data-bs-html="true">
                                                             {{#ifCond this.bankInfo.guard '==' '1'}}
                                                                 <span class="badges badge-success">Khóa</span>
@@ -115,17 +143,17 @@
                                                             {{/ifCond}}
                                                         </span>
                                                     </span>
-                                                    <span data-bs-table="edit" data-bs-value="{{ this.bankInfo.guard }}">
+                                                            <span data-bs-table="edit" data-bs-value="{{ this.bankInfo.guard }}">
                                                         <select class="form-control ih-medium ip-light mb-2" data-bs-edit="true">
                                                             <option value="true">Khóa</option>
                                                             <option value="false">Mở</option>
                                                         </select>
                                                     </span>
-                                                </td>
-                                                <td data-bs-name="telegram.status" data-bs-hasEdit="true">
-                                                    <code>{{ this.telegram.chatId }}</code></code>
-                                                    <br>
-                                                    <span data-bs-table="html" data-bs-value="{{ this.telegram.status }}">
+                                                        </td>
+                                                        <td data-bs-name="telegram.status" data-bs-hasEdit="true">
+                                                            <code>{{ this.telegram.chatId }}</code></code>
+                                                            <br>
+                                                            <span data-bs-table="html" data-bs-value="{{ this.telegram.status }}">
                                                         <span data-bs-html="true">
                                                             {{#ifCond this.telegram.status '==' 'active'}}
                                                                 <span class="badges badge-success">Đã liên kết</span>
@@ -134,447 +162,84 @@
                                                             {{/ifCond}}
                                                         </span>
                                                     </span>
-                                                    <span data-bs-table="edit" data-bs-value="{{ this.bankInfo.guard }}">
+                                                            <span data-bs-table="edit" data-bs-value="{{ this.bankInfo.guard }}">
                                                         <select class="form-control ih-medium ip-light mb-2" data-bs-edit="true">
                                                             <option value="true">Khóa</option>
                                                             <option value="false">Mở</option>
                                                         </select>
                                                     </span>
-                                                </td>
-                                                <td><span class="badges badge-secondary">{{ this.token }}</span></td>
-                                                <td><code><span class="text-success">{{ numberFormat this.historyDay.receipt }}</span></code> <br/> <code><span class="text-danger">{{ numberFormat this.historyDay.minus }}</span></code> <br /> <code><span class="text-warning">{{ numberFormat this.historyDay.earning }}</span></code></td>
-                                                <td><code><span class="text-success">{{ numberFormat this.historyMonth.receipt }}</span></code> <br /> <code><span class="text-danger">{{ numberFormat this.historyMonth.minus }}</span></code> <br /> <code><span class="text-warning">{{ numberFormat this.historyMonth.earning }}</span></code></td>
-                                                <td><code><span class="text-success">{{ numberFormat this.historyAll.receipt }}</span></code> <br /> <code><span class="text-danger">{{ numberFormat this.historyAll.minus }}</span></code> <br /> <code><span class="text-warning">{{ numberFormat this.historyAll.earning }}</span></code></td>
-                                                <td>{{ this.ip }}</td>
-                                                <td>{{ formatDate this.lastOnline 'HH:mm:ss DD-MM-YYYY'}}</td>
-                                            </tr>
-                                            {{else}}
-                                            <tr>
-                                                <td colspan="12">
-                                                    <div class="dm-empty text-center">
-                                                        <div class="dm-empty__image">
-                                                            <img src="../themes/admin/images/1.png" alt="Rỗng">
-                                                        </div>
-                                                        <div class="dm-empty__text">
-                                                            <p class="">Không có dữ liệu !</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            {{/each}}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="d-flex justify-content-end">
-                                    <nav class="dm-page">
-                                        <ul class="dm-pagination d-flex">
-                                            <li class="dm-pagination__item">
-                                                {{#paginate pagination type="previous"}}
-                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
-                                                    class="dm-pagination__link pagination-control {{#if disabled}}
-                                                    disabled{{/if}}">
-                                                    <span class="la la-angle-left"></span>
-                                                    </a>
-                                                {{/paginate}}
-                                                {{#paginate pagination type="middle" limit=pagination.limit}}
-                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
-                                                    class="dm-pagination__link {{#if active}}active{{/if}}"><span
-                                                        class="page-number">{{n}}</span>
-                                                    </a>
-                                                {{/paginate}}
-                                                {{#paginate pagination type="next"}}
-                                                <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
-                                                    class="dm-pagination__link pagination-control {{#if disabled}}
-                                                    disabled{{/if}}">
-                                                    <span class="la la-angle-right"></span>
-                                                    </a>
-                                                {{/paginate}}
-                                            </li>
-                                            <li class="dm-pagination__item">
-                                                <div class="paging-option">
-                                                    <select name="perPage" class="page-selection"
-                                                            data-query="{{ checkQuery originalUrl.search 'perPage' }}">
-                                                        {{#select perPage }}
-                                                            <option value="10">10/page</option>
-                                                            <option value="20">20/page</option>
-                                                            <option value="40">40/page</option>
-                                                            <option value="60">60/page</option>
-                                                            <option value="100">100/page</option>
-                                                            <option value="200">200/page</option>
-                                                            <option value="500">500/page</option>
-                                                        {{/select}}
-                                                    </select>
+                                                        </td>
+                                                        <td><span class="badges badge-secondary">{{ this.token }}</span></td>
+                                                        <td><code><span class="text-success">{{ numberFormat this.historyDay.receipt }}</span></code> <br/> <code><span class="text-danger">{{ numberFormat this.historyDay.minus }}</span></code> <br /> <code><span class="text-warning">{{ numberFormat this.historyDay.earning }}</span></code></td>
+                                                        <td><code><span class="text-success">{{ numberFormat this.historyMonth.receipt }}</span></code> <br /> <code><span class="text-danger">{{ numberFormat this.historyMonth.minus }}</span></code> <br /> <code><span class="text-warning">{{ numberFormat this.historyMonth.earning }}</span></code></td>
+                                                        <td><code><span class="text-success">{{ numberFormat this.historyAll.receipt }}</span></code> <br /> <code><span class="text-danger">{{ numberFormat this.historyAll.minus }}</span></code> <br /> <code><span class="text-warning">{{ numberFormat this.historyAll.earning }}</span></code></td>
+                                                        <td>{{ this.ip }}</td>
+                                                        <td>{{ formatDate this.lastOnline 'HH:mm:ss DD-MM-YYYY'}}</td>
+                                                    </tr>
+                                                {{else}}
+                                                    <tr>
+                                                        <td colspan="24" class="text-center py-10">
+                                                            <div class="flex flex-col justify-center items-center gap-4 min-h-[150px]">
+                                                                <img src="../themes/admin/images/1.png" alt="Rỗng" class="w-20 h-20 object-contain" />
+                                                                <p class="text-gray-500 text-base">Không có dữ liệu!</p>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {{/each}}
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                        <div class="kt-card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-secondary-foreground text-sm font-medium">
+                                            <div class="flex items-center gap-2 order-2 md:order-1">
+                                                Hiện thị
+                                                <select class="kt-select w-16 page-selection" name="perPage" data-query="{{ checkQuery originalUrl.search 'perPage' }}">
+                                                    {{#select perPage }}
+                                                        <option value="5">5</option>
+                                                        <option value="10">10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="30">30</option>
+                                                        <option value="50">50</option>
+                                                    {{/select}}
+                                                </select>
+                                                trang
+                                            </div>
+                                            <div class="flex items-center gap-4 order-1 md:order-2">
+                                                <div class="kt-datatable-pagination">
+                                                    {{#paginate pagination type="previous"}}
+                                                    <a class="kt-datatable-pagination-button kt-datatable-pagination-prev {{#if disabled}}disabled{{/if}}" href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}">
+                                                        <svg class="rtl:transform rtl:rotate-180 size-3.5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M8.86501 16.7882V12.8481H21.1459C21.3724 12.8481 21.5897 12.7581 21.7498 12.5979C21.91 12.4378 22 12.2205 22 11.994C22 11.7675 21.91 11.5503 21.7498 11.3901C21.5897 11.2299 21.3724 11.1399 21.1459 11.1399H8.86501V7.2112C8.86628 7.10375 8.83517 6.9984 8.77573 6.90887C8.7163 6.81934 8.63129 6.74978 8.53177 6.70923C8.43225 6.66869 8.32283 6.65904 8.21775 6.68155C8.11267 6.70405 8.0168 6.75766 7.94262 6.83541L2.15981 11.6182C2.1092 11.668 2.06901 11.7274 2.04157 11.7929C2.01413 11.8584 2 11.9287 2 11.9997C2 12.0707 2.01413 12.141 2.04157 12.2065C2.06901 12.272 2.1092 12.3314 2.15981 12.3812L7.94262 17.164C8.0168 17.2417 8.11267 17.2953 8.21775 17.3178C8.32283 17.3403 8.43225 17.3307 8.53177 17.2902C8.63129 17.2496 8.7163 17.18 8.77573 17.0905C8.83517 17.001 8.86628 16.8956 8.86501 16.7882Z" fill="currentColor"></path>
+                                                        </svg>
+                                                        </a>
+                                                    {{/paginate}}
+                                                    {{#paginate pagination type="middle" limit=pagination.limit}}
+                                                    <a class="kt-datatable-pagination-button {{#if active}}active{{/if}}" href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}">{{n}}</a>
+                                                    {{/paginate}}
+                                                    {{#paginate pagination type="next"}}
+                                                    <a class="kt-datatable-pagination-button kt-datatable-pagination-next {{#if disabled}}disabled{{/if}}" href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}">
+                                                        <svg class="rtl:transform rtl:rotate-180 size-3.5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M15.135 7.21144V11.1516H2.85407C2.62756 11.1516 2.41032 11.2415 2.25015 11.4017C2.08998 11.5619 2 11.7791 2 12.0056C2 12.2321 2.08998 12.4494 2.25015 12.6096C2.41032 12.7697 2.62756 12.8597 2.85407 12.8597H15.135V16.7884C15.1337 16.8959 15.1648 17.0012 15.2243 17.0908C15.2837 17.1803 15.3687 17.2499 15.4682 17.2904C15.5677 17.3309 15.6772 17.3406 15.7822 17.3181C15.8873 17.2956 15.9832 17.242 16.0574 17.1642L21.8402 12.3814C21.8908 12.3316 21.931 12.2722 21.9584 12.2067C21.9859 12.1412 22 12.0709 22 11.9999C22 11.9289 21.9859 11.8586 21.9584 11.7931C21.931 11.7276 21.8908 11.6683 21.8402 11.6185L16.0574 6.83565C15.9832 6.75791 15.8873 6.70429 15.7822 6.68179C15.6772 6.65929 15.5677 6.66893 15.4682 6.70948C15.3687 6.75002 15.2837 6.81959 15.2243 6.90911C15.1648 6.99864 15.1337 7.10399 15.135 7.21144Z" fill="currentColor"></path>
+                                                        </svg>
+                                                        </a>
+                                                    {{/paginate}}
                                                 </div>
-                                            </li>
-                                        </ul>
-                                    </nav>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-12 mb-20">
-                        <div class="card">
-                            <div class="card-header">
-                                <h6 class="card-title">
-                                    <a href="{{ originalUrl.pathname }}" class="text-dark">
-                                        <img src="../themes/admin/images/action_member.png" alt="" width="35">
-                                        Thao Tác Thành Viên
-                                        <img src="../themes/admin/images/action_member.png" class="d-md-none"
-                                            width="35">
-                                    </a>
-                                </h6>
-                            </div>
-                            <div class="card-body">
-                                <form action="members/action" method="post" class="form-axios" reload="true">
-                                    <div class="form-group">
-                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Tên Đăng Nhập</label>
-                                        <select name="username" class="form-control ih-medium ip-light select2">
-                                            {{#each users}}
-                                            <option value="{{ this.username }}">{{ this.username }}</option>
-                                            {{/each}}
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Nội Dung</label>
-                                        <input type="text" name="message" class="form-control ih-medium ip-light"
-                                            placeholder="Nhập nội dung cần thông báo đến thành viên ( có thể bỏ trống )">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="" class="il-gray fs-14 fw-500 mb-10">URL</label>
-                                        <input type="text" name="url" class="form-control ih-medium ip-light"
-                                            placeholder="Nhập link truy cập tới ( có thể bỏ trống )">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Hành Động</label>
-                                        <select name="action" class="form-control ih-medium-ip-light">
-                                            <option value="">NO</option>
-                                            <option value="reload">Tải Lại Trang</option>
-                                            <option value="dismiss">Kích</option>
-                                            <option value="checkInfo">Thông Tin</option>
-                                        </select>
-                                    </div>
-                                    <div class="content-center">
-                                        <button class="btn btn-primary"><i class="fa fa-plus-circle"
-                                                aria-hidden="true"></i> Thực Hiện</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
-<!-- Modal Add Members -->
-<div class="modal fade" data-bs-modal="members-add" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content radius-xl">
-            <div class="modal-header">
-                <h5 class="modal-title"><i class="fa fa-users" aria-hidden="true"></i> Thêm Tài Khoản</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="#" method="post" class="form-axios">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="" class="il-gray fs-14 fw-500 mb-10">Họ Và Tên</label>
-                        <input type="text" name="name" class="form-control ih-medium ip-light"
-                            placeholder="Nhập họ và tên...">
-                    </div>
-                    <div class="form-group">
-                        <label for="" class="il-gray fs-14 fw-500 mb-10">Tên Đăng Nhập</label>
-                        <input type="text" name="username" class="form-control ih-medium ip-light"
-                            placeholder="Nhập tên đăng nhập...">
-                    </div>
-                    <div class="form-group">
-                        <label for="" class="il-gray fs-14 fw-500 mb-10">Mật Khẩu</label>
-                        <input type="password" name="password" class="form-control ih-medium ip-light"
-                            placeholder="Nhập mật khẩu...">
-                    </div>
-                    <div class="form-group">
-                        <label for="" class="il-gray fs-14 fw-500 mb-10">Cấp Bậc</label>
-                        <select name="level" class="form-control ih-medium ip-light">
-                            <option value="1">Quản Trị Viên</option>
-                            <option value="2">Cộng Tác Viên</option>
-                        </select>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-editHis" value="1"
-                                checked="true">
-                            Chỉnh Sửa Lịch Sử
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-editComment" value="1"
-                                checked="true">
-                            Chỉnh Sửa Nội Dung
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-delHis" value="1"
-                                checked="true">
-                            Xóa Lịch Sử
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-useTrans" value="1"
-                                checked="true">
-                            Chuyển Tiền Ngoài
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-exTrans" value="1"
-                                checked="true">
-                            Chuyển Tiền Trong
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-delTrans" value="1"
-                                checked="true">
-                            Xóa Lịch Sử Chuyển
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-editPer" value="1"
-                                checked="true">
-                            Chỉnh Sửa Quyền
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-addNew" value="1"
-                                checked="true">
-                            Thêm Số
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-editST" value="1"
-                                checked="true">
-                            Chỉnh Sửa Cài Đặt
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-useCron" value="1"
-                                checked="true">
-                            Sử Dụng CronJob
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-useGift" value="1"
-                                checked="true">
-                            Sử Dụng GiftCode
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-useGame" value="1"
-                                checked="true">
-                            Sử Dụng Game
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-useCheck" value="1"
-                                checked="true">
-                            Kiểm Tra Giao Dịch
-                        </label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary btn-sm">Thêm</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<div class="modal fade" data-bs-modal="members-edit" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content radius-xl">
-            <div class="modal-header">
-                <h5 class="modal-title"></h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="#" method="put" class="form-axios">
-                <div class="modal-body">
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-editHis" value="1">
-                            Chỉnh Sửa Lịch Sử
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-editComment" value="1">
-                            Chỉnh Sửa Nội Dung
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-delHis" value="1">
-                            Xóa Lịch Sử
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-useTrans" value="1">
-                            Chuyển Tiền Ngoài
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-exTrans" value="1">
-                            Chuyển Tiền Trong
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-delTrans" value="1">
-                            Xóa Lịch Sử Chuyển
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-editPer" value="1">
-                            Chỉnh Sửa Quyền
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-addNew" value="1">
-                            Thêm Số
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-editST" value="1">
-                            Chỉnh Sửa Cài Đặt
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-useCron" value="1">
-                            Sử Dụng CronJob
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-useGift" value="1">
-                            Sử Dụng GiftCode
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-useGame" value="1">
-                            Sử Dụng Game
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label il-gray fs-14 fw-500 mb-10">
-                            <input type="checkbox" class="form-check-input" name="options-useCheck" value="1">
-                            Kiểm Tra Giao Dịch
-                        </label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary btn-sm">Lưu</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<div class="modal fade" data-bs-modal="members-info" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content radius-xl">
-            <div class="modal-header">
-                <h5 class="modal-title">Thông Tin Thành Viên</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="table-responsive mb-3">
-                    <table class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
-                        <thead class="badge-secondary text-white">
-                            <tr>
-                                <th>USERNAME</th>
-                                <th>URL</th>
-                                <th>DEVICE</th>
-                                <th>IP</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
+                </main>
+                {{>foot}}
             </div>
         </div>
     </div>
 </div>
-{{>foot}}
-<script type="text/javascript">
-    $(document).ready(function (e) {
-        $('body').on('click', '.editUser', function (e) {
-            let id = $(this).data('id');
-
-            loadAjax('start');
-            instance.get(`/members/${id}`)
-                .then((result) => {
-                    let response = result.data;
-
-                    if (!response.success) {
-                        swal('Thông Báo', response.message, 'error');
-                        return;
-                    }
-
-                    let permission = response.data.permission;
-
-                    const keys = Object.keys(permission);
-
-                    $(`[data-bs-modal="members-edit"] [type="checkbox"]`).attr('checked', false);
-
-                    for (const key of keys) {
-                        $(`[data-bs-modal="members-edit"] [name="options-${key}"]`).attr('checked', true);
-                    }
-
-                    $('[data-bs-modal="members-edit"] h5.modal-title').html(`Chỉnh Sửa Quyền #${response.data.username}`);
-                    $('[data-bs-modal="members-edit"] form').attr('action', `members/${response.data._id}`);
-                    $('[data-bs-modal="members-edit"]').modal('show');
-                })
-                .catch(err => {
-                    swal('Thông Báo', err.message || err, 'error');
-                })
-                .finally(() => loadAjax('stop'))
-        })
-
-        $('body').on('submit', '.form-axios', function (e) {
-            $('[data-bs-modal="members-info"] tbody').html('');
-        })
-
-        socket.on('dataInfo_{{ profile.username }}', function (data) {
-            $('[data-bs-modal="members-info"] tbody').append(`<tr><td>${data.username}</td><td><textarea class="form-control">${data.url}</textarea></td><td>${getDevice(data.userAgent)}</td><td>${data.ip}</td></tr>`);
-            $('[data-bs-modal="members-info"]').modal('show');
-        })
-    })
+<script src="../themes/admin/assets/js/core.bundle.js">
 </script>
+<script src="../themes/admin/assets/vendors/ktui/ktui.min.js">
+</script>
+</body>
+</html>

@@ -115,6 +115,7 @@
                                                 <thead>
                                                 <tr>
                                                     <th class="min-w-[100px]">Số Điện Thoại</th>
+                                                    <th class="min-w-[50px]">QR</th>
                                                     <th class="min-w-[150px]">Tên Tài Khoản</th>
                                                     <th class="min-w-[150px]">Số Dư {{{ tableSort originalUrl.search 'balance' _sort }}}</th>
                                                     <th>Giới Hạn Tháng {{{ tableSort originalUrl.search 'limitMonth' _sort
@@ -140,6 +141,19 @@
                                                 {{#each list}}
                                                     <tr class="edit-one" data-id="{{ this._id }}">
                                                         <td>{{ this.phone }}</td>
+                                                        <td>
+                                                            <button class="kt-btn"
+                                                                    data-kt-tooltip="#qr_{{ this._id }}"
+                                                                    data-kt-tooltip-trigger="click"
+                                                                    data-kt-tooltip-placement="bottom-start">
+                                                                <i class="ki-filled ki-category"></i>
+                                                            </button>
+                                                            <div id="qr_{{ this._id }}" class="kt-popover max-w-56">
+                                                                <div class="kt-popover-content">
+                                                                    <img src="https://img.vietqr.io/image/VCCB-{{ this.accountNumber }}-qr_only.png">
+                                                                </div>
+                                                            </div>
+                                                        </td>
                                                         <td>{{ this.name }}</td>
                                                         <td class="balance">{{ numberFormat this.balance }}đ</td>
                                                         <td><span>{{ numberFormat this.limitMonth }}</span></td>
@@ -193,7 +207,7 @@
                                                                     <div class="kt-menu-item action-more" data-action="qr" data-id="{{ this.phone }}">
                                                                         <a class="kt-menu-link" href="#">
                                                                               <span class="kt-menu-icon">
-                                                                                   <i class="ki-filled ki-key">
+                                                                                   <i class="ki-filled ki-category">
                                                                                    </i>
                                                                               </span>
                                                                             <span  class="kt-menu-title">Lấy QR</span>
@@ -333,13 +347,6 @@
                     axios.post('/api/v2/momo/qr', {phone})
                             .then((result) => {
                                 let response = result.data;
-
-                                console.log(response);
-
-                                if (response.success) {
-                                    $('#qrModal').modal('show');
-                                    loadQR(response.data.accountNumber, 'https://developers.momo.vn/v3/assets/images/square-8c08a00f550e40a2efafea4a005b1232.png', '#0070FF');
-                                }
 
                                 response.success ? Swal.fire('Thông Báo', response.message, 'success') : Swal.fire('Thông Báo', response.message, 'error');
                             })

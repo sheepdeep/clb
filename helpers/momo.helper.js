@@ -539,8 +539,8 @@ exports.getVSign = async (data, { agentid, phone, devicecode, secureid }) => {
     }
 }
 
-exports.relogin = async (phone, password, imei) => {
-    const currentAccount = await momoModel.findOne({ username: phone }).lean();
+exports.relogin = async (phone, password) => {
+    const currentAccount = await momoModel.findOne({ phone }).lean();
     if (!currentAccount) {
         return {success: false, message: 'Account not found'};
     }
@@ -605,6 +605,8 @@ exports.relogin = async (phone, password, imei) => {
         const {data: result} = await axios.post(loginNewLink, bodyLogin, {
             headers,
         });
+
+        console.log(result)
 
         if (result.errorCode === 0) {
             console.log('Login momo thành công');
@@ -720,6 +722,7 @@ exports.relogin = async (phone, password, imei) => {
             agentId,
             publicKey: requestEncryptKey,
             password,
+            pin: password,
             lastLogined: new Date().toISOString(),
             loginStatus: "active",
         }
@@ -2217,12 +2220,15 @@ exports.moneyTransfer = async (phone, dataTransfer) => {
 exports.getQR = async (phone) => {
     try {
         const currentAccount = await momoModel.findOne({phone: phone}).lean();
-        const dataDevice = JSON.parse(currentAccount.device);
+        const dataDevice = JSON.parse(currentAccount.dataDevice);
+        const timeToRequest = Date.now();
 
-        const resultMoMo = await this.doRequestEncryptMoMo("https://api.momo.vn/p2p/gateway/user-setting/GET_AIO_QR_INFO", [], currentAccount, "SOF_LIST_MANAGER_MSG", {agentid: currentAccount.agentId, secureid: dataDevice.secureId, devicecode: dataDevice.deviceCode, phone: currentAccount.phone})
+        const body = {}
 
-        console.log(resultMoMo);
+        const resultMoMo = await this.doRequestEncryptMoMo("https://api.momo.vn/p2p/gateway/user-setting/GET_AIO_QR_INFO", body, currentAccount, "GET_AIO_QR_INFO", {agentid: currentAccount.agentId, secureid: dataDevice.secureId, devicecode: dataDevice.deviceCode, phone: currentAccount.phone})
+
         if (resultMoMo.success) {
+            await momoModel.findOneAndUpdate({phone}, {$set: {accountNumber: resultMoMo.data.accountNumber, accountName: resultMoMo.data.accountName}})
             return {
                 success: true,
                 message: 'Lấy thành công [ ' + resultMoMo.data.bankName + ' - ' + resultMoMo.data.accountName + ' - ' + resultMoMo.data.accountNumber + ' ]',

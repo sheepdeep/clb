@@ -1,1675 +1,202 @@
 {{>head}}
-{{>nav}}
-<main class="main-content">
-    <div class="contents">
-        <div class="crm mb-25">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="breadcrumb-main">
-                            <h4 class="text-capitalize breadcrumb-title">{{ title }}</h4>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 mb-25">
-                        <div class="card">
-                            <div class="card-header">
-                                <h6 class="card-title hand" data-bs-toggle="tooltip" data-bs-placement="right"
-                                    data-bs-original-title="Cập nhập vào {{ timeNow settings.updatedAt }}">
-                                    <img src="../themes/admin/images/setting.png" alt="" width="35">
-                                    Cài Đặt Hệ Thống
-                                    <img src="../themes/admin/images/setting.png" class="d-md-none" width="35">
-                                </h6>
-                            </div>
-                            <div class="card-body">
-                                <form action="" method="post" id="formSetting">
-                                    <div class="row">
-                                        {{!-- Bắt Đầu Dữ Liệu Cơ Bản --}}
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">X3 </label>
-                                                <select name="x3" class="form-control ih-medium ip-light">
-                                                    {{#select settings.x3 }}
-                                                        <option value="active">Bật</option>
-                                                        <option value="inactive">Tắt</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tên
-                                                    Website</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="nameSite" value="{{ settings.nameSite }}"
-                                                    placeholder="Nhập tên website của bạn">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tiêu Đề</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="defaultTitle" value="{{ settings.defaultTitle }}"
-                                                    placeholder="Nhập tiêu đề website">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Icon Website</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="favicon" value="{{ settings.favicon }}"
-                                                    placeholder="Nhập link icon website của bạn">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Logo Website</label>
-                                                <input type="text" class="form-control ih-medium ip-light" name="logo"
-                                                    value="{{ settings.logo }}"
-                                                    placeholder="Nhập link logo website của bạn">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Thumbnail</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="thumbnail" value="{{ settings.thumbnail }}"
-                                                    placeholder="Nhập link thumbnail website">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Mô Tả</label>
-                                                <textarea class="form-control" name="description" rows="5"
-                                                    placeholder="Nhập mô tả website của bạn">{{ settings.description
-                                                    }}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Từ Khóa</label>
-                                                <textarea class="form-control" name="keywords" rows="5"
-                                                    placeholder="Nhập từ khóa tìm kiếm website của bạn">{{
-                                                    settings.keywords
-                                                    }}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500">Note [Template
-                                                    Default]</label>
-                                                <textarea name="note" class="form-control-lg form-editor" rows="5"
-                                                    placeholder="Type your message...">{{{ settings.note }}}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Header Script</label>
-                                                <textarea class="form-control" name="headerScript" rows="3"
-                                                    placeholder="headerScript">{{ settings.headerScript
-                                                    }}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Footer Script</label>
-                                                <textarea class="form-control" name="footerScript" rows="3"
-                                                    placeholder="footerScript">{{
-                                                    settings.footerScript
-                                                    }}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Số Lượng Hiển
-                                                    Thị</label>
-                                                <input type="number" class="form-control ih-medium ip-light"
-                                                    name="limitPhone" value="{{ settings.limitPhone }}"
-                                                    placeholder="Nhập số lượng số cần chạy">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Nội Dung Nạp
-                                                    Tiền</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="paymentComment" value="{{ settings.paymentComment }}"
-                                                    placeholder="Nhập nội dung nhận biết khi nạp tiền vào số ( thống kê )">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Nội Dung Rút
-                                                    Tiền</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="withdrawComment" value="{{ settings.withdrawComment }}"
-                                                    placeholder="Nhập nội dung nhận biết khi rút tiền ra khỏi số ( thống kê )">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Trạng Thái Site</label>
-                                                <select name="siteStatus" class="form-control ih-medium ip-light">
-                                                    {{#select settings.siteStatus }}
-                                                    <option value="active">Hoạt Động</option>
-                                                    <option value="maintenance">Bảo Trì</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Mã Quà Tặng</label>
-                                                <select name="giftCode-status" class="form-control ih-medium ip-light">
-                                                    {{#select settings.giftCode.status }}
-                                                    <option value="active">Bật</option>
-                                                    <option value="close">Tắt</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">BOT TOKEN
-                                                    [TELEGRAM]</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="telegram-token" value="{{ settings.telegram.token }}"
-                                                    placeholder="Nhập token bot telegram">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">CHAT ID
-                                                    [TELEGRAM]</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="telegram-chatId" value="{{ settings.telegram.chatId }}"
-                                                    placeholder="Nhập token bot telegram">
-                                            </div>
-                                        </div>
-                                        {{!-- Kết Thúc Dữ Liệu Cơ Bản --}}
-                                        {{!-- Bắt Đầu Comment Site --}}
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-original-title="comment, transId, amount, bonus">Giao Dịch
-                                                    [COMMENT]</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="commentSite-rewardGD"
-                                                    value="{{ settings.commentSite.rewardGD }}"
-                                                    placeholder="Nhập nội dung trả thưởng giao dịch">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-original-title="transId, time">Bill Đầu [COMMENT]</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="commentSite-refundBill"
-                                                    value="{{ settings.commentSite.refundBill }}"
-                                                    placeholder="Nhập nội dung hoàn tiền bill đầu">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-original-title="top, bonus, count, time">Đua TOP
-                                                    [COMMENT]</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="commentSite-rewardTOP"
-                                                    value="{{ settings.commentSite.rewardTOP }}"
-                                                    placeholder="Nhập nội dung trả thưởng đua top">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-original-title="amount, bonus, count, time">Nhiệm Vụ Ngày
-                                                    [COMMENT]</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="commentSite-rewardMission"
-                                                    value="{{ settings.commentSite.rewardMission }}"
-                                                    placeholder="Nhập nội dung trả thưởng nhiệm vụ ngày">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-original-title="transId, amount">Nổ Hũ [COMMENT]</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="commentSite-rewardJackpot"
-                                                    value="{{ settings.commentSite.rewardJackpot }}"
-                                                    placeholder="Nhập nội dung trả thưởng nổ hũ">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-original-title="transId, status">Hoàn tiền [COMMENT]</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="commentSite-refundGD"
-                                                    value="{{ settings.commentSite.refundGD }}"
-                                                    placeholder="Nhập nội dung hoàn tiền GD">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-original-title="code, amount">Quà Tặng [COMMENT]</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="commentSite-rewardGift"
-                                                    value="{{ settings.commentSite.rewardGift }}"
-                                                    placeholder="Nhập nội dung trả thưởng mã quà tặng">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-original-title="session, amount">Điểm Danh [COMMENT]</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="commentSite-rewardMuster"
-                                                    value="{{ settings.commentSite.rewardMuster }}"
-                                                    placeholder="Nhập nội dung trả thưởng điểm danh">
-                                            </div>
-                                        </div>
-                                        {{!-- Kết Thúc Comment Site --}}
-                                        {{!-- Bắt Đầu Lịch Sử --}}
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Loại API</label>
-                                                <select name="history-dataType" class="form-control ih-medium ip-light">
-                                                    {{#select settings.history.dataType }}
-                                                        <option value="exim">Eximbank</option>
-                                                        <option value="zalopay">Zalo Pay</option>
-                                                        <option value="momo">Momo</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Giới Hạn Quét</label>
-                                                <input type="number" class="form-control ih-medium ip-light"
-                                                    name="history-limit" value="{{ settings.history.limit }}"
-                                                    placeholder="Nhập số giao dịch quét mỗi lần">
-                                            </div>
-                                        </div>
-                                        {{!-- Kết Thúc Lịch Sử --}}
-                                        {{!-- Bắt Đầu Trả Thưởng --}}
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Loại Trả Thưởng</label>
-                                                <select name="reward-dataType" class="form-control ih-medium ip-light">
-                                                    {{#select settings.reward.dataType }}
-                                                    <option value="all">Trả Hết</option>
-                                                    <option value="limit">Giới Hạn</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Giới Hạn Trả</label>
-                                                <input type="number" class="form-control ih-medium ip-light"
-                                                    name="reward-limit" value="{{ settings.reward.limit }}"
-                                                    placeholder="Nhập số lượng tối đa trả thưởng mỗi lần">
-                                            </div>
-                                        </div>
-                                        {{!-- Kết Thúc Trả Thưởng --}}
-                                        {{!-- Bắt Đầu Hoàn Tiền --}}
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Hoàn Tiền</label>
-                                                <select name="refund-status" class="form-control ih-medium ip-light">
-                                                    {{#select settings.refund.status }}
-                                                    <option value="active">Có</option>
-                                                    <option value="close">Không</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Thắng Hoàn (%)</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="refund-win" value="{{ settings.refund.win }}"
-                                                    placeholder="Nhập số phần trăm hoàn tiền khi thắng">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Thua Hoàn (%)</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="refund-won" value="{{ settings.refund.won }}"
-                                                    placeholder="Nhập số phần trăm hoàn tiền khi thua">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Sai Nội Dung Hoàn
-                                                    (%)</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="refund-fail" value="{{ settings.refund.fail }}"
-                                                    placeholder="Nhập số phần trăm hoàn tiền khi bị sai nội dung">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Giới Hạn Hoàn</label>
-                                                <input type="number" class="form-control ih-medium ip-light"
-                                                    name="refund-limit" value="{{ settings.refund.limit }}"
-                                                    placeholder="Nhập số lần hoàn tiền trong 1 ngày">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Phần Quà Random</label>
-                                                <input type="number" class="form-control ih-medium ip-light"
-                                                    name="refund-random" value="{{ settings.refund.random }}"
-                                                    placeholder="Nhập phần chăm nhận khi pem">
-                                            </div>
-                                        </div>
-                                        {{!-- Kết Thúc Hoàn Tiền --}}
-                                        {{!-- Bắt Đầu Nổ Hũ --}}
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Nổ Hũ</label>
-                                                <select name="jackpot-status" class="form-control ih-medium ip-light">
-                                                    {{#select settings.jackpot.status }}
-                                                    <option value="active">Bật</option>
-                                                    <option value="close">Tắt</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tiền Hũ</label>
-                                                <input type="number" class="form-control ih-medium ip-light"
-                                                    name="jackpotCount" value="{{ settings.jackpotCount }}"
-                                                    placeholder="Nhập số tiền trong hũ">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tiền Trừ Hũ</label>
-                                                <input type="number" class="form-control ih-medium ip-light"
-                                                    name="jackpot-amount" value="{{ settings.jackpot.amount }}"
-                                                    placeholder="Nhập số tiền trừ mỗi lần khi tham gia hũ">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Mã Nổ Hũ</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="jackpot-numberTLS"
-                                                    value="{{ joinArray settings.jackpot.numberTLS ' - ' }}"
-                                                    placeholder="Nhập list mã trúng thưởng nổ hũ, mỗi số cách nhau bằng dấu -">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500">Note [JACKPOT]</label>
-                                                <textarea class="form-control form-editor" name="jackpot-noti" rows="10"
-                                                    placeholder="Nhập lưu ý nổ hũ">{{
-                                                    settings.jackpot.noti
-                                                    }}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500">Note [GIFT_CODE]</label>
-                                                <textarea class="form-control form-editor" name="giftCode-noti"
-                                                    rows="10" placeholder="Nhập lưu ý nổ hũ">{{
-                                                    settings.giftCode.noti
-                                                    }}</textarea>
-                                            </div>
-                                        </div>
-                                        {{!-- Kết Thúc Nổ Hũ --}}
-                                        {{!-- Bắt Đầu Điểm Danh --}}
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Điểm Danh</label>
-                                                <select name="muster-status" class="form-control ih-medium ip-light">
-                                                    {{#select settings.muster.status }}
-                                                    <option value="active">Bật</option>
-                                                    <option value="close">Tắt</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Bắt Đầu
-                                                    [MUSTER]</label>
-                                                <input type="number" class="form-control ih-medium ip-light"
-                                                    name="muster-startTime" value="{{ settings.muster.startTime }}"
-                                                    placeholder="Nhập thời gian bắt đầu chạy điểm danh ( giờ )">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Kết Thúc
-                                                    [MUSTER]</label>
-                                                <input type="number" class="form-control ih-medium ip-light"
-                                                    name="muster-endTime" value="{{ settings.muster.endTime }}"
-                                                    placeholder="Nhập thời gian kết thúc điểm danh ( giờ )">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Thời Gian
-                                                    [MUSTER]</label>
-                                                <input type="number" class="form-control ih-medium ip-light"
-                                                    name="muster-delay" value="{{ settings.muster.delay }}"
-                                                    placeholder="Nhập số giây mỗi vòng quay điểm danh ( giây )">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tối Thiểu
-                                                    [MUSTER]</label>
-                                                <input type="number" class="form-control ih-medium ip-light"
-                                                    name="muster-min" value="{{ settings.muster.min }}"
-                                                    placeholder="Nhập số tiền thưởng tối thiểu [RANDOM]">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tối Đa [MUSTER]</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="muster-max" value="{{ settings.muster.max }}"
-                                                    placeholder="Nhập số tiền thưởng tối đa [RANDOM]">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Giới Hạn
-                                                    [MUSTER]</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="muster-limit" value="{{ settings.muster.limit }}"
-                                                    placeholder="Nhập số lượng người tham gia tối thiểu đủ điều kiện trả thưởng">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500">Note [MUSTER]</label>
-                                                <textarea class="form-control form-editor" name="muster-noti" rows="5"
-                                                    placeholder="Nhập lưu ý điểm danh">{{
-                                                    settings.muster.noti
-                                                    }}</textarea>
-                                            </div>
-                                        </div>
-                                        {{!-- Kết Thúc Điểm Danh --}}
-                                        {{!-- Bắt Đầu Kiểm Tra Mã --}}
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Kiểm Tra Giao
-                                                    Dịch</label>
-                                                <select name="checkTransId-status"
-                                                    class="form-control ih-medium ip-light">
-                                                    {{#select settings.checkTransId.status }}
-                                                    <option value="active">Bật</option>
-                                                    <option value="close">Tắt</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Giới Hạn
-                                                    [CHECK_TRANSID]</label>
-                                                <input type="number" class="form-control ih-medium ip-light"
-                                                    name="checkTransId-limit" value="{{ settings.checkTransId.limit }}"
-                                                    placeholder="Nhập số lượng giao dịch tối đa được phép kiểm tra mỗi ngày">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Khoảng Cách
-                                                    [CHECK_TRANSID]</label>
-                                                <input type="number" class="form-control ih-medium ip-light"
-                                                    name="checkTransId-limitHour"
-                                                    value="{{ settings.checkTransId.limitHour }}"
-                                                    placeholder="Cho phép kiểm tra giao dịch gần nhất bao nhiêu giờ ( đơn vị giờ )">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Hoàn Tiền Thua</label>
-                                                <select name="refundBill-status"
-                                                    class="form-control ih-medium ip-light">
-                                                    {{#select settings.refundBill.status }}
-                                                    <option value="active">Có</option>
-                                                    <option value="close">Không</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Note
-                                                    [CHECK_TRANSID]</label>
-                                                <textarea class="form-control form-editor" name="checkTransId-noti"
-                                                    rows="3" placeholder="Nhập lưu ý nổ hũ">{{
-                                                    settings.checkTransId.noti
-                                                    }}</textarea>
-                                            </div>
-                                        </div>
-                                        {{!-- Kết Thúc Kiểm Tra Mã --}}
-                                        {{!-- Bắt Đầu Hoàn Tiền Bill --}}
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Cược Tối Thiểu
-                                                    [REFUND_BILL]</label>
-                                                <input type="number" class="form-control ih-medium ip-light"
-                                                    name="refundBill-min" value="{{ settings.refundBill.min }}"
-                                                    placeholder="Nhập tiền cược tối thiểu để đủ điều kiện hoàn">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Phần Trăm
-                                                    [REFUND_BILL]</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                    name="refundBill-percent" value="{{ settings.refundBill.percent }}"
-                                                    placeholder="Nhập số phần trăm hoàn tiền">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Hoàn Tối Đa
-                                                    [REFUND_BILL]</label>
-                                                <input type="number" class="form-control ih-medium ip-light"
-                                                    name="refundBill-max" value="{{ settings.refundBill.max }}"
-                                                    placeholder="Số tiền hoàn tối đa, sau khi chia %">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
-                                                    data-bs-original-title="- Đầu Tiên: Chỉ hoàn tiền đơn chơi đầu tiên nếu thua<br>- Tất Cả: Tất cả đơn nếu có đơn thua đầu tiên thì sẽ hoàn tiền, đánh đơn đầu thắng đơn sau thua vẫn hoàn.">Loại
-                                                    [REFUND_BILL]</label>
-                                                <select name="refundBill-typeAction"
-                                                    class="form-control ih-medium ip-light">
-                                                    {{#select settings.refundBill.typeAction }}
-                                                    <option value="one">Đầu Tiên</option>
-                                                    <option value="all">Tất Cả</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        {{!-- Kết Thúc Hoàn Tiền Bill --}}
-                                        {{!-- Bắt Đầu Theme Site --}}
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Giao Diện
-                                                    [THEME_SITE]</label>
-                                                <select name="themeSite-template"
-                                                    class="form-control ih-medium ip-light">
-                                                    {{#select settings.themeSite.template }}
-                                                    <option value="default">Mặc Định</option>
-                                                    <option value="theme1">Giao Diện 1 - CLMM.COOL</option>
-                                                    <option value="theme2">Giao Diện 2 - VANMAY.NET</option>
-                                                    <option value="theme3">Giao Diện 3 - RIKMOMO.ME</option>
-                                                    <option value="custom" disabled>Tùy Chỉnh</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Màu Sắc <span
-                                                        class="text-primary hand"
-                                                        id="defaultColor">[SET_DEFAULT]</span></label>
-                                                <input type="color" class="form-control ih-medium ip-light"
-                                                    name="themeSite-mainColor"
-                                                    value="{{ settings.themeSite.mainColor }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tiêu Đề
-                                                    [THEME_SITE]</label>
-                                                <textarea class="form-control" name="themeSite-mainTitle" rows="3"
-                                                    placeholder="Nhập nội dung tiêu đề chính">{{
-                                                    settings.themeSite.mainTitle
-                                                    }}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Chữ Chạy
-                                                    [THEME_SITE]</label>
-                                                <textarea class="form-control" name="themeSite-notiRun" rows="3"
-                                                    placeholder="Nhập nội dung chữ chạy">{{
-                                                    settings.themeSite.notiRun
-                                                    }}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">ICON WIN
-                                                    [THEME_SITE]</label>
-                                                <textarea class="form-control" name="themeSite-iconNotify" rows="3"
-                                                    placeholder="Icon hiển thị ở trang chủ, thông báo lịch sử thắng">{{
-                                                    settings.themeSite.iconNotify
-                                                    }}</textarea>
-                                            </div>
-                                        </div>
-                                        {{!-- Kết Thúc Theme Site --}}
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Thông Báo</label>
-                                                <select name="notification-status"
-                                                    class="form-control ih-medium ip-light">
-                                                    {{#select settings.notification.status }}
-                                                    <option value="active">Bật</option>
-                                                    <option value="close">Tắt</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500">Nội Dung Thông Báo</label>
-                                                <textarea class="form-control form-editor" name="notification-data"
-                                                    rows="10" placeholder="Nhập nội dung thông báo">{{
-                                                    settings.notification.data
-                                                    }}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="text-center">
-                                            <button class="btn btn-success btn-block"><i class="fas fa-save"></i>
-                                                Lưu</button>
-                                        </div>
-                                    </div>
-                                </form>
+<body class="antialiased flex h-full text-base text-foreground bg-background [--header-height:60px] [--sidebar-width:290px] bg-muted! lg:overflow-hidden">
+<!-- Theme Mode -->
+<script>
+    const defaultThemeMode = 'light'; // light|dark|system
+    let themeMode;
+
+    if (document.documentElement) {
+        if (localStorage.getItem('kt-theme')) {
+            themeMode = localStorage.getItem('kt-theme');
+        } else if (
+                document.documentElement.hasAttribute('data-kt-theme-mode')
+        ) {
+            themeMode =
+                    document.documentElement.getAttribute('data-kt-theme-mode');
+        } else {
+            themeMode = defaultThemeMode;
+        }
+
+        if (themeMode === 'system') {
+            themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+                    ? 'dark'
+                    : 'light';
+        }
+
+        document.documentElement.classList.add(themeMode);
+    }
+</script>
+<div class="flex grow">
+    <header class="flex lg:hidden items-center fixed z-10 top-0 start-0 end-0 shrink-0 bg-muted h-(--header-height)" id="header">
+        <!-- Container -->
+        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
+            <a href="/metronic/tailwind/demo4/">
+                <img class="dark:hidden min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray.svg"/>
+                <img class="hidden dark:block min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray-dark.svg"/>
+            </a>
+            <button class="kt-btn kt-btn-icon kt-btn-ghost -me-2" data-kt-drawer-toggle="#sidebar">
+                <i class="ki-filled ki-menu">
+                </i>
+            </button>
+        </div>
+        <!-- End of Container -->
+    </header>
+    <div class="flex flex-col lg:flex-row grow pt-(--header-height) lg:pt-0">
+        {{>nav}}
+        <div class="flex grow rounded-xl bg-background border border-input lg:ms-(--sidebar-width) mt-0 lg:mt-5 m-5">
+            <div class="flex flex-col grow kt-scrollable-y-auto lg:[--kt-scrollbar-width:auto] pt-5" id="scrollable_content">
+                <main class="grow" role="content">
+                    <div class="pb-5">
+                        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
+                            <div class="flex items-center flex-wrap gap-1 lg:gap-5">
+                                <h1 class="font-medium text-base text-mono">
+                                    {{ title }}
+                                </h1>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-12 mb-25">
-                        <div class="card">
-                            <div class="card-header">
-                                <h6 class="card-title hand">
-                                    <img src="../themes/admin/images/data.png" alt="" width="35">
-                                    Cài Đặt Dữ Liệu
-                                    <img src="../themes/admin/images/data.png" class="d-md-none" alt="" width="35">
-                                </h6>
+                    <div class="kt-container-fluid">
+                        <div class="space-y-3 text-sm">
+                            <div class="flex items-center gap-2.5" data-kt-tabs="true">
+                                <button class="kt-btn kt-btn-outline active" data-kt-tab-toggle="#tab_1_1"><img src="../themes/admin/images/setting.png" alt="" width="20"> Cài Đặt Hệ Thống</button>
                             </div>
-                            <div class="card-body">
-                                <label for="" class="il-gray fs-14 fw-500 mb-10">* CONTACT [SETTING]</label>
-                                <div class="table-responsive">
-                                    <table class="table mb-3 table-bordered text-nowrap text-center">
-                                        <thead>
-                                            <tr class="userDatatable-header">
-                                                <th><i class="fas fa-plus-circle hand create" data-value="contact"
-                                                        data-parent="" data-child="contact"></i></th>
-                                                <th>URL</th>
-                                                <th>CODE</th>
-                                                <th>HTML <small class="text-info hand" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top"
-                                                        data-bs-original-title="Hình ảnh phía dưới chỉ là minh họa, tùy css của mỗi giao diện sẽ ra kiểu khác nhau"><i
-                                                            class="fa fa-info-circle" aria-hidden="true"></i></small>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="dataEnz" data-bs-parent="" data-bs-child="contact">
-                                            {{#each settings.contact}}
-                                            <tr>
-                                                <td>
-                                                    <div class="table-actions hand">
-                                                        <span class="badges badge-info" data-bs-action="edit"><i
-                                                                class="fas fa-pen"></i></span>
-                                                        <span class="badges badge-danger" data-bs-action="remove"><i
-                                                                class="fa fa-trash" aria-hidden="true"></i></span>
+                            <div class="text-sm">
+                                <div class="" id="tab_1_1">
+                                    <div class="kt-card w-[400px]">
+                                        <div class="kt-card-content py-5">
+                                            <div class="space-y-5">
+                                                <div class="kt-form-item">
+                                                    <label class="kt-form-label">X3</label>
+                                                    <div class="kt-form-control">
+                                                        <select data-kt-select="true" name="x3" class="kt-select" data-kt-select-placeholder="Chọn số điện thoại">
+                                                            {{#select settings.x3 }}
+                                                                <option value="active">Bật</option>
+                                                                <option value="inactive">Tắt</option>
+                                                            {{/select }}
+                                                        </select>
                                                     </div>
-                                                </td>
-                                                <td data-bs-key="url" data-bs-value="{{ this.url }}"
-                                                    data-bs-type="text">{{ this.url }}</td>
-                                                <td data-bs-key="html" data-bs-value="{{ this.html }}"
-                                                    data-bs-type="text" data-bs-more="html"><textarea rows="3"
-                                                        class="form-control">{{
-                                                        this.html }}</textarea>
-                                                </td>
-                                                <td data-bs-render="html">
-                                                    <center>{{{ this.html }}}</center>
-                                                </td>
-                                            </tr>
-                                            {{/each}}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <label for="" class="il-gray fs-14 fw-500 mb-10">* NHIỆM VỤ NGÀY [SETTING]</label>
-                                <div class="table-responsive">
-                                    <table class="table mb-3 table-bordered text-nowrap text-center">
-                                        <thead>
-                                            <tr class="userDatatable-header">
-                                                <th><i class="fas fa-plus-circle hand create" data-value="missionData"
-                                                        data-parent="missionData-" data-child="data"></i></th>
-                                                <th>Vị Trí</th>
-                                                <th>Tổng Cược</th>
-                                                <th>Tiền Thưởng</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="dataEnz" data-bs-parent="missionData-" data-bs-child="data"
-                                            data-bs-position="true">
-                                            {{#each settings.missionData.data}}
-                                            <tr>
-                                                <td>
-                                                    <div class="table-actions hand">
-                                                        <span class="badges badge-info" data-bs-action="edit"><i
-                                                                class="fas fa-pen"></i></span>
-                                                        <span class="badges badge-danger" data-bs-action="remove"><i
-                                                                class="fa fa-trash" aria-hidden="true"></i></span>
+                                                </div>
+                                                <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
+                                                    <div class="lg:col-span-1">
+                                                        <div class="kt-form-item">
+                                                            <label class="kt-form-label">Tên Website</label>
+                                                            <div class="kt-form-control">
+                                                                <input type="text" class="kt-input" name="nameSite" value="{{ settings.nameSite }}"
+                                                                       placeholder="Nhập tên website của bạn">
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </td>
-                                                <td data-bs-position="true">{{ sum @index 1 }}</td>
-                                                <td data-bs-key="amount" data-bs-value="{{ this.amount }}"
-                                                    data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
-                                                    this.amount }}
-                                                </td>
-                                                <td data-bs-key="bonus" data-bs-value="{{ this.bonus }}"
-                                                    data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
-                                                    this.bonus }}
-                                                </td>
-                                            </tr>
-                                            {{/each}}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <label for="" class="il-gray fs-14 fw-500 mb-10">* THƯỞNG CTV [SETTING]</label>
-                                <div class="table-responsive">
-                                    <table class="table mb-3 table-bordered text-nowrap text-center">
-                                        <thead>
-                                        <tr class="userDatatable-header">
-                                            <th><i class="fas fa-plus-circle hand create" data-value="referralGift"
-                                                   data-parent="referralGift-" data-child="data"></i></th>
-                                            <th>Vị Trí</th>
-                                            <th>Tổng Cược Ngày</th>
-                                            <th>Tiền Thưởng</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody class="dataEnz" data-bs-parent="referralGift-" data-bs-child="data"
-                                               data-bs-position="true">
-                                        {{#each settings.referralGift.data}}
-                                            <tr>
-                                                <td>
-                                                    <div class="table-actions hand">
-                                                        <span class="badges badge-info" data-bs-action="edit"><i
-                                                                class="fas fa-pen"></i></span>
-                                                        <span class="badges badge-danger" data-bs-action="remove"><i
-                                                                class="fa fa-trash" aria-hidden="true"></i></span>
+                                                    <div class="lg:col-span-1">
+                                                        <div class="kt-form-item">
+                                                            <label class="kt-form-label">Tiêu Đề</label>
+                                                            <div class="kt-form-control">
+                                                                <input type="text" class="kt-input" name="defaultTitle" value="{{ settings.defaultTitle }}"
+                                                                       placeholder="Nhập tiêu đề website">
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </td>
-                                                <td data-bs-position="true">{{ sum @index 1 }}</td>
-                                                <td data-bs-key="amount" data-bs-value="{{ this.amount }}"
-                                                    data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
-                                                        this.amount }}
-                                                </td>
-                                                <td data-bs-key="bonus" data-bs-value="{{ this.bonus }}"
-                                                    data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
-                                                        this.bonus }}
-                                                </td>
-                                            </tr>
-                                        {{/each}}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <label for="" class="il-gray fs-14 fw-500 mb-10">* FAKE TOP [SETTING]</label>
-                                <div class="table-responsive">
-                                    <table class="table mb-3 table-bordered text-nowrap text-center">
-                                        <thead>
-                                            <tr class="userDatatable-header">
-                                                <th><i class="fas fa-plus-circle hand create" data-value="fakeData"
-                                                        data-parent="topData-" data-child="fakeData"></i></th>
-                                                <th>Vị Trí</th>
-                                                <th>Số Điện Thoại</th>
-                                                <th>Tiền Thắng</th>
-                                                <th>Tiền Thưởng</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="dataEnz" data-bs-parent="topData-" data-bs-child="fakeData"
-                                            data-bs-position="true">
-                                            {{#each settings.topData.fakeData}}
-                                            <tr>
-                                                <td>
-                                                    <div class="table-actions hand">
-                                                        <span class="badges badge-info" data-bs-action="edit"><i
-                                                                class="fas fa-pen"></i></span>
-                                                        <span class="badges badge-danger" data-bs-action="remove"><i
-                                                                class="fa fa-trash" aria-hidden="true"></i></span>
+                                                </div>
+                                                <div class="grid lg:grid-cols-3 gap-5 lg:gap-7.5 items-stretch">
+                                                    <div class="lg:col-span-1">
+                                                        <div class="kt-form-item">
+                                                            <label class="kt-form-label">Icon Website</label>
+                                                            <div class="kt-form-control">
+                                                                <input type="text" class="kt-input" name="favicon" value="{{ settings.favicon }}"
+                                                                       placeholder="Nhập link icon website của bạn">
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </td>
-                                                <td data-bs-position="true">{{ sum @index 1 }}</td>
-                                                <td data-bs-key="phone" data-bs-value="{{ this.phone }}"
-                                                    data-bs-type="text">{{ this.phone }}
-                                                </td>
-                                                <td data-bs-key="amount" data-bs-value="{{ this.amount }}"
-                                                    data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
-                                                    this.amount }}
-                                                </td>
-                                                <td data-bs-key="bonus" data-bs-value="{{ this.bonus }}"
-                                                    data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
-                                                    this.bonus }}
-                                                </td>
-                                            </tr>
-                                            {{/each}}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <label for="" class="il-gray fs-14 fw-500 mb-10">* THƯỞNG TOP [SETTING]</label>
-                                <div class="table-responsive">
-                                    <table class="table mb-3 table-bordered text-nowrap text-center">
-                                        <thead>
-                                            <tr class="userDatatable-header">
-                                                <th><i class="fas fa-plus-circle hand create" data-value="bonusTOP"
-                                                        data-parent="topData-" data-child="bonus"></i></th>
-                                                <th>Vị Trí</th>
-                                                <th>Tiền Thưởng</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="dataEnz" data-bs-parent="topData-" data-bs-child="bonus"
-                                            data-bs-position="true">
-                                            {{#each settings.topData.bonus}}
-                                            <tr>
-                                                <td>
-                                                    <div class="table-actions hand">
-                                                        <span class="badges badge-info" data-bs-action="edit"><i
-                                                                class="fas fa-pen"></i></span>
-                                                        <span class="badges badge-danger" data-bs-action="remove"><i
-                                                                class="fa fa-trash" aria-hidden="true"></i></span>
+                                                    <div class="lg:col-span-1">
+                                                        <div class="kt-form-item">
+                                                            <label class="kt-form-label">Logo Website</label>
+                                                            <div class="kt-form-control">
+                                                                <input type="text" class="kt-input" name="logo"
+                                                                       value="{{ settings.logo }}"
+                                                                       placeholder="Nhập link logo website của bạn">
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </td>
-                                                <td data-bs-position="true">{{ sum @index 1 }}</td>
-                                                <td data-bs-key="[]" data-bs-value="{{ this }}" data-bs-type="number"
-                                                    data-bs-more="numberFormat">{{ numberFormat
-                                                    this }}
-                                                </td>
-                                            </tr>
-                                            {{/each}}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <label for="" class="il-gray fs-14 fw-500 mb-10">* FAKE USER [BOT]</label>
-                                <div class="table-responsive">
-                                    <table class="table mb-3 table-bordered text-nowrap text-center">
-                                        <thead>
-                                        <tr class="userDatatable-header">
-                                            <th><i class="fas fa-plus-circle hand create" data-value="fakeUser"
-                                                   data-parent="fakeUser-" data-child="data"></i></th>
-                                            <th>Vị Trí</th>
-                                            <th>Tên đăng nhập</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody class="dataEnz" data-bs-parent="fakeUser-" data-bs-child="data"
-                                               data-bs-position="true">
-                                        {{#each settings.fakeUser.data}}
-                                            <tr>
-                                                <td>
-                                                    <div class="table-actions hand">
-                                                        <span class="badges badge-info" data-bs-action="edit"><i
-                                                                class="fas fa-pen"></i></span>
-                                                        <span class="badges badge-danger" data-bs-action="remove"><i
-                                                                class="fa fa-trash" aria-hidden="true"></i></span>
+                                                    <div class="lg:col-span-1">
+                                                        <div class="kt-form-item">
+                                                            <label class="kt-form-label">Thumbnail</label>
+                                                            <div class="kt-form-control">
+                                                                <input type="text" class="kt-input" name="thumbnail" value="{{ settings.thumbnail }}"
+                                                                       placeholder="Nhập link thumbnail website">
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </td>
-                                                <td data-bs-position="true">{{ sum @index 1 }}</td>
-                                                <td data-bs-key="[]" data-bs-value="{{ this }}" data-bs-type="number"
-                                                    data-bs-more="numberFormat">{{
-                                                        this }}
-                                                </td>
-                                            </tr>
-                                        {{/each}}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <label for="" class="il-gray fs-14 fw-500 mb-10">* VÒNG QUAY [EVENT]</label>
-                                <div class="table-responsive">
-                                    <table class="table mb-3 table-bordered text-nowrap text-center">
-                                        <thead>
-                                        <tr class="userDatatable-header">
-                                            <th><i class="fas fa-plus-circle hand create" data-value="wheel"
-                                                   data-parent="wheel-" data-child="gift"></i></th>
-                                            <th>Vị Trí</th>
-                                            <th>Tỉ lệ</th>
-                                            <th>Tên thưởng</th>
-                                            <th>Tiền Thưởng</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody class="dataEnz" data-bs-parent="wheel-" data-bs-child="gift"
-                                               data-bs-position="true">
-                                        {{#each settings.wheel.gift}}
-                                            <tr>
-                                                <td>
-                                                    <div class="table-actions hand">
-                                                        <span class="badges badge-info" data-bs-action="edit"><i
-                                                                class="fas fa-pen"></i></span>
-                                                        <span class="badges badge-danger" data-bs-action="remove"><i
-                                                                class="fa fa-trash" aria-hidden="true"></i></span>
+                                                </div>
+                                                <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
+                                                    <div class="lg:col-span-1">
+                                                        <div class="kt-form-item">
+                                                            <label class="kt-form-label">Mô Tả</label>
+                                                            <div class="kt-form-control">
+                                                                <textarea type="text" class="kt-textarea" name="description" rows="5"
+                                                                          placeholder="Nhập mô tả website của bạn"></textarea>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </td>
-                                                <td data-bs-key="pos" data-bs-value="{{ this.pos }}"
-                                                    data-bs-type="number" data-bs-more="numberFormat">{{
-                                                this.pos }}
-                                                </td>
-                                                <td data-bs-key="ratio" data-bs-value="{{ this.ratio }}"
-                                                    data-bs-type="number" data-bs-more="numberFormat">{{
-                                                this.ratio }}
-                                                </td>
-                                                <td data-bs-key="name" data-bs-value="{{ this.name }}"
-                                                    data-bs-type="text" data-bs-more="numberFormat">{{
-                                                this.name }}
-                                                </td>
-                                                <td data-bs-key="amount" data-bs-value="{{ this.amount }}"
-                                                    data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
-                                                        this.amount }}
-                                                </td>
-                                            </tr>
-                                        {{/each}}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <label for="" class="il-gray fs-14 fw-500 mb-10">* LẬT THẺ [EVENT]</label>
-                                <div class="table-responsive">
-                                    <table class="table mb-3 table-bordered text-nowrap text-center">
-                                        <thead>
-                                        <tr class="userDatatable-header">
-                                            <th><i class="fas fa-plus-circle hand create" data-value="luckyCard"
-                                                   data-parent="luckyCard-" data-child="gift"></i></th>
-                                            <th>Vị Trí</th>
-                                            <th>Tỉ lệ</th>
-                                            <th>Ảnh</th>
-                                            <th>Tên thưởng</th>
-                                            <th>Tiền Thưởng</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody class="dataEnz" data-bs-parent="luckyCard-" data-bs-child="gift"
-                                               data-bs-position="true">
-                                        {{#each settings.luckyCard.gift}}
-                                            <tr>
-                                                <td>
-                                                    <div class="table-actions hand">
-                                                        <span class="badges badge-info" data-bs-action="edit"><i
-                                                                class="fas fa-pen"></i></span>
-                                                        <span class="badges badge-danger" data-bs-action="remove"><i
-                                                                class="fa fa-trash" aria-hidden="true"></i></span>
+                                                    <div class="lg:col-span-1">
+                                                        <div class="kt-form-item">
+                                                            <label class="kt-form-label">Từ Khóa</label>
+                                                            <div class="kt-form-control">
+                                                                <textarea type="text" class="kt-textarea"  name="keywords" rows="5"
+                                                                          placeholder="Nhập từ khóa tìm kiếm website của bạn">{{
+                                                                settings.keywords
+                                                                }}></textarea>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </td>
-                                                <td data-bs-key="pos" data-bs-value="{{ this.pos }}"
-                                                    data-bs-type="number" data-bs-more="numberFormat">{{
-                                                this.pos }}
-                                                </td>
-                                                <td data-bs-key="ratio" data-bs-value="{{ this.ratio }}"
-                                                    data-bs-type="number" data-bs-more="numberFormat">{{
-                                                this.ratio }}
-                                                </td>
-                                                <td data-bs-key="img" data-bs-value="{{ this.img }}"
-                                                    data-bs-type="text">{{
-                                                this.img }}
-                                                </td>
-                                                <td data-bs-key="name" data-bs-value="{{ this.name }}"
-                                                    data-bs-type="text" data-bs-more="numberFormat">{{
-                                                this.name }}
-                                                </td>
-                                                <td data-bs-key="amount" data-bs-value="{{ this.amount }}"
-                                                    data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
-                                                        this.amount }}
-                                                </td>
-                                            </tr>
-                                        {{/each}}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <form action="" class="dataEnz" method="post">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Nhiệm Vụ Ngày</label>
-                                                <select name="missionData-status"
-                                                    class="form-control ih-medium ip-light">
-                                                    {{#select settings.missionData.status }}
-                                                    <option value="active">Bật</option>
-                                                    <option value="close">Tắt</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Đua TOP</label>
-                                                <select name="topData-status" class="form-control ih-medium ip-light">
-                                                    {{#select settings.topData.status }}
-                                                    <option value="active">Bật</option>
-                                                    <option value="close">Tắt - Fake TOP</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Loại TOP</label>
-                                                <select name="topData-typeTOP" class="form-control ih-medium ip-light">
-                                                    {{#select settings.topData.typeTOP }}
-                                                    <option value="day">TOP Ngày</option>
-                                                    <option value="week">Top Tuần</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500">Note [MISSION]</label>
-                                                <textarea class="form-control form-editor" name="missionData-noti"
-                                                    rows="10" placeholder="Nhập lưu ý nổ hũ">{{
-                                                    settings.missionData.noti
-                                                    }}</textarea>
+                                                </div>
+                                                <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
+                                                    <div class="lg:col-span-1">
+                                                        <div class="kt-form-item">
+                                                            <label class="kt-form-label">Note [Template
+                                                                Default]</label>
+                                                            <div class="kt-form-control">
+                                                                <textarea type="text" class="kt-textarea form-editor" name="description" rows="5"
+                                                                          placeholder="Nhập mô tả website của bạn"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="lg:col-span-1">
+                                                        <div class="kt-form-item">
+                                                            <label class="kt-form-label">Từ Khóa</label>
+                                                            <div class="kt-form-control">
+                                                                <textarea type="text" class="kt-textarea"  name="keywords" rows="5"
+                                                                          placeholder="Nhập từ khóa tìm kiếm website của bạn">{{
+                                                                settings.keywords
+                                                                }}></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Vòng Quay</label>
-                                                <select name="wheel-status"
-                                                        class="form-control ih-medium ip-light">
-                                                    {{#select settings.wheel.status }}
-                                                        <option value="active">Bật</option>
-                                                        <option value="close">Tắt</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tên vòng quay</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="wheel-name" value="{{ settings.wheel.name}}"
-                                                       placeholder="Nhập tên vòng quay">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tỉ lệ</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="wheel-amount" value="{{ settings.wheel.amount }}"
-                                                       placeholder="Nhập nội dung">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Lật thẻ</label>
-                                                <select name="luckyCard-status"
-                                                        class="form-control ih-medium ip-light">
-                                                    {{#select settings.luckyCard.status }}
-                                                        <option value="active">Bật</option>
-                                                        <option value="close">Tắt</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tên lật thẻ</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="luckyCard-name" value="{{ settings.luckyCard.name}}"
-                                                       placeholder="Nhập tên vòng quay">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tỉ lệ</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="luckyCard-amount" value="{{ settings.luckyCard.amount }}"
-                                                       placeholder="Nhập nội dung">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="text-center">
-                                        <button class="btn btn-success btn-block" name="saveData"><i
-                                                class="fas fa-save"></i>
-                                            Lưu</button>
-                                    </div>
-                                </form>
+                                </div>
+                                <div class="hidden" id="tab_1_2">
+                                    Tab
+                                    <!-- -->2<!-- -->
+                                    content.
+                                </div>
+                                <div class="hidden" id="tab_1_3">
+                                    Tab
+                                    <!-- -->3<!-- -->
+                                    content.
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-lg-12 mb-25">
-                        <div class="card">
-                            <div class="card-header">
-                                <h6 class="card-title hand" data-bs-toggle="tooltip" data-bs-placement="right"
-                                    data-bs-original-title="Cập nhập vào {{ timeNow settings.updatedAt }}">
-                                    <img src="../themes/admin/images/mini-game.png" alt="" width="35">
-                                    Cài Đặt Tài Xỉu Rồng
-                                    <img src="../themes/admin/images/mini-game.png" class="d-md-none" width="35">
-                                </h6>
-                            </div>
-                            <div class="card-body">
-                                <form action="" method="post" id="formSetting">
-                                    <div class="row">
-                                        {{!-- Bắt Đầu Dữ Liệu Cơ Bản --}}
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Trạng thái</label>
-                                                <select name="banTaiXiu-status" class="form-control ih-medium ip-light">
-                                                    {{#select settings.banTaiXiu.status }}
-                                                        <option value="active">Có</option>
-                                                        <option value="close">Không</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">ID Chat</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="banTaiXiu-chatId" value="{{ settings.banTaiXiu.chatId }}"
-                                                       placeholder="Nhập chatId gửi kết quả">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Phiên</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="banTaiXiu-turnTaiXiuRong" value="{{ settings.banTaiXiu.turnTaiXiuRong }}"
-                                                       placeholder="Nhập phiên chạy">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Thời gian mặc định</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="banTaiXiu-secondTaiXiuRong" value="{{ settings.banTaiXiu.secondTaiXiuRong }}"
-                                                       placeholder="Nhập thời gian mặc định">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Nội dung tài</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="banTaiXiu-commentTaiRong" value="{{ settings.banTaiXiu.commentTaiRong }}"
-                                                       placeholder="Nhập nội dung tài">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Nội dung xỉu</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="banTaiXiu-commentXiuRong" value="{{ settings.banTaiXiu.commentXiuRong }}"
-                                                       placeholder="Nhập nội dung xỉu">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tỉ lệ</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="banTaiXiu-ratio"
-                                                       value="{{ settings.banTaiXiu.ratio }}"
-                                                       placeholder="Nhập tỉ lệ nhận thưởng">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Đặt tối thiểu</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="banTaiXiu-minTaiXiuRong"
-                                                       value="{{ settings.banTaiXiu.minTaiXiuRong }}"
-                                                       placeholder="Nhập số tiền đặt cược tối thiểu">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Đặt tối đa</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="banTaiXiu-maxTaiXiuRong"
-                                                       value="{{ settings.banTaiXiu.maxTaiXiuRong }}"
-                                                       placeholder="Nhập số tiền đặt cược tối đa">
-                                            </div>
-                                        </div>
-                                        <div class="text-center">
-                                            <button class="btn btn-success btn-block"><i class="fas fa-save"></i>
-                                                Lưu</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-12 mb-25">
-                        <div class="card">
-                            <div class="card-header">
-                                <h6 class="card-title hand" data-bs-toggle="tooltip" data-bs-placement="right"
-                                    data-bs-original-title="Cập nhập vào {{ timeNow settings.updatedAt }}">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/6052/6052750.png" alt="" width="35">
-                                    Cài Đặt Mã Quà Hàng Ngày
-                                    <img src="https://cdn-icons-png.flaticon.com/512/6052/6052750.png" class="d-md-none" width="35">
-                                </h6>
-                            </div>
-                            <div class="card-body">
-                                <form action="" method="post" id="formSetting">
-                                    <div class="row">
-                                        {{!-- Bắt Đầu Dữ Liệu Cơ Bản --}}
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Trạng thái</label>
-                                                <select name="giftDay-status" class="form-control ih-medium ip-light">
-                                                    {{#select settings.giftDay.status }}
-                                                        <option value="active">Có</option>
-                                                        <option value="close">Không</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Chơi tối thiểu</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="giftDay-playCount" value="{{ settings.giftDay.playCount }}"
-                                                       placeholder="Nhập chơi tối đa">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">ID Chat</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="giftDay-chatId" value="{{ settings.giftDay.chatId }}"
-                                                       placeholder="Nhập chatId gửi kết quả">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tiền tối thiểu</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="giftDay-min" value="{{ settings.giftDay.min }}"
-                                                       placeholder="Nhập tiền tối thiểu">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tiền tối đa</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="giftDay-max" value="{{ settings.giftDay.max }}"
-                                                       placeholder="Nhập tiền tối đa">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Thời gian tối thiểu</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="giftDay-timeMin" value="{{ settings.giftDay.timeMin }}"
-                                                       placeholder="Nhập thời gian tối thiểu">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Thời gian tối đa</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="giftDay-timeMax" value="{{ settings.giftDay.timeMax }}"
-                                                       placeholder="Nhập thời gian tối đa">
-                                            </div>
-                                        </div>
-                                        <div class="text-center">
-                                            <button class="btn btn-success btn-block"><i class="fas fa-save"></i>
-                                                Lưu</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-12 mb-25">
-                        <div class="card">
-                            <div class="card-header">
-                                <h6 class="card-title hand" data-bs-toggle="tooltip" data-bs-placement="right"
-                                    data-bs-original-title="Cập nhập vào {{ timeNow settings.updatedAt }}">
-                                    <img src="../themes/admin/images/mini-game.png" alt="" width="35">
-                                    Cài Đặt XSMB
-                                    <img src="../themes/admin/images/mini-game.png" class="d-md-none" width="35">
-                                </h6>
-                            </div>
-                            <div class="card-body">
-                                <form action="" method="post" id="formSetting">
-                                    <div class="row">
-                                        {{!-- Bắt Đầu Dữ Liệu Cơ Bản --}}
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Trạng thái</label>
-                                                <select name="xsmb-status" class="form-control ih-medium ip-light">
-                                                    {{#select settings.xsmb.status }}
-                                                        <option value="active">Có</option>
-                                                        <option value="close">Không</option>
-                                                    {{/select }}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">ID Chat</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="banTaiXiu-chatId" value="{{ settings.banTaiXiu.chatId }}"
-                                                       placeholder="Nhập chatId gửi kết quả">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Nội dung Lô</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="xsmb-commentLo" value="{{ settings.xsmb.commentLo }}"
-                                                       placeholder="Nhập nội dung lô">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tỉ lệ Lô</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="xsmb-ratioLo" value="{{ settings.xsmb.ratioLo }}"
-                                                       placeholder="Nhập tỉ lệ lô">
-                                            </div>
-                                        </div>
-
-<!--                                        DE-->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Nội dung Đề</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="xsmb-commentDe" value="{{ settings.xsmb.commentDe }}"
-                                                       placeholder="Nhập nội dung đề">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tỉ lệ Đề</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="xsmb-ratioDe" value="{{ settings.xsmb.ratioDe }}"
-                                                       placeholder="Nhập tỉ lệ đề">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Nội dung Xiên 2</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="xsmb-commentXien2" value="{{ settings.xsmb.commentXien2 }}"
-                                                       placeholder="Nhập nội dung xiên 2">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Tỉ lệ Xiên 2</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="xsmb-ratioXien2" value="{{ settings.xsmb.ratioXien2 }}"
-                                                       placeholder="Nhập tỉ lệ xiên 2">
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Đặt tối thiểu</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="xsmb-betMin"
-                                                       value="{{ settings.xsmb.betMin }}"
-                                                       placeholder="Nhập số tiền đặt cược tối thiểu">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="" class="il-gray fs-14 fw-500 mb-10">Đặt tối đa</label>
-                                                <input type="text" class="form-control ih-medium ip-light"
-                                                       name="xsmb-betMax"
-                                                       value="{{ settings.xsmb.betMax }}"
-                                                       placeholder="Nhập số tiền đặt cược tối đa">
-                                            </div>
-                                        </div>
-                                        <div class="text-center">
-                                            <button class="btn btn-success btn-block"><i class="fas fa-save"></i>
-                                                Lưu</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+                </main>
+                {{>foot}}
             </div>
         </div>
     </div>
-</main>
-{{>foot}}
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('body').on('submit', '#formSetting', function (e) {
-            e.preventDefault();
-            let data = $(this).serialize();
-
-            $('#formSetting>button').html(`<div class="dm-spin-dots spin-sm"><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span></div>`);
-            axios.put('#', data)
-                .then((result) => {
-                    let response = result.data;
-                    response.success ? swal('Thông Báo', response.message, 'success') && setTimeout(() => window.location.reload(), 1500) : swal('Thông Báo', response.message, 'error');
-                })
-                .catch((err) => {
-                    swal('Thông Báo', err.message || err, 'error');
-                })
-                .finally(() => $('#formSetting>button').html(`<i class="fas fa-save"></i> Lưu`));
-        })
-
-        $('body').on('click', '#defaultColor', function (e) {
-            $('[name="themeSite-mainColor"]').attr('type', 'text').val('default');
-        })
-
-        $('body').on('submit', 'form.dataEnz', function (e) {
-            e.preventDefault();
-
-            let _this = $(this);
-            let data = toJSON(_this);
-
-            $('tbody.dataEnz').each(function (e) {
-                let list = [];
-                let _this = $(this);
-                let name = `${_this.attr('data-bs-parent')}${_this.attr('data-bs-child')}`;
-
-                _this.find('tr').each(function (e) {
-                    let _that = $(this);
-                    let isInput, object;
-
-                    _that.find('td[data-bs-key]').each(function (e) {
-                        let key = $(this).attr('data-bs-key');
-                        let value = $(this).attr('data-bs-value');
-                        isInput = $(this).find('input').length;
-
-                        if (!isInput) {
-                            key == "[]" ? list.push(value) : object = {
-                                ...object,
-                                [key]: value
-                            }
-                        }
-                    })
-
-                    !isInput && object && list.push(object);
-
-                })
-
-                data[name] = [
-                    ...list
-                ];
-            })
-
-            $('[name="saveData"]').html(`<div class="dm-spin-dots spin-sm"><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span></div>`);
-
-            axios.put('#', { ...data })
-                .then((result) => {
-                    let response = result.data;
-
-                    response.success ? swal('Thông Báo', response.message, 'success') && setTimeout(() => window.location.reload(), 1500) : swal('Thông Báo', response.message, 'error');
-                })
-                .catch((err) => {
-                    swal('Thông Báo', err.message || err, 'error');
-                })
-                .finally(() => $('[name="saveData"]').html(`<i class="fas fa-save"></i> Lưu`));
-        })
-
-        $('body').on('click', '.dataEnz span[data-bs-action]', function (e) {
-            let action = $(this).attr('data-bs-action');
-            let tbody = $(this).parent().parent().parent().parent();
-            let tr = $(this).parent().parent().parent();
-
-            switch (action) {
-                case 'add':
-                    $(this).parent().html(`<span class="badges badge-info" data-bs-action="edit"><i class="fas fa-pen"></i></span> <span class="badges badge-danger" data-bs-action="remove"><i class="fa fa-trash" aria-hidden="true"></i></span>`);
-
-                    tr.find('td[data-bs-key]').each(function (e) {
-                        let key = $(this).attr('data-bs-key');
-                        let value = $(this).find('input').val();
-                        let more = $(this).attr('data-bs-more');
-
-                        if (!value) return tr.remove();
-
-                        let html;
-                        switch (more) {
-                            case 'numberFormat':
-                                html = Intl.NumberFormat('en-US').format(value)
-                                break;
-                            case 'textarea':
-                                html = `<textarea rows="3" class="form-control">${value}</textarea>`;
-                                break;
-                            default:
-                                html = value;
-                                break;
-                        }
-
-                        $(this).html(html).attr('data-bs-value', value);
-                    })
-
-                    if (tr.find('td[data-bs-key="html"]')) {
-                        let html = tr.find('td[data-bs-key="html"]').attr('data-bs-value');
-                        tr.find('td[data-bs-render="html"]').html(`<center>${html}</center>`)
-                    }
-
-                    tbody.find('[data-bs-position="true"]') && resetTOP(tbody);
-                    break;
-                case 'edit':
-                    $(this).parent().html(`<span class="badges badge-success" data-bs-action="save"><i class="fas fa-save"></i></span>`);
-
-                    tr.find('td[data-bs-key]').each(function (e) {
-                        let type = $(this).attr('data-bs-type');
-                        let value = $(this).attr('data-bs-value');
-
-                        $(this).html(`<input type="${type}" class="form-control ih-medium ip-light">`);
-                        $(this).find('input').val(value);
-                    })
-
-                    break;
-                case 'save':
-                    let render;
-                    $(this).parent().html(`<span class="badges badge-info" data-bs-action="edit"><i class="fas fa-pen"></i></span> <span class="badges badge-danger" data-bs-action="remove"><i class="fa fa-trash" aria-hidden="true"></i></span>`);
-
-                    tr.find('td[data-bs-key]').each(function (e) {
-                        let key = $(this).attr('data-bs-key');
-                        let value = $(this).find('input').val();
-                        let more = $(this).attr('data-bs-more');
-
-                        if (!value) return tr.remove();
-
-                        let html;
-                        switch (more) {
-                            case 'numberFormat':
-                                html = Intl.NumberFormat('en-US').format(value)
-                                break;
-                            case 'textarea':
-                                html = `<textarea rows="3" class="form-control">${value}</textarea>`;
-                                break;
-                            default:
-                                html = value;
-                                break;
-                        }
-                        $(this).html(html).attr('data-bs-value', value);
-                    })
-
-                    if (tr.find('td[data-bs-key="html"]')) {
-                        let html = tr.find('td[data-bs-key="html"]').attr('data-bs-value');
-                        tr.find('td[data-bs-render="html"]').html(`<center>${html}</center>`)
-                    }
-
-                    tbody.find('[data-bs-position="true"]') && resetTOP(tbody);
-                    break;
-                case 'remove':
-                    tr.remove();
-                    tbody.find('[data-bs-position="true"]') && resetTOP(tbody);
-                    break;
-                default:
-                    swal('Thông Báo', 'Thao tác không hợp lệ!', 'error');
-                    break;
-            }
-
-        })
-
-        $('body').on('click', '.create', function (e) {
-            let _this = $(this);
-            let value = _this.data('value');
-            let html;
-
-            switch (value) {
-                case 'contact':
-                    html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-key="url" data-bs-value="" data-bs-type="text"><input type="text" class="form-control ih-medium ip-light"></td><td data-bs-key="html" data-bs-value="" data-bs-type="text"><input type="text" class="form-control ih-medium ip-light"></td><td data-bs-render="html"></td></tr>`;
-                    break;
-                case 'missionData':
-                    html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
-                    break;
-                case 'referralGift':
-                    html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
-                    break;
-                case 'bonusTOP':
-                    html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="[]" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
-                    break;
-                case 'fakeUser':
-                    html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="[]" data-bs-value="" data-bs-type="text" data-bs-more=""><input type="text" class="form-control ih-medium ip-light"></td></tr>`;
-                    break;
-                case 'fakeData':
-                    html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="phone" data-bs-value="" data-bs-type="text"><input type="text" class="form-control ih-medium ip-light"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
-                    break;
-                case 'wheel':
-                    html = `<tr><td><div class="hand table-actions"><span class="badge-success badges"data-bs-action=add><i class="fa-save fas"></i></span></div><td data-bs-key=pos data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=ratio data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=name data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=amount data-bs-type=number data-bs-value=""data-bs-more=numberFormat><input class="form-control ih-medium ip-light"type=number>`;
-                    break;
-                case 'gift':
-                    html = `<tr><td><div class="hand table-actions"><span class="badge-success badges"data-bs-action=add><i class="fa-save fas"></i></span></div><td data-bs-key=pos data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=ratio data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=name data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=amount data-bs-type=number data-bs-value=""data-bs-more=numberFormat><input class="form-control ih-medium ip-light"type=number>`;
-                    break;
-                case 'luckyCard':
-                    html = `<tr><td><div class="hand table-actions"><span class="badge-success badges" data-bs-action="add"><i class="fa-save fas"></i></span></div><td data-bs-key="pos" data-bs-type="text" data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key="ratio" data-bs-type="text" data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key="img" data-bs-type="text" data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key="name" data-bs-type="text" data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key="amount" data-bs-type="number" data-bs-value="" data-bs-more="numberFormat"><input class="form-control ih-medium ip-light" type="number">`;
-                    break;
-                default:
-                    swal('Thông Báo', 'Dữ liệu không hợp lệ!', 'error');
-                    break;
-            }
-
-            html && $(`tbody[data-bs-parent="${_this.data('parent')}"][data-bs-child="${_this.data('child')}"]`).append(html);
-        })
-
-        function toJSON(form) {
-            return $(form).serializeArray().reduce(function (json, { name, value }) {
-                json[name] = value;
-                return json;
-            }, {});
-        }
-
-        function resetTOP(tbody) {
-            tbody.find('td[data-bs-position="true"]').each(function (index) {
-                $(this).html(`${index + 1}`)
-            })
-        }
-    })
+</div>
+<script src="../themes/admin/assets/js/core.bundle.js">
 </script>
+<script src="../themes/admin/assets/vendors/ktui/ktui.min.js">
+</script>
+</body>
+</html>

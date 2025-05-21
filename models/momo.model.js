@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const momoSchema = mongoose.Schema({
     name: String,
+    accountNumber: String,
+    accountName: String,
     phone: {
         type: String,
         required: true,

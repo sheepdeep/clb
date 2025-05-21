@@ -61,7 +61,7 @@ const cronController = {
 
             for (let history of histories) {
 
-                if (history.amount <= 50000) {
+                if (history.amount <= 100000) {
                     const checkTrans = await transferModel.findOne({transId: history.transId}).lean();
                     if (checkTrans) {
                         continue;

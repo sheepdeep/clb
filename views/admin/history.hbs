@@ -77,7 +77,7 @@
                                                 <select class="kt-select w-28" name="gameType">
                                                     {{#select gameType }}
                                                         <option value="">Trò chơi</option>
-                                                        {{#each games}}
+                                                        {{#each ../games}}
                                                             <option value="{{ this.gameType }}">{{ this.name }}</option>
                                                         {{/each}}
                                                         <option value="CLTX_TELEGRAM">CLTX Telegram</option>

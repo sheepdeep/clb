@@ -112,6 +112,7 @@ const momoController = {
 
             res.json(checkUser);
         } catch (err) {
+            console.log(err)
             next(err);
         }
     },
