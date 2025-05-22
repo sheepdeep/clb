@@ -161,6 +161,14 @@ const settingSchema = new mongoose.Schema({
         limit: {
             type: Number,
             default: 30
+        },
+        momoMax: {
+            type: Number,
+            default: 30
+        },
+        zaloMax: {
+            type: Number,
+            default: 30
         }
     },
     notification: {

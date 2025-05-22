@@ -70,7 +70,7 @@
                                                 <label class="kt-input">
                                                     <i class="ki-filled ki-magnifier">
                                                     </i>
-                                                    <input name="search" placeholder="Tìm kiếm" type="text" value="">
+                                                    <input name="search" placeholder="Tìm kiếm" type="text" value="{{ search }}">
                                                 </label>
                                             </div>
                                             <div class="flex flex-wrap gap-2.5">
@@ -343,20 +343,6 @@
                     break;
             }
         })
-
-        function loadQR(data, img, bgc) {
-            qrCode = new QRCodeStyling({
-                width: 400,
-                height: 400,
-                data: data,
-                image: img,
-                dotsOptions: {color: bgc, type: "rounded"},
-                backgroundOptions: {color: "#FFF"},
-                imageOptions: {crossOrigin: "anonymous", margin: 5, imageSize: 0.5},
-            });
-            $("#canvasQr").html(""), qrCode.append(document.getElementById("canvasQr"));
-            $('[data-bs-modal="qrModal"]').modal('show')
-        }
 
         $('body').on('click', '.reCheck', function (e) {
             let transId = $(this).data('id');

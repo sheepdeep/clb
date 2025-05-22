@@ -600,7 +600,8 @@ exports.gift = async () => {
 exports.reward = async() => {
     try {
 
-        const history = await historyModel.findOne({status: 'wait'});
+        await historyModel.deleteMany({gameType: 'CLTX_TELEGRAM'});
+        await historyModel.deleteMany({gameType: 'CLTX_TELEGRAM'});
 
     } catch (err) {
         console.log(err);

@@ -56,117 +56,154 @@
                         </div>
                     </div>
                     <div class="kt-container-fluid">
-                        <div class="space-y-3 text-sm">
-                            <div class="flex items-center gap-2.5" data-kt-tabs="true">
-                                <button class="kt-btn kt-btn-outline active" data-kt-tab-toggle="#tab_1_1"><img src="../themes/admin/images/setting.png" alt="" width="20"> Cài Đặt Hệ Thống</button>
-                            </div>
-                            <div class="text-sm">
-                                <div class="" id="tab_1_1">
-                                    <div class="kt-card w-[400px]">
-                                        <div class="kt-card-content py-5">
-                                            <div class="space-y-5">
-                                                <div class="kt-form-item">
-                                                    <label class="kt-form-label">X3</label>
-                                                    <div class="kt-form-control">
-                                                        <select data-kt-select="true" name="x3" class="kt-select" data-kt-select-placeholder="Chọn số điện thoại">
-                                                            {{#select settings.x3 }}
-                                                                <option value="active">Bật</option>
-                                                                <option value="inactive">Tắt</option>
-                                                            {{/select }}
-                                                        </select>
+                        <form action="" method="post" id="formSetting">
+                            <div class="space-y-3 text-sm">
+                                <div class="flex items-center gap-2.5" data-kt-tabs="true">
+                                    <button class="kt-btn kt-btn-outline active" data-kt-tab-toggle="#tab_1_1">
+                                        <img src="../themes/admin/images/setting.png" alt="" width="20"> Cài Đặt Hệ Thống
+                                    </button>
+                                    <button class="kt-btn kt-btn-outline" data-kt-tab-toggle="#tab_1_2">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/8208/8208947.png" alt="" width="20"> Cài Đặt Trả Thưởng
+                                    </button>
+                                </div>
+                                <div class="text-sm">
+                                    <div class="" id="tab_1_1">
+                                        <div class="kt-card w-[400px]">
+                                            <div class="kt-card-content py-5">
+                                                <div class="space-y-5">
+                                                    <div class="kt-form-item">
+                                                        <label class="kt-form-label">X3</label>
+                                                        <div class="kt-form-control">
+                                                            <select data-kt-select="true" name="x3" class="kt-select" data-kt-select-placeholder="Chọn số điện thoại">
+                                                                {{#select settings.x3 }}
+                                                                    <option value="active">Bật</option>
+                                                                    <option value="inactive">Tắt</option>
+                                                                {{/select }}
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
-                                                    <div class="lg:col-span-1">
-                                                        <div class="kt-form-item">
-                                                            <label class="kt-form-label">Tên Website</label>
-                                                            <div class="kt-form-control">
-                                                                <input type="text" class="kt-input" name="nameSite" value="{{ settings.nameSite }}"
-                                                                       placeholder="Nhập tên website của bạn">
+                                                    <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">Tên Website</label>
+                                                                <div class="kt-form-control">
+                                                                    <input type="text" class="kt-input" name="nameSite" value="{{ settings.nameSite }}"
+                                                                           placeholder="Nhập tên website của bạn">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">Tiêu Đề</label>
+                                                                <div class="kt-form-control">
+                                                                    <input type="text" class="kt-input" name="defaultTitle" value="{{ settings.defaultTitle }}"
+                                                                           placeholder="Nhập tiêu đề website">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="lg:col-span-1">
-                                                        <div class="kt-form-item">
-                                                            <label class="kt-form-label">Tiêu Đề</label>
-                                                            <div class="kt-form-control">
-                                                                <input type="text" class="kt-input" name="defaultTitle" value="{{ settings.defaultTitle }}"
-                                                                       placeholder="Nhập tiêu đề website">
+                                                    <div class="grid lg:grid-cols-3 gap-5 lg:gap-7.5 items-stretch">
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">Icon Website</label>
+                                                                <div class="kt-form-control">
+                                                                    <input type="text" class="kt-input" name="favicon" value="{{ settings.favicon }}"
+                                                                           placeholder="Nhập link icon website của bạn">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">Logo Website</label>
+                                                                <div class="kt-form-control">
+                                                                    <input type="text" class="kt-input" name="logo"
+                                                                           value="{{ settings.logo }}"
+                                                                           placeholder="Nhập link logo website của bạn">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">Thumbnail</label>
+                                                                <div class="kt-form-control">
+                                                                    <input type="text" class="kt-input" name="thumbnail" value="{{ settings.thumbnail }}"
+                                                                           placeholder="Nhập link thumbnail website">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="grid lg:grid-cols-3 gap-5 lg:gap-7.5 items-stretch">
-                                                    <div class="lg:col-span-1">
-                                                        <div class="kt-form-item">
-                                                            <label class="kt-form-label">Icon Website</label>
-                                                            <div class="kt-form-control">
-                                                                <input type="text" class="kt-input" name="favicon" value="{{ settings.favicon }}"
-                                                                       placeholder="Nhập link icon website của bạn">
+                                                    <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">Mô Tả</label>
+                                                                <div class="kt-form-control">
+                                                                    <textarea type="text" class="kt-textarea" name="description" rows="5"
+                                                                              placeholder="Nhập mô tả website của bạn"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">Từ Khóa</label>
+                                                                <div class="kt-form-control">
+                                                                    <textarea type="text" class="kt-textarea"  name="keywords" rows="5"
+                                                                              placeholder="Nhập từ khóa tìm kiếm website của bạn">{{
+                                                                    settings.keywords
+                                                                    }}></textarea>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="lg:col-span-1">
-                                                        <div class="kt-form-item">
-                                                            <label class="kt-form-label">Logo Website</label>
-                                                            <div class="kt-form-control">
-                                                                <input type="text" class="kt-input" name="logo"
-                                                                       value="{{ settings.logo }}"
-                                                                       placeholder="Nhập link logo website của bạn">
+                                                    <div class="kt-form-item">
+                                                        <label class="kt-form-label">Note [Template
+                                                            Default]</label>
+                                                        <div class="kt-form-control">
+                                                                        <textarea type="text" class="kt-textarea form-editor" name="note" rows="5"
+                                                                                  placeholder="Nhập mô tả website của bạn">{{{ settings.note }}}</textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">Header Script</label>
+                                                                <div class="kt-form-control">
+                                                                    <textarea type="text" class="kt-textarea" name="headerScript" rows="3"
+                                                                              placeholder="headerScript">{{ settings.headerScript
+                                                                    }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">Footer Script</label>
+                                                                <div class="kt-form-control">
+                                                                    <textarea type="text" class="kt-textarea" name="footerScript" rows="3"
+                                                                              placeholder="footerScript">{{
+                                                                    settings.footerScript
+                                                                    }}</textarea>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="lg:col-span-1">
-                                                        <div class="kt-form-item">
-                                                            <label class="kt-form-label">Thumbnail</label>
-                                                            <div class="kt-form-control">
-                                                                <input type="text" class="kt-input" name="thumbnail" value="{{ settings.thumbnail }}"
-                                                                       placeholder="Nhập link thumbnail website">
+                                                    <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">BOT TOKEN
+                                                                    [TELEGRAM]</label>
+                                                                <div class="kt-form-control">
+                                                                    <input type="text" class="kt-textarea" name="telegram-token" value="{{ settings.telegram.token }}"
+                                                                           placeholder="Nhập token bot telegram">
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
-                                                    <div class="lg:col-span-1">
-                                                        <div class="kt-form-item">
-                                                            <label class="kt-form-label">Mô Tả</label>
-                                                            <div class="kt-form-control">
-                                                                <textarea type="text" class="kt-textarea" name="description" rows="5"
-                                                                          placeholder="Nhập mô tả website của bạn"></textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="lg:col-span-1">
-                                                        <div class="kt-form-item">
-                                                            <label class="kt-form-label">Từ Khóa</label>
-                                                            <div class="kt-form-control">
-                                                                <textarea type="text" class="kt-textarea"  name="keywords" rows="5"
-                                                                          placeholder="Nhập từ khóa tìm kiếm website của bạn">{{
-                                                                settings.keywords
-                                                                }}></textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
-                                                    <div class="lg:col-span-1">
-                                                        <div class="kt-form-item">
-                                                            <label class="kt-form-label">Note [Template
-                                                                Default]</label>
-                                                            <div class="kt-form-control">
-                                                                <textarea type="text" class="kt-textarea form-editor" name="description" rows="5"
-                                                                          placeholder="Nhập mô tả website của bạn"></textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="lg:col-span-1">
-                                                        <div class="kt-form-item">
-                                                            <label class="kt-form-label">Từ Khóa</label>
-                                                            <div class="kt-form-control">
-                                                                <textarea type="text" class="kt-textarea"  name="keywords" rows="5"
-                                                                          placeholder="Nhập từ khóa tìm kiếm website của bạn">{{
-                                                                settings.keywords
-                                                                }}></textarea>
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">CHAT ID
+                                                                    [TELEGRAM]</label>
+                                                                <div class="kt-form-control">
+                                                                    <input type="text" class="kt-textarea" name="telegram-chatId" value="{{ settings.telegram.chatId }}"
+                                                                           placeholder="Nhập token bot telegram">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -174,19 +211,117 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="hidden" id="tab_1_2">
+                                        <div class="kt-card w-[400px]">
+                                            <div class="kt-card-content py-5">
+                                                <div class="space-y-5">
+                                                    <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">Loại Trả Thưởng</label>
+                                                                <div class="kt-form-control">
+                                                                    <select name="reward-dataType" class="kt-select">
+                                                                        {{#select settings.reward.dataType }}
+                                                                            <option value="all">Trả Hết</option>
+                                                                            <option value="limit">Giới Hạn</option>
+                                                                        {{/select }}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">SỐ TIỀN GIỚI HẠN
+                                                                    [ZALO REWARD]</label>
+                                                                <div class="kt-form-control">
+                                                                    <input type="text" class="kt-input" name="reward-limit" value="{{ settings.reward.limit }}"
+                                                                           placeholder="Nhập số lượng tối đa trả thưởng mỗi lần">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">SỐ TIỀN GIỚI HẠN
+                                                                    [MOMO REWARD]</label>
+                                                                <div class="kt-form-control">
+                                                                    <input type="text" class="kt-input" name="reward-momoMax" value="{{ settings.reward.momoMax }}"
+                                                                           placeholder="Nhập số tiền tối đa để được sử dụng api momo">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">SỐ TIỀN GIỚI HẠN
+                                                                    [ZALO REWARD]</label>
+                                                                <div class="kt-form-control">
+                                                                    <input type="text" class="kt-input" name="reward-zaloMax" value="{{ settings.reward.zaloMax }}"
+                                                                           placeholder="Nhập số tiền tối đa để được sử dụng api zalo">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="kt-form-item">
+                                                        <label class="kt-form-label">Hoàn Tiền</label>
+                                                        <div class="kt-form-control">
+                                                            <select name="refund-status" class="kt-select">
+                                                                {{#select settings.refund.status }}
+                                                                    <option value="active">Có</option>
+                                                                    <option value="close">Không</option>
+                                                                {{/select }}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="grid lg:grid-cols-3 gap-5 lg:gap-7.5 items-stretch">
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">Thua Hoàn (%)</label>
+                                                                <div class="kt-form-control">
+                                                                    <input type="text" class="kt-input" name="refund-won" value="{{ settings.refund.won }}"
+                                                                           placeholder="Nhập số phần trăm hoàn tiền khi thua">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">Sai Nội Dung Hoàn
+                                                                    (%)</label>
+                                                                <div class="kt-form-control">
+                                                                    <input type="text" class="kt-input" name="refund-fail" value="{{ settings.refund.fail }}"
+                                                                           placeholder="Nhập số phần trăm hoàn tiền khi bị sai nội dung">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="lg:col-span-1">
+                                                            <div class="kt-form-item">
+                                                                <label class="kt-form-label">Giới Hạn Hoàn</label>
+                                                                <div class="kt-form-control">
+                                                                    <input type="text" class="kt-input" name="refund-limit" value="{{ settings.refund.limit }}"
+                                                                           placeholder="Nhập số lần hoàn tiền trong 1 ngày">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="hidden" id="tab_1_3">
+                                        Tab
+                                        <!-- -->3<!-- -->
+                                        content.
+                                    </div>
                                 </div>
-                                <div class="hidden" id="tab_1_2">
-                                    Tab
-                                    <!-- -->2<!-- -->
-                                    content.
-                                </div>
-                                <div class="hidden" id="tab_1_3">
-                                    Tab
-                                    <!-- -->3<!-- -->
-                                    content.
+                                <div class="content-center flex justify-center items-center flex-wrap gap-2.5">
+                                    <button class="kt-btn kt-btn-success btn-block" name="saveData">
+                                        <i class="ki-filled ki-save-2"></i>
+                                        Lưu
+                                    </button>
                                 </div>
                             </div>
-                        </div>
+
+                        </form>
                     </div>
                 </main>
                 {{>foot}}
@@ -197,6 +332,38 @@
 <script src="../themes/admin/assets/js/core.bundle.js">
 </script>
 <script src="../themes/admin/assets/vendors/ktui/ktui.min.js">
+</script>
+<script>
+    $('body').on('submit', '#formSetting', function (e) {
+        e.preventDefault();
+        let data = $(this).serialize();
+
+        $('#formSetting>button').html(`<div class="dm-spin-dots spin-sm"><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span></div>`);
+        axios.put('#', data)
+                .then((result) => {
+                    let response = result.data;
+                    response.success ? swal('Thông Báo', response.message, 'success') && setTimeout(() => window.location.reload(), 1500) : swal('Thông Báo', response.message, 'error');
+                })
+                .catch((err) => {
+                    swal('Thông Báo', err.message || err, 'error');
+                })
+                .finally(() => $('#formSetting>button').html(`<i class="fas fa-save"></i> Lưu`));
+    })
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.form-editor').forEach((el, index) => {
+            ClassicEditor
+                    .create(el)
+                    .then(editor => {
+                        // Optional: lưu từng editor nếu cần xử lý sau
+                        console.log(`Editor ${index + 1} đã khởi tạo`);
+                    })
+                    .catch(error => {
+                        console.error(`Lỗi khởi tạo editor ${index + 1}:`, error);
+                    });
+        });
+    });
+</script>
 </script>
 </body>
 </html>
