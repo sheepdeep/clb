@@ -153,11 +153,6 @@ const historyController = {
                         bonus = Math.floor(data.amount * dataSetting.refund.fail / 100);
                     }
 
-                    const randomBanks = await bankModel.aggregate([
-                        { $match: { bankType: 'exim', status: 'active' } },
-                        { $sample: { size: 1 } }
-                    ]);
-
 
                     await historyModel.findOneAndUpdate({transId}, {
                         $set: {
@@ -172,7 +167,6 @@ const historyController = {
                             paid: 'wait',
                             comment: data.comment,
                             description: `Hoàn tiền đơn thua ${data.transId}`,
-                            transfer: randomBanks[0].accountNumber
                         }
                     }, {upsert: true}).lean();
                 } else {
@@ -276,15 +270,9 @@ const historyController = {
                 })
             }
 
-            const randomBanks = await bankModel.aggregate([
-                { $match: { bankType: 'exim', status: 'active' } },
-                { $sample: { size: 1 } }
-            ]);
-
             await historyModel.findOneAndUpdate({transId}, {
                     $set: {
                         paid: 'wait',
-                        transfer: randomBanks[0].accountNumber,
                     }
                 }
             )

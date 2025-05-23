@@ -73,11 +73,6 @@ const refundController = {
                     bonus = Math.floor(data.amount * dataSetting.refund.fail / 100);
                 }
 
-                const randomBanks = await bankModel.aggregate([
-                    { $match: { bankType: 'exim', status: 'active' } },
-                    { $sample: { size: 1 } }
-                ]);
-
                 const transIdNew = `SBRF${Math.floor(Math.random() * (99999999 - 10000000) + 10000000)}`;
 
                 await historyModel.findOneAndUpdate({transId: transIdNew}, {
@@ -93,7 +88,6 @@ const refundController = {
                         paid: 'wait',
                         comment: data.comment,
                         description: `Hoàn tiền đơn thua ${data.transId}`,
-                        transfer: randomBanks[0].accountNumber
                     }
                 }, {upsert: true}).lean();
 
