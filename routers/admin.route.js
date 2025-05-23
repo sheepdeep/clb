@@ -15,6 +15,9 @@ const blockController = require('../controllers/admin/block.controller');
 const momoController = require('../controllers/admin/momo.controller');
 const transferBankController = require('../controllers/admin/transfer-bank.controller');
 const userModel = require('../models/user.model');
+const zaloModel = require('../models/zalo.model');
+const bankModel = require('../models/bank.model');
+const blockModel = require('../models/block.model');
 const tableSort = require('../middlewares/sort.middleware');
 const memberController = require('../controllers/admin/member.controller');
 const utils = require('../helpers/utils.helper');
@@ -25,6 +28,7 @@ const zaloController = require('../controllers/admin/zalo.controller');
 const refundController = require('../controllers/admin/refund.controller');
 const topController = require('../controllers/admin/top.controller');
 const taiXiuController = require('../controllers/admin/taixiu.controller');
+const momoModel = require("../models/momo.model");
 
 const router = express.Router();
 
@@ -34,7 +38,7 @@ router.get(['/', '/home', '/dashboard'], loggedInAdmin, async (req, res, next) =
         let _revenueTime = moment().format('YYYY-MM-DD');
         let typeDate = 'month';
 
-        req.query?._username && /(((\+|)84)|0)(3|5|7|8|9)+([0-9]{8})\b/.test(req.query._username) && (_username = req.query._username);
+        req.query?._username && /[a-zA-Z0-9]{8}\b/.test(req.query._username) && (_username = req.query._username);
         req.query?.gameType && (gameType = req.query.gameType);
 
         if (req.query?.typeDate) {
@@ -71,8 +75,17 @@ router.get(['/', '/home', '/dashboard'], loggedInAdmin, async (req, res, next) =
         }
 
         const countUser = await userModel.countDocuments();
+        const countBlockUser = await blockModel.countDocuments();
 
-        res.render('admin/dashboard', { title: 'Quản Trị Hệ Thống', revenueData, _revenueTime, typeDate, logs, countUser })
+        let countMomo = await momoModel.aggregate([{ $group: { _id: null, balance: { $sum: '$balance' } } }]);
+        let countZalo = await zaloModel.aggregate([{ $group: { _id: null, balance: { $sum: '$balance' } } }]);
+        let countBank = await bankModel.aggregate([{ $group: { _id: null, balance: { $sum: '$balance' } } }]);
+
+        res.render('admin/dashboard', { title: 'Quản Trị Hệ Thống',
+            countMomo: !countMomo.length ? 0 : countMomo[0].balance,
+            countZalo: !countZalo.length ? 0 : countZalo[0].balance,
+            countBank: !countBank.length ? 0 : countBank[0].balance,
+            revenueData, countBlockUser, _revenueTime, typeDate, logs, countUser })
     } catch (err) {
         next(err);
     }

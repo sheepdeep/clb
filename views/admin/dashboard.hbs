@@ -134,50 +134,151 @@
                     <!-- Container -->
                     <div class="kt-container-fluid">
                         <div class="grid gap-5 lg:gap-7.5">
-                            <div class="grid lg:grid-cols-2 gap-y-5 lg:gap-7.5 items-stretch">
-                                <div class="lg:col-span-2">
-                                    <div class="grid grid-cols-3 gap-5 lg:gap-7.5 h-full items-stretch">
-                                        <style>
-                                            .channel-stats-bg {
-                                                background-image: url('/static/metronic/tailwind/dist/assets/media/images/2600x1600/bg-3.png');
-                                            }
-                                            .dark .channel-stats-bg {
-                                                background-image: url('/static/metronic/tailwind/dist/assets/media/images/2600x1600/bg-3-dark.png');
-                                            }
-                                        </style>
-                                        <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                            <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/receipt.png">
-                                            <div class="flex flex-col gap-1 pb-4 px-5">
-                                                <span class="text-3xl font-semibold text-mono">
-                                                    {{ numberFormat revenueData.receipt }}
-                                                </span>
-                                                <span class="text-sm font-normal text-secondary-foreground">
-                                                    Tổng Nhận
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                            <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/minus.png">
-                                            <div class="flex flex-col gap-1 pb-4 px-5">
-                                                <span class="text-3xl font-semibold text-mono">
-                                                    {{ numberFormat revenueData.minus }}
-                                                </span>
-                                                <span class="text-sm font-normal text-secondary-foreground">
-                                                    Tổng Chi
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                            <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/minus.png">
-                                            <div class="flex flex-col gap-1 pb-4 px-5">
-                                                <span class="text-3xl font-semibold text-mono">
-                                                    {{ numberFormat revenueData.earning }}
-                                                </span>
-                                                <span class="text-sm font-normal text-secondary-foreground">
-                                                    Doanh Thu
-                                                </span>
-                                            </div>
-                                        </div>
+                            <style>
+                                    .channel-stats-bg {
+                                        background-image: url('/static/metronic/tailwind/dist/assets/media/images/2600x1600/bg-3.png');
+                                    }
+                                    .dark .channel-stats-bg {
+                                        background-image: url('/static/metronic/tailwind/dist/assets/media/images/2600x1600/bg-3-dark.png');
+                                    }
+                                </style>
+                            <div class="grid grid-cols-3 gap-5 lg:gap-7.5 h-full items-stretch">
+                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
+                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/receipt.png">
+                                    <div class="flex flex-col gap-1 pb-4 px-5">
+                                        <span class="text-3xl font-semibold text-mono">
+                                            {{ numberFormat revenueData.receipt }}
+                                        </span>
+                                        <span class="text-sm font-normal text-secondary-foreground">
+                                            Tổng Nhận
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
+                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/minus.png">
+                                    <div class="flex flex-col gap-1 pb-4 px-5">
+                                        <span class="text-3xl font-semibold text-mono">
+                                            {{ numberFormat revenueData.minus }}
+                                        </span>
+                                        <span class="text-sm font-normal text-secondary-foreground">
+                                            Tổng Chi
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
+                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/minus.png">
+                                    <div class="flex flex-col gap-1 pb-4 px-5">
+                                        <span class="text-3xl font-semibold text-mono">
+                                            {{ numberFormat revenueData.earning }}
+                                        </span>
+                                        <span class="text-sm font-normal text-secondary-foreground">
+                                            Doanh Thu
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-4 gap-5 lg:gap-7.5 h-full items-stretch">
+                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
+                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/win.png">
+                                    <div class="flex flex-col gap-1 pb-4 px-5">
+                                        <span class="text-3xl font-semibold text-mono">
+                                            {{ numberFormat revenueData.win }}
+                                        </span>
+                                        <span class="text-sm font-normal text-secondary-foreground">
+                                            Tổng Thắng
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
+                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/won.png">
+                                    <div class="flex flex-col gap-1 pb-4 px-5">
+                                        <span class="text-3xl font-semibold text-mono">
+                                            {{ numberFormat revenueData.won }}
+                                        </span>
+                                        <span class="text-sm font-normal text-secondary-foreground">
+                                            Tổng Thua
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
+                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/error.png">
+                                    <div class="flex flex-col gap-1 pb-4 px-5">
+                                        <span class="text-3xl font-semibold text-mono">
+                                            {{ numberFormat revenueData.error }}
+                                        </span>
+                                        <span class="text-sm font-normal text-secondary-foreground">
+                                            Tổng Lỗi
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
+                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/refund.png">
+                                    <div class="flex flex-col gap-1 pb-4 px-5">
+                                        <span class="text-3xl font-semibold text-mono">
+                                            {{ numberFormat revenueData.refund }}
+                                        </span>
+                                        <span class="text-sm font-normal text-secondary-foreground">
+                                            Tổng Hoàn
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-5 lg:gap-7.5 h-full items-stretch">
+                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
+                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/player.png">
+                                    <div class="flex flex-col gap-1 pb-4 px-5">
+                                        <span class="text-3xl font-semibold text-mono">
+                                            {{ numberFormat countUser }}
+                                        </span>
+                                        <span class="text-sm font-normal text-secondary-foreground">
+                                            Tổng Thành Viên
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
+                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/block.png">
+                                    <div class="flex flex-col gap-1 pb-4 px-5">
+                                        <span class="text-3xl font-semibold text-mono">
+                                            {{ numberFormat countBlockUser }}
+                                        </span>
+                                        <span class="text-sm font-normal text-secondary-foreground">
+                                            Tổng Bị Khoá
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-5 lg:gap-7.5 h-full items-stretch">
+                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
+                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/wallet.png">
+                                    <div class="flex flex-col gap-1 pb-4 px-5">
+                                        <span class="text-3xl font-semibold text-mono">
+                                            {{ numberFormat countMomo }}
+                                        </span>
+                                        <span class="text-sm font-normal text-secondary-foreground">
+                                            Số dư Momo
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
+                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/wallet.png">
+                                    <div class="flex flex-col gap-1 pb-4 px-5">
+                                        <span class="text-3xl font-semibold text-mono">
+                                            {{ numberFormat countZalo }}
+                                        </span>
+                                        <span class="text-sm font-normal text-secondary-foreground">
+                                            Số dư Zalo
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
+                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/wallet.png">
+                                    <div class="flex flex-col gap-1 pb-4 px-5">
+                                        <span class="text-3xl font-semibold text-mono">
+                                            {{ numberFormat countBank }}
+                                        </span>
+                                        <span class="text-sm font-normal text-secondary-foreground">
+                                            Số dư Bank
+                                        </span>
                                     </div>
                                 </div>
                             </div>
