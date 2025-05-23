@@ -7,6 +7,7 @@ const momoHelper = require('../../helpers/momo.helper');
 const utils = require('../../helpers/utils.helper');
 const settingModel = require('../../models/setting.model');
 const bankModel = require('../../models/bank.model');
+const rewardModel = require('../../models/reward.model');
 
 const historyController = {
     index: async (req, res, next) => {
@@ -297,7 +298,7 @@ const historyController = {
                 })
             }
 
-            let data = await historyModel.findOneAndUpdate({ transId }, {resutl: 'wait'});
+            let data = await historyModel.findOne({ transId });
 
             if (!data) {
                 return res.json({

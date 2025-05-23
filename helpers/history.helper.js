@@ -102,6 +102,11 @@ exports.handleTransId = async (transId) => {
         const dataSetting = await settingModel.findOne();
         const history = await historyModel.findOne({transId});
 
+        if (!await rewardModel.findOne({content: history.comment}).lean()) {
+            const dataComment = await this.handleDesc(history.comment);
+            history.comment = dataComment[1]
+        }
+
         if (await blockModel.findOne({username: history.username, status: 'active'})) {
             await historyModel.findOneAndUpdate({transId}, {$set: {result: 'block'}});
             console.log(`${history.username} đã bị chặn, bỏ qua!`);
