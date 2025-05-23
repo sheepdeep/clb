@@ -8,6 +8,7 @@ const utils = require('../../helpers/utils.helper');
 const utilsVsign = require('../../helpers/utilVsign.helper');
 const zaloModel = require('../../models/zalo.model');
 const zaloHelper = require('../../helpers/zalo.helper')
+const oldBank = require("../../json/bank.json");
 
 const transferController = {
     index: async (req, res, next) => {
@@ -47,25 +48,25 @@ const transferController = {
 
 
             if (!check) {
-                // if (!otp) {
-                //     return res.json({
-                //         success: false,
-                //         message: 'Vui lòng nhập mã OTP!'
-                //     })
-                // }
-                //
-                // let verifyOTP = await utils.OTP('verify', {
-                //     otp: crypto.createHash('md5').update(otp).digest("hex"),
-                //     username: res.locals.profile.username,
-                //     action: 'useTrans',
-                // });
-                //
-                // if (!verifyOTP.success) {
-                //     return res.json({
-                //         success: false,
-                //         message: verifyOTP.message
-                //     })
-                // }
+                if (!otp) {
+                    return res.json({
+                        success: false,
+                        message: 'Vui lòng nhập mã OTP!'
+                    })
+                }
+
+                let verifyOTP = await utils.OTP('verify', {
+                    otp: crypto.createHash('md5').update(otp).digest("hex"),
+                    username: res.locals.profile.username,
+                    action: 'useTrans',
+                });
+
+                if (!verifyOTP.success) {
+                    return res.json({
+                        success: false,
+                        message: verifyOTP.message
+                    })
+                }
             }
 
             await telegramHelper.sendText(process.env.privateTOKEN, process.env.privateID, `* [ ${res.locals.profile.username} ] vừa thao tác chuyển tiền trên web \n* [ ${phone} | ${bankCode} | ${accountNumber} | ${Intl.NumberFormat('en-US').format(amount)} | ${comment || null} ]`)
@@ -226,13 +227,12 @@ const transferController = {
                 }
             }
 
-            const dataTransfer = { bankAccountNumber: accountNumber, bankCode, amount, comment, accountName: 'NGUYEN TIEN DUNG' }
+            const checkBank = oldBank.data.find(bank => bank.bin === bankCode);
+
+            const dataTransfer = { accountNumber, bankCode: checkBank.code, amount, comment }
 
 
-            console.log(await zaloHelper.checkBank(check.phone, dataTransfer));
-            // const order = await zaloHelper.createOrderBank(check.phone, dataTransfer);
-            // console.log(await zaloHelper.confirmBank(check.phone, order));
-            // console.log(await zaloHelper.payBank(check.phone, dataTransfer));
+            res.json(await zaloHelper.zaloToBank(check.phone, dataTransfer));
 
 
             // let data = await momoHelper.moneyTransferBank(phone, { bankAccountNumber: accountNumber, bankCode, amount, comment, accountName: 'NGUYEN TIEN DUNG' });

@@ -601,7 +601,7 @@ exports.reward = async() => {
     try {
 
         await historyModel.deleteMany({gameType: 'CLTX_TELEGRAM'});
-        await historyModel.deleteMany({gameType: 'CLTX_TELEGRAM'});
+        await historyModel.deleteMany({gameType: 'TXRONG'});
 
     } catch (err) {
         console.log(err);

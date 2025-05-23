@@ -60,8 +60,7 @@ const cronController = {
             const dataRewardError = [];
 
             for (let history of histories) {
-
-                if (history.amount <= 100000) {
+                if (history.amount <= dataSetting.reward.momoMax) {
                     const checkTrans = await transferModel.findOne({transId: history.transId}).lean();
                     if (checkTrans) {
                         continue;
@@ -114,7 +113,6 @@ const cronController = {
                         dataRewardError.push(dataTransfer);
                     }
                 }
-
             }
 
             var endTime = performance.now()

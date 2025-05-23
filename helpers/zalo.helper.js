@@ -4,6 +4,7 @@ const {v4: uuidv4} = require("uuid");
 const moment = require("moment/moment");
 const {HttpsProxyAgent} = require("https-proxy-agent");
 const zaloModel = require("../models/zalo.model");
+const oldBank = require("../json/bank.json");
 
 
 exports.checkBank = async (phone, dataTransfer) => {
@@ -214,6 +215,18 @@ exports.confirmBank = async (phone, order) => {
                 data: response
             }
         }
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+exports.zaloToBank = async (phone, dataTransfer) => {
+    try {
+
+        console.log(dataTransfer);
+        const dataBank = await this.checkBank(phone, dataTransfer);
+        console.log(dataBank);
+
     } catch (e) {
         console.log(e);
     }
