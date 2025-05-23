@@ -79,9 +79,8 @@ const cronController = {
                         bankCode: checkBank.bin,
                         bankName: checkBank.shortName,
                         amount: history.bonus,
-                        comment: 'hoan tien tiktok ' + String(history.transId).slice(-4)
+                        comment: dataSetting.commentSite.rewardGD + String(history.transId).slice(-4)
                     };
-
 
                     const result = await momoModel.aggregate([
                         { $match: { status: 'active', loginStatus: 'active' } },
