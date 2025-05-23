@@ -32,7 +32,7 @@ router.get(['/', '/home', '/dashboard'], loggedInAdmin, async (req, res, next) =
     try {
         let _username, gameType;
         let _revenueTime = moment().format('YYYY-MM-DD');
-        let typeDate = 'day';
+        let typeDate = 'month';
 
         req.query?._username && /(((\+|)84)|0)(3|5|7|8|9)+([0-9]{8})\b/.test(req.query._username) && (_username = req.query._username);
         req.query?.gameType && (gameType = req.query.gameType);

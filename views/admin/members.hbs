@@ -91,9 +91,6 @@
                                                     <th>Thông Tin Bank</th>
                                                     <th>Telegram</th>
                                                     <th>TOKEN</th>
-                                                    <th>Doanh Thu Ngày</th>
-                                                    <th>Doanh Thu Tháng</th>
-                                                    <th>Doanh Thu </th>
                                                     <th>IP</th>
                                                     <th>Đăng Nhập Cuối {{{ tableSort originalUrl.search 'lastOnline' _sort }}}</th>
                                                 </tr>
@@ -170,9 +167,6 @@
                                                     </span>
                                                         </td>
                                                         <td><span class="badges badge-secondary">{{ this.token }}</span></td>
-                                                        <td><code><span class="text-success">{{ numberFormat this.historyDay.receipt }}</span></code> <br/> <code><span class="text-danger">{{ numberFormat this.historyDay.minus }}</span></code> <br /> <code><span class="text-warning">{{ numberFormat this.historyDay.earning }}</span></code></td>
-                                                        <td><code><span class="text-success">{{ numberFormat this.historyMonth.receipt }}</span></code> <br /> <code><span class="text-danger">{{ numberFormat this.historyMonth.minus }}</span></code> <br /> <code><span class="text-warning">{{ numberFormat this.historyMonth.earning }}</span></code></td>
-                                                        <td><code><span class="text-success">{{ numberFormat this.historyAll.receipt }}</span></code> <br /> <code><span class="text-danger">{{ numberFormat this.historyAll.minus }}</span></code> <br /> <code><span class="text-warning">{{ numberFormat this.historyAll.earning }}</span></code></td>
                                                         <td>{{ this.ip }}</td>
                                                         <td>{{ formatDate this.lastOnline 'HH:mm:ss DD-MM-YYYY'}}</td>
                                                     </tr>
