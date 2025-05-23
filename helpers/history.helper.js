@@ -104,7 +104,8 @@ exports.handleTransId = async (transId) => {
 
         if (!await rewardModel.findOne({content: history.comment}).lean()) {
             const dataComment = await this.handleDesc(history.comment);
-            history.comment = dataComment[1]
+            history.comment = dataComment[1];
+            history.save();
         }
 
         if (await blockModel.findOne({username: history.username, status: 'active'})) {
