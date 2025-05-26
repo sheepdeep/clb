@@ -1297,7 +1297,7 @@ exports.refreshToken = async (phone) => {
         });
 
         if (resultMoMo.errorCode === 0) {
-            await momoModel.findOneAndUpdate({ username: phone }, {
+            await momoModel.findOneAndUpdate({ phone }, {
                 $set: {
                     accessToken: resultMoMo.momoMsg.accessToken,
                     lastLogined: new Date().toISOString(),
