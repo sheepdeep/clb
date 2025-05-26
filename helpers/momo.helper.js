@@ -429,7 +429,6 @@ exports.doRequestEncryptMoMo = async (link, body, account, msgType, {agentid, ph
     if (msgType) {
         headers['msgtype'] = msgType;
     }
-    console.log('Header là', headers);
     const { data: resultMoMo } = await axios.post(link, encryptedRequestString, {
         headers,
         transformRequest: [function (data, headers) {
@@ -2282,8 +2281,8 @@ exports.findBankAccount = async (phone, dataTransfer) => {
             "deviceName": dataDevice.deviceName,
             "deviceOS": "android",
             "requestId": randomRequestId,
-            "agent": "0929003157",
-            "agentId": 103308183,
+            "agent": currentAccount.phone,
+            "agentId": parseInt(currentAccount.agentId),
             "coreBankCode": "2001",
             "serviceId": "2001",
             "transHisServiceId": "transfer_p2b",
@@ -2302,6 +2301,7 @@ exports.findBankAccount = async (phone, dataTransfer) => {
             "typeQR": ""
         });
 
+        console.log(data);
         // console.log('body la', body);
 
         // const { vsign, tbid, vts, vcs, vversion, ftv, mtd, mky } = await this.getVSign(body, {agentid: currentAccount.agentId, secureid: dataDevice.secureId, devicecode: dataDevice.deviceCode, phone: currentAccount.phone});
@@ -2340,7 +2340,6 @@ exports.findBankAccount = async (phone, dataTransfer) => {
                 'timezone': 'Asia/Ho_Chi_Minh',
                 'env': 'production',
                 'device_os': 'ANDROID',
-                'http-process-timestamp': '1747766347548',
                 'app_type': 'production',
                 'Accept-Charset': 'UTF-8',
                 'Accept': 'application/json',
@@ -2356,10 +2355,7 @@ exports.findBankAccount = async (phone, dataTransfer) => {
     } catch (err) {
         console.log(err);
         await momoModel.findOneAndUpdate({phone}, {$set: {description: 'CHECK_INFO_BANK| Có lỗi xảy ra ' + err.message || err}})
-        return {
-            message: 'Lỗi kiểm tra thông tin ngân hàng!',
-            success: false,
-        }
+        return null;
     }
 }
 
@@ -2396,10 +2392,10 @@ exports.INIT_TOBANK = async (phone, dataTransfer) => {
             })
         }
 
-        const bankName = listBankFound.displayName;
-        const bankNameServer = listBankFound.bankName;
+        const bankName = _.get(profile, 'data.contactInfo.bankName');
+        const bankNameServer = _.get(profile, 'data.contactInfo.bankNameServer');
         const checkAccountRefNumber = _.get(profile, 'benfAccount.checkAccountRefNumber');
-        const accountName = _.get(profile, 'benfAccount.accName');
+        const accountName = _.get(profile, 'data.contactInfo.accountName');
         const logo = _.get(profile, 'data.contactInfo.logo');
 
         const bankData = {
@@ -2410,8 +2406,6 @@ exports.INIT_TOBANK = async (phone, dataTransfer) => {
             logo,
             ...dataTransfer
         }
-
-        console.log(bankData);
 
         const result = await this.moneyTransferBank(phone, bankData);
         return result;
@@ -2444,11 +2438,13 @@ exports.moneyTransferBank = async (phone, dataTransfer) => {
             logo,
         } = dataTransfer;
 
+        console.log(dataTransfer);
+
 
         const initBody = {
-            "appCode": hardCodedAppCode,
+            "appCode": process.env.APP_CODE,
             "appId": "vn.momo.payment",
-            "appVer": hardCodedAppVer,
+            "appVer": process.env.APP_VER,
             "buildNumber": 3791,
             "channel": "APP",
             "cmdId": `${timeToRequest}000000`,
@@ -2473,7 +2469,7 @@ exports.moneyTransferBank = async (phone, dataTransfer) => {
                     "benfPhoneNumberInput": checkAccountRefNumber,
                     "checkFeeCacheRefNumber": "",
                     "bankLogo": {
-                        "uri": "https://api.vietqr.io/img/TCB.png",
+                        "uri": logo,
                     },
                     "receiverName": accountName,
                     "nickName": "",
@@ -2521,7 +2517,7 @@ exports.moneyTransferBank = async (phone, dataTransfer) => {
         }
 
         const result = await this.doRequestEncryptMoMo(TRAN_HIS_INIT_MSG, initBody, currentAccount, "TRAN_HIS_INIT_MSG", {agentid: currentAccount.agentId, secureid: dataDevice.secureId, devicecode: dataDevice.deviceCode, phone: currentAccount.phone})
-        console.log(result);
+        
         if (result.errorCode === '-818') {
             await this.verifyTransferBank(phone, dataTransfer);
             await Promise.delay(1000);
@@ -2643,7 +2639,6 @@ exports.verifyTransferBank = async (phone, dataTransfer) => {
 
     return response;
 }
-
 
 exports.confirmMoMoToBank = async (phone, initTransHisMsg, amount, confirmId) => {
     const currentAccount = await momoModel.findOne({ phone }).lean();

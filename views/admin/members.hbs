@@ -84,7 +84,6 @@
                                             <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
                                                 <thead>
                                                 <tr>
-                                                    <th>Họ Và Tên</th>
                                                     <th>Tên Đăng Nhập</th>
                                                     <th>Số Dư</th>
                                                     <th>VIP </th>
@@ -99,15 +98,6 @@
                                                 <tbody>
                                                 {{#each threads}}
                                                     <tr class="edit-one" data-id="{{ this._id }}">
-                                                        <td data-bs-name="name" data-bs-hasEdit="true">
-                                                    <span data-bs-table="html" data-bs-value="{{ this.name }}">
-                                                        <span data-bs-html="true">{{ this.name }}</span>
-                                                    </span>
-                                                            <span data-bs-table="edit" data-bs-value="{{ this.name }}">
-                                                        <input type="text" class="form-control ih-medium ip-light mb-2"
-                                                               data-bs-edit="true">
-                                                    </span>
-                                                        </td>
                                                         <td><a href="{{../adminPath}}/history?&search={{ this.username }}">{{ this.username }}</a></td>
                                                         <td>{{ numberFormat this.balance }}</td>
                                                         <td data-bs-name="level" data-bs-hasEdit="true">

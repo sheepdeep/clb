@@ -84,9 +84,9 @@ const momoController = {
             }
 
             const currentMomo = await momoModel.findOne({phone}).lean();
-            if (currentMomo && currentMomo.accessToken) {
-                return res.json({success: false, message: 'MoMo đã được thiết lập trước đó'})
-            }
+            // if (currentMomo && currentMomo.accessToken) {
+            //     return res.json({success: false, message: 'MoMo đã được thiết lập trước đó'})
+            // }
 
             // if (currentMomo && currentMomo.status !== "waitOTP") {
             //     return res.json({success: false, message: 'Vui lòng lấy OTP trước'});

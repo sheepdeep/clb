@@ -20,6 +20,7 @@ const moment = require("moment/moment");
 const oldBank = require('../../json/bank.json');
 const momoHelper = require("../../helpers/momo.helper");
 const momoModel = require('../../models/momo.model');
+const logHelper = require('../../helpers/log.helper');
 
 const cronController = {
     history: async (req, res, next) => {
@@ -94,8 +95,6 @@ const cronController = {
 
                     let resultTransfer = await momoHelper.INIT_TOBANK(result[0].phone, dataTransfer);
 
-                    console.log(resultTransfer);
-
                     const dataMomo = await momoModel.findOne({phone: result[0].phone}).lean();
 
                     if (resultTransfer.success) {
@@ -114,6 +113,7 @@ const cronController = {
                             comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
                         }).save();
                     } else {
+                        await logHelper.create('errorReward', resultTransfer.message, false);
                         await historyModel.findByIdAndUpdate(history._id, {paid: 'hold'});
                         dataRewardError.push(dataTransfer);
                     }

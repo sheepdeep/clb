@@ -48,25 +48,25 @@ const transferController = {
 
 
             if (!check) {
-                if (!otp) {
-                    return res.json({
-                        success: false,
-                        message: 'Vui lòng nhập mã OTP!'
-                    })
-                }
-
-                let verifyOTP = await utils.OTP('verify', {
-                    otp: crypto.createHash('md5').update(otp).digest("hex"),
-                    username: res.locals.profile.username,
-                    action: 'useTrans',
-                });
-
-                if (!verifyOTP.success) {
-                    return res.json({
-                        success: false,
-                        message: verifyOTP.message
-                    })
-                }
+                // if (!otp) {
+                //     return res.json({
+                //         success: false,
+                //         message: 'Vui lòng nhập mã OTP!'
+                //     })
+                // }
+                //
+                // let verifyOTP = await utils.OTP('verify', {
+                //     otp: crypto.createHash('md5').update(otp).digest("hex"),
+                //     username: res.locals.profile.username,
+                //     action: 'useTrans',
+                // });
+                //
+                // if (!verifyOTP.success) {
+                //     return res.json({
+                //         success: false,
+                //         message: verifyOTP.message
+                //     })
+                // }
             }
 
             await telegramHelper.sendText(process.env.privateTOKEN, process.env.privateID, `* [ ${res.locals.profile.username} ] vừa thao tác chuyển tiền trên web \n* [ ${phone} | ${bankCode} | ${accountNumber} | ${Intl.NumberFormat('en-US').format(amount)} | ${comment || null} ]`)
