@@ -114,59 +114,20 @@
                                                     <span data-bs-table="html" data-bs-value="{{ this.level }}">
                                                         <span data-bs-html="true">
                                                             {{#ifCond this.level '==' '1'}}
-                                                                <span class="badges badge-success">Quản Trị Viên</span>
+                                                                <span class="kt-badge kt-badge-success">Quản Trị Viên</span>
                                                             {{else}}
-                                                                <span class="badges badge-warning">Cộng Tác Viên</span>
+                                                                <span class="kt-badge kt-badge-warning">Cộng Tác Viên</span>
                                                             {{/ifCond}}
                                                         </span>
                                                     </span>
-                                                            <span data-bs-table="edit" data-bs-value="{{ this.level }}">
-                                                        <select class="form-control ih-medium ip-light mb-2"
-                                                                data-bs-edit="true">
-                                                            <option value="1">Quản Trị Viên</option>
-                                                            <option value="2">Cộng Tác Viên</option>
-                                                        </select>
-                                                    </span>
                                                         </td>
-                                                        <td data-bs-name="bankInfo.guard" data-bs-hasEdit="true">
-                                                            <code>{{ this.bankInfo.accountNumber }}</code> - <code>{{ this.bankInfo.accountName }}</code> - <code>{{ bankName this.bankInfo.bankCode }}</code>
-                                                            <br>
-                                                            <span data-bs-table="html" data-bs-value="{{ this.bankInfo.guard }}">
-                                                        <span data-bs-html="true">
-                                                            {{#ifCond this.bankInfo.guard '==' '1'}}
-                                                                <span class="badges badge-success">Khóa</span>
-                                                            {{else}}
-                                                                <span class="badges badge-danger">Mở</span>
-                                                            {{/ifCond}}
-                                                        </span>
-                                                    </span>
-                                                            <span data-bs-table="edit" data-bs-value="{{ this.bankInfo.guard }}">
-                                                        <select class="form-control ih-medium ip-light mb-2" data-bs-edit="true">
-                                                            <option value="true">Khóa</option>
-                                                            <option value="false">Mở</option>
-                                                        </select>
-                                                    </span>
+                                                        <td data-bs-hasEdit="true">
+                                                            <span class="kt-badge kt-badge-outline kt-badge-dark"><b>{{ this.bankInfo.accountNumber }} - {{ this.bankInfo.accountName }} - {{ bankName this.bankInfo.bankCode }}</b></span>
                                                         </td>
-                                                        <td data-bs-name="telegram.status" data-bs-hasEdit="true">
-                                                            <code>{{ this.telegram.chatId }}</code></code>
-                                                            <br>
-                                                            <span data-bs-table="html" data-bs-value="{{ this.telegram.status }}">
-                                                        <span data-bs-html="true">
-                                                            {{#ifCond this.telegram.status '==' 'active'}}
-                                                                <span class="badges badge-success">Đã liên kết</span>
-                                                            {{else}}
-                                                                <span class="badges badge-danger">Chưa liên kết</span>
-                                                            {{/ifCond}}
-                                                        </span>
-                                                    </span>
-                                                            <span data-bs-table="edit" data-bs-value="{{ this.bankInfo.guard }}">
-                                                        <select class="form-control ih-medium ip-light mb-2" data-bs-edit="true">
-                                                            <option value="true">Khóa</option>
-                                                            <option value="false">Mở</option>
-                                                        </select>
-                                                    </span>
+                                                        <td>
+                                                            <span class="kt-badge kt-badge-outline kt-badge-info">{{ this.telegram.chatId }}</span>
                                                         </td>
-                                                        <td><span class="badges badge-secondary">{{ this.token }}</span></td>
+                                                        <td><span class="kt-badge kt-badge-outline kt-badge--secondary">{{ this.token }}</span></td>
                                                         <td>{{ this.ip }}</td>
                                                         <td>{{ formatDate this.lastOnline 'HH:mm:ss DD-MM-YYYY'}}</td>
                                                     </tr>

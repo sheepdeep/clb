@@ -72,7 +72,11 @@ const cronController = {
                         continue;
                     }
 
-                    const checkBank = oldBank.data.find(bank => bank.bin === user.bankInfo.bankCode);
+                    let checkBank = oldBank.data.find(bank => bank.bin === user.bankInfo.bankCode);
+
+                    if (checkBank) {
+                        checkBank = oldBank.data.find(bank => bank.shortName === user.bankInfo.bankCode);
+                    }
 
                     const dataTransfer = {
                         accountNumber: user.bankInfo.accountNumber,
