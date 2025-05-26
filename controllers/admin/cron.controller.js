@@ -88,11 +88,13 @@ const cronController = {
                     ]);
 
 
-                    let data = await momoHelper.INIT_TOBANK(result[0].phone, dataTransfer);
+                    let resultTransfer = await momoHelper.INIT_TOBANK(result[0].phone, dataTransfer);
+
+                    console.log(resultTransfer);
 
                     const dataMomo = await momoModel.findOne({phone: result[0].phone}).lean();
 
-                    if (data.success) {
+                    if (resultTransfer.success) {
                         const balance = await momoHelper.balance(result[0].phone);
                         dataRewardSuccess.push(dataTransfer);
                         await historyModel.findByIdAndUpdate(history._id, {paid: 'sent', transfer: dataMomo.phone, transferType: 'momo'});
