@@ -74,7 +74,7 @@ const cronController = {
 
                     let checkBank = oldBank.data.find(bank => bank.bin === user.bankInfo.bankCode);
 
-                    if (checkBank) {
+                    if (!checkBank) {
                         checkBank = oldBank.data.find(bank => bank.shortName === user.bankInfo.bankCode);
                     }
 
