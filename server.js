@@ -101,10 +101,10 @@ historyHelper.history();
 historyHelper.fakeBill();
 historyHelper.reward();
 historyHelper.telegramBot();
-setInterval(() => {
-    historyHelper.gift();
-    historyHelper.telegramBot();
-}, 15 * 60 * 1000);
+// setInterval(() => {
+//     historyHelper.gift();
+//     historyHelper.telegramBot();
+// }, 15 * 60 * 1000);
 
 app.use(homeRoute);
 // Error Handler

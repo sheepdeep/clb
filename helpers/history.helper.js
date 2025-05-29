@@ -483,7 +483,7 @@ exports.fakeBill = async () => {
             { balance: { $gt: 0 } },
             { $set: { balance: 0 } }
         );
-        
+
         const bankData = await bankModel.findOne({status: 'active', loginStatus: 'active', bankType: 'mbb'}).lean();
 
         const dataSetting = await settingModel.findOne({});

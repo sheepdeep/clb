@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <div class="kt-container-fluid">
-                        <form action="" method="post" id="formSetting">
+                        <form action="" method="post" class="dataEnz" id="formSetting">
                             <div class="space-y-3 text-sm">
                                 <div class="flex items-center gap-2.5" data-kt-tabs="true">
                                     <button class="kt-btn kt-btn-outline active" data-kt-tab-toggle="#tab_1_1">
@@ -64,6 +64,9 @@
                                     </button>
                                     <button class="kt-btn kt-btn-outline" data-kt-tab-toggle="#tab_1_2">
                                         <img src="https://cdn-icons-png.flaticon.com/512/8208/8208947.png" alt="" width="20"> Cài Đặt Trả Thưởng
+                                    </button>
+                                    <button class="kt-btn kt-btn-outline" data-kt-tab-toggle="#tab_1_3">
+                                        <img src="../themes/admin/images/data.png" alt="" width="20"> Cài Đặt Dữ Liệu
                                     </button>
                                 </div>
                                 <div class="text-sm">
@@ -218,7 +221,14 @@
                                                             </select>
                                                         </div>
                                                     </div>
-
+                                                    <div class="kt-form-item">
+                                                        <label class="kt-form-label">Note [Template
+                                                            Default]</label>
+                                                        <div class="kt-form-control">
+                                                                        <textarea type="text" class="kt-textarea form-editor" name="notification-data" rows="5"
+                                                                                  placeholder="Nhập nội dung thông báo">{{{ settings.notification.data }}}</textarea>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -319,9 +329,49 @@
                                         </div>
                                     </div>
                                     <div class="hidden" id="tab_1_3">
-                                        Tab
-                                        <!-- -->3<!-- -->
-                                        content.
+                                        <div class="kt-card w-[400px]">
+                                            <div class="kt-card-content py-5">
+                                                <div data-kt-datatable="true" data-kt-datatable-state-save="false" id="team_crew_table" data-kt-datatable-initialized="true" class="datatable-initialized">
+                                                    <div class="kt-scrollable-x-auto">
+                                                        <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
+                                                            <thead>
+                                                            <tr class="userDatatable-header">
+                                                                <th><i class="ki-filled ki-additem hand create" data-value="missionData"
+                                                                       data-parent="missionData-" data-child="data"></i></th>
+                                                                <th>Vị Trí</th>
+                                                                <th>Tổng Cược Ngày</th>
+                                                                <th>Tiền Thưởng</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody class="dataEnz" data-bs-parent="missionData-" data-bs-child="data"
+                                                                   data-bs-position="true">
+                                                                {{#each settings.missionData.data}}
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="table-actions hand">
+                                                        <span class="badges badge-info" data-bs-action="edit"><i
+                                                                class="fas fa-pen"></i></span>
+                                                                            <span class="badges badge-danger" data-bs-action="remove"><i
+                                                                                    class="fa fa-trash" aria-hidden="true"></i></span>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td data-bs-position="true">{{ sum @index 1 }}</td>
+                                                                    <td data-bs-key="amount" data-bs-value="{{ this.amount }}"
+                                                                        data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
+                                                                            this.amount }}
+                                                                    </td>
+                                                                    <td data-bs-key="bonus" data-bs-value="{{ this.bonus }}"
+                                                                        data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
+                                                                            this.bonus }}
+                                                                    </td>
+                                                                </tr>
+                                                            {{/each}}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="content-center flex justify-center items-center flex-wrap gap-2.5">
@@ -345,6 +395,7 @@
 <script src="../themes/admin/assets/vendors/ktui/ktui.min.js">
 </script>
 <script>
+
     $('body').on('submit', '#formSetting', function (e) {
         e.preventDefault();
         let data = $(this).serialize();
@@ -353,13 +404,232 @@
         axios.put('#', data)
                 .then((result) => {
                     let response = result.data;
-                    response.success ? swal('Thông Báo', response.message, 'success') && setTimeout(() => window.location.reload(), 1500) : swal('Thông Báo', response.message, 'error');
+                    response.success ? swal('Thông Báo', response.message, 'success') : swal('Thông Báo', response.message, 'error');
                 })
                 .catch((err) => {
                     swal('Thông Báo', err.message || err, 'error');
                 })
-                .finally(() => $('#formSetting>button').html(`<i class="fas fa-save"></i> Lưu`));
+                .finally(() => $('#formSetting>button').html(`<i class="ki-filled ki-save-2"></i> Lưu`));
     })
+
+    $('body').on('submit', 'form.dataEnz', function (e) {
+        e.preventDefault();
+
+        let _this = $(this);
+        let data = toJSON(_this);
+
+        $('tbody.dataEnz').each(function (e) {
+            let list = [];
+            let _this = $(this);
+            let name = `${_this.attr('data-bs-parent')}${_this.attr('data-bs-child')}`;
+
+            console.log(name);
+
+            _this.find('tr').each(function (e) {
+                let _that = $(this);
+                let isInput, object;
+
+                _that.find('td[data-bs-key]').each(function (e) {
+                    let key = $(this).attr('data-bs-key');
+                    let value = $(this).attr('data-bs-value');
+                    isInput = $(this).find('input').length;
+
+                    if (!isInput) {
+                        key == "[]" ? list.push(value) : object = {
+                            ...object,
+                            [key]: value
+                        }
+                    }
+                })
+
+                !isInput && object && list.push(object);
+
+            })
+
+            data[name] = [
+                ...list
+            ];
+        })
+
+        $('[name="saveData"]').html(`<div class="dm-spin-dots spin-sm"><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span></div>`);
+
+        axios.put('#', { ...data })
+                .then((result) => {
+                    let response = result.data;
+
+                    response.success ? swal('Thông Báo', response.message, 'success') : swal('Thông Báo', response.message, 'error');
+                })
+                .catch((err) => {
+                    swal('Thông Báo', err.message || err, 'error');
+                })
+                .finally(() => $('[name="saveData"]').html(`<i class="ki-filled ki-save-2"></i> Lưu`));
+    })
+
+    $('body').on('click', '.dataEnz span[data-bs-action]', function (e) {
+        let action = $(this).attr('data-bs-action');
+        let tbody = $(this).parent().parent().parent().parent();
+        let tr = $(this).parent().parent().parent();
+
+        switch (action) {
+            case 'add':
+                $(this).parent().html(`<span class="kt-badge kt-badge-info" data-bs-action="edit"><i class="ki-filled ki-pencil"></i></span> <span class="kt-badge kt-badge-danger" data-bs-action="remove"><i class="ki-filled ki-trash"></i></span>`);
+
+                tr.find('td[data-bs-key]').each(function (e) {
+                    let key = $(this).attr('data-bs-key');
+                    let value = $(this).find('input').val();
+                    let more = $(this).attr('data-bs-more');
+
+                    if (!value) return tr.remove();
+
+                    let html;
+                    switch (more) {
+                        case 'numberFormat':
+                            html = Intl.NumberFormat('en-US').format(value)
+                            break;
+                        case 'textarea':
+                            html = `<textarea rows="3" class="form-control">${value}</textarea>`;
+                            break;
+                        default:
+                            html = value;
+                            break;
+                    }
+
+                    $(this).html(html).attr('data-bs-value', value);
+                })
+
+                if (tr.find('td[data-bs-key="html"]')) {
+                    let html = tr.find('td[data-bs-key="html"]').attr('data-bs-value');
+                    tr.find('td[data-bs-render="html"]').html(`<center>${html}</center>`)
+                }
+
+                tbody.find('[data-bs-position="true"]') && resetTOP(tbody);
+                break;
+            case 'edit':
+                $(this).parent().html(`<span class="badges badge-success" data-bs-action="save"><i class="fas fa-save"></i></span>`);
+
+                tr.find('td[data-bs-key]').each(function (e) {
+                    let type = $(this).attr('data-bs-type');
+                    let value = $(this).attr('data-bs-value');
+
+                    $(this).html(`<input type="${type}" class="form-control ih-medium ip-light">`);
+                    $(this).find('input').val(value);
+                })
+
+                break;
+            case 'save':
+                let render;
+                $(this).parent().html(`<span class="badges badge-info" data-bs-action="edit"><i class="fas fa-pen"></i></span> <span class="badges badge-danger" data-bs-action="remove"><i class="fa fa-trash" aria-hidden="true"></i></span>`);
+
+                tr.find('td[data-bs-key]').each(function (e) {
+                    let key = $(this).attr('data-bs-key');
+                    let value = $(this).find('input').val();
+                    let more = $(this).attr('data-bs-more');
+
+                    if (!value) return tr.remove();
+
+                    let html;
+                    switch (more) {
+                        case 'numberFormat':
+                            html = Intl.NumberFormat('en-US').format(value)
+                            break;
+                        case 'textarea':
+                            html = `<textarea rows="3" class="form-control">${value}</textarea>`;
+                            break;
+                        default:
+                            html = value;
+                            break;
+                    }
+                    $(this).html(html).attr('data-bs-value', value);
+                })
+
+                if (tr.find('td[data-bs-key="html"]')) {
+                    let html = tr.find('td[data-bs-key="html"]').attr('data-bs-value');
+                    tr.find('td[data-bs-render="html"]').html(`<center>${html}</center>`)
+                }
+
+                tbody.find('[data-bs-position="true"]') && resetTOP(tbody);
+                break;
+            case 'remove':
+                tr.remove();
+                tbody.find('[data-bs-position="true"]') && resetTOP(tbody);
+                break;
+            default:
+                swal('Thông Báo', 'Thao tác không hợp lệ!', 'error');
+                break;
+        }
+
+    })
+
+    $('body').on('click', '.create', function (e) {
+        let _this = $(this);
+        let value = _this.data('value');
+        let html;
+
+        switch (value) {
+            case 'contact':
+                html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-key="url" data-bs-value="" data-bs-type="text"><input type="text" class="form-control ih-medium ip-light"></td><td data-bs-key="html" data-bs-value="" data-bs-type="text"><input type="text" class="form-control ih-medium ip-light"></td><td data-bs-render="html"></td></tr>`;
+                break;
+            case 'missionData':
+                html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
+                break;
+            case 'bonusTOP':
+                html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="[]" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
+                break;
+            case 'fakeData':
+                html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="phone" data-bs-value="" data-bs-type="text"><input type="text" class="form-control ih-medium ip-light"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
+                break;
+            case 'gift':
+                html = `<tr><td><div class="hand table-actions"><span class="badge-success badges"data-bs-action=add><i class="fa-save fas"></i></span></div><td data-bs-key=pos data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=ratio data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=name data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=amount data-bs-type=number data-bs-value=""data-bs-more=numberFormat><input class="form-control ih-medium ip-light"type=number>`;
+                break;
+            default:
+                swal('Thông Báo', 'Dữ liệu không hợp lệ!', 'error');
+                break;
+        }
+
+        html && $(`tbody[data-bs-parent="${_this.data('parent')}"][data-bs-child="${_this.data('child')}"]`).append(html);
+    })
+
+    $('body').on('click', '.create', function (e) {
+        let _this = $(this);
+        let value = _this.data('value');
+        let html;
+
+        switch (value) {
+            case 'contact':
+                html = `<tr><td><div class="table-actions hand"><span class="kt-badge kt-badge-success" data-bs-action="add"><i class="ki-filled ki-save-2"></i></span></div></td><td data-bs-key="url" data-bs-value="" data-bs-type="text"><input type="text" class="kt-input"></td><td data-bs-key="html" data-bs-value="" data-bs-type="text"><input type="text" class="kt-input"></td><td data-bs-render="html"></td></tr>`;
+                break;
+            case 'missionData':
+                html = `<tr><td><div class="table-actions hand"><span class="kt-badge kt-badge-success" data-bs-action="add"><i class="ki-filled ki-save-2"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="kt-input"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="kt-input"></td></tr>`;
+                break;
+            case 'bonusTOP':
+                html = `<tr><td><div class="table-actions hand"><span class="kt-badge kt-badge-success" data-bs-action="add"><i class="ki-filled ki-save-2"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="[]" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="kt-input"></td></tr>`;
+                break;
+            case 'fakeData':
+                html = `<tr><td><div class="table-actions hand"><span class="kt-badge kt-badge-success" data-bs-action="add"><i class="ki-filled ki-save-2"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="phone" data-bs-value="" data-bs-type="text"><input type="text" class="kt-input"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="kt-input"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="kt-input"></td></tr>`;
+                break;
+            case 'gift':
+                html = `<tr><td><div class="hand table-actions"><span class="kt-badge kt-badge-success" data-bs-action=add><i class="fa-save fas"></i></span></div><td data-bs-key=pos data-bs-type=text data-bs-value=""><input class="kt-input"><td data-bs-key=ratio data-bs-type=text data-bs-value=""><input class="kt-input"><td data-bs-key=name data-bs-type=text data-bs-value=""><input class="kt-input"><td data-bs-key=amount data-bs-type=number data-bs-value=""data-bs-more=numberFormat><input class="kt-input"type=number>`;
+                break;
+            default:
+                swal('Thông Báo', 'Dữ liệu không hợp lệ!', 'error');
+                break;
+        }
+
+        html && $(`tbody[data-bs-parent="${_this.data('parent')}"][data-bs-child="${_this.data('child')}"]`).append(html);
+    })
+
+    function toJSON(form) {
+        return $(form).serializeArray().reduce(function (json, { name, value }) {
+            json[name] = value;
+            return json;
+        }, {});
+    }
+
+    function resetTOP(tbody) {
+        tbody.find('td[data-bs-position="true"]').each(function (index) {
+            $(this).html(`${index + 1}`)
+        })
+    }
 
     document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.form-editor').forEach((el, index) => {
