@@ -87,11 +87,6 @@ const missionController = {
             if (totalCount >= dataMission.amount) {
                 let user = await userModel.findOne({username: res.locals.profile.username}).lean();
 
-                const randomBanks = await bankModel.aggregate([
-                    { $match: { bankType: 'exim', status: 'active' } },
-                    { $sample: { size: 1 } }
-                ]);
-
                 let newHistory = await new historyModel({
                     username: user.username,
                     receiver: user.username,
@@ -103,7 +98,7 @@ const missionController = {
                     gameType: 'MISSION',
                     result: 'ok',
                     paid: 'wait',
-                    transfer: randomBanks[0].accountNumber,
+                    // transfer: randomBanks[0].accountNumber,
                 }).save();
             }
 
