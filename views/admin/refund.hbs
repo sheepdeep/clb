@@ -1,68 +1,115 @@
 {{>head}}
-{{>nav}}
-<main class="main-content">
-    <div class="contents">
-        <div class="crm mb-25">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="breadcrumb-main">
-                            <h4 class="text-capitalize breadcrumb-title">{{ title }}</h4>
+<body class="antialiased flex h-full text-base text-foreground bg-background [--header-height:60px] [--sidebar-width:290px] bg-muted! lg:overflow-hidden">
+<!-- Theme Mode -->
+<script>
+    const defaultThemeMode = 'light'; // light|dark|system
+    let themeMode;
+
+    if (document.documentElement) {
+        if (localStorage.getItem('kt-theme')) {
+            themeMode = localStorage.getItem('kt-theme');
+        } else if (
+                document.documentElement.hasAttribute('data-kt-theme-mode')
+        ) {
+            themeMode =
+                    document.documentElement.getAttribute('data-kt-theme-mode');
+        } else {
+            themeMode = defaultThemeMode;
+        }
+
+        if (themeMode === 'system') {
+            themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+                    ? 'dark'
+                    : 'light';
+        }
+
+        document.documentElement.classList.add(themeMode);
+    }
+</script>
+<div class="flex grow">
+    <header class="flex lg:hidden items-center fixed z-10 top-0 start-0 end-0 shrink-0 bg-muted h-(--header-height)" id="header">
+        <!-- Container -->
+        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
+            <a href="/metronic/tailwind/demo4/">
+                <img class="dark:hidden min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray.svg"/>
+                <img class="hidden dark:block min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray-dark.svg"/>
+            </a>
+            <button class="kt-btn kt-btn-icon kt-btn-ghost -me-2" data-kt-drawer-toggle="#sidebar">
+                <i class="ki-filled ki-menu">
+                </i>
+            </button>
+        </div>
+        <!-- End of Container -->
+    </header>
+    <div class="flex flex-col lg:flex-row grow pt-(--header-height) lg:pt-0">
+        {{>nav}}
+        <div class="flex grow rounded-xl bg-background border border-input lg:ms-(--sidebar-width) mt-0 lg:mt-5 m-5">
+            <div class="flex flex-col grow kt-scrollable-y-auto lg:[--kt-scrollbar-width:auto] pt-5" id="scrollable_content">
+                <main class="grow" role="content">
+                    <div class="pb-5">
+                        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
+                            <div class="flex items-center flex-wrap gap-1 lg:gap-5">
+                                <h1 class="font-medium text-base text-mono">
+                                    {{ title }}
+                                </h1>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-12 mb-20">
-                        <div class="card">
-                            <div class="card-header">
-                                <h6 class="card-title">
-                                    <a href="{{ originalUrl.pathname }}" class="text-dark">
-                                        <img src="../themes/admin/images/transfer.png" alt="" width="35">
-                                        Hoàn tiền
-                                        <img src="../themes/admin/images/transfer.png" class="d-md-none" width="35">
-                                    </a>
-                                </h6>
-                            </div>
-                            <div class="card-body">
-                                <form action="" method="post" class="form-axios">
-                                    <div class="form-group">
-                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Mã giao dịch</label>
-                                        <input type="text" name="transId" class="form-control ih-medium ip-light"
-                                               placeholder="Nhập số tài khoản">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Tài khoản</label>
-                                        <input type="text" name="username" class="form-control ih-medium ip-light"
-                                               placeholder="Nhập số tiền cần chuyển">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="" class="il-gray fs-14 fw-500 mb-10">Lý do</label>
-                                        <select name="type" class="form-control ih-medium ip-light select2">
-                                            <option value="wrong">Sai nội dung</option>
-                                        </select>
-                                    </div>
-                                    <div class="row gutters-xs mb-3">
-                                        <label for="" class="il-gray fs-14 fw-500 mb-10">OTP</label>
-                                        <div class="col">
-                                            <input type="number" name="otp" class="form-control ih-medium ip-light"
-                                                   placeholder="Nhập mã otp được gửi đến phía admin!">
+                    <div class="kt-container-fluid">
+                        <div class="grid gap-5 lg:gap-7.5">
+                            <div class="kt-card min-w-full">
+                                <div class="kt-card-content">
+                                    <form action="" method="post" class="form-axios">
+                                        <div class="space-y-5">
+                                            <div class="kt-form-item">
+                                                <label class="kt-form-label">Lý do</label>
+                                                <div class="kt-form-control">
+                                                    <select name="bankCode" class="kt-select">
+                                                        <option value="wrong">Sai nội dung</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="kt-form-item">
+                                                <label class="kt-form-label">Mã giao dịch</label>
+                                                <div class="kt-form-control">
+                                                    <input type="text" name="transId" class="kt-input"
+                                                           placeholder="Nhập mã giao dịch">
+                                                </div>
+                                            </div>
+                                            <div class="kt-form-item">
+                                                <label class="kt-form-label">Tài khoản</label>
+                                                <div class="kt-form-control">
+                                                    <input type="text" name="username" class="kt-input"
+                                                           placeholder="Nhập tài khoản">
+                                                </div>
+                                            </div>
+                                            <div class="kt-form-item">
+                                                <label class="kt-form-label">OTP</label>
+                                                <div class="kt-input-group">
+
+                                                    <input type="number" name="otp" class="kt-input"
+                                                           placeholder="Nhập mã otp được gửi đến phía admin!">
+                                                    <button type="button" class="kt-btn kt-btn-outline get-otp" data-action="useTrans">Lấy OTP</button>
+                                                </div>
+                                            </div>
+                                            <div class="content-center flex justify-center items-center flex-wrap gap-2.5">
+                                                <button type="submit" type="button" class="kt-btn min-w-100">Chuyển tiền</button>
+                                            </div>
                                         </div>
-                                        <span class="col-auto">
-                                            <button type="button" class="btn btn-outline-success get-otp"
-                                                    data-action="useTrans">
-                                                Lấy OTP
-                                            </button>
-                                        </span>
-                                    </div>
-                                    <div class="content-center">
-                                        <button type="submit" class="btn btn-primary"><i
-                                                class="fas fa-exchange-alt"></i> Hoàn tiền</button>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </main>
+                {{>foot}}
             </div>
         </div>
     </div>
-</main>
-{{>foot}}
+</div>
+<script src="../themes/admin/assets/js/core.bundle.js">
+</script>
+<script src="../themes/admin/assets/vendors/ktui/ktui.min.js">
+</script>
+</body>
+</html>
