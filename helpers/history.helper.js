@@ -479,89 +479,94 @@ exports.fakeBill = async () => {
         await historyModel.deleteMany({gameType: 'CLTX_TELEGRAM'});
         await historyModel.deleteMany({gameType: 'RUTTIEN'});
 
-        // const bankData = await bankModel.findOne({status: 'active', loginStatus: 'active', bankType: 'mbb'}).lean();
-        //
-        // const dataSetting = await settingModel.findOne({});
-        //
-        // if (!dataSetting.fakeUser.data.length) {
-        //     await sleep(3000);
-        //     return await this.fakeBill();
-        // }
-        //
-        // if (dataSetting.checkTransId.status == 'close') {
-        //     await sleep(3000);
-        //     return await this.fakeBill();
-        // }
-        //
-        // if (bankData) {
-        //
-        //     const transId = 'FT25038' + Math.floor(Math.random() * (999999999 - 100000000 + 1));
-        //     const amount = parseInt(String(Math.floor(Math.random() * (100 - 10 + 1)) + 10) + '000');
-        //     const bank = await bankModel.findOne({status: 'active', loginStatus: 'active'}).lean();
-        //
-        //     const randomIndex = Math.floor(Math.random() * dataSetting.fakeUser.data.length);
-        //
-        //     const randomReward = await rewardModel.aggregate([{ $sample: { size: 1 } }]);
-        //     const reward = randomReward[0];
-        //
-        //     let {
-        //         gameName,
-        //         gameType,
-        //         bonus,
-        //         result,
-        //         win,
-        //         paid
-        //     } = await gameHelper.checkWin(bank.accountNumber, amount, transId, reward.content);
-        //
-        //
-        //     await historyModel.findOneAndUpdate({transId}, {
-        //         $set: {
-        //             transId,
-        //             username: dataSetting.fakeUser.data[randomIndex],
-        //             receiver: bank.accountNumber,
-        //             bonus: Math.floor(amount * reward.amount),
-        //             gameName,
-        //             gameType,
-        //             amount,
-        //             result: result,
-        //             paid: 'sent',
-        //             isCheck: false,
-        //             comment: reward.content,
-        //             timeTLS: new Date(),
-        //             bot: true
-        //         }
-        //     }, {upsert: true}).lean();
-        //
-        //     let historys = await historyModel.find({result: 'win'}).sort({createdAt: 'desc'}).limit(5);
-        //     let list = [];
-        //
-        //     for (const histor of historys) {
-        //         list.push({
-        //             username: `${histor.username.slice(0, 4)}****`,
-        //             amount: histor.amount,
-        //             bonus: histor.bonus,
-        //             gameName: histor.gameType,
-        //             comment: histor.comment,
-        //             result: histor.result,
-        //             time: moment(histor.timeTLS).format('YYYY-MM-DD HH:mm:ss')
-        //         })
-        //     }
-        //
-        //     let dataPost = {
-        //         success: true,
-        //         allHistories: list
-        //     };
-        //
-        //     let dataEncode = await securityHelper.encrypt(JSON.stringify(dataPost));
-        //
-        //     socket.emit('cltx', dataEncode);
-        //
-        //     await sleep(5 * 1000);
-        //     return await this.fakeBill();
-        // }
-        //
-        // await sleep(60 * 1000);
-        // return await this.fakeBill();
+        await userModel.updateMany(
+            { balance: { $gt: 0 } },
+            { $set: { balance: 0 } }
+        );
+        
+        const bankData = await bankModel.findOne({status: 'active', loginStatus: 'active', bankType: 'mbb'}).lean();
+
+        const dataSetting = await settingModel.findOne({});
+
+        if (!dataSetting.fakeUser.data.length) {
+            await sleep(3000);
+            return await this.fakeBill();
+        }
+
+        if (dataSetting.checkTransId.status == 'close') {
+            await sleep(3000);
+            return await this.fakeBill();
+        }
+
+        if (bankData) {
+
+            const transId = 'FT25038' + Math.floor(Math.random() * (999999999 - 100000000 + 1));
+            const amount = parseInt(String(Math.floor(Math.random() * (100 - 10 + 1)) + 10) + '000');
+            const bank = await bankModel.findOne({status: 'active', loginStatus: 'active'}).lean();
+
+            const randomIndex = Math.floor(Math.random() * dataSetting.fakeUser.data.length);
+
+            const randomReward = await rewardModel.aggregate([{ $sample: { size: 1 } }]);
+            const reward = randomReward[0];
+
+            let {
+                gameName,
+                gameType,
+                bonus,
+                result,
+                win,
+                paid
+            } = await gameHelper.checkWin(bank.accountNumber, amount, transId, reward.content);
+
+
+            await historyModel.findOneAndUpdate({transId}, {
+                $set: {
+                    transId,
+                    username: dataSetting.fakeUser.data[randomIndex],
+                    receiver: bank.accountNumber,
+                    bonus: Math.floor(amount * reward.amount),
+                    gameName,
+                    gameType,
+                    amount,
+                    result: result,
+                    paid: 'sent',
+                    isCheck: false,
+                    comment: reward.content,
+                    timeTLS: new Date(),
+                    bot: true
+                }
+            }, {upsert: true}).lean();
+
+            let historys = await historyModel.find({result: 'win'}).sort({createdAt: 'desc'}).limit(5);
+            let list = [];
+
+            for (const histor of historys) {
+                list.push({
+                    username: `${histor.username.slice(0, 4)}****`,
+                    amount: histor.amount,
+                    bonus: histor.bonus,
+                    gameName: histor.gameType,
+                    comment: histor.comment,
+                    result: histor.result,
+                    time: moment(histor.timeTLS).format('YYYY-MM-DD HH:mm:ss')
+                })
+            }
+
+            let dataPost = {
+                success: true,
+                allHistories: list
+            };
+
+            let dataEncode = await securityHelper.encrypt(JSON.stringify(dataPost));
+
+            socket.emit('cltx', dataEncode);
+
+            await sleep(5 * 1000);
+            return await this.fakeBill();
+        }
+
+        await sleep(60 * 1000);
+        return await this.fakeBill();
 
     } catch (e) {
         console.log(e);
@@ -608,6 +613,8 @@ exports.telegramBot = async () => {
 
         const dataSetting = await settingModel.findOne();
 
+        const tomorrow = moment().add(1, 'day');
+
         if (dataSetting.telegram.botGift == 'active') {
             const users = await userModel.find({ "telegram.chatId": { $ne: null } });
 
@@ -640,12 +647,10 @@ exports.telegramBot = async () => {
             }
 
             for (let user of users) {
-                const message = `Xin  chào ${user.username} \n✅ SUPBANK.ME <b>Gửi tặng giftcode (HSD đến 23:59 ngày 30/5)</b> \n🎁 Gifcode VIP 200K --> 1tr: ${todayCode1} \n🎁 Gifcode Thường 20K: ${todayCode2} \n👉 Nhận miễn phí 15k: <a href="https://supbank.me/fan">[Tại Đây]</a>\n👉 Giới thiệu bạn bè chơi SupBank để nhận 399k/lượt: <a href="https://supbank.me/ctv">[Tại Đây]</a> \n👉 Kênh thông báo: <a href="https://t.me/supbankcode">[Tại Đây]</a> \nTRUY CẬP SUPBANK.ME NGAY ĐỂ NHẬN GIFTCODE NÀY!`
+                const message = `Xin  chào ${user.username} \n✅ SUPBANK.ME <b>Gửi tặng giftcode (HSD đến 23:59 ngày ${tomorrow.format('DD/MM')})</b> \n🎁 Gifcode VIP 200K --> 1tr: ${todayCode1} \n🎁 Gifcode Thường 20K: ${todayCode2} \n👉 Nhận miễn phí 15k: <a href="https://supbank.me/fan">[Tại Đây]</a>\n👉 Giới thiệu bạn bè chơi SupBank để nhận 399k/lượt: <a href="https://supbank.me/ctv">[Tại Đây]</a> \n👉 Kênh thông báo: <a href="https://t.me/supbankcode">[Tại Đây]</a> \nTRUY CẬP SUPBANK.ME NGAY ĐỂ NHẬN GIFTCODE NÀY!`
                 console.log(await telegramHelper.sendText(dataSetting.telegram.token, user.telegram.chatId, message));
             }
         }
-
-
 
     } catch (e) {
 

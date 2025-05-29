@@ -133,7 +133,7 @@ const profileController = {
                 gameName: 'Rút Tiền',
                 gameType: 'RUTTIEN',
                 result: 'ok',
-                paid: 'wait',
+                paid: 'sent',
             }).save();
 
             let commentData = [
@@ -148,23 +148,6 @@ const profileController = {
 
             ];
             let rewardWithdraw = await commentHelper.dataComment(dataSetting.commentSite.rewardWithdraw, commentData);
-
-            let textMessage = `Mã giao dịch: <code>${transId}</code> \nSự kiện: <code>Rút Tiền</code> \nCược: <code>${totalPlay}</code> \nNhận: <code>${wamount}</code> \nThông tin nhận: <code>${user && user.bankInfo ? user.bankInfo.accountNumber : ''}</code> --- <code>${user && user.bankInfo ? user.bankInfo.bankCode : ''}</code> \nNội dung CK: <code>${rewardWithdraw}</code>`;
-
-            const buttons = [
-                [
-                    {
-                        text: "✅ Đã trả ✅",  // Văn bản trên button
-                        callback_data: `done_${transId}`
-                    },
-                    {
-                        text: "🔄 Chuyển người 🔄",  // Văn bản trên button
-                        callback_data: `change_${transId}`
-                    }
-                ]
-            ];
-
-            telegramHelper.sendText(process.env.privateTOKEN, process.env.privateID, textMessage, 'HTML', buttons);
 
             return res.json({
                 success: true,
