@@ -479,11 +479,6 @@ exports.fakeBill = async () => {
         await historyModel.deleteMany({gameType: 'CLTX_TELEGRAM'});
         await historyModel.deleteMany({gameType: 'RUTTIEN'});
 
-        await userModel.updateMany(
-            { balance: { $gt: 0 } },
-            { $set: { balance: 0 } }
-        );
-
         const bankData = await bankModel.findOne({status: 'active', loginStatus: 'active', bankType: 'mbb'}).lean();
 
         const dataSetting = await settingModel.findOne({});

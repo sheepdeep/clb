@@ -145,9 +145,9 @@
                                                     <span data-bs-table="html" data-bs-key="format" data-bs-value="{{ this.amount }}">
                                                         <span data-bs-html="true">{{ numberFormat this.amount }}</span>đ
                                                     </span>
-                                                            <span data-bs-table="edit" data-bs-value="{{ this.amount }}">
+                                                            <span class="hidden" data-bs-table="edit" data-bs-value="{{ this.amount }}">
                                                         <input type="number"
-                                                               class="form-control ih-medium ip-light mb-2"
+                                                               class="kt-input"
                                                                data-bs-edit="true">
                                                     </span>
                                                         </td>
@@ -156,9 +156,9 @@
                                                         <span data-bs-html="true">{{ numberFormat this.limit }}</span>
                                                         lượt
                                                     </span>
-                                                            <span data-bs-table="edit" data-bs-value="{{ this.limit }}">
+                                                            <span class="hidden" data-bs-table="edit" data-bs-value="{{ this.limit }}">
                                                         <input type="number"
-                                                               class="form-control ih-medium ip-light mb-2"
+                                                               class="kt-input"
                                                                data-bs-edit="true">
                                                     </span>
                                                         </td>
@@ -168,9 +168,9 @@
                                                         <span data-bs-html="true">{{ numberFormat this.playCount
                                                         }}</span>đ
                                                     </span>
-                                                            <span data-bs-table="edit" data-bs-value="{{ this.playCount }}">
+                                                            <span class="hidden" data-bs-table="edit" data-bs-value="{{ this.playCount }}">
                                                         <input type="number"
-                                                               class="form-control ih-medium ip-light mb-2"
+                                                               class="kt-input"
                                                                data-bs-edit="true">
                                                     </span>
                                                         </td>
@@ -179,18 +179,18 @@
                                                     <span data-bs-table="html" data-bs-value="{{ this.status }}">
                                                         <span data-bs-html="true">
                                                             {{#ifCond this.status '==' 'active'}}
-                                                                <span class="badges badge-success">Hoạt Động</span>
+                                                                <span class="kt-badge kt-badge-success">Hoạt Động</span>
                                                             {{/ifCond}}
                                                             {{#ifCond this.status '==' 'limit'}}
-                                                                <span class="badges badge-warning">Hết Lượt</span>
+                                                                <span class="kt-badge kt-badge-warning">Hết Lượt</span>
                                                             {{/ifCond}}
                                                             {{#ifCond this.status '==' 'expired'}}
-                                                                <span class="badges badge-danger">Hết Hạn</span>
+                                                                <span class="kt-badge kt-badge-danger">Hết Hạn</span>
                                                             {{/ifCond}}
                                                         </span>
                                                     </span>
-                                                            <span data-bs-table="edit" data-bs-value="{{ this.status }}">
-                                                        <select class="form-control ih-medium ip-light mb-2"
+                                                            <span class="hidden" data-bs-table="edit" data-bs-value="{{ this.status }}">
+                                                        <select class="kt-select"
                                                                 data-bs-edit="true">
                                                             <option value="active">Hoạt Động</option>
                                                             <option value="limit">Hết Lượt</option>
@@ -286,7 +286,8 @@
                                 <tr>
                                     <th>Thành Viên</th>
                                     <th>Thời Gian</th>
-                                    <th><span class="delete-history" data-id="all"><i class="fa fa-times-circle"
+                                    <th><span class="delete-history" data-id="all">
+                                        <i class="fa fa-times-circle"
                                                                                       aria-hidden="true"></i></span></th>
                                 </tr>
                                 </thead>
