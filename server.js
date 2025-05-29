@@ -85,6 +85,10 @@ io.on('connection', function (socket) {
     });
 });
 
+io.of("/admin").on("connection", (socket) => {
+    console.log("💬 Client vào /admin:", socket.id);
+    socket.emit("welcome", "Chào mừng đến kênh chat!");
+});
 
 
 // SET TOKEN SETUP
@@ -96,9 +100,11 @@ db.connectDB();
 historyHelper.history();
 historyHelper.fakeBill();
 historyHelper.reward();
-// setInterval(() => {
-//     historyHelper.gift();
-// }, 15 * 60 * 1000);
+historyHelper.telegramBot();
+setInterval(() => {
+    historyHelper.gift();
+    historyHelper.telegramBot();
+}, 15 * 60 * 1000);
 
 app.use(homeRoute);
 // Error Handler

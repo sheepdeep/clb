@@ -312,6 +312,7 @@ const settingSchema = new mongoose.Schema({
             type: String,
             default: '5814823969:AAEmiRomkwly5sQ0lMMz9A2Fff43tnHYEbs'
         },
+        botGift: String,
         chatId: String
     },
     themeSite: {

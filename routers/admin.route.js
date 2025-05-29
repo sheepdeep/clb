@@ -28,6 +28,7 @@ const zaloController = require('../controllers/admin/zalo.controller');
 const refundController = require('../controllers/admin/refund.controller');
 const topController = require('../controllers/admin/top.controller');
 const taiXiuController = require('../controllers/admin/taixiu.controller');
+const telegramController = require('../controllers/telegram.controller');
 const momoModel = require("../models/momo.model");
 
 const router = express.Router();
@@ -270,5 +271,8 @@ router.route('/vps')
 router.route('/send-message')
     .get(loggedInAdmin, tableSort, sendController.index)
     .post(isAdmin, sendController.run);
+
+// router.route('/telegram-bot')
+//     .get(loggedInAdmin, tableSort, telegramController.index)
 
 module.exports = router;

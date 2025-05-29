@@ -603,6 +603,55 @@ exports.gift = async () => {
     }
 };
 
+exports.telegramBot = async () => {
+    try {
+
+        const dataSetting = await settingModel.findOne();
+
+        if (dataSetting.telegram.botGift == 'active') {
+            const users = await userModel.find({ "telegram.chatId": { $ne: null } });
+
+            const todayCode1 = `SBVIP${moment().format('DDMMYY')}`;
+            const todayCode2 = `SB${moment().format('DDMMYY')}`;
+
+            // Kiểm tra xem đã có code nào trong 2 cái trên chưa
+            const existing = await giftModel.findOne({
+                code: { $in: [todayCode1, todayCode2] }
+            });
+
+            if (!existing) {
+                await new giftModel({
+                    code: todayCode1,
+                    amount: 200000,
+                    limit: 10,
+                    playCount: 5000000,
+                    type: 'bank',
+                    expiredAt: moment().add(1, 'days').toDate()
+                }).save();
+
+                await new giftModel({
+                    code: todayCode2,
+                    amount: 20000,
+                    limit: 10,
+                    playCount: 200000,
+                    type: 'bank',
+                    expiredAt: moment().add(1, 'days').toDate()
+                }).save();
+            }
+
+            for (let user of users) {
+                const message = `Xin  chào ${user.username} \n✅ SUPBANK.ME <b>Gửi tặng giftcode (HSD đến 23:59 ngày 30/5)</b> \n🎁 Gifcode VIP 200K --> 1tr: ${todayCode1} \n🎁 Gifcode Thường 20K: ${todayCode2} \n👉 Nhận miễn phí 15k: <a href="https://supbank.me/fan">[Tại Đây]</a>\n👉 Giới thiệu bạn bè chơi SupBank để nhận 399k/lượt: <a href="https://supbank.me/ctv">[Tại Đây]</a> \n👉 Kênh thông báo: <a href="https://t.me/supbankcode">[Tại Đây]</a> \nTRUY CẬP SUPBANK.ME NGAY ĐỂ NHẬN GIFTCODE NÀY!`
+                console.log(await telegramHelper.sendText(dataSetting.telegram.token, user.telegram.chatId, message));
+            }
+        }
+
+
+
+    } catch (e) {
+
+    }
+}
+
 exports.reward = async() => {
     try {
 

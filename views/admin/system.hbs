@@ -207,6 +207,18 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="kt-form-item">
+                                                        <label class="kt-form-label">Gửi mã gift đến telegram người chơi</label>
+                                                        <div class="kt-form-control">
+                                                            <select data-kt-select="true" name="telegram-botGift" class="kt-select" data-kt-select-placeholder="Chọn trạng thái">
+                                                                {{#select settings.telegram.botGift }}
+                                                                    <option value="active">Bật</option>
+                                                                    <option value="inactive">Tắt</option>
+                                                                {{/select }}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>

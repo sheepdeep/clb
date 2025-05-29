@@ -30,10 +30,18 @@
         </div>
     </div>
 </footer>
+<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
 <script type="text/javascript">
     const instance = axios.create({
         baseURL: '..{{ adminPath }}'
     });
+
+
+    const adminSocket = io("http://127.0.0.1/admin");
+
+    // socket.on('countOnline', (data) => {
+    //     $('#userCount').html(data);
+    // })
 
     $('body').on('click', '[data-bs-submit]', function (e) {
         let _this = $(this);
@@ -78,6 +86,5 @@
                 break;
         }
     })
-
 
 </script>
