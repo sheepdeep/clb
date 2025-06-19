@@ -2723,7 +2723,7 @@ exports.getSmartOTP = async (phone, transactionId) => {
     }
 }
 
-exports.getDetails = async (phone, transId, serviceId) => {
+exports.getHistory = async (phone, offset = 0, limit = 20) => {
     try {
         const currentAccount = await momoModel.findOne({phone}).lean();
 
@@ -2731,60 +2731,59 @@ exports.getDetails = async (phone, transId, serviceId) => {
         const timeToRequest = Date.now();
 
         const body = {
-            "appCode": process.env.appCode,
+            "appCode": process.env.APP_CODE,
             "appId": "vn.momo.transactionhistory",
-            "appVer": process.env.appVer,
-            "buildNumber": 9863,
-            "channel": "transaction_app",
+            "appVer": process.env.APP_VER,
+            "buildNumber": 0,
+            "channel": "APP",
             "lang": "vi",
             "deviceName": dataDevice.deviceName,
             "deviceOS": "android",
             "requestId": `${timeToRequest}`,
-            "transId": transId,
-            "serviceId": serviceId,
-            "miniAppId": "vn.momo.transactionhistory",
+            "client": "sync_app",
+            "offset": offset,
+            "limit": limit,
+            "dbPart": 0
         }
 
+        const resultMoMo = await this.doRequestEncryptMoMo('https://api.momo.vn/transhis/api/transhis/browse', body, currentAccount, null, {agentid: currentAccount.agentId, secureid: dataDevice.secureId, devicecode: dataDevice.deviceCode, phone: currentAccount.phone})
 
-        const response = await this.doRequestEncryptMoMo('https://api.momo.vn/transhis/api/transhis/detail', body, currentAccount);
 
-        console.log(response);
-
-        if (response.resultCode != 0 || response.momoMsg.status == 6) {
-            return ({
-                success: false,
-                message: `Không tìm thấy chi tiết lịch sử #${transId}!`
-            })
+        if (resultMoMo.statusCode === 200) {
+            return resultMoMo.momoMsg;
         }
-
-        let comment = response.momoMsg.serviceData ? JSON.parse(response.momoMsg.serviceData).COMMENT_VALUE : (response.momoMsg.oldData ? JSON.parse(response.momoMsg.oldData).commentValue : null);
-
-        if (response.statusCode === 200) {
-            return ({
-                success: true,
-                message: 'Lấy thành công!',
-                data: {
-                    io: response.momoMsg.io,
-                    status: response.momoMsg.status,
-                    phone,
-                    transId: response.momoMsg.transId,
-                    partnerId: response.momoMsg.sourceId,
-                    partnerName: response.momoMsg.sourceName,
-                    targetId: response.momoMsg.targetId,
-                    targetName: response.momoMsg.targetName,
-                    amount: response.momoMsg.totalOriginalAmount,
-                    postBalance: response.momoMsg.postBalance,
-                    comment,
-                    time: response.momoMsg.lastUpdate,
-                }
-            })
-        }
-    } catch (err) {
-        console.log(err);
-        await momoModel.findOneAndUpdate({phone}, {$set: {description: 'getDetails| Có lỗi xảy ra ' + err.message || err}})
-        return ({
-            success: false,
-            message: 'Có lỗi xảy ra ' + err.message || err
-        })
+        return [];
+    } catch (e) {
+        console.log(e);
     }
+}
+
+exports.getDetails = async (phone, transId, serviceId) => {
+    const currentAccount = await momoModel.findOne({phone}).lean();
+
+    const dataDevice = JSON.parse(currentAccount.dataDevice);
+    const timeToRequest = Date.now();
+
+    const body = {
+        "appCode": process.env.APP_CODE,
+        "appId": "vn.momo.transactionhistory",
+        "appVer": process.env.APP_VER,
+        "buildNumber": 0,
+        "channel": "transaction_app",
+        "lang": "vi",
+        "deviceName": dataDevice.deviceName,
+        "deviceOS": "android",
+        "requestId": `${timeToRequest}`,
+        "transId": transId,
+        "serviceId": serviceId,
+        "miniAppId": "vn.momo.transactionhistory",
+    }
+
+
+    const resultMoMo = await this.doRequestEncryptMoMo('https://api.momo.vn/transhis/api/transhis/detail', body, currentAccount, null, {agentid: currentAccount.agentId, secureid: dataDevice.secureId, devicecode: dataDevice.deviceCode, phone: currentAccount.phone})
+
+    if (resultMoMo.statusCode === 200) {
+        return resultMoMo.momoMsg;
+    }
+    return {};
 }

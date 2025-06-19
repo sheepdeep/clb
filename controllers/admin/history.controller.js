@@ -318,6 +318,68 @@ const historyController = {
             next(err);
         }
     },
+    rewardCheck: async (req, res, next) => {
+        try {
+            const dataSetting = await settingModel.findOne();
+            let { transId } = req.body;
+
+            if (!transId) {
+                return res.json({
+                    success: false,
+                    message: 'Thiếu dữ liệu đường truyền!'
+                })
+            }
+
+            let data = await historyModel.findOne({ transId });
+
+            let checkReward = false;
+
+            if (data.transferType === 'momo') {
+                const historyMomo = await momoHelper.getHistory(data.transfer);
+
+                const results = await Promise.all(
+                    historyMomo.map(history =>
+                        momoHelper.getDetails(data.transfer, history.transId, 'transfer_p2b')
+                    )
+                );
+
+                for (let index = 0; index < results.length; index++) {
+                    const dataHistory = results[index];
+                    const noteMsg = JSON.parse(dataHistory?.serviceData).transhisData?.["td.note_msg"] || "";
+                    const last4Digits = noteMsg.slice(-4);
+
+                    if (last4Digits === data.transId.slice(-4)) {
+                        checkReward = true;
+                        break; // đây là break hợp lệ
+                    }
+                }
+            }
+
+            if (checkReward) {
+                return res.json({
+                    success: true,
+                    message: 'Mã đã được trả rồi!'
+                })
+            } else {
+                if (data.transferType === 'momo') {
+                    setImmediate(async () => {
+                        await historyHelper.transferMomo(data);
+                    });
+                    // await historyHelper.transferMomo(data);
+                }
+                return res.json({
+                    success: true,
+                    message: 'Đã thực hiện lại!'
+                })
+            }
+
+
+
+        } catch (err) {
+            console.log(err);
+            next(err);
+        }
+    },
     checkAction: async (req, res, next) => {
         try {
             let { transId } = req.body;

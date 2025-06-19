@@ -86,7 +86,6 @@ io.on('connection', function (socket) {
 });
 
 io.of("/admin").on("connection", (socket) => {
-    console.log("💬 Client vào /admin:", socket.id);
     socket.emit("welcome", "Chào mừng đến kênh chat!");
 });
 
@@ -98,8 +97,8 @@ console.log(`TOKEN SETUP: ${process.env.TOKEN_SETUP.toUpperCase()}`)
 // Kết nối MongoDB
 db.connectDB();
 historyHelper.history();
-historyHelper.fakeBill();
-historyHelper.reward();
+// historyHelper.fakeBill();
+// historyHelper.reward();
 historyHelper.telegramBot();
 setInterval(() => {
     historyHelper.gift();

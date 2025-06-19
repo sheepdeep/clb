@@ -223,94 +223,97 @@ exports.handleTransId = async (histories, bank, band = 0) => {
                 continue;
             }
 
-            amount = parseInt(amount);
+            if (history.creditAmount > 0) {
+                amount = parseInt(amount);
 
-            const {username, comment} = await historyHelper.handleDesc(description);
+                const {username, comment} = await historyHelper.handleDesc(description);
 
-            let user = await userModel.findOne({username}).lean();
+                let user = await userModel.findOne({username}).lean();
 
-            if (!user) {
+                if (!user) {
 
-                await historyModel.findOneAndUpdate({transId}, {
-                    $set: {
-                        transId,
-                        receiver: bank.accountNumber,
-                        amount,
-                        fullComment: description,
-                        result: 'notUser',
-                        comment: description,
-                        timeCheck: new Date(),
-                        timeTLS: moment(transactionDate, 'DD/MM/YYYY HH:mm:ss').format()
-                    }
-                }, {upsert: true}).lean();
-                continue;
-            }
-
-            let ip;
-            if (/^\d{1,3}(\.\d{1,3}){3}$/.test(ip)) {
-                const parts = ip.split('.');
-                ip = parts.slice(0, 2).join('.'); // Lấy 2 số đầu
-            }
-
-            ip = user.ip;
-
-            let countUser = await userModel.aggregate([{ $match: { ip: { $regex: ip } } }, { $group: { _id: null, count: { $sum: 1 } } }]);
-            if (countUser.length > 0 && countUser[0].count > 2) {
-                await historyModel.findOneAndUpdate({transId}, {
-                    $set: {
-                        username,
-                        transId,
-                        receiver: bank.accountNumber,
-                        amount,
-                        fullComment: description,
-                        result: 'lose',
-                        paid: 'sent',
-                        comment: description,
-                        description: 'SPAM TẠO NICK',
-                        timeCheck: new Date(),
-                        timeTLS: moment(transactionDate, 'DD/MM/YYYY HH:mm:ss').format()
-                    }
-                }, {upsert: true}).lean();
-                continue;
-            }
-
-            if (amount > 0) {
-                if (comment === dataSetting.paymentComment) {
-
-                    const result = await bankService.limitBet(bank.accountNumber, amount)
-                    if (!result) {
-                        await userModel.findOneAndUpdate({username}, {$set: {
-                                balance: user.balance + amount,
-                            }});
-                        await historyModel.findOneAndUpdate({transId}, {
-                            $set: {
-                                transId,
-                                username: user.username,
-                                receiver: bank.accountNumber,
-                                gameName: 'RECHARGE',
-                                gameType: `RECHARGE`,
-                                amount,
-                                fullComment: description,
-                                result: 'ok',
-                                paid: 'sent',
-                                isCheck: false,
-                                comment,
-                                timeTLS: new Date(),
-                                description: `Bạn đã nạp tiềnn vào tài khoản <span class="code-num">${Intl.NumberFormat('en-US').format(amount)}</span> vnđ. (SB: ${Intl.NumberFormat('en-US').format(user.balance)} -&gt; ${Intl.NumberFormat('en-US').format(user.balance + amount)})`,
-                            }
-                        }, {upsert: true}).lean();
-                    }
-
+                    await historyModel.findOneAndUpdate({transId}, {
+                        $set: {
+                            transId,
+                            receiver: bank.accountNumber,
+                            amount,
+                            fullComment: description,
+                            result: 'notUser',
+                            comment: description,
+                            timeCheck: new Date(),
+                            timeTLS: moment(transactionDate, 'DD/MM/YYYY HH:mm:ss').format()
+                        }
+                    }, {upsert: true}).lean();
                     continue;
                 }
 
-                if (comment === dataSetting.xsmb.commentLo || comment === dataSetting.xsmb.commentDe || comment === dataSetting.xsmb.commentXien2) {
-                    await historyHelper.handleXsmb(history, bank);
+                let ip;
+                if (/^\d{1,3}(\.\d{1,3}){3}$/.test(ip)) {
+                    const parts = ip.split('.');
+                    ip = parts.slice(0, 2).join('.'); // Lấy 2 số đầu
+                }
+
+                ip = user.ip;
+
+                let countUser = await userModel.aggregate([{ $match: { ip: { $regex: ip } } }, { $group: { _id: null, count: { $sum: 1 } } }]);
+                if (countUser.length > 0 && countUser[0].count > 2) {
+                    await historyModel.findOneAndUpdate({transId}, {
+                        $set: {
+                            username,
+                            transId,
+                            receiver: bank.accountNumber,
+                            amount,
+                            fullComment: description,
+                            result: 'lose',
+                            paid: 'sent',
+                            comment: description,
+                            description: 'SPAM TẠO NICK',
+                            timeCheck: new Date(),
+                            timeTLS: moment(transactionDate, 'DD/MM/YYYY HH:mm:ss').format()
+                        }
+                    }, {upsert: true}).lean();
                     continue;
                 }
 
-                await historyHelper.handleCltx(history, bank);
+                if (amount > 0) {
+                    if (comment === dataSetting.paymentComment) {
+
+                        const result = await bankService.limitBet(bank.accountNumber, amount)
+                        if (!result) {
+                            await userModel.findOneAndUpdate({username}, {$set: {
+                                    balance: user.balance + amount,
+                                }});
+                            await historyModel.findOneAndUpdate({transId}, {
+                                $set: {
+                                    transId,
+                                    username: user.username,
+                                    receiver: bank.accountNumber,
+                                    gameName: 'RECHARGE',
+                                    gameType: `RECHARGE`,
+                                    amount,
+                                    fullComment: description,
+                                    result: 'ok',
+                                    paid: 'sent',
+                                    isCheck: false,
+                                    comment,
+                                    timeTLS: new Date(),
+                                    description: `Bạn đã nạp tiềnn vào tài khoản <span class="code-num">${Intl.NumberFormat('en-US').format(amount)}</span> vnđ. (SB: ${Intl.NumberFormat('en-US').format(user.balance)} -&gt; ${Intl.NumberFormat('en-US').format(user.balance + amount)})`,
+                                }
+                            }, {upsert: true}).lean();
+                        }
+
+                        continue;
+                    }
+
+                    if (comment === dataSetting.xsmb.commentLo || comment === dataSetting.xsmb.commentDe || comment === dataSetting.xsmb.commentXien2) {
+                        await historyHelper.handleXsmb(history, bank);
+                        continue;
+                    }
+
+                    await historyHelper.handleCltx(history, bank);
+                }
             }
+
 
         }
 

@@ -29,6 +29,7 @@ const refundController = require('../controllers/admin/refund.controller');
 const topController = require('../controllers/admin/top.controller');
 const taiXiuController = require('../controllers/admin/taixiu.controller');
 const telegramController = require('../controllers/telegram.controller');
+const historyMomoController = require('../controllers/admin/history-momo.controller');
 const momoModel = require("../models/momo.model");
 
 const router = express.Router();
@@ -134,6 +135,7 @@ router.route(['/bank/:id', '/bank/:id'])
     .delete(loggedInAdmin, bankController.remove);
 
 router.route('/bank-checkTrans').get(loggedInAdmin, tableSort, bankController.checkTrans);
+router.route('/momo-checkTrans').get(loggedInAdmin, tableSort, historyMomoController.checkTrans);
 
 router.post('/bank/refresh', [loggedInAdmin, isAdmin], bankController.refresh)
 router.post('/bank/balance', [loggedInAdmin, isAdmin], bankController.balance)
@@ -191,6 +193,7 @@ router.route('/history/:id')
     .delete(isAdmin, historyController.remove);
 
 router.post('/history/reCheck', isAdmin, historyController.reCheck);
+router.post('/history/rewardCheck', isAdmin, historyController.rewardCheck);
 router.post('/history/checkAction', isAdmin, historyController.checkAction);
 
 

@@ -20,6 +20,7 @@ const transferModel = require('../models/transfer.model');
 const momoModel = require('../models/momo.model');
 const momoHelper = require("./momo.helper");
 const giftModel = require('../models/gift.model');
+const telgramHelper = require("./telegram.helper");
 
 exports.handleCltx = async (history, bank) => {
     try {
@@ -122,8 +123,6 @@ exports.handleTransId = async (transId) => {
             paid
         } = await gameHelper.checkWin(history.receiver, history.amount, history.transId, history.comment);
 
-
-
         if (await historyModel.findOne({
             transId: history.transId,
             $and: [
@@ -157,7 +156,8 @@ exports.handleTransId = async (transId) => {
                 }
             })
 
-        if(result == 'lose') {
+        if(result === 'lose') {
+
             const checkRefundDay = await historyModel.findOne({
                 username: history.username,
                 result: 'refund',
@@ -190,6 +190,11 @@ exports.handleTransId = async (transId) => {
                     }
                 }, {upsert: true}).lean();
             }
+
+        } else if (result === 'win') {
+            setImmediate(async () => {
+                await this.transferMomo(history);
+            });
         }
 
         let histories = await historyModel.find({username: user.username}, {
@@ -400,7 +405,7 @@ exports.handleDesc = async (description) => {
 
         return {
             username: newDesc[0],
-            comment: newDesc[1].toUpperCase().replace(/[.-]/g, '')
+            comment: newDesc[1]?.toUpperCase().replace(/[.-]/g, '')
         };
     }
 
@@ -588,7 +593,7 @@ exports.gift = async () => {
         await new giftModel({
             code,
             amount: Math.floor(Math.random() * (20000 - 10000 + 1)) + 10000,
-            playCount: bankReceiver.min,
+            playCount: 50000,
             limit: 1,
             status: 'active',
             type: 'balance',
@@ -767,16 +772,22 @@ exports.transferEximbank = async (history) => {
 
 exports.transferMomo = async (history) => {
     try {
+        const dataSetting = await settingModel.findOne({});
         history = await historyModel.findById(history._id);
 
         const bankReward = await momoModel.aggregate([
             {
-                $match: { reward: false, status: 'active' } // Điều kiện lọc
+                $match: { status: 'active', loginStatus: 'active' } // Điều kiện lọc
             },
             {
                 $sample: { size: 1 }
             }
         ]);
+
+        const checkTrans = await transferModel.findOne({transId: history.transId}).lean();
+        if (checkTrans) {
+            return {success: false, message: 'Mã đã được trả thưởng!'};
+        }
 
         if (bankReward.length > 0) {
             const user = await userModel.findOne({username: history.username});
@@ -786,62 +797,63 @@ exports.transferMomo = async (history) => {
 
                 console.log(`Thực hiện trả thưởng #${history.transId} => ${dataBank.phone}`)
 
-                const dataTransfer = {
-                    bankAccountNumber: user.bankInfo.accountNumber,
-                    bankCode: user.bankInfo.bankCode,
-                    name: user.bankInfo.name,
-                    amount: history.bonus,
-                    comment: 'hoan tien tiktok ' + String(history.transId).slice(-4)
+                if (dataBank.balance <= history.bonus) {
+                    history.paid = 'hold';
+                    history.transfer = dataBank.phone;
+                    history.transferType = 'momo';
+                    history.save();
+                    logHelper.create("rewardErr", `Momo ${dataBank.phone} [Hết tiền trả thưởng]`)
+                    return {success: false};
                 }
 
-                let resultInitTransfer = await momoHelper.moneyTransferBank(dataBank.phone, dataTransfer);
+                let checkBank = oldBank.data.find(bank => bank.bin === user.bankInfo.bankCode);
 
-                console.log(resultInitTransfer);
+                if (!checkBank) {
+                    checkBank = oldBank.data.find(bank => bank.shortName === user.bankInfo.bankCode);
+                }
+
+                const dataTransfer = {
+                    accountNumber: user.bankInfo.accountNumber,
+                    bankCode: checkBank.bin,
+                    bankName: checkBank.shortName,
+                    amount: history.bonus,
+                    comment: dataSetting.commentSite.rewardGD + String(history.transId).slice(-4)
+                };
+
+                let resultInitTransfer = await momoHelper.INIT_TOBANK(dataBank.phone, dataTransfer);
 
                 if (resultInitTransfer?.error === 'insufficient_balance') {
                     history.paid = 'hold';
                     history.transfer = dataBank.phone;
+                    history.transferType = 'momo';
                     history.save();
                     dataBank.reward = false;
                     dataBank.status = 'pending';
                     dataBank.save();
                     logHelper.create("rewardErr", `Momo ${dataBank.phone} [Hết tiền trả thưởng]`)
-                    await sleep(2000);
-                    return await this.reward();
+                    return {success: false};
 
                 }
 
                 if (resultInitTransfer.success) {
-
+                    const balance = await momoHelper.balance(dataBank.phone);
+                    await historyModel.findByIdAndUpdate(history._id, {paid: 'sent', transfer: dataBank.phone, transferType: 'momo'});
+                    await userModel.findOneAndUpdate({username: history.username}, {$set: {"bankInfo.guard": true}});
                     await new transferModel({
                         transId: history.transId,
                         receiver: user.bankInfo.accountNumber,
                         transfer: dataBank.phone,
                         username: history.username,
-                        firstMoney: resultInitTransfer.data.firstMoney,
+                        firstMoney: dataBank.balance,
                         amount: history.bonus,
-                        lastMoney: resultInitTransfer.data.lastMoney,
-                        comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
+                        lastMoney: balance.balance,
+                        comment: dataSetting.commentSite.rewardGD + String(history.transId).slice(-4)
                     }).save();
-
-                    // Bao ve bank
-                    user.bankInfo.guard = true;
-                    user.save();
-
-                    history.paid = 'sent';
-                    history.transfer = dataBank.phone;
-                    history.save();
-                    dataBank.reward = false;
-                    dataBank.save();
-
-                    await sleep(2000);
-                    return await this.reward();
+                    return {success: true};
                 }
             } else {
                 history.paid = 'bankerror';
                 history.save();
-                await sleep(2000);
-                return await this.reward();
             }
 
         }

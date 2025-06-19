@@ -68,6 +68,9 @@
                                     <button class="kt-btn kt-btn-outline" data-kt-tab-toggle="#tab_1_3">
                                         <img src="../themes/admin/images/data.png" alt="" width="20"> Cài Đặt Dữ Liệu
                                     </button>
+                                    <button class="kt-btn kt-btn-outline" data-kt-tab-toggle="#tab_1_3">
+                                        <img src="../themes/admin/images/wheel.png" alt="" width="20"> Cài Đặt Vòng Quay
+                                    </button>
                                 </div>
                                 <div class="text-sm">
                                     <div class="" id="tab_1_1">
@@ -333,10 +336,11 @@
                                             <div class="kt-card-content py-5">
                                                 <div data-kt-datatable="true" data-kt-datatable-state-save="false" id="team_crew_table" data-kt-datatable-initialized="true" class="datatable-initialized">
                                                     <div class="kt-scrollable-x-auto">
+                                                        <h3>* NHIỆM VỤ NGÀY [SETTING]</h3>
                                                         <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
                                                             <thead>
                                                             <tr class="userDatatable-header">
-                                                                <th><i class="ki-filled ki-additem hand create" data-value="missionData"
+                                                                <th><i class="ki-filled ki-additem create" data-value="missionData"
                                                                        data-parent="missionData-" data-child="data"></i></th>
                                                                 <th>Vị Trí</th>
                                                                 <th>Tổng Cược Ngày</th>
@@ -349,10 +353,10 @@
                                                                 <tr>
                                                                     <td>
                                                                         <div class="table-actions hand">
-                                                        <span class="badges badge-info" data-bs-action="edit"><i
-                                                                class="fas fa-pen"></i></span>
-                                                                            <span class="badges badge-danger" data-bs-action="remove"><i
-                                                                                    class="fa fa-trash" aria-hidden="true"></i></span>
+                                                        <span class="kt-badge kt-badge-info" data-bs-action="edit"><i
+                                                                class="ki-filled ki-pencil"></i></span>
+                                                                            <span class="kt-badge kt-badge-destructive" data-bs-action="remove"><i
+                                                                                    class="ki-filled ki-trash-square" aria-hidden="true"></i></span>
                                                                         </div>
                                                                     </td>
                                                                     <td data-bs-position="true">{{ sum @index 1 }}</td>
@@ -363,6 +367,42 @@
                                                                     <td data-bs-key="bonus" data-bs-value="{{ this.bonus }}"
                                                                         data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
                                                                             this.bonus }}
+                                                                    </td>
+                                                                </tr>
+                                                            {{/each}}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                                <div data-kt-datatable="true" data-kt-datatable-state-save="false" id="team_crew_table" data-kt-datatable-initialized="true" class="datatable-initialized mt-2">
+                                                    <div class="kt-scrollable-x-auto">
+                                                        <h3>* THƯỞNG TOP [SETTING]</h3>
+                                                        <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
+                                                            <thead>
+                                                            <tr class="userDatatable-header">
+                                                                <th><i class="ki-filled ki-additem create" data-value="bonusTOP"
+                                                                       data-parent="topData-" data-child="bonus"></i></th>
+                                                                <th>Vị Trí</th>
+                                                                <th>Tiền Thưởng</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody class="dataEnz" data-bs-parent="topData-" data-bs-child="bonus"
+                                                                   data-bs-position="true">
+                                                            {{#each settings.topData.bonus}}
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="table-actions hand">
+                                                        <span class="kt-badge kt-badge-info" data-bs-action="edit"><i
+                                                                class="ki-filled ki-pencil"></i></span>
+                                                                            <span class="kt-badge kt-badge-destructive" data-bs-action="remove"><i
+                                                                                    class="ki-filled ki-trash-square" aria-hidden="true"></i></span>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td data-bs-position="true">{{ sum @index 1 }}</td>
+                                                                    <td data-bs-key="[]" data-bs-value="{{ this }}" data-bs-type="number"
+                                                                        data-bs-more="numberFormat">{{ numberFormat
+                                                                            this }}
                                                                     </td>
                                                                 </tr>
                                                             {{/each}}
@@ -472,7 +512,7 @@
 
         switch (action) {
             case 'add':
-                $(this).parent().html(`<span class="kt-badge kt-badge-info" data-bs-action="edit"><i class="ki-filled ki-pencil"></i></span> <span class="kt-badge kt-badge-danger" data-bs-action="remove"><i class="ki-filled ki-trash"></i></span>`);
+                $(this).parent().html(`<span class="kt-badge kt-badge-primary" data-bs-action="edit"><i class="ki-filled ki-pencil"></i></span> <span class="kt-badge kt-badge-danger" data-bs-action="remove"><i class="ki-filled ki-trash"></i></span>`);
 
                 tr.find('td[data-bs-key]').each(function (e) {
                     let key = $(this).attr('data-bs-key');
@@ -505,20 +545,20 @@
                 tbody.find('[data-bs-position="true"]') && resetTOP(tbody);
                 break;
             case 'edit':
-                $(this).parent().html(`<span class="badges badge-success" data-bs-action="save"><i class="fas fa-save"></i></span>`);
+                $(this).parent().html(`<span class="kt-badge kt-badge-success" data-bs-action="save"><i class="ki-filled ki-save-2"></i></span>`);
 
                 tr.find('td[data-bs-key]').each(function (e) {
                     let type = $(this).attr('data-bs-type');
                     let value = $(this).attr('data-bs-value');
 
-                    $(this).html(`<input type="${type}" class="form-control ih-medium ip-light">`);
+                    $(this).html(`<input type="${type}" class="kt-input">`);
                     $(this).find('input').val(value);
                 })
 
                 break;
             case 'save':
                 let render;
-                $(this).parent().html(`<span class="badges badge-info" data-bs-action="edit"><i class="fas fa-pen"></i></span> <span class="badges badge-danger" data-bs-action="remove"><i class="fa fa-trash" aria-hidden="true"></i></span>`);
+                $(this).parent().html(`<span class="kt-badge kt-badge-info" data-bs-action="edit"><i class="ki-filled ki-pencil"></i></span> <span class="kt-badge kt-badge-destructive" data-bs-action="remove"><i class="ki-filled ki-trash-square" aria-hidden="true"></i></span>`);
 
                 tr.find('td[data-bs-key]').each(function (e) {
                     let key = $(this).attr('data-bs-key');
@@ -558,35 +598,6 @@
                 break;
         }
 
-    })
-
-    $('body').on('click', '.create', function (e) {
-        let _this = $(this);
-        let value = _this.data('value');
-        let html;
-
-        switch (value) {
-            case 'contact':
-                html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-key="url" data-bs-value="" data-bs-type="text"><input type="text" class="form-control ih-medium ip-light"></td><td data-bs-key="html" data-bs-value="" data-bs-type="text"><input type="text" class="form-control ih-medium ip-light"></td><td data-bs-render="html"></td></tr>`;
-                break;
-            case 'missionData':
-                html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
-                break;
-            case 'bonusTOP':
-                html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="[]" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
-                break;
-            case 'fakeData':
-                html = `<tr><td><div class="table-actions hand"><span class="badges badge-success" data-bs-action="add"><i class="fas fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="phone" data-bs-value="" data-bs-type="text"><input type="text" class="form-control ih-medium ip-light"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control ih-medium ip-light"></td></tr>`;
-                break;
-            case 'gift':
-                html = `<tr><td><div class="hand table-actions"><span class="badge-success badges"data-bs-action=add><i class="fa-save fas"></i></span></div><td data-bs-key=pos data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=ratio data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=name data-bs-type=text data-bs-value=""><input class="form-control ih-medium ip-light"><td data-bs-key=amount data-bs-type=number data-bs-value=""data-bs-more=numberFormat><input class="form-control ih-medium ip-light"type=number>`;
-                break;
-            default:
-                swal('Thông Báo', 'Dữ liệu không hợp lệ!', 'error');
-                break;
-        }
-
-        html && $(`tbody[data-bs-parent="${_this.data('parent')}"][data-bs-child="${_this.data('child')}"]`).append(html);
     })
 
     $('body').on('click', '.create', function (e) {
