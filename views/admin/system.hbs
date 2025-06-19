@@ -68,8 +68,11 @@
                                     <button class="kt-btn kt-btn-outline" data-kt-tab-toggle="#tab_1_3">
                                         <img src="../themes/admin/images/data.png" alt="" width="20"> Cài Đặt Dữ Liệu
                                     </button>
-                                    <button class="kt-btn kt-btn-outline" data-kt-tab-toggle="#tab_1_3">
-                                        <img src="../themes/admin/images/wheel.png" alt="" width="20"> Cài Đặt Vòng Quay
+                                    <button class="kt-btn kt-btn-outline" data-kt-tab-toggle="#tab_1_4">
+                                        <img src="https://www.svgrepo.com/show/422180/wheel-lucky-game.svg" alt="" width="20"> Cài Đặt Vòng Quay
+                                    </button>
+                                    <button class="kt-btn kt-btn-outline" data-kt-tab-toggle="#tab_1_5">
+                                        <img src="https://www.svgrepo.com/show/422184/bet-casino-gamble-4.svg" alt="" width="20"> Cài Đặt Hũ
                                     </button>
                                 </div>
                                 <div class="text-sm">
@@ -86,6 +89,14 @@
                                                                     <option value="inactive">Tắt</option>
                                                                 {{/select }}
                                                             </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="kt-form-item">
+                                                        <label class="kt-form-label">Tiền Hũ</label>
+                                                        <div class="kt-form-control">
+                                                            <input type="number" class="kt-input"
+                                                                   name="jackpotCount" value="{{ settings.jackpotCount }}"
+                                                                   placeholder="Nhập số tiền trong hũ">
                                                         </div>
                                                     </div>
                                                     <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
@@ -413,6 +424,171 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="hidden" id="tab_1_4">
+                                        <div class="kt-card w-[400px]">
+                                            <div class="kt-card-content py-5">
+                                                <div class="kt-form-item">
+                                                    <label class="kt-form-label">Vòng quay</label>
+                                                    <div class="kt-form-control">
+                                                        <select name="wheel-status" class="kt-select">
+                                                            {{#select settings.wheel.status }}
+                                                                <option value="active">Bật</option>
+                                                                <option value="close">Tắt</option>
+                                                            {{/select }}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="kt-form-item mt-2">
+                                                    <label class="kt-form-label">Tên vòng quay</label>
+                                                    <div class="kt-form-control">
+                                                        <input type="text" class="kt-input"
+                                                               name="wheel-name"
+                                                               value="{{ settings.wheel.name }}">
+                                                    </div>
+                                                </div>
+                                                <div class="kt-form-item mt-2">
+                                                    <label class="kt-form-label">Chơi tốt thiểu</label>
+                                                    <div class="kt-form-control">
+                                                        <input type="text" class="kt-input"
+                                                               name="wheel-amount"
+                                                               value="{{ settings.wheel.amount }}">
+                                                    </div>
+                                                </div>
+                                                <div data-kt-datatable="true" data-kt-datatable-state-save="false" data-kt-datatable-initialized="true" class="mt-2 datatable-initialized">
+                                                    <div class="kt-scrollable-x-auto">
+                                                        <h3>* VÒNG QUAY [EVENT]</h3>
+                                                        <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
+                                                            <thead>
+                                                            <tr class="userDatatable-header">
+                                                                <th><i class="ki-filled ki-additem create" data-value="gift"
+                                                                       data-parent="wheel-" data-child="gift"></i></th>
+                                                                <th>Vị Trí</th>
+                                                                <th>Tỉ lệ</th>
+                                                                <th>Tên thưởng</th>
+                                                                <th>Tiền Thưởng</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody class="dataEnz" data-bs-parent="wheel-" data-bs-child="gift"
+                                                                   data-bs-position="true">
+                                                            {{#each settings.wheel.gift}}
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="table-actions hand">
+                                                        <span class="kt-badge kt-badge-info" data-bs-action="edit"><i
+                                                                class="ki-filled ki-pencil"></i></span>
+                                                                            <span class="kt-badge kt-badge-destructive" data-bs-action="remove"><i
+                                                                                    class="ki-filled ki-trash-square" aria-hidden="true"></i></span>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td data-bs-key="pos" data-bs-value="{{ this.pos }}"
+                                                                        data-bs-type="number" data-bs-more="numberFormat">{{
+                                                                    this.pos }}
+                                                                    </td>
+                                                                    <td data-bs-key="ratio" data-bs-value="{{ this.ratio }}"
+                                                                        data-bs-type="number" data-bs-more="numberFormat">{{
+                                                                    this.ratio }}
+                                                                    </td>
+                                                                    <td data-bs-key="name" data-bs-value="{{ this.name }}"
+                                                                        data-bs-type="text" data-bs-more="numberFormat">{{
+                                                                    this.name }}
+                                                                    </td>
+                                                                    <td data-bs-key="amount" data-bs-value="{{ this.amount }}"
+                                                                        data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
+                                                                            this.amount }}
+                                                                    </td>
+                                                                </tr>
+                                                            {{/each}}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="hidden" id="tab_1_5">
+                                        <div class="kt-card w-[400px]">
+                                            <div class="kt-card-content py-5">
+                                                <div class="kt-form-item">
+                                                    <label class="kt-form-label">Hũ</label>
+                                                    <div class="kt-form-control">
+                                                        <select name="luckyCard-status" class="kt-select">
+                                                            {{#select settings.luckyCard.status }}
+                                                                <option value="active">Bật</option>
+                                                                <option value="close">Tắt</option>
+                                                            {{/select }}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="kt-form-item mt-2">
+                                                    <label class="kt-form-label">Tên hũ</label>
+                                                    <div class="kt-form-control">
+                                                        <input type="text" class="kt-input"
+                                                               name="luckyCard-name"
+                                                               value="{{ settings.luckyCard.name }}">
+                                                    </div>
+                                                </div>
+                                                <div class="kt-form-item mt-2">
+                                                    <label class="kt-form-label">Chơi tốt thiểu</label>
+                                                    <div class="kt-form-control">
+                                                        <input type="text" class="kt-input"
+                                                               name="luckyCard-amount"
+                                                               value="{{ settings.luckyCard.amount }}">
+                                                    </div>
+                                                </div>
+                                                <div data-kt-datatable="true" data-kt-datatable-state-save="false" data-kt-datatable-initialized="true" class="mt-2 datatable-initialized">
+                                                    <div class="kt-scrollable-x-auto">
+                                                        <h3>* HŨ [EVENT]</h3>
+                                                        <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
+                                                            <thead>
+                                                            <tr class="userDatatable-header">
+                                                                <th><i class="ki-filled ki-additem create" data-value="gift"
+                                                                       data-parent="luckyCard-" data-child="gift"></i></th>
+                                                                <th>Vị Trí</th>
+                                                                <th>Tỉ lệ</th>
+                                                                <th>Tên thưởng</th>
+                                                                <th>Tiền Thưởng</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody class="dataEnz" data-bs-parent="luckyCard-" data-bs-child="gift"
+                                                                   data-bs-position="true">
+                                                            {{#each settings.luckyCard.gift}}
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="table-actions hand">
+                                                        <span class="kt-badge kt-badge-info" data-bs-action="edit"><i
+                                                                class="ki-filled ki-pencil"></i></span>
+                                                                            <span class="kt-badge kt-badge-destructive" data-bs-action="remove"><i
+                                                                                    class="ki-filled ki-trash-square" aria-hidden="true"></i></span>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td data-bs-key="pos" data-bs-value="{{ this.pos }}"
+                                                                        data-bs-type="number" data-bs-more="numberFormat">{{
+                                                                    this.pos }}
+                                                                    </td>
+                                                                    <td data-bs-key="ratio" data-bs-value="{{ this.ratio }}"
+                                                                        data-bs-type="number" data-bs-more="numberFormat">{{
+                                                                    this.ratio }}
+                                                                    </td>
+                                                                    <td data-bs-key="name" data-bs-value="{{ this.name }}"
+                                                                        data-bs-type="text" data-bs-more="numberFormat">{{
+                                                                    this.name }}
+                                                                    </td>
+                                                                    <td data-bs-key="amount" data-bs-value="{{ this.amount }}"
+                                                                        data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
+                                                                            this.amount }}
+                                                                    </td>
+                                                                </tr>
+                                                            {{/each}}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="content-center flex justify-center items-center flex-wrap gap-2.5">
                                     <button class="kt-btn kt-btn-success btn-block" name="saveData">
