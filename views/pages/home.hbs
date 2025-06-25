@@ -12,39 +12,24 @@
         <!-- end header logo -->
         <!-- header menu btn -->
         <button class="header__btn" type="button">
+            <span></span>
+            <span></span>
+            <span></span>
         </button>
         <!-- end header menu btn -->
     </div>
 </header>
 <!-- end header -->
 <!-- sidebar -->
+{{>sidebar}}
 <!-- main content -->
 <main class="main">
-    <marquee style="pointer-events: none;max-width:100%;position: absolute;z-index:1;overflow: hidden;" behavior="scroll" class="marquee-noti">
-        <font color="white" style="text-shadow: 0 0 0.2em #ff0000, 0 0 0.2em #ff0000,  0 0 0.2em #ff0000">
-            <h1><span style="font-size:16px"><span style="font-family:Trebuchet MS,Helvetica,sans-serif">Trang chủ OKVIPBANK - Chơi Game chẵn lẻ bank OKVIPBANK cho người mới !!!</span></span></h1>
-        </font>
-    </marquee>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12">
-                <div class="profile__content">
-                    <ul class="nav nav-tabs profile__tabs" id="profile__tabs" role="tablist">
-                        <li class="nav-item" role="presentation"><button data-bs-target="#chanlebank" type="button" class="active">CHẴN LẺ BANK</button></li>
-<!--                        <li class="nav-item" role="presentation"><button data-bs-target="#chanlezalo" type="button">CHẴN LẺ ZALO</button></li>-->
-<!--                        <li class="nav-item" role="presentation"><button data-bs-target="#taixiumomo" type="button">TÀI XỈU MOMO</button></li>-->
-<!--                        <li class="nav-item" role="presentation"><button data-bs-target="#baucua" type="button">BẦU CUA</button></li>-->
-                    </ul>
-                </div>
-            </div>
-            <div class="col-12 mt-4 mb-4">
-                <div style="text-align:center;">
-                    {{#each games}}
-                        <button class="mt-2 games {{#if @first}}active{{/if}} btn-game " data-name="{{ this.name }}" data-description="{{ this.description }}"
-                                data-type="{{ this.gameType }}" ><span>{{ this.name }}</span></button>
-                    {{/each}}
-                </div>
-            </div>
+            <!-- profile -->
+            {{>game}}
+            <!-- end profile -->
+            <!-- dashbox -->
             <div class="col-12 col-xl-6">
                 <div class="dashbox">
                     <div class="game-details active">
@@ -76,140 +61,127 @@
                     </div>
                 </div>
             </div>
+            <!-- end dashbox -->
+            <!-- dashbox -->
             <div id="bank-infos" class="col-12 col-xl-6">
-                <div class="dashbox bank-list" style="height: 818px;">
-                    <div id="chanlebank" class="bank-details active">
-                        <div class="dashbox__title">
-                            <h3>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bank2" viewBox="0 0 16 16">
-                                    <path d="M8.277.084a.5.5 0 0 0-.554 0l-7.5 5A.5.5 0 0 0 .5 6h1.875v7H1.5a.5.5 0 0 0 0 1h13a.5.5 0 1 0 0-1h-.875V6H15.5a.5.5 0 0 0 .277-.916l-7.5-5zM12.375 6v7h-1.25V6h1.25zm-2.5 0v7h-1.25V6h1.25zm-2.5 0v7h-1.25V6h1.25zm-2.5 0v7h-1.25V6h1.25zM8 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM.5 15a.5.5 0 0 0 0 1h15a.5.5 0 1 0 0-1H.5z"></path>
-                                </svg>
-                                THÔNG TIN TÀI KHOẢN NHẬN
-                            </h3>
-                        </div>
-                        <div class="dashbox__table-wrap dashbox__table-bank-infos" data-scrollbar="true" tabindex="-1" style="overflow: hidden; outline: none;">
-                            <div class="scroll-content">
-                                <table class="dashbox__table">
-                                    <thead>
-                                    <tr>
-                                        <th>NGÂN HÀNG NHẬN</th>
-                                        <th>TÀI KHOẢN</th>
-                                        <th>CƯỢC MIN</th>
-                                        <th>CƯỢC MAX</th>
-                                        <th>MÃ QR</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="listBank">
-                                    <tr>
-                                        <td>
-                                            <div class="dashbox__table-text code-num">BVBank</div>
-                                        </td>
-                                        <td><span>{{ formatBank bank.accountNumber }}</span><span>&nbsp;<a href="javascript:void(0);" data-id="{{bank.accountNumber}}" data-msg="Đã copy:  {{bank.accountNumber}}" class="mncp copy-bt">&nbsp;</a></span></td>
-                                        <td>
-                                            <div class="dashbox__table-text code-num">{{ numberFormat bank.betMin }}</div>
-                                        </td>
-                                        <td>
-                                            <div class="dashbox__table-text code-num">{{ numberFormat bank.betMax }}</div>
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <div class="subpage-wrapper">
-                                    <p style="text-align:center"><span style="font-size:10px"><strong>CHƠI TECHCOMBANK - VCB SẼ TÍNH MÃ GIAO DỊCH CỦA BẠN</strong></span></p>
-                                    <p style="text-align:center"><span style="font-size:10px"><strong>CHÚ Ý SỐ HIỆN THỊ NHÉ ANH EM</strong></span></p>
-                                    <p style="text-align:center"><span style="font-size:10px"><strong>CÓ THỂ CHUYỂN MOMO HOẶC ZALOPAY SANG NGÂN HÀNG KHÔNG THỂ CHUYỂN MOMO SANG MOMO SẼ BỊ LỖI</strong></span></p>
-                                    <p style="text-align:center"><span style="font-size:10px"><strong>CHƠI TỪ NGÂN HÀNG KHÁC VÀO MB TÍNH MÃ GIAO DỊCH CỦA TÀI KHOẢN NHẬN ,&nbsp; CÓ SAO KÊ XANH CHÍN&nbsp;</strong></span></p>
-                                    <p style="text-align:center"><span style="font-size:10px"><strong>SAI HẠN MỨC<span style="color:#f1c40f"> HOÀN 100% </span>NẾU THẮNG, SAI NỘI DUNG <span style="color:#f1c40f">HOÀN 50%&nbsp;</span>ĐÁNH SỐ TẮT NHẮN CSKH ĐỂ THANH TOÁN</strong></span></p>
-                                </div>
-                            </div>
-                            <div class="scrollbar-track scrollbar-track-x show" style="display: none;">
-                                <div class="scrollbar-thumb scrollbar-thumb-x" style="width: 1116px; transform: translate3d(0px, 0px, 0px);"></div>
-                            </div>
-                            <div class="scrollbar-track scrollbar-track-y show" style="display: none;">
-                                <div class="scrollbar-thumb scrollbar-thumb-y" style="height: 445px; transform: translate3d(0px, 0px, 0px);"></div>
-                            </div>
-                        </div>
+                <div class="dashbox play-rules">
+                    <div class="dashbox__title">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-gear-wide-connected" viewBox="0 0 16 16">
+                                <path d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434l.071-.286zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5zm0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78h4.723zM5.048 3.967c-.03.021-.058.043-.087.065l.087-.065zm-.431.355A4.984 4.984 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8 4.617 4.322zm.344 7.646.087.065-.087-.065z"></path>
+                            </svg>
+                            THÔNG TIN BANK NHẬN
+                        </h3>
                     </div>
-                    <div id="chanlezalo" class="bank-details">
+                    {{#if profile}}
+                    <div class="dashbox__table-wrap dashbox__table-wrap--4">
+                        <p><b>🏦. Ngân hàng: <img width="8%" src="{{ bankImage bank.bankType }}"></b></p>
+                        <p><b>🏧. Số tài khoản: <span>{{ formatBank bank.accountNumber }}</span><span>&nbsp;
+                            <a href="javascript:void(0);" data-id="{{bank.accountNumber}}" data-msg="Đã copy:  MB QUÂN ĐỘI {{bank.accountNumber}}" class="mncp copy-bt">&nbsp;</a></span></b>
+                        </p>
+                        <p><b>📇. Chủ tài khoản: <span>{{ formatBank bank.name }}</span> </b></p>
+                        <p><b>🚦. <span>{{ numberFormat bank.betMin }} VNĐ -> {{ numberFormat bank.betMax }} VNĐ</span>
+                        </b></p>
+                        <p><b>Hỗ trợ hoàn lại 90% nếu sai cú pháp hoặc ngoài mức cược cho phép.</b></p>
+                        <p>Hệ thống chấp nhận tất cả các bank. Kết quả được tính như sau:</p>
+                        <p><i>Ngân hàng <i><b>MBBank, Vietcombank, Techcombank</b></i> sẽ được tính theo Mã ID giao
+                            dịch.</i></p>
+                        <p>Riêng <i><b>Momo</b></i> luôn lấy theo mã ID của ngân hàng nhận.</p>
+                    </div>
+                    {{else}}
+                        <div class="text-center">
+                            <p>ĐỂ LẤY THÔNG TIN BANK CHUYỂN KHOẢN, VUI LÒNG <a href="/dangnhap">ĐĂNG NHẬP</a> HOẶC <a href="/dangky">ĐĂNG KÝ NHANH</a></p>
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+
+            {{#if profile}}
+                <div class="col-12" id="recently-win-game">
+                    <div class="dashbox">
                         <div class="dashbox__title">
                             <h3>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bank2" viewBox="0 0 16 16">
-                                    <path d="M8.277.084a.5.5 0 0 0-.554 0l-7.5 5A.5.5 0 0 0 .5 6h1.875v7H1.5a.5.5 0 0 0 0 1h13a.5.5 0 1 0 0-1h-.875V6H15.5a.5.5 0 0 0 .277-.916l-7.5-5zM12.375 6v7h-1.25V6h1.25zm-2.5 0v7h-1.25V6h1.25zm-2.5 0v7h-1.25V6h1.25zm-2.5 0v7h-1.25V6h1.25zM8 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM.5 15a.5.5 0 0 0 0 1h15a.5.5 0 1 0 0-1H.5z"></path>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-clock" viewBox="0 0 16 16">
+                                    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"></path>
+                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"></path>
                                 </svg>
-                                THÔNG TIN TÀI KHOẢN NHẬN
+                                LỊCH SỬ CHƠI GẦN ĐÂY
                             </h3>
                         </div>
-                        <div class="dashbox__table-wrap dashbox__table-bank-infos" data-scrollbar="true" tabindex="-1" style="overflow: hidden; outline: none;">
-                            <div class="scroll-content">
-                                <table class="dashbox__table">
-                                    <thead>
+                        <div class="dashbox__table-wrap dashbox__table-wrap-win-games">
+                            <table class="dashbox__table">
+                                <thead>
+                                <tr>
+                                    <th>TRÒ CHƠI</th>
+                                    <th>ĐÃ CHỌN</th>
+                                    <th>MÃ GIAO DỊCH</th>
+                                    <th>SỐ TIỀN</th>
+                                    <th>KẾT QUẢ</th>
+                                    <th>TRẢ THƯỞNG</th>
+                                    <th>THỜI GIAN</th>
+                                    <th>SAO KÊ</th>
+                                    <th>GHI CHÚ</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tableHistory">
+                                {{#each userHistories}}
                                     <tr>
-                                        <th>NGÂN HÀNG NHẬN</th>
-                                        <th>TÀI KHOẢN</th>
-                                        <th>CƯỢC MIN</th>
-                                        <th>CƯỢC MAX</th>
-                                        <th>MÃ QR</th>
+                                        <td>{{this.gameType}}</td>
+                                        <td>
+                                            <div class="dashbox__table-text">
+                                                <code>{{this.comment}}</code>
+                                            </div>
+                                        </td>
+                                        <td>{{this.transId}}</td>
+                                        <td>{{ numberFormat this.amount}}</td>
+                                        <td>
+                                            <div class="dashbox__table-text"><span
+                                                    class="gstatus {{this.result}}">{{uppercase this.result}}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{{historyPaid this.result this.paid}}}
+                                        </td>
+
+                                        <td>{{ formatDate this.timeTLS 'DD-MM-YYYY HH:mm:ss'}}</td>
+                                        <td>
+                                            {{#if this.isCheck}}
+                                                <div class="dashbox__table-text">
+                                                    <button type="button" data-bs-toggle="modal"
+                                                            data-content="{{this.description}}"
+                                                            class="catalog__btn catalog__btn--view show-notes"
+                                                            data-bs-target="#modal-notes">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                            <path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            {{/if}}
+                                        </td>
+                                        <td>
+                                            {{#if this.description}}
+                                                <div class="dashbox__table-text">
+                                                    <button type="button" data-bs-toggle="modal"
+                                                            data-content="{{this.description}}"
+                                                            class="catalog__btn catalog__btn--view show-notes"
+                                                            data-bs-target="#modal-notes">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                            <path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            {{/if}}
+                                        </td>
                                     </tr>
-                                    </thead>
-                                    <tbody id="listAccountsBanks">
-                                    <tr>
-                                        <td>
-                                            <div class="dashbox__table-text code-num">OKVIPBANK</div>
-                                        </td>
-                                        <td> <a href="/auth/login">ĐĂNG NHẬP</a></td>
-                                        <td>
-                                            <div class="dashbox__table-text code-num">10,000</div>
-                                        </td>
-                                        <td>
-                                            <div class="dashbox__table-text code-num">3,000,999</div>
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="dashbox__table-text code-num">OKVIPBANK</div>
-                                        </td>
-                                        <td> <a href="/auth/login">ĐĂNG NHẬP</a></td>
-                                        <td>
-                                            <div class="dashbox__table-text code-num">10,000</div>
-                                        </td>
-                                        <td>
-                                            <div class="dashbox__table-text code-num">3,000,999</div>
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="dashbox__table-text code-num">OKVIPBANK</div>
-                                        </td>
-                                        <td> <a href="/auth/login">ĐĂNG NHẬP</a></td>
-                                        <td>
-                                            <div class="dashbox__table-text code-num">10,000</div>
-                                        </td>
-                                        <td>
-                                            <div class="dashbox__table-text code-num">3,000,999</div>
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <div class="subpage-wrapper">
-                                    <p style="text-align:center"><span style="font-size:10px"><strong>CHƠI CÙNG BANK SẼ TÍNH MÃ GIAO DỊCH CỦA BẠN ,</strong></span></p>
-                                    <p style="text-align:center"><span style="font-size:10px"><strong>CHƠI TỪ NGÂN HÀNG KHÁC VÀO MB TECK TÍNH MÃ GIAO DỊCH CỦA TÀI KHOẢN NHẬN ,&nbsp; CÓ SAO KÊ XANH CHÍN&nbsp;</strong></span></p>
-                                    <p style="text-align:center"><span style="font-size:10px"><strong>SAI HẠN MỨC<span style="color:#f1c40f"> HOÀN 100% </span>NẾU THẮNG, SAI NỘI DUNG <span style="color:#f1c40f">HOÀN 50%&nbsp;</span>ĐÁNH SỐ TẮT NHẮN CSKH ĐỂ THANH TOÁN</strong></span></p>
-                                </div>
-                            </div>
-                            <div class="scrollbar-track scrollbar-track-x show" style="display: none;">
-                                <div class="scrollbar-thumb scrollbar-thumb-x" style="width: 1116px; transform: translate3d(0px, 0px, 0px);"></div>
-                            </div>
-                            <div class="scrollbar-track scrollbar-track-y show" style="display: none;">
-                                <div class="scrollbar-thumb scrollbar-thumb-y" style="height: 445px; transform: translate3d(0px, 0px, 0px);"></div>
-                            </div>
+                                {{/each}}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-            </div>
+            {{/if}}
             <div class="col-12" id="recently-win-game">
                 <div class="dashbox">
                     <div class="dashbox__title">
@@ -277,6 +249,8 @@
                     </div>
                 </div>
             </div>
+            <!-- end dashbox -->
+            <!-- dashbox -->
             <div class="col-12 col-xl-6">
                 <div class="dashbox top-week">
                     <div class="dashbox__title">
@@ -343,16 +317,22 @@
                         </h3>
                     </div>
                     <div class="dashbox__table-wrap dashbox__table-wrap--4">
-                        <p><a href="{{settings.telegram.support}}">[HOÀN BILL]</a> HOÀN TIỀN BILL ĐẦU NGÀY THUA TỪ 50K
+                        <p><a href="https://t.me/+xfiT88Y8-JE2MTc1">[HOÀN BILL]</a> HOÀN TIỀN BILL ĐẦU NGÀY THUA TỪ 50K
                             LÊN TỚI 15% .</p>
-                        <p><a href="{{settings.telegram.support}}">[HOÀN CƯỢC LỖI]</a> HOÀN CƯỢC BILL SAI NỘI DUNG 90%, HOÀN CƯỢC SAI HẠN MỨC
+                        <p><a href="/refunds">[HOÀN CƯỢC LỖI]</a> HOÀN CƯỢC BILL SAI NỘI DUNG 90%, HOÀN CƯỢC SAI HẠN MỨC
                             100% (Nếu Thắng).</p>
-                        <p><a href="{{settings.telegram.support}}">[CHUỖI CHƯỢC NGÀY]</a> HOÀN CƯỢC BILL CHUỖI THẮNG VÀ THUA LIÊN TIẾP
+                        <p><a href="/">[CHUỖI CHƯỢC NGÀY]</a> HOÀN CƯỢC BILL CHUỖI THẮNG VÀ THUA LIÊN TIẾP
                             TỈ LỆ CỰC CAO.</p>
+<!--                        <p><a href="/fans">[FAN MIỄN PHÍ]</a> NHẬN TRÊN 200K HÀNG NGÀY KHI TRỞ THÀNH FAN CHẴN LẺ MÀ-->
+<!--                            KHÔNG PHẢI CHƠI.</p>-->
+<!--                        <p><a href="/jackpots">[NỔ HŨ]</a> THAM GIA NỔ HŨ CHỈ MẤT 2% BILL CHIẾN THẮNG</p>-->
+<!--                        <p><a href="/referrals">[CỘNG TÁC VIÊN]</a> GIỚI THIỆU NGƯỜI CHƠI MỚI, THU NHẬP KHÔNG GIỚI HẠN.-->
+<!--                        </p>-->
                         <p><a href="/missions">[NHIỆM VỤ NGÀY]</a> CHƠI CÀNG NHIỀU, NHẬN THƯỞNG CÀNG KHỦNG.</p>
-                        <p><a href="/wheel">[VÒNG QUAY MAY MAN]</a> QUAY TAY CÀNG NHIỀU, NỔ HŨ CÀNG NHIỀU (SUPBANK TRÍCH 0.2 - TỪ 50K TIỀN THẮNG VÀO ĐỔI ĐIỂM SUPBANK PHỤC VỤ AE CHƠI HŨ ).</p>
+                        <p><a href="/wheel">[VÒNG QUAY MAY MAN]</a> QUAY TAY CÀNG NHIỀU, NỔ HŨ CÀNG NHIỀU ({{settings.nameSite}} TRÍCH 0.2 - TỪ 50K TIỀN THẮNG VÀO ĐỔI ĐIỂM
+                            {{settings.nameSite}} PHỤC VỤ AE CHƠI HŨ ).</p>
                         <p><a href="/wheel">[SỰ KIỆN LIÊN QUÂN]</a> TỔ CHỨC VÀO T6 HÀNG TUẦN TOP1 NHẬN 500K, TOP2 NHẬN 200K.</p>
-                        <p><a href="{{settings.telegram.support}}">[ĐẠI LÝ]</a> SUPBANK HỖ TRỢ ĐẠI LÝ ÔM.</p>
+                        <p><a href="https//t.me/sukaxitu">[ĐẠI LÝ]</a> {{settings.nameSite}} HỖ TRỢ ĐẠI LÝ ÔM.</p>
                     </div>
                 </div>
             </div>
@@ -447,7 +427,7 @@
                     <div class="dashbox__table-wrap dashbox__table-wrap--4">
                         <p>Chẵn lẻ bank là một trò chơi xanh chín, dựa vào mã giao dịch của ngân hàng MB Bank,
                             Vietcombank (VCB), Techcombank (TCB), Vietinbank (VTB), BIDV, VPB Bank, ACB, Agribank,
-                            TPBANK (TPB), Sacombank (STB), SHB và nhiều ngân hàng khác. Hiện nay SUPBANK.ME đang là hệ
+                            TPBANK (TPB), Sacombank (STB), SHB và nhiều ngân hàng khác. Hiện nay {{settings.nameSite}}.ME đang là hệ
                             thống bank chẵn lẻ, chẵn lẻ zalopay, chẵn lẻ momo thanh toán tự động chỉ trong 3 giây và uy
                             tín nhất hiện tại, Hỗ trợ khách hàng 24/7</p>
                         <p>Chẵn lẻ là một trò chơi phổ biến, thường được chơi trong các dịp tết đầu năm, lễ hội hoặc tụ
@@ -477,115 +457,75 @@
                     </div>
                 </div>
             </div>
+            <!-- end dashbox -->
             <div class="toast toast-ctv">
                 <div class="toast-body text-center">
-                    <p><strong>HOÀN NGAY 25K KHI CHƠI 50K MỖI NGÀY TẠI <span style="color:#c0392b">OKVIPBANK.ME</span></strong></p>
-                    <p><span style="color:#f1c40f"><em>Tỉ Lệ Sẽ Là X2.7 Cho Thắng Chiến Thắng Từ 10000 -&gt; 59999</em></span></p>
-                    <p><span style="color:#f1c40f"><em>Tỉ Lệ Sẽ Là X2.55 Cho Chiến Thắng Từ 59999 -&gt; 1000000</em></span></p>
-                    <p><span style="color:#f1c40f"><em>Tỉ Lệ Sẽ Là X2.5 Cho Chiến Thắng Từ 1000000 -&gt; 5000000</em></span></p>
-                    <p><strong>THAM GIA NHÓM PHÁT CODE HÀNG NGÀY <a href="https://t.me/okvipbank">TẠI ĐÂY</a></strong></p>
-                    <div class="mt-3 pt-3 border-top"><a onclick="closeTosat()" href="/dai-ly" class="lnk__btn">HƯỚNG DẪN CHƠI</a> <button onclick="closeTosat()" type="button" class="close-tctv">ĐÓNG</button></div>
+                    <p>LOA LOA!!! NHẬN <span class="code-num">HOÀN CƯỢC</span> LÊN TỚI <span class="code-num">60% BẤT KỂ THẮNG THUA</span>.
+                        ƯU ĐÃI CHỈ DÀNH RIÊNG CHO BẠN TRONG NGÀY HÔM NAY!!!</p>
+                    <div class="mt-3 pt-3 border-top">
+                        <a href="/hoancuoc" class="lnk__btn">THAM GIA</a>
+                        <button type="button" class="close-tctv">ĐÓNG</button>
+                    </div>
                 </div>
             </div>
+            <!-- view modal -->
+            <div class="modal fade" id="modal-notes" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal__content modal__content--view">
+                            <div class="comments__autor">
+                                <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                                <span class="comments__name">{{settings.nameSite}} Thông Báo</span>
+                            </div>
+                            <p class="comments__text"></p>
+                            <div class="modal__btns">
+                                <button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal"
+                                        aria-label="Close"><span>Đóng</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end view modal -->
+            <!-- view modal -->
             <div class="modal fade" id="modal-qr" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal__content modal__content--view">
-                            <div class="comments__autor"><img class="comments__avatar" src="https://cdn.m-services.pro/uploads/1745253896853-compressed.png" alt=""> <span class="comments__name">OKVIPBANK.ME QR-Code</span></div>
+                            <div class="comments__autor">
+                                <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
+                                <span class="comments__name">{{settings.nameSite}} QR-Code</span>
+                            </div>
                             <div class="text-center" id="canvasQr">
                                 <canvas width="200" height="200"></canvas>
                             </div>
                             <div class="text-center mt-3">
                                 <p class="qr-notes"><i>(lưu ý cần tải lại lấy qr code mỗi lần chơi)</i></p>
-                                <p class="text-center mt-2 mb-1"><button id="qr-download" class="lnk__btn" mobile-device="0">Tải QrCode về máy</button></p>
+                                <p class="text-center mt-2 mb-1">
+                                    <button id="qr-download" class="lnk__btn" mobile-device="0">Tải QrCode về máy
+                                    </button>
+                                </p>
                             </div>
-                            <div class="modal__btns"><button class="modal__btn modal__btn--dismiss btn-close-qr" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Đóng</span></button></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="chat-wrap-all">
-                <div class="dashbox__title">
-                    <h3>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"></path>
-                            <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"></path>
-                        </svg>
-                        PHÒNG CHAT
-                    </h3>
-                    <button class="hide-chat">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #fef9a6;">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M6 9l6 6l6 -6"></path>
-                        </svg>
-                    </button>
-                </div>
-                <div class="chat-box">
-                    <div class="chat-content-wrap">
-                        <div class="chat-content">
-                            <div class="chat-items">
-                                <div class="loading-chat">
-                                    <p class="small-notes"><i>Vui lòng <a href="/auth/login" class="code-num">ĐĂNG NHẬP</a> để CHAT</i></p>
-                                </div>
+                            <div class="modal__btns">
+                                <button class="modal__btn modal__btn--dismiss btn-close-qr" type="button"
+                                        data-bs-dismiss="modal" aria-label="Close"><span>Đóng</span></button>
                             </div>
                         </div>
                     </div>
-                    <div class="dashbox__title pt-0 pb-0"></div>
-                    <a class="chat-typing row lnk__btn btn-custom" href="/auth/login">ĐĂNG NHẬP ĐỂ CHAT</a>
                 </div>
             </div>
-            <span class="openchat-wrap d-none d-xl-block position-fixed bottom-0 end-0 m-3">
-         <button class="open-chat-btn" onclick="return toggleChat(),!1">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-               <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"></path>
-               <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"></path>
-            </svg>
-            CHAT NGAY VỚI CSKH
-         </button>
-      </span>
-            <div id="footer-bar" class="footer-bar d-xl-none"><a href="/" class="active-nav"><i class="bi bi-house-fill font-16"></i><span>HOME</span></a> <a href="/dai-ly"><i class="bi bi-info-circle-fill font-17"></i><span>HƯỚNG DẪN</span></a> <a href="/giftcode"><i class="bi bi-gift font-15"></i><span>CODE</span></a> <a href="/nhiem-vu-ngay"><i class="bi bi-star-fill font-17"></i><span>NV NGÀY</span></a> <a href="#" onclick="return toggleChat(),!1"><i class="bi bi-telegram font-16"></i><span>HỖ TRỢ</span></a> <a href="#" class="footer-bar-menu"><i class="bi bi-list"></i><span>Menu</span></a></div>
-            <div class="modal fade" id="modal-notes" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal__content modal__content--view">
-                            <div class="comments__autor"><img class="comments__avatar" src="https://cdn.m-services.pro/uploads/1745253896853-compressed.png" alt=""> <span class="comments__name">OKVIPBANK.ME Thông Báo</span></div>
-                            <p class="comments__text"></p>
-                            <div class="modal__btns"><button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Đóng</span></button></div>
-                        </div>
-                    </div>
-                </div>
+            <!-- end view modal -->
+            <div class="hidden">
+                <input type="hidden" name="Account" id="_account"/>
+                <input type="hidden" name="HLog" value="" id="_hlog"/>
             </div>
-            <div class="modal fade" id="modal-fix" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <form class="modal-content" action="/refund-transid" method="post" id="form-hoan-cuoc">
-                        <div class="modal__content modal__content--view">
-                            <div class="comments__autor"><img class="comments__avatar" src="https://cdn.m-services.pro/uploads/1745253896853-compressed.png" alt=""> <span class="comments__name">OKVIPBANK.ME Thông tin</span></div>
-                            <div class="cf-turnstile" data-sitekey="0x4AAAAAABPCjFOmeRQBJLrN">
-                                <div><input type="hidden" name="cf-turnstile-response" id="cf-chl-widget-4lfm3_response" value="0.TF8ZpEhv8DyFpKK-0eRifB3y_RQTzFNOaCLDDLeVrLiKt9bgn0JXZNIR8Teya0dOBlyp9tt4t_8ux6NTKbTwkBfwYe9C9qeX-YAJPWXIKUtStMdwPEJyAj7nDw28YxWWX8FLO-yV02Btr5TzOChMoJsSKspBh6z1bwKFc9N8-RFK2ivKB7hKJVUDdVLNDBlrE9DVVCD2tH9Ky83zp_CAJ3h56vCZf9Wd_0wYFBbKeOa82jKgDmDykRVAEdsBuzmyfMV1_4oyMIeKQyZdozpUmgwHD2phjayXJSeMBAp65LvVukVoVhnQ9Ftw0zKt7I8o5rl9GuGCOvGw9Lt1_hMj3D45gm8dxUoScJ22Tz1g2vk5KRcHemQIybBUIiMA3lEbWFabAS3Sn81EkG4JyUNFs-DX55n_RuOruvwRD-K359G0wLj8x1R8AWRQJRoO4p_pGkfAGRokI6WrM2E-ggxuh3XbfeguNVoMpE3AUb9ktq7-lCKnrDAWoUcZFLpHITAgwJs-hQ43ERV-9VPOgqTisbgnJcvwKIxXhhBJLT970m2CkPwXJGuKLa9D5D7Gjs5_tgmkZrcjLfkKpqholEyR_rLvtj_igN6PuzFtUC9-XBfJHJ82-GDV5kYEANi4VJmO50FHGpNqQIwyTPpBuiA2NXPxvSTNa3Ksv8oCSiCkh3G0uQnnoEDk3yPmigSjG_hxua6bbJEa0JDUgNbayZfHyU6THv0palicxMOFnSnqKlhUsp62uKMV-0ISLWa0pWLpdABv5HFCR-7IIc-2oIAazu-Fuo9xgMsEJ02c2QhPMk9UBaHwwrYpjt8LGppsa2ElOgDoy09iBHwaGeAODTKk07DFWiGlm-x1g02L0T_dsSoXSIgiuVMnmNEEupszingzrnaRJ48GoNSgv1RNOzAm2QaPDYgN3sB3OLU-E0763uk.LA94Zj0km4l9hzGFgR00dw.427238214db00c5b962e6ce5854c24aaf5a7233a1f20e1a865e2c752b7d6c7cd"></div>
-                            </div>
-                            <input type="hidden" name="transId" id="transId">
-                            <div class="modal__btns"><button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Đóng</span></button> <button class="modal__btn lnk__btn hoan-cuoc" bs-transid="" type="button"><span>Hoàn tiền 50%</span></button></div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-victory" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal__content modal__content--view">
-                            <div class="comments__autor"><img class="comments__avatar" src="https://cdn.m-services.pro/uploads/1745253896853-compressed.png" alt=""> <span class="comments__name">OKVIPBANK.ME WINNER!</span></div>
-                            <div style="position: relative; width: 100%; height: 200px;">
-                                <canvas id="canvasWinner1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
-                                <canvas id="canvasWinner2" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-                            </div>
-                            <div class="modal__btns"><button class="modal__btn modal__btn--dismiss btn-close-qr" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Đóng</span></button></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </main>
+<!-- end main content -->
+<!-- view modal -->
+
 <script>
     function resizeIframe(obj) {
         var fh = obj.contentWindow.document.body.scrollHeight;
@@ -595,27 +535,6 @@
         localStorage.setItem("cnoti", Date.now() + 36e5),
         $("#toast-ctv").css("display", 'none')
     })
-    $(document).ready(function () {
-        // $(".sidebar__nav-item:first a").addClass("sidebar__nav-link--active");
-        // $('.nav-tabs li button[data-bs-target="' + ag + '"]').addClass("active");
-        // $(".game-list .game-details").removeClass("active");
-        // $("#" + ag.slice(1)).addClass("active");
-
-        // var gameActive = $('.btn-game').attr("data-bs-target");
-        // $(gameActive).addClass("active");
-        // console.log(gameActive)
-
-        $(".nav-tabs li button").click(function () {
-            if (!$(this).hasClass("active")) {
-                var target = $(this).attr("data-bs-target");
-                betting = target;
-                $(".nav-tabs li button").removeClass("active");
-                $(this).addClass("active");
-                $(".bank-list .bank-details").removeClass("active");
-                $(target).addClass("active");
-            }
-        });
-    });
 </script>
 <div class="toast toast-ctv" id="toast-ctv" style="display: block;">
     <div class="toast-body text-center">
@@ -632,7 +551,7 @@
 <div id="ifr-bill-panel">
     <div class="bill-frame">
         <div class="bill-header">
-            <span class="header-bill-text">SupBank SAO KÊ</span>
+            <span class="header-bill-text">{{settings.nameSite}} SAO KÊ</span>
             <a href="javascript:void(0);" class="close-bill-frame">ĐÓNG</a>
         </div>
         <iframe id="show-bill-ifr" src="about:blank" onload="resizeIframe(this)"></iframe>
