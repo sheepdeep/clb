@@ -95,7 +95,7 @@ const momoController = {
     },
     add: async (req, res, next) => {
         try {
-            const {username, password, accountNumber, bankType, proxy} = req.body;
+            const {username, password, accountNumber, bankType, proxy, name} = req.body;
             if (!username || !password || !accountNumber || !bankType) {
                 return res.json({
                     success: false,
@@ -105,6 +105,7 @@ const momoController = {
 
             await bankModel.findOneAndUpdate({accountNumber, bankType}, {
                 $set: {
+                    name,
                     username,
                     password,
                     accountNumber,

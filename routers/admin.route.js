@@ -214,6 +214,7 @@ router.route('/block')
     .post(isAdmin, blockController.add);
 
 router.route('/block/:id')
+    .put(isAdmin, blockController.update)
     .delete(isAdmin, blockController.remove);
 
 /** Momo Router */

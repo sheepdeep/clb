@@ -18,6 +18,7 @@ const DEVICE_LIST = JSON.parse(require('fs').readFileSync(__dirname + '/../json/
 const utilVsign = require('./utilVsign.helper');
 const settingModel = require('../models/setting.model');
 const jwt = require('jsonwebtoken');
+const sleep = require('time-sleep');
 
 // login section
 const CHECK_USER_BE_MSG_LINK = 'https://api.momo.vn/public/auth/user/check';
@@ -635,11 +636,17 @@ exports.relogin = async (phone, password) => {
             }, {upsert: true})
 
             return {
+                success: true,
                 message: 'Đăng nhập thành công',
             };
 
         }
-        throw new Error(result.errorDesc || 'Có lỗi khi login')
+
+        return {
+            success: false,
+            message: result.errorDesc
+        }
+        // throw new Error(result.errorDesc || 'Có lỗi khi login')
 
     }
 
@@ -1245,6 +1252,11 @@ exports.refreshToken = async (phone) => {
     try {
 
         const currentAccount = await momoModel.findOne({ phone }).lean();
+
+        if (currentAccount.errorLogin >= 5) {
+            return this.relogin(currentAccount.phone, currentAccount.password);
+        }
+
         const dataDevice = JSON.parse(currentAccount.dataDevice);
         const timeToRequest = Date.now();
 
@@ -1298,6 +1310,7 @@ exports.refreshToken = async (phone) => {
         if (resultMoMo.errorCode === 0) {
             await momoModel.findOneAndUpdate({ phone }, {
                 $set: {
+                    errorLogin: 0,
                     accessToken: resultMoMo.momoMsg.accessToken,
                     lastLogined: new Date().toISOString(),
                 },
@@ -1307,11 +1320,33 @@ exports.refreshToken = async (phone) => {
                 message: 'Lấy lại token thành công!'
             }
         }
-        return false;
+
+        await momoModel.findOneAndUpdate({ phone }, {
+            $set: {
+                errorLogin: currentAccount.errorLogin + 1,
+                lastLogined: new Date().toISOString(),
+            },
+        });
+
+        return {
+            success: false,
+            message: 'Lấy lại token thất bại!'
+        };
 
     } catch (e) {
-        this.login(phone);
-        console.log('Có lỗi xảy ra khi gọi API momo REFRESH_TOKEN', e);
+        const currentAccount = await momoModel.findOne({ phone }).lean();
+
+        if (currentAccount.errorLogin >= 5) {
+            return this.relogin(currentAccount.phone, currentAccount.password);
+        }
+
+        await momoModel.findOneAndUpdate({ phone: currentAccount.phone }, {
+            $set: {
+                errorLogin: currentAccount.errorLogin + 1 || 1,
+                lastLogined: new Date().toISOString(),
+            },
+        });
+
         return {
             success: false,
             message: 'Có lỗi xảy ra khi gọi API momo REFRESH_TOKEN',
@@ -2438,8 +2473,6 @@ exports.moneyTransferBank = async (phone, dataTransfer) => {
             logo,
         } = dataTransfer;
 
-        console.log(dataTransfer);
-
 
         const initBody = {
             "appCode": process.env.APP_CODE,
@@ -2518,10 +2551,10 @@ exports.moneyTransferBank = async (phone, dataTransfer) => {
 
         const result = await this.doRequestEncryptMoMo(TRAN_HIS_INIT_MSG, initBody, currentAccount, "TRAN_HIS_INIT_MSG", {agentid: currentAccount.agentId, secureid: dataDevice.secureId, devicecode: dataDevice.deviceCode, phone: currentAccount.phone})
 
-        if (result.errorCode === '-818') {
+        if (result.errorCode === -818) {
             await this.verifyTransferBank(phone, dataTransfer);
-            await Promise.delay(1000);
-            await this.INIT_TOBANK(phone, dataTransfer);
+            await sleep(1000);
+            return await this.INIT_TOBANK(phone, dataTransfer);
         }
 
         if (_.get(result, 'result')) {
@@ -2533,6 +2566,12 @@ exports.moneyTransferBank = async (phone, dataTransfer) => {
             const confirmResult = await this.confirmMoMoToBank(phone, result.momoMsg.tranHisMsg, dataTransfer.amount, confirmId);
             if (confirmResult.success) {
                 return confirmResult;
+            } else  if (confirmResult.errorCode === -86) {
+                return {
+                    success: false,
+                    message: confirmResult.errorDesc,
+                }
+
             } else {
                 // console.log(confirmResult);
 
@@ -2564,8 +2603,6 @@ exports.moneyTransferBank = async (phone, dataTransfer) => {
 
                 const confirmResult1 = await this.confirmMoMoToBank(phone, result.momoMsg.tranHisMsg, amount, confirmId);
 
-                console.log(confirmResult1)
-
                 return confirmResult1;
 
             }
@@ -2583,6 +2620,8 @@ exports.moneyTransferBank = async (phone, dataTransfer) => {
 
 exports.verifyTransferBank = async (phone, dataTransfer) => {
 
+
+    const checkSession = await this.checkSession(phone);
     const currentAccount = checkSession.data;
     const dataDevice = JSON.parse(currentAccount.dataDevice);
 
@@ -2636,6 +2675,8 @@ exports.verifyTransferBank = async (phone, dataTransfer) => {
     };
 
     const { data: response } = await axios(config);
+
+    console.log(response);
 
     return response;
 }
@@ -2712,7 +2753,7 @@ exports.getSmartOTP = async (phone, transactionId) => {
             headers: {
                 key: process.env.VSIGN_APIKEY,
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.31',
-                version: APP_CODE,
+                version: process.env.APP_CODE,
             },
             timeout: 10000,
         });

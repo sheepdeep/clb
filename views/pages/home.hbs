@@ -329,9 +329,10 @@
 <!--                        <p><a href="/referrals">[CỘNG TÁC VIÊN]</a> GIỚI THIỆU NGƯỜI CHƠI MỚI, THU NHẬP KHÔNG GIỚI HẠN.-->
 <!--                        </p>-->
                         <p><a href="/missions">[NHIỆM VỤ NGÀY]</a> CHƠI CÀNG NHIỀU, NHẬN THƯỞNG CÀNG KHỦNG.</p>
-                        <p><a href="/wheel">[VÒNG QUAY MAY MAN]</a> QUAY TAY CÀNG NHIỀU, NỔ HŨ CÀNG NHIỀU (SUPBANK TRÍCH 0.2 - TỪ 50K TIỀN THẮNG VÀO ĐỔI ĐIỂM SUPBANK PHỤC VỤ AE CHƠI HŨ ).</p>
+                        <p><a href="/wheel">[VÒNG QUAY MAY MAN]</a> QUAY TAY CÀNG NHIỀU, NỔ HŨ CÀNG NHIỀU ({{settings.nameSite}} TRÍCH 0.2 - TỪ 50K TIỀN THẮNG VÀO ĐỔI ĐIỂM
+                            {{settings.nameSite}} PHỤC VỤ AE CHƠI HŨ ).</p>
                         <p><a href="/wheel">[SỰ KIỆN LIÊN QUÂN]</a> TỔ CHỨC VÀO T6 HÀNG TUẦN TOP1 NHẬN 500K, TOP2 NHẬN 200K.</p>
-                        <p><a href="https//t.me/sukaxitu">[ĐẠI LÝ]</a> SUPBANK HỖ TRỢ ĐẠI LÝ ÔM.</p>
+                        <p><a href="https//t.me/sukaxitu">[ĐẠI LÝ]</a> {{settings.nameSite}} HỖ TRỢ ĐẠI LÝ ÔM.</p>
                     </div>
                 </div>
             </div>
@@ -426,7 +427,7 @@
                     <div class="dashbox__table-wrap dashbox__table-wrap--4">
                         <p>Chẵn lẻ bank là một trò chơi xanh chín, dựa vào mã giao dịch của ngân hàng MB Bank,
                             Vietcombank (VCB), Techcombank (TCB), Vietinbank (VTB), BIDV, VPB Bank, ACB, Agribank,
-                            TPBANK (TPB), Sacombank (STB), SHB và nhiều ngân hàng khác. Hiện nay SUPBANK.ME đang là hệ
+                            TPBANK (TPB), Sacombank (STB), SHB và nhiều ngân hàng khác. Hiện nay {{settings.nameSite}}.ME đang là hệ
                             thống bank chẵn lẻ, chẵn lẻ zalopay, chẵn lẻ momo thanh toán tự động chỉ trong 3 giây và uy
                             tín nhất hiện tại, Hỗ trợ khách hàng 24/7</p>
                         <p>Chẵn lẻ là một trò chơi phổ biến, thường được chơi trong các dịp tết đầu năm, lễ hội hoặc tụ
@@ -474,7 +475,7 @@
                         <div class="modal__content modal__content--view">
                             <div class="comments__autor">
                                 <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
-                                <span class="comments__name">SupBank Thông Báo</span>
+                                <span class="comments__name">{{settings.nameSite}} Thông Báo</span>
                             </div>
                             <p class="comments__text"></p>
                             <div class="modal__btns">
@@ -493,7 +494,7 @@
                         <div class="modal__content modal__content--view">
                             <div class="comments__autor">
                                 <img class="comments__avatar" src="{{ settings.favicon }}" alt="">
-                                <span class="comments__name">SupBank QR-Code</span>
+                                <span class="comments__name">{{settings.nameSite}} QR-Code</span>
                             </div>
                             <div class="text-center" id="canvasQr">
                                 <canvas width="200" height="200"></canvas>
@@ -550,7 +551,7 @@
 <div id="ifr-bill-panel">
     <div class="bill-frame">
         <div class="bill-header">
-            <span class="header-bill-text">SupBank SAO KÊ</span>
+            <span class="header-bill-text">{{settings.nameSite}} SAO KÊ</span>
             <a href="javascript:void(0);" class="close-bill-frame">ĐÓNG</a>
         </div>
         <iframe id="show-bill-ifr" src="about:blank" onload="resizeIframe(this)"></iframe>

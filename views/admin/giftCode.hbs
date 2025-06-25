@@ -277,70 +277,34 @@
 <div class="kt-modal" data-kt-modal="true" data-bs-modal="gift-history" tabindex="-1" role="dialog">
     <div class="kt-modal-content max-w-[400px] top-[5%]">
         <div class="kt-modal-body">
-            <form action="#" method="post" id="formAdd" class="kt-form">
-                <div class="modal-body">
-                    <div data-kt-datatable="true" data-kt-datatable-state-save="false" id="team_crew_table" data-kt-datatable-initialized="true" class="datatable-initialized">
-                        <div class="kt-scrollable-x-auto">
-                            <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
-                                <thead>
+            <div class="modal-body">
+                <div data-kt-datatable="true" data-kt-datatable-state-save="false" id="team_crew_table" data-kt-datatable-initialized="true" class="datatable-initialized">
+                    <div class="kt-scrollable-x-auto">
+                        <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
+                            <thead>
                                 <tr>
                                     <th>Thành Viên</th>
                                     <th>Thời Gian</th>
-                                    <th><span class="delete-history" data-id="all">
-                                        <i class="fa fa-times-circle"
+                                    <th><span class="delete-history" data-id="all"><i class="fa fa-times-circle"
                                                                                       aria-hidden="true"></i></span></th>
                                 </tr>
-                                </thead>
-                                <tbody id="historyGift"></tbody>
-                            </table>
-                        </div>
+                            </thead>
+                            <tbody id="historyGift"></tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="kt-modal-footer">
-                    <div></div>
-                    <div class="flex gap-4">
-                        <button class="kt-btn kt-btn-secondary" data-kt-modal-dismiss="#modal">Đóng</button>
-                    </div>
+            </div>
+            <div class="kt-modal-footer">
+                <div></div>
+                <div class="flex gap-4">
+                    <button class="kt-btn kt-btn-secondary" data-kt-modal-dismiss="#modal">Đóng</button>
                 </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="kt-modal" data-kt-modal="true" data-bs-modal="gift-history" tabindex="-1" role="dialog">
-    <div class="kt-modal-content max-w-[400px] top-[5%]">
-        <div class="kt-modal-body">
-            <form action="#" method="post" id="formAdd" class="kt-form">
-                <div class="modal-body">
-                    <div data-kt-datatable="true" data-kt-datatable-state-save="false" id="team_crew_table" data-kt-datatable-initialized="true" class="datatable-initialized">
-                        <div class="kt-scrollable-x-auto">
-                            <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
-                                <thead>
-                                    <tr>
-                                        <th>Thành Viên</th>
-                                        <th>Thời Gian</th>
-                                        <th><span class="delete-history" data-id="all"><i class="fa fa-times-circle"
-                                                                                          aria-hidden="true"></i></span></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="historyGift"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="kt-modal-footer">
-                    <div></div>
-                    <div class="flex gap-4">
-                        <button class="kt-btn kt-btn-secondary" data-kt-modal-dismiss="#modal">Đóng</button>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
 
 <script src="../themes/admin/js/moment.js"></script>
-
 <script type="text/javascript">
     $(document).ready(function (e) {
         $('body').on('click', '.history-gift', function (e) {
