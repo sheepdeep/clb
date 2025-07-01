@@ -91,18 +91,11 @@ const settingSchema = new mongoose.Schema({
             type: String,
             default: 'active'
         },
-        win: {
-            type: Number,
-            default: 100
-        },
-        won: {
-            type: Number,
-            default: 50
-        },
         fail: {
             type: Number,
             default: 100
         },
+        data: Array,
         limit: {
             type: Number,
             default: 10
