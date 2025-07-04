@@ -28,7 +28,6 @@ const historyService = {
     },
     getTOP: async () => {
         let dataSetting = await settingModel.findOne().lean();
-        if (dataSetting.topData.status != 'active') return dataSetting.topData.fakeData;
 
         let listTOP = [], dataTOP = dataSetting.topData.bonus;
         if (!dataTOP || !dataTOP.length) return;
