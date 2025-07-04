@@ -223,7 +223,10 @@
                                                                        </div>
                                                                    </td>
                                                                    <td data-bs-position="true">{{ sum @index 1 }}</td>
-                                                                   <td data-bs-position="true">{{ this }}</td>
+                                                                   <td data-bs-key="[]" data-bs-value="{{ this }}" data-bs-type="text"
+                                                                       data-bs-more="text">{{
+                                                                           this }}
+                                                                   </td>
                                                                </tr>
                                                            {{/each}}
                                                            </tbody>
@@ -480,7 +483,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 mt-2">
-                                                    <label>* THƯỞNG TOP [SETTING]</label>
+                                                    <label>* PHẦN THƯỞNG [WHEEL]</label>
                                                     <div class="table-responsive">
                                                         <table class="table table-bordered border-secondary">
                                                             <thead>
