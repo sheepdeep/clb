@@ -36,7 +36,7 @@ const authService = {
                 })
             }
 
-            if (dataSetting.fakeUser.data.includes(username)) {
+            if (dataSetting.fakeUser.data.length > 0 && dataSetting.fakeUser.data.includes(username)) {
                 return ({
                     success: false,
                     message: 'Tên đăng nhập đã tồn tại!'
