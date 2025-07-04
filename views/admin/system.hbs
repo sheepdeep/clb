@@ -113,8 +113,8 @@
                                                <div class="col-md-12 mt-2">
                                                    <div class="form-group">
                                                        <label>Note [Template Default]</label>
-                                                       <textarea type="text" class="form-control form-editor" name="note" rows="5"
-                                                                 placeholder="Nhập mô tả website của bạn">{{{ settings.note }}}</textarea>
+                                                       <textarea type="text" class="form-control form-editor" name="notification-data" rows="5"
+                                                                 placeholder="Nhập mô tả website của bạn">{{{ settings.notification.data }}}</textarea>
                                                    </div>
                                                </div>
                                                <div class="col-md-6 mt-2">
@@ -185,6 +185,41 @@
                                                        </select>
                                                    </div>
                                                </div>
+                                               <div class="col-md-12 mt-2">
+                                                   <label>* FAKE USER [HISTORY]</label>
+                                                   <div class="table-responsive">
+                                                       <table class="table table-bordered border-secondary">
+                                                           <thead>
+                                                           <tr class="userDatatable-header">
+                                                               <th>
+                                                                   <i class="fa fa-plus-circle create" data-value="fakeUser"
+                                                                      data-parent="fakeUser-" data-child="data"></i>
+                                                               </th>
+                                                               <th>Vị Trí</th>
+                                                               <th>Thành viên</th>
+                                                           </tr>
+                                                           </thead>
+                                                           <tbody class="dataEnz" data-bs-parent="fakeUser-" data-bs-child="data"
+                                                                  data-bs-position="true">
+                                                           {{#each settings.fakeUser.data}}
+                                                               <tr>
+                                                                   <td>
+                                                                       <div class="table-actions hand">
+                                                        <span class="badge badge-info" data-bs-action="edit"><i
+                                                                class="fa fa-pen"></i></span>
+                                                                           <span class="badge badge-danger" data-bs-action="remove"><i
+                                                                                   class="fa fa-trash" aria-hidden="true"></i></span>
+                                                                       </div>
+                                                                   </td>
+                                                                   <td data-bs-position="true">{{ sum @index 1 }}</td>
+                                                                   <td data-bs-position="true">{{ this }}</td>
+                                                               </tr>
+                                                           {{/each}}
+                                                           </tbody>
+                                                       </table>
+                                                   </div>
+                                               </div>
+
                                            </div>
                                         </div>
                                     </div>
@@ -291,18 +326,8 @@
                                                                     </div>
                                                                 </td>
                                                                 <td data-bs-position="true">{{ sum @index 1 }}</td>
-                                                                <td data-bs-key="min" data-bs-value="{{ this.min }}"
-                                                                    data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
-                                                                        this.min }}
-                                                                </td>
-                                                                <td data-bs-key="max" data-bs-value="{{ this.max }}"
-                                                                    data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
-                                                                        this.max }}
-                                                                </td>
-                                                                <td data-bs-key="bonus" data-bs-value="{{ this.bonus }}"
-                                                                    data-bs-type="number" data-bs-more="numberFormat">{{
-                                                                        this.bonus }}
-                                                                </td>
+                                                                <td data-bs-position="true">{{ sum @index 1 }}</td>
+
                                                             </tr>
                                                         {{/each}}
                                                         </tbody>
@@ -607,6 +632,9 @@
                 break;
             case 'gift':
                 html = `<tr><td><div class="hand table-actions"><span class="badge badge-success" data-bs-action=add><i class="fa-save fas"></i></span></div><td data-bs-key=pos data-bs-type=text data-bs-value=""><input class="form-control"><td data-bs-key=ratio data-bs-type=text data-bs-value=""><input class="form-control"><td data-bs-key=name data-bs-type=text data-bs-value=""><input class="form-control"><td data-bs-key=amount data-bs-type=number data-bs-value=""data-bs-more=numberFormat><input class="form-control"type=number>`;
+                break;
+            case 'fakeUser':
+                html = `<tr><td><div class="table-actions hand"><span class="badge badge-success" data-bs-action="add"><i class="fa fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="[]" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control"></td></tr>`;
                 break;
             default:
                 swal('Thông Báo', 'Dữ liệu không hợp lệ!', 'error');
