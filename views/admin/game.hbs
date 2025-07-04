@@ -1,265 +1,175 @@
 {{>head}}
-<body class="antialiased flex h-full text-base text-foreground bg-background [--header-height:60px] [--sidebar-width:290px] bg-muted! lg:overflow-hidden">
-<!-- Theme Mode -->
-<script>
-    const defaultThemeMode = 'light'; // light|dark|system
-    let themeMode;
+{{>nav}}
+<div id="content" class="main-content">
+    <div class="layout-px-spacing">
 
-    if (document.documentElement) {
-        if (localStorage.getItem('kt-theme')) {
-            themeMode = localStorage.getItem('kt-theme');
-        } else if (
-                document.documentElement.hasAttribute('data-kt-theme-mode')
-        ) {
-            themeMode =
-                    document.documentElement.getAttribute('data-kt-theme-mode');
-        } else {
-            themeMode = defaultThemeMode;
-        }
+        <div class="middle-content container-xxl p-0">
+            <div class="secondary-nav">
+                <div class="breadcrumbs-container" data-page-heading="Analytics">
+                    <header class="header navbar navbar-expand-sm">
+                        <a href="javascript:void(0);" class="btn-toggle sidebarCollapse" data-placement="bottom">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                        </a>
+                        <div class="d-flex breadcrumb-content">
+                            <div class="page-header">
+                                <div class="page-title"><h3>{{ title }}</h3></div>
+                            </div>
+                        </div>
+                    </header>
+                </div>
+            </div>
+            <!--  END BREADCRUMBS  -->
 
-        if (themeMode === 'system') {
-            themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches
-                    ? 'dark'
-                    : 'light';
-        }
-
-        document.documentElement.classList.add(themeMode);
-    }
-</script>
-<div class="flex grow">
-    <header class="flex lg:hidden items-center fixed z-10 top-0 start-0 end-0 shrink-0 bg-muted h-(--header-height)" id="header">
-        <!-- Container -->
-        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
-            <a href="/metronic/tailwind/demo4/">
-                <img class="dark:hidden min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray.svg"/>
-                <img class="hidden dark:block min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray-dark.svg"/>
-            </a>
-            <button class="kt-btn kt-btn-icon kt-btn-ghost -me-2" data-kt-drawer-toggle="#sidebar">
-                <i class="ki-filled ki-menu">
-                </i>
-            </button>
-        </div>
-        <!-- End of Container -->
-    </header>
-    <div class="flex flex-col lg:flex-row grow pt-(--header-height) lg:pt-0">
-        {{>nav}}
-        <div class="flex grow rounded-xl bg-background border border-input lg:ms-(--sidebar-width) mt-0 lg:mt-5 m-5">
-            <div class="flex flex-col grow kt-scrollable-y-auto lg:[--kt-scrollbar-width:auto] pt-5" id="scrollable_content">
-                <main class="grow" role="content">
-                    <div class="pb-5">
-                        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
-                            <div class="flex items-center flex-wrap gap-1 lg:gap-5">
-                                <h1 class="font-medium text-base text-mono">
-                                    {{ title }}
-                                </h1>
+            <div class="row layout-top-spacing">
+                <form>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-8 col-sm-9 filtered-list-search mx-auto">
+                            <div class="form-inline my-2 my-lg-0 justify-content-center">
+                                <div class="w-100">
+                                    <input type="text" class="w-100 form-control product-search br-30" name="search" placeholder="Tìm kiếm" value="{{search}}">
+                                    <button class="btn btn-primary _effect--ripple waves-effect waves-light" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="kt-container-fluid">
-                        <div class="grid gap-5 lg:gap-7.5">
-                            <div class="kt-card kt-card-grid min-w-full">
-                                <div class="kt-card-header flex-wrap gap-2">
-                                    <form>
-                                        <div class="flex flex-wrap gap-2 lg:gap-5">
-                                            <div class="flex">
-                                                <label class="kt-input">
-                                                    <i class="ki-filled ki-magnifier">
-                                                    </i>
-                                                    <input name="search" placeholder="Tìm kiếm" type="text" value="{{ search }}">
-                                                </label>
-                                            </div>
-                                            <div class="flex flex-wrap gap-2.5">
-                                                <button class="kt-btn kt-btn-outline kt-btn-primary">
-                                                    <i class="ki-filled ki-search-list">
-                                                    </i>
-                                                    Tìm kiếm
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
+                </form>
+
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="#" method="post" id="formAdd">
+                                <div class="form-group">
+                                    <label class="">Tên Mini Game</label>
+                                    <input class="form-control" name="name" placeholder="Nhập tên mini game">
                                 </div>
-                                <div class="kt-card-content">
-                                    <div data-kt-datatable="true" data-kt-datatable-state-save="false" id="team_crew_table" data-kt-datatable-initialized="true" class="datatable-initialized">
-                                        <div class="kt-scrollable-x-auto">
-                                            <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
-                                                <thead>
-                                                <tr>
-                                                    <th class="min-w-[150px]">Loại {{{ tableSort query 'gameType' _sort }}}</th>
-                                                    <th class="min-w-[150px]">Tên Mini Game {{{ tableSort query 'name' _sort }}}</th>
-                                                    <th class="min-w-[150px]">Mô Tả</th>
-                                                    <th class="min-w-[150px]">Trưng Bày {{{ tableSort query 'display' _sort }}}</th>
-                                                    <th class="min-w-[150px]">Thời Gian {{{ tableSort query 'updatedAt' _sort }}}</th>
-                                                    <th class="min-w-[60px]">
-                                                        <span data-kt-modal-toggle="#game-add">
-                                                            <i class="ki-filled ki-plus-circle" aria-hidden="true"></i>
-                                                        </span>
-                                                    </th>
-                                                </tr>
-                                                </thead>
-                                                <tbody data-table="game">
-                                                {{#each games}}
-                                                    <tr class="edit-one" data-id="{{ this._id }}">
-                                                        <td data-bs-name="gameType" data-bs-hasEdit="true">
+                                <div class="form-group">
+                                    <label class="">Loại</label>
+                                    <input class="form-control" placeholder="Đặt tên loại tùy thích" name="gameType">
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Mô Tả</label>
+                                    <textarea class="form-control" name="description" placeholder="Mô tả trò chơi"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Loại ngân hàng</label>
+                                    <select name="display" class="form-control">
+                                        <option value="show">Hiển Thị</option>
+                                        <option value="hide">Ẩn</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100 mt-2 action-add">Thêm</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="table-responsive">
+                        <table style="table-layout: fixed; width: 100%" class="table table-bordered border-secondary">
+                            <thead  class="text-center">
+                            <tr>
+                                <th>Loại {{{ tableSort query 'gameType' _sort }}}</th>
+                                <th>Tên Mini Game {{{ tableSort query 'name' _sort }}}</th>
+                                <th style="width: 250px">Mô Tả</th>
+                                <th>Trưng Bày {{{ tableSort query 'display' _sort }}}</th>
+                                <th>Thời Gian {{{ tableSort query 'updatedAt' _sort }}}</th>
+                                <th class="">
+                                    <span data-kt-modal-toggle="#game-add">
+                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                    </span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody data-table="game" class="text-center">
+                            {{#each games}}
+                                <tr class="edit-one" data-id="{{ this._id }}">
+                                    <td data-bs-name="gameType" data-bs-hasEdit="true">
                                                     <span data-bs-table="html" data-bs-value="{{ this.gameType }}">
-                                                        <span class="kt-badge kt-badge-secondary" data-bs-html="true">{{
+                                                        <span class="badge badge-secondary" data-bs-html="true">{{
                                                         this.gameType }}</span>
                                                     </span>
-                                                            <span class="hidden" data-bs-table="edit" data-bs-value="{{ this.gameType }}">
-                                                        <input type="text" class="kt-input mb-2"
+                                        <span class="hidden" data-bs-table="edit" data-bs-value="{{ this.gameType }}">
+                                                        <input type="text" class="form-control mb-2"
                                                                data-bs-edit="true">
                                                     </span>
-                                                        </td>
-                                                        <td data-bs-name="name" data-bs-hasEdit="true">
+                                    </td>
+                                    <td data-bs-name="name" data-bs-hasEdit="true">
                                                     <span data-bs-table="html" data-bs-value="{{ this.name }}">
                                                         <span data-bs-html="true">{{ this.name }}</span>
                                                     </span>
-                                                            <span class="hidden" data-bs-table="edit" data-bs-value="{{ this.name }}">
-                                                        <input type="text" class="kt-input mb-2"
+                                        <span class="hidden" data-bs-table="edit" data-bs-value="{{ this.name }}">
+                                                        <input type="text" class="form-control mb-2"
                                                                data-bs-edit="true">
                                                     </span>
-                                                        </td>
-                                                        <td data-bs-name="description" data-bs-hasEdit="true">
+                                    </td>
+                                    <td data-bs-name="description" data-bs-hasEdit="true">
                                                     <span data-bs-table="html" data-bs-value="{{ this.description }}">
-                                                        <textarea class="kt-textarea" data-bs-html="true">{{
+                                                        <textarea class="form-control" data-bs-html="true">{{
                                                         this.description }}</textarea>
                                                     </span>
-                                                            <span class="hidden" data-bs-table="edit" data-bs-value="{{ this.description }}">
-                                                        <textarea class="kt-textarea mb-2" rows="3"
+                                        <span class="hidden" data-bs-table="edit" data-bs-value="{{ this.description }}">
+                                                        <textarea class="form-control mb-2" rows="3"
                                                                   data-bs-edit="true">{{ this.description }}</textarea>
                                                     </span>
-                                                        </td>
-                                                        <td data-bs-name="display" data-bs-hasEdit="true">
+                                    </td>
+                                    <td data-bs-name="display" data-bs-hasEdit="true">
                                                     <span data-bs-table="html" data-bs-value="{{ this.display }}">
                                                         <span data-bs-html="true">
                                                             {{#ifCond this.display '==' 'show'}}
-                                                                <span class="kt-badge kt-badge-success">Hiển Thị</span>
+                                                                <span class="badge badge-success">Hiển Thị</span>
                                                             {{else}}
-                                                                <span class="kt-badge kt-badge-danger">Ẩn</span>
+                                                                <span class="badge badge-danger">Ẩn</span>
                                                             {{/ifCond}}
                                                         </span>
                                                     </span>
-                                                            <span class="hidden" data-bs-table="edit" data-bs-value="{{ this.display }}">
-                                                        <select class="kt-select mb-2"
+                                        <span class="hidden" data-bs-table="edit" data-bs-value="{{ this.display }}">
+                                                        <select class="form-control mb-2"
                                                                 data-bs-edit="true">
                                                             <option value="show">Hiển Thị</option>
                                                             <option value="hide">Ẩn</option>
                                                         </select>
                                                     </span>
-                                                        </td>
-                                                        <td>{{ formatDate this.updatedAt 'HH:mm:ss DD-MM-YYYY'}}</td>
-                                                        <td>
-                                                            <div class="table-actions hand">
-                                                                <a href="reward?search={{ this.gameType }}"
-                                                                class="kt-badge kt-badge-warning">
-                                                                    <i class="ki-filled ki-eye" aria-hidden="true"></i>
-                                                                </a>
-                                                                <span class="kt-badge kt-badge-destructive ml-2" data-bs-submit="game"
-                                                                      data-bs-action="remove" data-id="{{ this._id }}"><i
-                                                                        class="ki-filled ki-trash" aria-hidden="true"></i></span>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                {{else}}
-                                                    <tr>
-                                                        <td colspan="24" class="text-center py-10">
-                                                            <div class="flex flex-col justify-center items-center gap-4 min-h-[150px]">
-                                                                <img src="../themes/admin/images/1.png" alt="Rỗng" class="w-20 h-20 object-contain" />
-                                                                <p class="text-gray-500 text-base">Không có dữ liệu!</p>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                {{/each}}
-                                                </tbody>
-                                            </table>
+                                    </td>
+                                    <td>{{ formatDate this.updatedAt 'HH:mm:ss DD-MM-YYYY'}}</td>
+                                    <td class="text-center">
+                                        <div class="flex-column">
+                                            <a href="reward?gameType={{ this.gameType }}">
+                                                <span class="badge badge-light-dark"><i class="fa fa-eye" aria-hidden="true"></i></span>
+                                            </a>
+                                            <a class="action-more" data-bs-submit="game" data-bs-action="remove" data-id="{{ this._id }}">
+                                                <span class="badge badge-light-danger"><i class="fa fa-trash"></i></span>
+                                            </a>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                    </td>
+                                </tr>
+                            {{else}}
+                                <tr>
+                                    <td colspan="24" class="text-center py-10">
+                                        <div class="flex flex-col justify-center items-center gap-4 min-h-[150px]">
+                                            <img src="../themes/admin/images/1.png" alt="Rỗng" class="w-20 h-20 object-contain" />
+                                            <p class="text-gray-500 text-base">Không có dữ liệu!</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
                     </div>
-                </main>
-                {{>foot}}
+                </div>
             </div>
-        </div>
-    </div>
-</div>
-<div class="kt-modal" data-kt-modal="true" id="game-add" data-bs-modal="momo-add">
-    <div class="kt-modal-content max-w-[400px] top-[5%]">
-        <div class="kt-modal-header">
-            <h3 class="kt-modal-title"> Thêm Mini Game</h3>
-            <button
-                    type="button"
-                    class="kt-modal-close"
-                    aria-label="Close modal"
-                    data-kt-modal-dismiss="#modal"
-            >
-                <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-x"
-                        aria-hidden="true"
-                >
-                    <path d="M18 6 6 18"></path>
-                    <path d="m6 6 12 12"></path>
-                </svg>
-            </button>
-        </div>
-        <div class="kt-modal-body">
-            <form action="#" method="post" id="formAdd" class="kt-form">
-                <div class="modal-body">
-                    <div class="space-y-5">
-                        <div class="kt-form-item">
-                            <label class="kt-form-label">Tên Mini Game</label>
-                            <div class="kt-form-control">
-                                <input class="kt-input" name="name" placeholder="Nhập tên mini game">
-                            </div>
-                        </div>
-                        <div class="kt-form-item">
-                            <label class="kt-form-label">Loại</label>
-                            <div class="kt-form-control">
-                                <input class="kt-input" placeholder="Đặt tên loại tùy thích" name="gameType">
-                            </div>
-                        </div>
-                        <div class="kt-form-item">
-                            <label class="kt-form-label">Mô Tả</label>
-                            <div class="kt-form-control">
-                                <textarea class="kt-input" name="description" placeholder="Mô tả trò chơi"></textarea>
-                            </div>
-                        </div>
-                        <div class="kt-form-item">
-                            <label class="kt-form-label">Loại ngân hàng</label>
-                            <div class="kt-form-control">
-                                                        <select name="display" class="kt-select">
-                                                            <option value="show">Hiển Thị</option>
-                                                            <option value="hide">Ẩn</option>
-                                                        </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="kt-modal-footer">
-                    <div></div>
-                    <div class="flex gap-4">
-                        <button class="kt-btn kt-btn-secondary" data-kt-modal-dismiss="#modal">Đóng</button>
-                        <button type="submit" class="kt-btn kt-btn-primary action-add" data-action="otp">Thêm</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
-<script src="../themes/admin/assets/js/core.bundle.js">
-</script>
-<script src="../themes/admin/assets/vendors/ktui/ktui.min.js">
-</script>
+        </div>
+
+    </div>
+    <div class="footer-wrapper">
+        <div class="footer-section f-section-1">
+            <p class="">Copyright © <span class="dynamic-year">2022</span> <a target="_blank" href="">CuuDen</a>, All rights reserved.</p>
+        </div>
+        <div class="footer-section f-section-2">
+            <p class="">Coded with <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></p>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script>
     $('body').on('submit', '#formAdd', function (e) {
         e.preventDefault();
@@ -279,4 +189,5 @@
                 })
     })
 </script>
-</html>
+{{>foot}}
+

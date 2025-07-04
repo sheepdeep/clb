@@ -1,390 +1,334 @@
 {{>head}}
-<body class="antialiased flex h-full text-base text-foreground bg-background [--header-height:60px] [--sidebar-width:290px] bg-muted! lg:overflow-hidden">
-<!-- Theme Mode -->
-<script>
-    const defaultThemeMode = 'light'; // light|dark|system
-    let themeMode;
+{{>nav}}
+<div id="content" class="main-content">
+    <div class="layout-px-spacing">
 
-    if (document.documentElement) {
-        if (localStorage.getItem('kt-theme')) {
-            themeMode = localStorage.getItem('kt-theme');
-        } else if (
-                document.documentElement.hasAttribute('data-kt-theme-mode')
-        ) {
-            themeMode =
-                    document.documentElement.getAttribute('data-kt-theme-mode');
-        } else {
-            themeMode = defaultThemeMode;
-        }
-
-        if (themeMode === 'system') {
-            themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches
-                    ? 'dark'
-                    : 'light';
-        }
-
-        document.documentElement.classList.add(themeMode);
-    }
-</script>
-<div class="flex grow">
-    <header class="flex lg:hidden items-center fixed z-10 top-0 start-0 end-0 shrink-0 bg-muted h-(--header-height)" id="header">
-        <!-- Container -->
-        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
-            <a href="/metronic/tailwind/demo4/">
-                <img class="dark:hidden min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray.svg"/>
-                <img class="hidden dark:block min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray-dark.svg"/>
-            </a>
-            <button class="kt-btn kt-btn-icon kt-btn-ghost -me-2" data-kt-drawer-toggle="#sidebar">
-                <i class="ki-filled ki-menu">
-                </i>
-            </button>
-        </div>
-        <!-- End of Container -->
-    </header>
-    <div class="flex flex-col lg:flex-row grow pt-(--header-height) lg:pt-0">
-        {{>nav}}
-        <div class="flex grow rounded-xl bg-background border border-input lg:ms-(--sidebar-width) mt-0 lg:mt-5 m-5">
-            <div class="flex flex-col grow kt-scrollable-y-auto lg:[--kt-scrollbar-width:auto] pt-5" id="scrollable_content">
-                <main class="grow" role="content">
-                    <div class="pb-5">
-                        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
-                            <div class="flex items-center flex-wrap gap-1 lg:gap-5">
-                                <h1 class="font-medium text-base text-mono">
-                                    {{ title }}
-                                </h1>
+        <div class="middle-content container-xxl p-0">
+            <div class="secondary-nav">
+                <div class="breadcrumbs-container" data-page-heading="Analytics">
+                    <header class="header navbar navbar-expand-sm">
+                        <a href="javascript:void(0);" class="btn-toggle sidebarCollapse" data-placement="bottom">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                        </a>
+                        <div class="d-flex breadcrumb-content">
+                            <div class="page-header">
+                                <div class="page-title"><h3>{{ title }}</h3></div>
                             </div>
                         </div>
-                    </div>
-                    <div class="kt-container-fluid">
-                        <form action="" method="post" class="dataEnz" id="formSetting">
-                            <div class="space-y-3 text-sm">
-                                <div class="flex items-center gap-2.5" data-kt-tabs="true">
-                                    <button class="kt-btn kt-btn-outline active" data-kt-tab-toggle="#tab_1_1">
-                                        <img src="../themes/admin/images/setting.png" alt="" width="20"> Cài Đặt Hệ Thống
-                                    </button>
-                                    <button class="kt-btn kt-btn-outline" data-kt-tab-toggle="#tab_1_2">
-                                        <img src="https://cdn-icons-png.flaticon.com/512/8208/8208947.png" alt="" width="20"> Cài Đặt Trả Thưởng
-                                    </button>
-                                    <button class="kt-btn kt-btn-outline" data-kt-tab-toggle="#tab_1_3">
-                                        <img src="../themes/admin/images/data.png" alt="" width="20"> Cài Đặt Dữ Liệu
-                                    </button>
-                                    <button class="kt-btn kt-btn-outline" data-kt-tab-toggle="#tab_1_4">
-                                        <img src="https://www.svgrepo.com/show/422180/wheel-lucky-game.svg" alt="" width="20"> Cài Đặt Vòng Quay
-                                    </button>
-                                    <button class="kt-btn kt-btn-outline" data-kt-tab-toggle="#tab_1_5">
-                                        <img src="https://www.svgrepo.com/show/422184/bet-casino-gamble-4.svg" alt="" width="20"> Cài Đặt Hũ
-                                    </button>
+                    </header>
+                </div>
+            </div>
+            <!--  END BREADCRUMBS  -->
+
+            <div class="row layout-top-spacing">
+
+                <div class="col-xl-12">
+                    <form action="" method="post" class="dataEnz" id="formSetting">
+                        <div class="simple-pill">
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="pills-setting-tab" data-bs-toggle="pill" data-bs-target="#pills-setting-icon" type="button" role="tab" aria-controls="pills-setting-icon" aria-selected="true">
+                                    <img src="../themes/admin/images/setting.png" alt="" width="20"> Cài Đặt Hệ Thống
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-reward-tab" data-bs-toggle="pill" data-bs-target="#pills-reward-icon" type="button" role="tab" aria-controls="pills-reward-icon" aria-selected="false">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/8208/8208947.png" alt="" width="20"> Cài Đặt Trả Thưởng
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-data-tab" data-bs-toggle="pill" data-bs-target="#pills-data-icon" type="button" role="tab" aria-controls="pills-data-icon" aria-selected="false">
+                                    <img src="../themes/admin/images/data.png" alt="" width="20"> Cài Đặt Dữ Liệu
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-wheel-tab" data-bs-toggle="pill" data-bs-target="#pills-wheel-icon" type="button" role="tab" aria-controls="pills-data-icon" aria-selected="false">
+                                    <img src="https://www.svgrepo.com/show/422180/wheel-lucky-game.svg" alt="" width="20"> Cài Đặt Vòng Quay
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-setting-icon" role="tabpanel" aria-labelledby="pills-setting-tab" tabindex="0">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                           <div class="row">
+                                               <div class="col-xl-12">
+                                                   <div class="form-group">
+                                                       <label>Tiền Hũ</label>
+                                                       <input type="number" class="form-control"
+                                                              name="jackpotCount" value="{{ settings.jackpotCount }}"
+                                                              placeholder="Nhập số tiền trong hũ">
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-6 mt-2">
+                                                   <div class="form-group">
+                                                       <label>Tên Website</label>
+                                                       <input type="text" class="form-control" name="nameSite" value="{{ settings.nameSite }}"
+                                                              placeholder="Nhập tên website của bạn">
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-6 mt-2">
+                                                   <div class="form-group">
+                                                       <label>Tiêu Đề</label>
+                                                       <input type="text" class="form-control" name="defaultTitle" value="{{ settings.defaultTitle }}"
+                                                              placeholder="Nhập tiêu đề website">
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-4 mt-2">
+                                                   <div class="form-group">
+                                                       <label>Icon Website</label>
+                                                       <input type="text" class="form-control" name="favicon" value="{{ settings.favicon }}"
+                                                              placeholder="Nhập link icon website của bạn">
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-4 mt-2">
+                                                   <div class="form-group">
+                                                       <label>Logo Website</label>
+                                                       <input type="text" class="form-control" name="logo" value="{{ settings.favicon }}"
+                                                              placeholder="Nhập link logo website của bạn">
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-4 mt-2">
+                                                   <div class="form-group">
+                                                       <label>Thumbnail Website</label>
+                                                       <input type="text" class="form-control" name="thumbnail" value="{{ settings.favicon }}"
+                                                              placeholder="Nhập link thumbnail website của bạn">
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-6 mt-2">
+                                                   <div class="form-group">
+                                                       <label>Từ Khóa</label>
+                                                       <textarea type="text" class="form-control" name="description" rows="5"
+                                                                 placeholder="Nhập mô tả website của bạn">{{settings.description}}</textarea>
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-6 mt-2">
+                                                   <div class="form-group">
+                                                       <label>Mô Tả</label>
+                                                       <textarea type="text" class="form-control" name="keywords" rows="5"
+                                                                 placeholder="Nhập từ Khóa website của bạn">{{settings.keywords}}</textarea>
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-12 mt-2">
+                                                   <div class="form-group">
+                                                       <label>Note [Template Default]</label>
+                                                       <textarea type="text" class="form-control form-editor" name="note" rows="5"
+                                                                 placeholder="Nhập mô tả website của bạn">{{{ settings.note }}}</textarea>
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-6 mt-2">
+                                                   <div class="form-group">
+                                                       <label>Header Script</label>
+                                                       <textarea type="text" class="form-control" name="headerScript" rows="3"
+                                                                 placeholder="headerScript">{{ settings.headerScript
+                                                       }}</textarea>
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-6 mt-2">
+                                                   <div class="form-group">
+                                                       <label>Footer Script</label>
+                                                       <textarea type="text" class="form-control" name="footerScript" rows="3"
+                                                                 placeholder="footerScript">{{
+                                                       settings.footerScript
+                                                       }}</textarea>
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-6 mt-2">
+                                                   <div class="form-group">
+                                                       <label>BOT TOKEN
+                                                           [TELEGRAM]</label>
+                                                       <input type="text" class="form-control" name="telegram-token" value="{{ settings.telegram.token }}"
+                                                              placeholder="Nhập token bot telegram">
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-6 mt-2">
+                                                   <div class="form-group">
+                                                       <label>CHAT ID
+                                                           [TELEGRAM]</label>
+                                                       <input type="text" class="form-control" name="telegram-chatId" value="{{ settings.telegram.chatId }}"
+                                                              placeholder="Nhập token bot telegram">
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-4 mt-2">
+                                                   <div class="form-group">
+                                                       <label>LINK SUPPORT
+                                                           [TELEGRAM]</label>
+                                                       <input type="text" class="form-control" name="telegram-support" value="{{ settings.telegram.support }}"
+                                                              placeholder="Nhập link support">
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-4 mt-2">
+                                                   <div class="form-group">
+                                                       <label>LINK GROUP
+                                                           [TELEGRAM]</label>
+                                                       <input type="text" class="form-control" name="telegram-group" value="{{ settings.telegram.group }}"
+                                                              placeholder="Nhập link grpup">
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-4 mt-2">
+                                                   <div class="form-group">
+                                                       <label>LINK BOT
+                                                           [TELEGRAM]</label>
+                                                       <input type="text" class="form-control" name="telegram-botLink" value="{{ settings.telegram.botLink }}"
+                                                              placeholder="Nhập link botLink">
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-12 mt-2">
+                                                   <div class="form-group">
+                                                       <label>Gửi mã gift đến telegram người chơi</label>
+                                                       <select name="telegram-botGift" class="form-control">
+                                                           {{#select settings.telegram.botGift }}
+                                                               <option value="active">Bật</option>
+                                                               <option value="inactive">Tắt</option>
+                                                           {{/select }}
+                                                       </select>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="text-sm">
-                                    <div class="" id="tab_1_1">
-                                        <div class="kt-card w-[400px]">
-                                            <div class="kt-card-content py-5">
-                                                <div class="space-y-5">
-                                                    <div class="kt-form-item">
-                                                        <label class="kt-form-label">X3</label>
-                                                        <div class="kt-form-control">
-                                                            <select data-kt-select="true" name="x3" class="kt-select" data-kt-select-placeholder="Chọn số điện thoại">
-                                                                {{#select settings.x3 }}
-                                                                    <option value="active">Bật</option>
-                                                                    <option value="inactive">Tắt</option>
-                                                                {{/select }}
-                                                            </select>
-                                                        </div>
+                            </div>
+                            <div class="tab-pane fade" id="pills-reward-icon" role="tabpanel" aria-labelledby="pills-reward-tab" tabindex="0">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Loại Trả Thưởng</label>
+                                                        <select name="reward-dataType" class="form-control">
+                                                            {{#select settings.reward.dataType }}
+                                                                <option value="all">Trả Hết</option>
+                                                                <option value="limit">Giới Hạn</option>
+                                                            {{/select }}
+                                                        </select>
                                                     </div>
-                                                    <div class="kt-form-item">
-                                                        <label class="kt-form-label">Tiền Hũ</label>
-                                                        <div class="kt-form-control">
-                                                            <input type="number" class="kt-input"
-                                                                   name="jackpotCount" value="{{ settings.jackpotCount }}"
-                                                                   placeholder="Nhập số tiền trong hũ">
-                                                        </div>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <div class="form-group">
+                                                        <label>Nội Dung Trả Thưởng</label>
+                                                        <input type="text" class="form-control" name="commentSite-rewardGD" value="{{ settings.commentSite.rewardGD }}"
+                                                               placeholder="Nhập nội dung trả thưởng">
                                                     </div>
-                                                    <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">Tên Website</label>
-                                                                <div class="kt-form-control">
-                                                                    <input type="text" class="kt-input" name="nameSite" value="{{ settings.nameSite }}"
-                                                                           placeholder="Nhập tên website của bạn">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">Tiêu Đề</label>
-                                                                <div class="kt-form-control">
-                                                                    <input type="text" class="kt-input" name="defaultTitle" value="{{ settings.defaultTitle }}"
-                                                                           placeholder="Nhập tiêu đề website">
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <div class="form-group">
+                                                        <label>SỐ TIỀN GIỚI HẠN
+                                                            [MOMO REWARD]</label>
+                                                        <input type="text" class="form-control" name="reward-momoMax" value="{{ settings.reward.momoMax }}"
+                                                               placeholder="Nhập số tiền tối đa để được sử dụng api momo">
                                                     </div>
-                                                    <div class="grid lg:grid-cols-3 gap-5 lg:gap-7.5 items-stretch">
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">Icon Website</label>
-                                                                <div class="kt-form-control">
-                                                                    <input type="text" class="kt-input" name="favicon" value="{{ settings.favicon }}"
-                                                                           placeholder="Nhập link icon website của bạn">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">Logo Website</label>
-                                                                <div class="kt-form-control">
-                                                                    <input type="text" class="kt-input" name="logo"
-                                                                           value="{{ settings.logo }}"
-                                                                           placeholder="Nhập link logo website của bạn">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">Thumbnail</label>
-                                                                <div class="kt-form-control">
-                                                                    <input type="text" class="kt-input" name="thumbnail" value="{{ settings.thumbnail }}"
-                                                                           placeholder="Nhập link thumbnail website">
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <div class="form-group">
+                                                        <label>SỐ TIỀN GIỚI HẠN
+                                                            [ZALO REWARD]</label>
+                                                        <input type="text" class="form-control" name="reward-zaloMax" value="{{ settings.reward.zaloMax }}"
+                                                               placeholder="Nhập số tiền tối đa để được sử dụng api zalo">
                                                     </div>
-                                                    <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">Mô Tả</label>
-                                                                <div class="kt-form-control">
-                                                                    <textarea type="text" class="kt-textarea" name="description" rows="5"
-                                                                              placeholder="Nhập mô tả website của bạn"></textarea>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">Từ Khóa</label>
-                                                                <div class="kt-form-control">
-                                                                    <textarea type="text" class="kt-textarea"  name="keywords" rows="5"
-                                                                              placeholder="Nhập từ khóa tìm kiếm website của bạn">{{
-                                                                    settings.keywords
-                                                                    }}></textarea>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                </div>
+                                                <div class="col-md-12 mt-2">
+                                                    <div class="form-group">
+                                                        <label>Hoàn Tiền</label>
+                                                        <select name="refund-status" class="form-control">
+                                                            {{#select settings.refund.status }}
+                                                                <option value="active">Có</option>
+                                                                <option value="close">Không</option>
+                                                            {{/select }}
+                                                        </select>
                                                     </div>
-                                                    <div class="kt-form-item">
-                                                        <label class="kt-form-label">Note [Template
-                                                            Default]</label>
-                                                        <div class="kt-form-control">
-                                                                        <textarea type="text" class="kt-textarea form-editor" name="note" rows="5"
-                                                                                  placeholder="Nhập mô tả website của bạn">{{{ settings.note }}}</textarea>
-                                                        </div>
+                                                </div>
+<!--                                                <div class="col-md-4 mt-2">-->
+<!--                                                    <div class="form-group">-->
+<!--                                                        <label>Thua Hoàn (%)</label>-->
+<!--                                                        <input type="text" class="form-control" name="refund-won" value="{{ settings.refund.won }}"-->
+<!--                                                               placeholder="Nhập số phần trăm hoàn tiền khi thua">-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+                                                <div class="col-md-6 mt-2">
+                                                    <div class="form-group">
+                                                        <label>Sai Nội Dung Hoàn
+                                                            (%)</label>
+                                                        <input type="text" class="form-control" name="refund-fail" value="{{ settings.refund.fail }}"
+                                                               placeholder="Nhập số phần trăm hoàn tiền khi bị sai nội dung">
                                                     </div>
-                                                    <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">Header Script</label>
-                                                                <div class="kt-form-control">
-                                                                    <textarea type="text" class="kt-textarea" name="headerScript" rows="3"
-                                                                              placeholder="headerScript">{{ settings.headerScript
-                                                                    }}</textarea>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">Footer Script</label>
-                                                                <div class="kt-form-control">
-                                                                    <textarea type="text" class="kt-textarea" name="footerScript" rows="3"
-                                                                              placeholder="footerScript">{{
-                                                                    settings.footerScript
-                                                                    }}</textarea>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <div class="form-group">
+                                                        <label>Giới Hạn Hoàn</label>
+                                                        <input type="text" class="form-control" name="refund-limit" value="{{ settings.refund.limit }}"
+                                                               placeholder="Nhập số lần hoàn tiền trong 1 ngày">
                                                     </div>
-                                                    <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">BOT TOKEN
-                                                                    [TELEGRAM]</label>
-                                                                <div class="kt-form-control">
-                                                                    <input type="text" class="kt-textarea" name="telegram-token" value="{{ settings.telegram.token }}"
-                                                                           placeholder="Nhập token bot telegram">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">CHAT ID
-                                                                    [TELEGRAM]</label>
-                                                                <div class="kt-form-control">
-                                                                    <input type="text" class="kt-textarea" name="telegram-chatId" value="{{ settings.telegram.chatId }}"
-                                                                           placeholder="Nhập token bot telegram">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="grid lg:grid-cols-3 gap-5 lg:gap-7.5 items-stretch">
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">LINK GROUP
-                                                                    [TELEGRAM]</label>
-                                                                <div class="kt-form-control">
-                                                                    <input type="text" class="kt-textarea" name="telegram-group" value="{{ settings.telegram.group }}"
-                                                                           placeholder="Nhập link grpup">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">LINK BOT
-                                                                    [TELEGRAM]</label>
-                                                                <div class="kt-form-control">
-                                                                    <input type="text" class="kt-textarea" name="telegram-botLink" value="{{ settings.telegram.botLink }}"
-                                                                           placeholder="Nhập link bot">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">LINK SUPPORT
-                                                                    [TELEGRAM]</label>
-                                                                <div class="kt-form-control">
-                                                                    <input type="text" class="kt-textarea" name="telegram-support" value="{{ settings.telegram.support }}"
-                                                                           placeholder="Nhập link support">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="kt-form-item">
-                                                        <label class="kt-form-label">Gửi mã gift đến telegram người chơi</label>
-                                                        <div class="kt-form-control">
-                                                            <select data-kt-select="true" name="telegram-botGift" class="kt-select" data-kt-select-placeholder="Chọn trạng thái">
-                                                                {{#select settings.telegram.botGift }}
-                                                                    <option value="active">Bật</option>
-                                                                    <option value="inactive">Tắt</option>
-                                                                {{/select }}
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="kt-form-item">
-                                                        <label class="kt-form-label">Note [Template
-                                                            Default]</label>
-                                                        <div class="kt-form-control">
-                                                                        <textarea type="text" class="kt-textarea form-editor" name="notification-data" rows="5"
-                                                                                  placeholder="Nhập nội dung thông báo">{{{ settings.notification.data }}}</textarea>
-                                                        </div>
+                                                </div>
+                                                <div class="col-md-12 mt-2">
+                                                    <label>* TỶ LỆ HOÀN [REWARD]</label>
+                                                    <div class="table-responsive">
+                                                    <table class="table table-bordered border-secondary">
+                                                        <thead>
+                                                        <tr class="userDatatable-header">
+                                                            <th>
+                                                                <i class="fa fa-plus-circle create" data-value="refund"
+                                                                   data-parent="refund-" data-child="data"></i>
+                                                            </th>
+                                                            <th>Vị Trí</th>
+                                                            <th>Tối thiểu</th>
+                                                            <th>Tối đa</th>
+                                                            <th>Tỉ lệ</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody class="dataEnz" data-bs-parent="refund-" data-bs-child="data"
+                                                               data-bs-position="true">
+                                                        {{#each settings.refund.data}}
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="table-actions hand">
+                                                        <span class="badge badge-info" data-bs-action="edit"><i
+                                                                class="fa fa-pen"></i></span>
+                                                                        <span class="badge badge-danger" data-bs-action="remove"><i
+                                                                                class="fa fa-trash" aria-hidden="true"></i></span>
+                                                                    </div>
+                                                                </td>
+                                                                <td data-bs-position="true">{{ sum @index 1 }}</td>
+                                                                <td data-bs-key="min" data-bs-value="{{ this.min }}"
+                                                                    data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
+                                                                        this.min }}
+                                                                </td>
+                                                                <td data-bs-key="max" data-bs-value="{{ this.max }}"
+                                                                    data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
+                                                                        this.max }}
+                                                                </td>
+                                                                <td data-bs-key="bonus" data-bs-value="{{ this.bonus }}"
+                                                                    data-bs-type="number" data-bs-more="numberFormat">{{
+                                                                        this.bonus }}
+                                                                </td>
+                                                            </tr>
+                                                        {{/each}}
+                                                        </tbody>
+                                                    </table>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="hidden" id="tab_1_2">
-                                        <div class="kt-card w-[400px]">
-                                            <div class="kt-card-content py-5">
-                                                <div class="space-y-5">
-                                                    <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">Loại Trả Thưởng</label>
-                                                                <div class="kt-form-control">
-                                                                    <select name="reward-dataType" class="kt-select">
-                                                                        {{#select settings.reward.dataType }}
-                                                                            <option value="all">Trả Hết</option>
-                                                                            <option value="limit">Giới Hạn</option>
-                                                                        {{/select }}
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">Nội Dung Trả Thưởng</label>
-                                                                <div class="kt-form-control">
-                                                                    <input type="text" class="kt-input" name="commentSite-rewardGD" value="{{ settings.commentSite.rewardGD }}"
-                                                                           placeholder="Nhập nội dung trả thưởng">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="grid lg:grid-cols-2 gap-5 lg:gap-7.5 items-stretch">
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">SỐ TIỀN GIỚI HẠN
-                                                                    [MOMO REWARD]</label>
-                                                                <div class="kt-form-control">
-                                                                    <input type="text" class="kt-input" name="reward-momoMax" value="{{ settings.reward.momoMax }}"
-                                                                           placeholder="Nhập số tiền tối đa để được sử dụng api momo">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">SỐ TIỀN GIỚI HẠN
-                                                                    [ZALO REWARD]</label>
-                                                                <div class="kt-form-control">
-                                                                    <input type="text" class="kt-input" name="reward-zaloMax" value="{{ settings.reward.zaloMax }}"
-                                                                           placeholder="Nhập số tiền tối đa để được sử dụng api zalo">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="kt-form-item">
-                                                        <label class="kt-form-label">Hoàn Tiền</label>
-                                                        <div class="kt-form-control">
-                                                            <select name="refund-status" class="kt-select">
-                                                                {{#select settings.refund.status }}
-                                                                    <option value="active">Có</option>
-                                                                    <option value="close">Không</option>
-                                                                {{/select }}
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="grid lg:grid-cols-3 gap-5 lg:gap-7.5 items-stretch">
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">Thua Hoàn (%)</label>
-                                                                <div class="kt-form-control">
-                                                                    <input type="text" class="kt-input" name="refund-won" value="{{ settings.refund.won }}"
-                                                                           placeholder="Nhập số phần trăm hoàn tiền khi thua">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">Sai Nội Dung Hoàn
-                                                                    (%)</label>
-                                                                <div class="kt-form-control">
-                                                                    <input type="text" class="kt-input" name="refund-fail" value="{{ settings.refund.fail }}"
-                                                                           placeholder="Nhập số phần trăm hoàn tiền khi bị sai nội dung">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="lg:col-span-1">
-                                                            <div class="kt-form-item">
-                                                                <label class="kt-form-label">Giới Hạn Hoàn</label>
-                                                                <div class="kt-form-control">
-                                                                    <input type="text" class="kt-input" name="refund-limit" value="{{ settings.refund.limit }}"
-                                                                           placeholder="Nhập số lần hoàn tiền trong 1 ngày">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="hidden" id="tab_1_3">
-                                        <div class="kt-card w-[400px]">
-                                            <div class="kt-card-content py-5">
-                                                <div data-kt-datatable="true" data-kt-datatable-state-save="false" id="team_crew_table" data-kt-datatable-initialized="true" class="datatable-initialized">
-                                                    <div class="kt-scrollable-x-auto">
-                                                        <h3>* NHIỆM VỤ NGÀY [SETTING]</h3>
-                                                        <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pills-data-icon" role="tabpanel" aria-labelledby="pills-data-icon-tab" tabindex="0">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label>* NHIỆM VỤ NGÀY [SETTING]</label>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered border-secondary">
                                                             <thead>
                                                             <tr class="userDatatable-header">
-                                                                <th><i class="ki-filled ki-additem create" data-value="missionData"
-                                                                       data-parent="missionData-" data-child="data"></i></th>
+                                                                <th>
+                                                                    <i class="fa fa-plus-circle create" data-value="missionData"
+                                                                       data-parent="missionData-" data-child="data"></i>
+                                                                </th>
                                                                 <th>Vị Trí</th>
                                                                 <th>Tổng Cược Ngày</th>
                                                                 <th>Tiền Thưởng</th>
@@ -392,14 +336,14 @@
                                                             </thead>
                                                             <tbody class="dataEnz" data-bs-parent="missionData-" data-bs-child="data"
                                                                    data-bs-position="true">
-                                                                {{#each settings.missionData.data}}
+                                                            {{#each settings.missionData.data}}
                                                                 <tr>
                                                                     <td>
                                                                         <div class="table-actions hand">
-                                                        <span class="kt-badge kt-badge-info" data-bs-action="edit"><i
-                                                                class="ki-filled ki-pencil"></i></span>
-                                                                            <span class="kt-badge kt-badge-destructive" data-bs-action="remove"><i
-                                                                                    class="ki-filled ki-trash-square" aria-hidden="true"></i></span>
+                                                        <span class="badge badge-info" data-bs-action="edit"><i
+                                                                class="fa fa-pen"></i></span>
+                                                                            <span class="badge badge-danger" data-bs-action="remove"><i
+                                                                                    class="fa fa-trash" aria-hidden="true"></i></span>
                                                                         </div>
                                                                     </td>
                                                                     <td data-bs-position="true">{{ sum @index 1 }}</td>
@@ -417,14 +361,13 @@
                                                         </table>
                                                     </div>
                                                 </div>
-
-                                                <div data-kt-datatable="true" data-kt-datatable-state-save="false" id="team_crew_table" data-kt-datatable-initialized="true" class="datatable-initialized mt-2">
-                                                    <div class="kt-scrollable-x-auto">
-                                                        <h3>* THƯỞNG TOP [SETTING]</h3>
-                                                        <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
+                                                <div class="col-md-12 mt-2">
+                                                    <label>* THƯỞNG TOP [SETTING]</label>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered border-secondary">
                                                             <thead>
                                                             <tr class="userDatatable-header">
-                                                                <th><i class="ki-filled ki-additem create" data-value="bonusTOP"
+                                                                <th><i class="fa fa-plus-circle create" data-value="bonusTOP"
                                                                        data-parent="topData-" data-child="bonus"></i></th>
                                                                 <th>Vị Trí</th>
                                                                 <th>Tiền Thưởng</th>
@@ -436,10 +379,10 @@
                                                                 <tr>
                                                                     <td>
                                                                         <div class="table-actions hand">
-                                                        <span class="kt-badge kt-badge-info" data-bs-action="edit"><i
-                                                                class="ki-filled ki-pencil"></i></span>
-                                                                            <span class="kt-badge kt-badge-destructive" data-bs-action="remove"><i
-                                                                                    class="ki-filled ki-trash-square" aria-hidden="true"></i></span>
+                                                        <span class="badge badge-info" data-bs-action="edit"><i
+                                                                class="fa fa-pen"></i></span>
+                                                                            <span class="badge badge-destructive" data-bs-action="remove"><i
+                                                                                    class="fa fa-trash" aria-hidden="true"></i></span>
                                                                         </div>
                                                                     </td>
                                                                     <td data-bs-position="true">{{ sum @index 1 }}</td>
@@ -456,13 +399,17 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="hidden" id="tab_1_4">
-                                        <div class="kt-card w-[400px]">
-                                            <div class="kt-card-content py-5">
-                                                <div class="kt-form-item">
-                                                    <label class="kt-form-label">Vòng quay</label>
-                                                    <div class="kt-form-control">
-                                                        <select name="wheel-status" class="kt-select">
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pills-wheel-icon" role="tabpanel" aria-labelledby="pills-wheel-icon-tab" tabindex="0">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="">Vòng quay</label>
+                                                        <select name="wheel-status" class="form-control">
                                                             {{#select settings.wheel.status }}
                                                                 <option value="active">Bật</option>
                                                                 <option value="close">Tắt</option>
@@ -470,29 +417,29 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="kt-form-item mt-2">
-                                                    <label class="kt-form-label">Tên vòng quay</label>
-                                                    <div class="kt-form-control">
-                                                        <input type="text" class="kt-input"
+                                                <div class="col-md-12 mt-2">
+                                                    <div class="form-group">
+                                                        <label class="">Tên vòng quay</label>
+                                                        <input type="text" class="form-control"
                                                                name="wheel-name"
                                                                value="{{ settings.wheel.name }}">
                                                     </div>
                                                 </div>
-                                                <div class="kt-form-item mt-2">
-                                                    <label class="kt-form-label">Chơi tốt thiểu</label>
-                                                    <div class="kt-form-control">
-                                                        <input type="text" class="kt-input"
+                                                <div class="col-md-12 mt-2">
+                                                    <div class="form-group">
+                                                        <label class="">Chơi tốt thiểu</label>
+                                                        <input type="text" class="form-control"
                                                                name="wheel-amount"
                                                                value="{{ settings.wheel.amount }}">
                                                     </div>
                                                 </div>
-                                                <div data-kt-datatable="true" data-kt-datatable-state-save="false" data-kt-datatable-initialized="true" class="mt-2 datatable-initialized">
-                                                    <div class="kt-scrollable-x-auto">
-                                                        <h3>* VÒNG QUAY [EVENT]</h3>
-                                                        <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
+                                                <div class="col-md-12 mt-2">
+                                                    <label>* THƯỞNG TOP [SETTING]</label>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered border-secondary">
                                                             <thead>
                                                             <tr class="userDatatable-header">
-                                                                <th><i class="ki-filled ki-additem create" data-value="gift"
+                                                                <th><i class="fa fa-plus-circle create" data-value="gift"
                                                                        data-parent="wheel-" data-child="gift"></i></th>
                                                                 <th>Vị Trí</th>
                                                                 <th>Tỉ lệ</th>
@@ -506,10 +453,10 @@
                                                                 <tr>
                                                                     <td>
                                                                         <div class="table-actions hand">
-                                                        <span class="kt-badge kt-badge-info" data-bs-action="edit"><i
-                                                                class="ki-filled ki-pencil"></i></span>
-                                                                            <span class="kt-badge kt-badge-destructive" data-bs-action="remove"><i
-                                                                                    class="ki-filled ki-trash-square" aria-hidden="true"></i></span>
+                                                        <span class="badge badge-info" data-bs-action="edit"><i
+                                                                class="fa fa-pen"></i></span>
+                                                                            <span class="badge badge-danger" data-bs-action="remove"><i
+                                                                                    class="fa fa-trash" aria-hidden="true"></i></span>
                                                                         </div>
                                                                     </td>
                                                                     <td data-bs-key="pos" data-bs-value="{{ this.pos }}"
@@ -531,6 +478,7 @@
                                                                 </tr>
                                                             {{/each}}
                                                             </tbody>
+
                                                         </table>
                                                     </div>
                                                 </div>
@@ -538,112 +486,35 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="hidden" id="tab_1_5">
-                                        <div class="kt-card w-[400px]">
-                                            <div class="kt-card-content py-5">
-                                                <div class="kt-form-item">
-                                                    <label class="kt-form-label">Hũ</label>
-                                                    <div class="kt-form-control">
-                                                        <select name="luckyCard-status" class="kt-select">
-                                                            {{#select settings.luckyCard.status }}
-                                                                <option value="active">Bật</option>
-                                                                <option value="close">Tắt</option>
-                                                            {{/select }}
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="kt-form-item mt-2">
-                                                    <label class="kt-form-label">Tên hũ</label>
-                                                    <div class="kt-form-control">
-                                                        <input type="text" class="kt-input"
-                                                               name="luckyCard-name"
-                                                               value="{{ settings.luckyCard.name }}">
-                                                    </div>
-                                                </div>
-                                                <div class="kt-form-item mt-2">
-                                                    <label class="kt-form-label">Chơi tốt thiểu</label>
-                                                    <div class="kt-form-control">
-                                                        <input type="text" class="kt-input"
-                                                               name="luckyCard-amount"
-                                                               value="{{ settings.luckyCard.amount }}">
-                                                    </div>
-                                                </div>
-                                                <div data-kt-datatable="true" data-kt-datatable-state-save="false" data-kt-datatable-initialized="true" class="mt-2 datatable-initialized">
-                                                    <div class="kt-scrollable-x-auto">
-                                                        <h3>* HŨ [EVENT]</h3>
-                                                        <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
-                                                            <thead>
-                                                            <tr class="userDatatable-header">
-                                                                <th><i class="ki-filled ki-additem create" data-value="gift"
-                                                                       data-parent="luckyCard-" data-child="gift"></i></th>
-                                                                <th>Vị Trí</th>
-                                                                <th>Tỉ lệ</th>
-                                                                <th>Tên thưởng</th>
-                                                                <th>Tiền Thưởng</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody class="dataEnz" data-bs-parent="luckyCard-" data-bs-child="gift"
-                                                                   data-bs-position="true">
-                                                            {{#each settings.luckyCard.gift}}
-                                                                <tr>
-                                                                    <td>
-                                                                        <div class="table-actions hand">
-                                                        <span class="kt-badge kt-badge-info" data-bs-action="edit"><i
-                                                                class="ki-filled ki-pencil"></i></span>
-                                                                            <span class="kt-badge kt-badge-destructive" data-bs-action="remove"><i
-                                                                                    class="ki-filled ki-trash-square" aria-hidden="true"></i></span>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td data-bs-key="pos" data-bs-value="{{ this.pos }}"
-                                                                        data-bs-type="number" data-bs-more="numberFormat">{{
-                                                                    this.pos }}
-                                                                    </td>
-                                                                    <td data-bs-key="ratio" data-bs-value="{{ this.ratio }}"
-                                                                        data-bs-type="number" data-bs-more="numberFormat">{{
-                                                                    this.ratio }}
-                                                                    </td>
-                                                                    <td data-bs-key="name" data-bs-value="{{ this.name }}"
-                                                                        data-bs-type="text" data-bs-more="numberFormat">{{
-                                                                    this.name }}
-                                                                    </td>
-                                                                    <td data-bs-key="amount" data-bs-value="{{ this.amount }}"
-                                                                        data-bs-type="number" data-bs-more="numberFormat">{{ numberFormat
-                                                                            this.amount }}
-                                                                    </td>
-                                                                </tr>
-                                                            {{/each}}
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="content-center flex justify-center items-center flex-wrap gap-2.5">
-                                    <button class="kt-btn kt-btn-success btn-block" name="saveData">
-                                        <i class="ki-filled ki-save-2"></i>
-                                        Lưu
-                                    </button>
                                 </div>
                             </div>
+                        </div>
 
-                        </form>
                     </div>
-                </main>
-                {{>foot}}
+                        <div class="content-center flex justify-center items-center flex-wrap gap-2.5">
+                            <button type="submit" class="btn btn-success w-100 mt-2" name="saveData">
+                                <i class="fa fa-save"></i>
+                                Lưu
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
+
+        </div>
+
+    </div>
+    <div class="footer-wrapper">
+        <div class="footer-section f-section-1">
+            <p class="">Copyright © <span class="dynamic-year">2022</span> <a target="_blank" href="">CuuDen</a>, All rights reserved.</p>
+        </div>
+        <div class="footer-section f-section-2">
+            <p class="">Coded with <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></p>
         </div>
     </div>
 </div>
-<script src="../themes/admin/assets/js/core.bundle.js">
-</script>
-<script src="../themes/admin/assets/vendors/ktui/ktui.min.js">
-</script>
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script>
-
     $('body').on('submit', '#formSetting', function (e) {
         e.preventDefault();
         let data = $(this).serialize();
@@ -713,6 +584,38 @@
                 .finally(() => $('[name="saveData"]').html(`<i class="ki-filled ki-save-2"></i> Lưu`));
     })
 
+    $('body').on('click', '.create', function (e) {
+        let _this = $(this);
+        let value = _this.data('value');
+        let html;
+
+        switch (value) {
+            case 'contact':
+                html = `<tr><td><div class="table-actions hand"><span class="badge badge-success" data-bs-action="add"><i class="fa fa-save"></i></span></div></td><td data-bs-key="url" data-bs-value="" data-bs-type="text"><input type="text" class="form-control"></td><td data-bs-key="html" data-bs-value="" data-bs-type="text"><input type="text" class="form-control"></td><td data-bs-render="html"></td></tr>`;
+                break;
+            case 'missionData':
+                html = `<tr><td><div class="table-actions hand"><span class="badge badge-success" data-bs-action="add"><i class="fa fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control"></td></tr>`;
+                break;
+            case 'refund':
+                html = `<tr><td><div class="hand table-actions"><span class="badge badge-success" data-bs-action=add><i class="fa fa-save"></i></span></div><td data-bs-position=true><td data-bs-key="min" data-bs-more=numberFormat data-bs-type=number data-bs-value=""><input class=form-control type=number><td data-bs-key="max" data-bs-more=numberFormat data-bs-type=number data-bs-value=""><input class=form-control type=number><td data-bs-key="bonus" data-bs-more=numberFormat data-bs-type=number data-bs-value=""><input class=form-control type=number>`;
+                break;
+            case 'bonusTOP':
+                html = `<tr><td><div class="table-actions hand"><span class="badge badge-success" data-bs-action="add"><i class="fa fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="[]" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control"></td></tr>`;
+                break;
+            case 'fakeData':
+                html = `<tr><td><div class="table-actions hand"><span class="badge badge-success" data-bs-action="add"><i class="fa fa-save"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="phone" data-bs-value="" data-bs-type="text"><input type="text" class="form-control"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="form-control"></td></tr>`;
+                break;
+            case 'gift':
+                html = `<tr><td><div class="hand table-actions"><span class="badge badge-success" data-bs-action=add><i class="fa-save fas"></i></span></div><td data-bs-key=pos data-bs-type=text data-bs-value=""><input class="form-control"><td data-bs-key=ratio data-bs-type=text data-bs-value=""><input class="form-control"><td data-bs-key=name data-bs-type=text data-bs-value=""><input class="form-control"><td data-bs-key=amount data-bs-type=number data-bs-value=""data-bs-more=numberFormat><input class="form-control"type=number>`;
+                break;
+            default:
+                swal('Thông Báo', 'Dữ liệu không hợp lệ!', 'error');
+                break;
+        }
+
+        html && $(`tbody[data-bs-parent="${_this.data('parent')}"][data-bs-child="${_this.data('child')}"]`).append(html);
+    })
+
     $('body').on('click', '.dataEnz span[data-bs-action]', function (e) {
         let action = $(this).attr('data-bs-action');
         let tbody = $(this).parent().parent().parent().parent();
@@ -720,7 +623,7 @@
 
         switch (action) {
             case 'add':
-                $(this).parent().html(`<span class="kt-badge kt-badge-primary" data-bs-action="edit"><i class="ki-filled ki-pencil"></i></span> <span class="kt-badge kt-badge-danger" data-bs-action="remove"><i class="ki-filled ki-trash"></i></span>`);
+                $(this).parent().html(`<span class="badge badge-primary" data-bs-action="edit"><i class="fa fa-pen"></i></span> <span class="badge badge-danger" data-bs-action="remove"><i class="fa fa-trash"></i></span>`);
 
                 tr.find('td[data-bs-key]').each(function (e) {
                     let key = $(this).attr('data-bs-key');
@@ -753,20 +656,20 @@
                 tbody.find('[data-bs-position="true"]') && resetTOP(tbody);
                 break;
             case 'edit':
-                $(this).parent().html(`<span class="kt-badge kt-badge-success" data-bs-action="save"><i class="ki-filled ki-save-2"></i></span>`);
+                $(this).parent().html(`<span class="badge badge-success" data-bs-action="save"><i class="fa fa-save"></i></span>`);
 
                 tr.find('td[data-bs-key]').each(function (e) {
                     let type = $(this).attr('data-bs-type');
                     let value = $(this).attr('data-bs-value');
 
-                    $(this).html(`<input type="${type}" class="kt-input">`);
+                    $(this).html(`<input type="${type}" class="form-control">`);
                     $(this).find('input').val(value);
                 })
 
                 break;
             case 'save':
                 let render;
-                $(this).parent().html(`<span class="kt-badge kt-badge-info" data-bs-action="edit"><i class="ki-filled ki-pencil"></i></span> <span class="kt-badge kt-badge-destructive" data-bs-action="remove"><i class="ki-filled ki-trash-square" aria-hidden="true"></i></span>`);
+                $(this).parent().html(`<span class="badge badge-info" data-bs-action="edit"><i class="fa fa-pen"></i></span> <span class="badge badge-danger" data-bs-action="remove"><i class="fa fa-trash" aria-hidden="true"></i></span>`);
 
                 tr.find('td[data-bs-key]').each(function (e) {
                     let key = $(this).attr('data-bs-key');
@@ -808,35 +711,6 @@
 
     })
 
-    $('body').on('click', '.create', function (e) {
-        let _this = $(this);
-        let value = _this.data('value');
-        let html;
-
-        switch (value) {
-            case 'contact':
-                html = `<tr><td><div class="table-actions hand"><span class="kt-badge kt-badge-success" data-bs-action="add"><i class="ki-filled ki-save-2"></i></span></div></td><td data-bs-key="url" data-bs-value="" data-bs-type="text"><input type="text" class="kt-input"></td><td data-bs-key="html" data-bs-value="" data-bs-type="text"><input type="text" class="kt-input"></td><td data-bs-render="html"></td></tr>`;
-                break;
-            case 'missionData':
-                html = `<tr><td><div class="table-actions hand"><span class="kt-badge kt-badge-success" data-bs-action="add"><i class="ki-filled ki-save-2"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="kt-input"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="kt-input"></td></tr>`;
-                break;
-            case 'bonusTOP':
-                html = `<tr><td><div class="table-actions hand"><span class="kt-badge kt-badge-success" data-bs-action="add"><i class="ki-filled ki-save-2"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="[]" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="kt-input"></td></tr>`;
-                break;
-            case 'fakeData':
-                html = `<tr><td><div class="table-actions hand"><span class="kt-badge kt-badge-success" data-bs-action="add"><i class="ki-filled ki-save-2"></i></span></div></td><td data-bs-position="true"></td><td data-bs-key="phone" data-bs-value="" data-bs-type="text"><input type="text" class="kt-input"></td><td data-bs-key="amount" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="kt-input"></td><td data-bs-key="bonus" data-bs-value="" data-bs-type="number" data-bs-more="numberFormat"><input type="number" class="kt-input"></td></tr>`;
-                break;
-            case 'gift':
-                html = `<tr><td><div class="hand table-actions"><span class="kt-badge kt-badge-success" data-bs-action=add><i class="fa-save fas"></i></span></div><td data-bs-key=pos data-bs-type=text data-bs-value=""><input class="kt-input"><td data-bs-key=ratio data-bs-type=text data-bs-value=""><input class="kt-input"><td data-bs-key=name data-bs-type=text data-bs-value=""><input class="kt-input"><td data-bs-key=amount data-bs-type=number data-bs-value=""data-bs-more=numberFormat><input class="kt-input"type=number>`;
-                break;
-            default:
-                swal('Thông Báo', 'Dữ liệu không hợp lệ!', 'error');
-                break;
-        }
-
-        html && $(`tbody[data-bs-parent="${_this.data('parent')}"][data-bs-child="${_this.data('child')}"]`).append(html);
-    })
-
     function toJSON(form) {
         return $(form).serializeArray().reduce(function (json, { name, value }) {
             json[name] = value;
@@ -864,6 +738,5 @@
         });
     });
 </script>
-</script>
-</body>
-</html>
+{{>foot}}
+

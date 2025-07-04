@@ -32,7 +32,13 @@ module.exports = {
                 return options.inverse(this);
         }
     },
-    numberFormat: (number) => Intl.NumberFormat('en-US').format(number || 0),
+    numberFormat: (number) => new Intl.NumberFormat('vi-VN', {style: 'currency',currency: 'VND'}).format(number || 0),
+    calculatePercentage: (part, total) => {
+        if (total && total > 0) {
+            return ((part / total) * 100).toFixed(2); // Calculate percentage with 2 decimal places
+        }
+        return 0; // Return 0 if total is 0 or not available
+    },
     convertCurrency: (number) => (number > 999 && number < 1000000) ? (number / 1000) + 'K' : (number >= 1000000 ? (number / 1000000) + 'M' : Intl.NumberFormat().format(number)),
     sum: (num1, num2) => num1 + num2,
     minus: (num1, num2) => num1 - num2,
@@ -81,22 +87,45 @@ module.exports = {
                     var i = 0;
                     var leftCount = Math.ceil(limit / 2) - 1;
                     var rightCount = limit - leftCount - 1;
-                    if (page + rightCount > pageCount)
-                        leftCount = limit - (pageCount - page) - 1;
-                    if (page - leftCount < 1)
+
+                    // Adjust leftCount if we're too close to the first page
+                    if (page - leftCount < 1) {
                         leftCount = page - 1;
+                        rightCount = limit - leftCount - 1;
+                    }
+
+                    // Adjust rightCount if we're too close to the last page
+                    if (page + rightCount > pageCount) {
+                        rightCount = pageCount - page;  // Ensure we don't exceed pageCount
+                        leftCount = limit - rightCount - 1;  // Adjust left count accordingly
+                    }
+
                     var start = page - leftCount;
 
-                    while (i < limit && i < pageCount) {
-                        newContext = {...pagination, n: start};
+                    // Clamp start to 1 if it's less than 1
+                    if (start < 1) start = 1;
+
+                    // The last page in the range is the start + (limit - 1)
+                    var end = start + limit - 1;
+
+                    // Ensure the end doesn't exceed pageCount
+                    if (end > pageCount) {
+                        end = pageCount;
+                        start = end - limit + 1;  // Adjust start to maintain the limit
+                    }
+
+                    // Generate pagination items based on the valid range
+                    while (i < limit && start <= end) {
+                        newContext = { ...pagination, n: start };
                         if (start === page) newContext.active = true;
                         ret = ret + options.fn(newContext);
                         start++;
                         i++;
                     }
                 } else {
+                    // For the case where no limit is set (pagination for all pages)
                     for (var i = 1; i <= pageCount; i++) {
-                        newContext = {...pagination, n: i};
+                        newContext = { ...pagination, n: i };
                         if (i === page) newContext.active = true;
                         ret = ret + options.fn(newContext);
                     }
@@ -171,16 +200,16 @@ module.exports = {
 
         switch (status) {
             case 'active':
-                html = `<span class="kt-badge kt-badge-success kt-badge-outline rounded-[30px]"><span class="kt-badge-dot size-1.5"></span>Hoạt Động</span></span>`;
+                html = `<span class="badge badge-success"><span class="kt-badge-dot size-1.5"></span>Hoạt Động</span></span>`;
                 break;
             case 'limit':
-                html = `<span class="kt-badge kt-badge-info kt-badge-outline rounded-[30px]"><span class="kt-badge-dot size-1.5"></span>Giới Hạn</span></span>`;
+                html = `<span class="badge badge-info"><span class="kt-badge-dot size-1.5"></span>Giới Hạn</span></span>`;
                 break;
             case 'pending':
-                html = `<span class="kt-badge kt-badge-warning kt-badge-outline rounded-[30px]"><span class="kt-badge-dot size-1.5"></span>Tạm Dừng</span></span>`;
+                html = `<span class="badge badge-warning"><span class="kt-badge-dot size-1.5"></span>Tạm Dừng</span></span>`;
                 break;
             default:
-                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]"><span class="kt-badge-dot size-1.5"></span>Lỗi Số</span></span>`;
+                html = `<span class="badge badge-danger"><span class="kt-badge-dot size-1.5"></span>Lỗi Số</span></span>`;
                 break;
         }
 
@@ -191,25 +220,25 @@ module.exports = {
 
         switch (status) {
             case 'refreshError':
-                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Lỗi Refresh</span>`;
+                html = `<span class="badge badge-danger">Lỗi Refresh</span>`;
                 break;
             case 'waitLogin':
-                html = `<span class="kt-badge kt-badge-warning kt-badge-outline rounded-[30px]">Đợi Đăng Nhập</span>`;
+                html = `<span class="badge badge-warning">Đợi Đăng Nhập</span>`;
                 break;
             case 'errorLogin':
-                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Lỗi Đăng Nhập</span>`;
+                html = `<span class="badge badge-danger">Lỗi Đăng Nhập</span>`;
                 break;
             case 'active':
-                html = `<span class="kt-badge kt-badge-success kt-badge-outline rounded-[30px]">Hoạt Động</span>`;
+                html = `<span class="badge badge-success">Hoạt Động</span>`;
                 break;
             case 'waitOTP':
-                html = `<span class="kt-badge kt-badge-warning kt-badge-outline rounded-[30px]">Đợi OTP</span>`;
+                html = `<span class="badge badge-warning">Đợi OTP</span>`;
                 break;
             case 'waitSend':
-                html = `<span class="kt-badge kt-badge-warning kt-badge-outline rounded-[30px]">Đợi Gửi OTP</span>`;
+                html = `<span class="badge badge-warning">Đợi Gửi OTP</span>`;
                 break;
             default:
-                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Lỗi</span>`;
+                html = `<span class="badge badge-danger">Lỗi</span>`;
                 break;
         }
 
@@ -220,10 +249,10 @@ module.exports = {
 
         switch (status) {
             case true:
-                html = `<span class="kt-badge kt-badge-success kt-badge-outline rounded-[30px]">Hoạt động</span>`;
+                html = `<span class="badge badge-success">Hoạt động</span>`;
                 break;
             default:
-                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Không hoạt động</span>`;
+                html = `<span class="badge badge-danger">Không hoạt động</span>`;
                 break;
         }
 
@@ -234,10 +263,10 @@ module.exports = {
 
         switch (status) {
             case true:
-                html = `<span class="kt-badge kt-badge-success kt-badge-outline rounded-[30px]">Họat động</span>`;
+                html = `<span class="badge badge-success">Họat động</span>`;
                 break;
             default:
-                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Không hoạt động</span>`;
+                html = `<span class="badge badge-danger">Không hoạt động</span>`;
                 break;
         }
 
@@ -248,34 +277,34 @@ module.exports = {
 
         switch (status) {
             case 'wait':
-                html = `<span class="kt-badge kt-badge-info kt-badge-outline rounded-[30px]">Đợi Xử Lý</span>`;
+                html = `<span class="badge badge-info">Đợi Xử Lý</span>`;
                 break;
             case 'win':
-                html = `<span class="kt-badge kt-badge-success kt-badge-outline rounded-[30px]">Thắng Cược</span>`;
+                html = `<span class="badge badge-success">Thắng Cược</span>`;
                 break;
             case 'ok':
-                html = `<span class="kt-badge kt-badge-success kt-badge-outline rounded-[30px]">OK</span>`;
+                html = `<span class="badge badge-success">OK</span>`;
                 break;
             case 'lose':
-                html = `<span class="kt-badge kt-badge-light kt-badge-outline rounded-[30px]">Thua Cược</span>`;
+                html = `<span class="badge badge-danger">Thua Cược</span>`;
                 break;
             case 'notUser':
-                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Lỗi Thành Viên</span>`;
+                html = `<span class="badge badge-danger">Lỗi Thành Viên</span>`;
                 break;
             case 'block':
-                html = `<span class="kt-badge kt-badge-dark kt-badge-outline rounded-[30px]">Chặn Thành Viên</span>`;
+                html = `<span class="badge badge-dark">Chặn Thành Viên</span>`;
                 break;
             case 'handwork':
-                html = `<span class="kt-badge kt-badge-warning kt-badge-outline rounded-[30px]">Thủ Công</span>`;
+                html = `<span class="badge badge-warning">Thủ Công</span>`;
                 break;
             case 'refund':
-                html = `<span class="kt-badge kt-badge-warning kt-badge-outline rounded-[30px]">Hoàn Tiền</span>`;
+                html = `<span class="badge badge-warning">Hoàn Tiền</span>`;
                 break;
             case 'wrong':
-                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Sai Nội Dung</span>`;
+                html = `<span class="badge badge-danger">Sai Nội Dung</span>`;
                 break;
             default:
-                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Lỗi</span>`;
+                html = `<span class="badge badge-danger">Lỗi</span>`;
                 break;
         }
 
@@ -286,16 +315,16 @@ module.exports = {
 
         switch (status) {
             case 'wait':
-                html = `<span class="kt-badge kt-badge-warning kt-badge-outline rounded-[30px]">Đợi Chuyển</span>`;
+                html = `<span class="badge badge-warning">Đợi Chuyển</span>`;
                 break;
             case 'sent':
-                html = `<span class="kt-badge kt-badge-info kt-badge-outline rounded-[30px]">Đã chuyển</span>`;
+                html = `<span class="badge badge-info">Đã chuyển</span>`;
                 break;
             case 'hold':
-                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">HOLD</span>`;
+                html = `<span class="badge badge-danger">HOLD</span>`;
                 break;
             case 'bankerror':
-                html = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">CHƯA CÀI BANK</span>`;
+                html = `<span class="badge badge-danger">CHƯA CÀI BANK</span>`;
                 break;
         }
 
@@ -318,7 +347,7 @@ module.exports = {
                 src = `/themes/images/banks/acb.png`;
                 break;
             default:
-                src = `<span class="kt-badge kt-badge-danger kt-badge-outline rounded-[30px]">Lỗi</span>`;
+                src = `<span class="badge badge-danger">Lỗi</span>`;
                 break;
         }
 

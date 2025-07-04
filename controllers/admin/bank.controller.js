@@ -7,6 +7,8 @@ const eximbankHelper = require('../../helpers/eximbank.helper');
 const acbHelper = require('../../helpers/acb.helper');
 const vcbHelper = require('../../helpers/vcb.helper');
 const bankService = require('../../services/bank.service');
+const momoModel = require("../../models/momo.model");
+const zaloModel = require("../../models/zalo.model");
 
 const momoController = {
     index: async (req, res, next) => {
@@ -27,6 +29,9 @@ const momoController = {
                 filters.$or = [
                     {
                         phone: {$regex: search}
+                    },
+                    {
+                        accountNumber: {$regex: search}
                     },
                     {
                         name: {$regex: search}
@@ -80,8 +85,24 @@ const momoController = {
             }
 
             let list = await Promise.all(threads);
+
+            let countMomo = await momoModel.aggregate([{ $group: { _id: null, balance: { $sum: '$balance' } } }]);
+            let countZalo = await zaloModel.aggregate([{ $group: { _id: null, balance: { $sum: '$balance' } } }]);
+            let countBank = await bankModel.aggregate([{ $group: { _id: null, balance: { $sum: '$balance' } } }]);
+
+            let momoBalance = countMomo[0]?.balance || 0;
+            let zaloBalance = countZalo[0]?.balance || 0;
+            let bankBalance = countBank[0]?.balance || 0;
+
+            let totalBalance = momoBalance + zaloBalance + bankBalance;
+
             res.render('admin/bank', {
-                title: 'Quản Lý Ngân Hàng', list, count: !count.length ? 0 : count[0].balance, perPage, pagination: {
+                title: 'Quản Lý Ngân Hàng',
+                countMomo: !countMomo.length ? 0 : countMomo[0].balance,
+                countZalo: !countZalo.length ? 0 : countZalo[0].balance,
+                countBank: !countBank.length ? 0 : countBank[0].balance,
+                totalBalance,
+                list, count: !count.length ? 0 : count[0].balance, perPage, pagination: {
                     page,
                     pageCount,
                     limit: pages > 5 ? 5 : pages,

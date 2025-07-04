@@ -786,6 +786,13 @@ exports.sendOTP = async (phone, password) => {
             headers,
         });
 
+        if (resultMoMo.riskMsg.riskLevel == 'SPAM') {
+            return {
+                success: false,
+                message: 'Vui lòng đổi IP tránh spam'
+            }
+        }
+
         if (resultMoMo.errorCode === 881200002) {
 
             const aToken = _.get(resultMoMo, 'riskMsg.token');
@@ -927,6 +934,8 @@ exports.checkUserBeMsg = async (phone) => {
             // TODO: relogin
             return {message: 'Đã đăng nhập lại thành công không cần lấy OTP mới', success: false};
         }
+
+        console.log(resultMoMo);
 
         if (resultMoMo.setupKey === "" && resultMoMo.atoken === "") {
             const riskId = resultMoMo.riskId;
@@ -1996,9 +2005,9 @@ exports.checkName = async (phone, receiver) => {
         const timeToRequest = Date.now();
 
         const body = {
-            "appCode": process.env.appCode,
+            "appCode": process.env.APP_CODE,
             "appId": "vn.momo.transfer",
-            "appVer": process.env.appVer,
+            "appVer": process.env.APP_VER,
             "buildNumber": 9968,
             "channel": "APP",
             "cmdId": `${timeToRequest}000000`,
@@ -2007,7 +2016,7 @@ exports.checkName = async (phone, receiver) => {
             "deviceOS": "android",
             "errorCode": 0,
             "errorDesc": "",
-            "extra": {"checkSum": utilVsign.calculateCheckSum(currentAccount.phone, 'FIND_RECEIVER_PROFILE', timeToRequest, currentAccount.setupKey)},
+            "extra": { "checkSum": utilVsign.calculateCheckSum(currentAccount.phone, 'FIND_RECEIVER_PROFILE', timeToRequest, currentAccount.setupKey) },
             "lang": "vi",
             "user": currentAccount.phone,
             "msgType": "FIND_RECEIVER_PROFILE",
@@ -2020,7 +2029,7 @@ exports.checkName = async (phone, receiver) => {
             "pass": "",
         }
 
-        const resultMoMo = await this.doRequestEncryptMoMo('https://owa.momo.vn/api/FIND_RECEIVER_PROFILE', body, currentAccount, "FIND_RECEIVER_PROFILE")
+        const resultMoMo = await this.doRequestEncryptMoMo('https://api.momo.vn/p2p/gateway/profile-v1/FIND_RECEIVER_PROFILE', body, currentAccount, "FIND_RECEIVER_PROFILE", {agentid: currentAccount.agentId, secureid: dataDevice.secureId, devicecode: dataDevice.deviceCode, phone: currentAccount.phone});
 
         return _.get(resultMoMo, 'momoMsg.receiverProfile');
     } catch (err) {
@@ -2043,7 +2052,8 @@ exports.M2MU_INIT = async (phone, dataTransfer) => {
 
         const currentAccount = checkSession.data;
 
-        const profile = await this.checkName(currentAccount, dataTransfer.receiver);
+        const profile = await this.checkName(currentAccount.phone, dataTransfer.receiver);
+        console.log(profile);
         if (!profile) {
             return {
                 message: 'Người dùng MoMo nhận tiền không tồn tại.',
@@ -2055,59 +2065,59 @@ exports.M2MU_INIT = async (phone, dataTransfer) => {
 
         const dataDevice = JSON.parse(currentAccount.dataDevice);
 
-        const initBody = {
-            "appCode": process.env.appCode,
-            "appId": "vn.momo.payment",
-            "appVer": process.env.appVer,
-            "buildNumber": 3791,
-            "channel": "APP",
-            "cmdId": `${timeToRequest}000000`,
-            "time": timeToRequest,
-            "deviceName": dataDevice.deviceName,
-            "deviceOS": "android",
-            "errorCode": 0,
-            "errorDesc": "",
-            "extra": {"checkSum": utilVsign.calculateCheckSum(currentAccount.phone, 'M2MU_INIT', timeToRequest, currentAccount.setupKey)},
-            "lang": "vi",
-            "user": currentAccount.phone,
-            "msgType": "M2MU_INIT",
-            "momoMsg": {
-                "tranType": 2018,
-                "tranList": [{
-                    "themeUrl": "https://img.mservice.com.vn/app/img/transfer/theme/trasua-750x260.png",
-                    "stickers": "",
-                    "partnerName": name,
-                    "serviceId": "transfer_p2p",
-                    "originalAmount": dataTransfer.amount,
-                    "receiverType": 1,
-                    "partnerId": dataTransfer.phone,
-                    "serviceCode": "transfer_p2p",
-                    "_class": "mservice.backend.entity.msg.M2MUInitMsg",
-                    "tranType": 2018,
-                    "comment": dataTransfer.comment,
-                    "moneySource": 1,
-                    "partnerCode": "momo",
-                    "rowCardId": null,
-                    "sourceToken": "SOF-1",
-                    "extras": "{\"avatarUrl\":\"\",\"aliasName\":\"\",\"appSendChat\":false,\"stickers\":\"\",\"themeId\":261,\"source\":\"search_p2p\",\"expenseCategory\":\"16\",\"categoryName\":\"Cà phê, đồ uống khác\",\"agentId\":" + agentId + ",\"bankCustomerId\":\"\"}",
-                }],
-                "clientTime": Date.now(),
-                "serviceId": "transfer_p2p",
-                "_class": "mservice.backend.entity.msg.M2MUInitMsg",
-                "defaultMoneySource": 1,
-                "sourceToken": "SOF-1",
-                "giftId": "",
-                "useVoucher": 0,
-                "discountCode": null,
-                "prepaidIds": "",
-                "usePrepaid": 0,
-            },
-            "pass": "",
-        }
-
-        const resultMoMo = await this.doRequestEncryptMoMo('https://owa.momo.vn/api/M2MU_INIT', initBody, currentAccount, "M2MU_INIT")
-
-        return resultMoMo;
+        // const initBody = {
+        //     "appCode": hardCodedAppCode,
+        //     "appId": "vn.momo.payment",
+        //     "appVer": hardCodedAppVer,
+        //     "buildNumber": 3791,
+        //     "channel": "APP",
+        //     "cmdId": `${timeToRequest}000000`,
+        //     "time": timeToRequest,
+        //     "deviceName": dataDevice.deviceName,
+        //     "deviceOS": "android",
+        //     "errorCode": 0,
+        //     "errorDesc": "",
+        //     "extra": { "checkSum": utilVsign.calculateCheckSum(currentAccount.username, 'M2MU_INIT', timeToRequest, currentAccount.setupKey) },
+        //     "lang": "vi",
+        //     "user": currentAccount.username,
+        //     "msgType": "M2MU_INIT",
+        //     "momoMsg": {
+        //         "tranType": 2018,
+        //         "tranList": [{
+        //             "themeUrl": "https://img.mservice.com.vn/app/img/transfer/theme/trasua-750x260.png",
+        //             "stickers": "",
+        //             "partnerName": receiverName,
+        //             "serviceId": "transfer_p2p",
+        //             "originalAmount": amount,
+        //             "receiverType": 1,
+        //             "partnerId": to,
+        //             "serviceCode": "transfer_p2p",
+        //             "_class": "mservice.backend.entity.msg.M2MUInitMsg",
+        //             "tranType": 2018,
+        //             "comment": memo,
+        //             "moneySource": 1,
+        //             "partnerCode": "momo",
+        //             "rowCardId": null,
+        //             "sourceToken": "SOF-1",
+        //             "extras": "{\"avatarUrl\":\"\",\"aliasName\":\"\",\"appSendChat\":false,\"stickers\":\"\",\"themeId\":261,\"source\":\"search_p2p\",\"expenseCategory\":\"16\",\"categoryName\":\"Cà phê, đồ uống khác\",\"agentId\":" + receiverAgentId + ",\"bankCustomerId\":\"\"}",
+        //         }],
+        //         "clientTime": Date.now(),
+        //         "serviceId": "transfer_p2p",
+        //         "_class": "mservice.backend.entity.msg.M2MUInitMsg",
+        //         "defaultMoneySource": 1,
+        //         "sourceToken": "SOF-1",
+        //         "giftId": "",
+        //         "useVoucher": 0,
+        //         "discountCode": null,
+        //         "prepaidIds": "",
+        //         "usePrepaid": 0,
+        //     },
+        //     "pass": "",
+        // }
+        //
+        // const resultMoMo = await this.doRequestEncryptMoMo('https://owa.momo.vn/api/M2MU_INIT', initBody, currentAccount, "M2MU_INIT", {agentid: currentAccount.agentId, secureid: dataDevice.secureId, devicecode: dataDevice.deviceCode, phone: currentAccount.phone});
+        //
+        // return resultMoMo;
 
     } catch (err) {
         await momoModel.findOneAndUpdate({phone}, {$set: {description: 'M2MU_INIT| Có lỗi xảy ra ' + err.message || err}})
@@ -2121,7 +2131,6 @@ exports.M2MU_INIT = async (phone, dataTransfer) => {
 exports.moneyTransfer = async (phone, dataTransfer) => {
     try {
         // phone, amount, comment
-        console.log(dataTransfer);
         const timeToRequest = Date.now();
         const checkSession = await this.checkSession(phone);
 
@@ -2196,7 +2205,9 @@ exports.moneyTransfer = async (phone, dataTransfer) => {
                 "pass": currentAccount.password,
             }
 
-            const resultTransfer = await this.doRequestEncryptMoMo('https://owa.momo.vn/api/M2MU_CONFIRM', confirmBody, currentAccount, "M2MU_CONFIRM")
+            const resultTransfer = await this.doRequestEncryptMoMo('https://owa.momo.vn/api/M2MU_CONFIRM', confirmBody, currentAccount, "M2MU_CONFIRM", {agentid: currentAccount.agentId, secureid: dataDevice.secureId, devicecode: dataDevice.deviceCode, phone: currentAccount.phone});
+
+            // const resultTransfer = await this.doRequestEncryptMoMo('https://owa.momo.vn/api/M2MU_CONFIRM', confirmBody, currentAccount, "M2MU_CONFIRM")
 
             console.log('Ket qua chuyen tien', resultTransfer);
 

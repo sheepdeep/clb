@@ -27,7 +27,7 @@ const rewardController = {
             }
 
             if (req.query?.resultType) {
-                let resultVaild = ['end', 'count_3', 'minus_3'];
+                let resultVaild = ['end', 'count_2', 'count_3', 'minus_3'];
                 resultVaild.includes(req.query.resultType) && (filters.resultType = req.query.resultType);
             }
 

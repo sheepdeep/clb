@@ -15,23 +15,18 @@
                             <div class="card-header">
                                 <h6 class="card-title">
                                     <a href="{{ originalUrl.pathname }}" class="text-dark">
-                                        <img src="../themes/admin/images/block.png" alt="" width="35">
-                                        Danh Sách Đen
-                                        <img src="../themes/admin/images/block.png" class="d-md-none" width="35">
+                                        <img src="../themes/admin/images/wallet.png" alt="" width="35">
+                                        Danh Sách Momo
+                                        <img src="../themes/admin/images/wallet.png" class="d-md-none" width="35">
                                     </a>
                                 </h6>
                             </div>
                             <div class="card-body">
                                 <div class="userDatatable adv-table-table global-shadow border-light-0 adv-table">
-                                    <div id="filter-form-container" class="footable-filtering-external content-center">
+                                    <div id="filter-form-container"
+                                         class="footable-filtering-external footable-filtering-right">
                                         <form>
                                             <div class="form-inline">
-                                                <div class="form-group footable-filtering-search mb-3 me-sm-30 me-0">
-                                                    <div class="input-group">
-                                                        <input type="search" class="form-control" name="phone"
-                                                               placeholder="Nhập số điện thoại..." value="{{ phone }}">
-                                                    </div>
-                                                </div>
                                                 <div
                                                         class="form-group dm-select d-flex align-items-center adv-table-searchs__status mb-3 me-sm-30 me-0">
                                                     <label
@@ -40,71 +35,263 @@
                                                     <select name="status" class="form-control ms-sm-10 ms-0">
                                                         {{#select status }}
                                                             <option value="">Tất Cả</option>
-                                                            <option value="active">Chặn</option>
+                                                            <option value="active">Hoạt Động</option>
+                                                            <option value="limit">Giới Hạn</option>
                                                             <option value="pending">Tạm Dừng</option>
+                                                            <option value="error">Lỗi Số</option>
+                                                        {{/select}}
+                                                    </select>
+                                                </div>
+                                                <div
+                                                        class="form-group dm-select d-flex align-items-center adv-table-searchs__status mb-3 me-sm-30 me-0">
+                                                    <label
+                                                            class="d-flex align-items-center mb-sm-0 mb-2 fs-15 fw-500">Đăng
+                                                        Nhập</label>
+                                                    <select name="loginStatus" class="form-control ms-sm-10 ms-0">
+                                                        {{#select loginStatus }}
+                                                            <option value="">Tất Cả</option>
+                                                            <option value="refreshError">Lỗi Refresh</option>
+                                                            <option value="waitLogin">Đợi Đăng Nhập</option>
+                                                            <option value="errorLogin">Lỗi Đăng Nhập</option>
+                                                            <option value="active">Hoạt Động</option>
+                                                            <option value="waitOTP">Đợi OTP</option>
+                                                            <option value="waitSend">Đợi Gửi OTP</option>
+                                                            <option value="error">Lỗi</option>
                                                         {{/select}}
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="form-group mb-3">
-                                                <button class="btn btn-primary btn-sm btn-block"><i class="fa fa-search"
-                                                                                                    aria-hidden="true"></i> Tìm kiếm</button>
+                                            <div class="row align-items-center">
+                                                <div class="col-md-10">
+                                                    <div class="form-group mb-3 hand">
+                                                        <div class="input-group">
+                                                            <input type="search" name="search" class="form-control"
+                                                                   value="{{ search }}"
+                                                                   placeholder="Nhập nội dung tìm kiếm...">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group mb-3">
+                                                        <button class="btn btn-primary btn-sm btn-block"><i
+                                                                class="fa fa-search" aria-hidden="true"></i> Tìm
+                                                            kiếm
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
-                                <div class="table-responsive mb-3">
+                                <div class="content-center mb-3">
+                                    <button class="btn btn-secondary">Tổng: {{ numberFormat count }}đ</button>
+                                </div>
+                                <div class="table-responsive table-mousewheel mb-3">
                                     <table
                                             class="table table-vcenter text-nowrap table-bordered text-center table-mb sort-table">
                                         <thead class="badge-secondary text-white">
                                         <tr>
-                                            <th>Username</th>
-                                            <th>Số Tiền {{{ tableSort originalUrl.search 'amount' _sort }}}</th>
-                                            <th>Trạng Thái {{{ tableSort originalUrl.search 'status' _sort }}}</th>
-                                            <th>Thời Gian {{{ tableSort originalUrl.search 'updatedAt' _sort }}}
-                                            </th>
                                             <th>
-                                                    <span data-bs-submit="block" data-bs-action="add">
+                                                    <span data-bs-submit="momo" data-bs-action="add">
                                                         <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                                     </span>
                                             </th>
+                                            <th>Số Điện Thoại</th>
+                                            <th>Tên Tài Khoản</th>
+                                            <th>Số Dư {{{ tableSort originalUrl.search 'balance' _sort }}}</th>
+                                            <th>Chuyển tiền {{{ tableSort originalUrl.search 'transfer' _sort }}}</th>
+                                            <th>Nhận tiền {{{ tableSort originalUrl.search 'receiver' _sort }}}</th>
+                                            <th>Số Lần {{{ tableSort originalUrl.search 'number' _sort }}}</th>
+                                            <th>Cược Min {{{ tableSort originalUrl.search 'betMin' _sort }}}</th>
+                                            <th>Cược Max {{{ tableSort originalUrl.search 'betMax' _sort }}}</th>
+                                            <th>Giới Hạn Ngày {{{ tableSort originalUrl.search 'limitDay' _sort }}}
+                                            </th>
+                                            <th>Giới Hạn Tháng {{{ tableSort originalUrl.search 'limitMonth' _sort
+                                            }}}</th>
+                                            <th>Trạng Thái {{{ tableSort originalUrl.search 'status' _sort }}}</th>
+                                            <th>Đăng Nhập {{{ tableSort originalUrl.search 'loginStatus' _sort }}}
+                                            </th>
+                                            <th>Mô Tả</th>
+                                            <th>Chuyển Ngày</th>
+                                            <th>Nhận Ngày</th>
+                                            <th>Chuyển Tháng</th>
+                                            <th>Nhận Tháng</th>
+                                            <th>Đăng nhập lúc {{{ tableSort originalUrl.search 'updatedAt' _sort }}}
+                                            </th>
+                                            <th>Cập Nhập {{{ tableSort originalUrl.search 'updatedAt' _sort }}}
+                                            </th>
+                                            <th>Thời Gian {{{ tableSort originalUrl.search 'createdAt' _sort }}}
+                                            </th>
                                         </tr>
                                         </thead>
-                                        <tbody data-table="block">
+                                        <tbody data-table="momo">
                                         {{#each list}}
                                             <tr class="edit-one" data-id="{{ this._id }}">
-                                                <td>{{ this.username }}</td>
-                                                <td>{{ numberFormat this.amount }}đ</td>
+                                                <td>
+                                                    <div class="table-actions hand p-2">
+                                                         <span class="badges badge-dark action-more"
+                                                               data-action="export" data-id="{{ this.phone }}"
+                                                               data-bs-toggle="tooltip" data-bs-placement="top"
+                                                               data-bs-original-title="Xuất dữ liệu"><i
+                                                                 class="fas fa-file-export"></i></span>
+                                                        <span class="badges badge-light action-more"
+                                                              data-action="noti" data-id="{{ this.phone }}"
+                                                              data-bs-toggle="tooltip" data-bs-placement="top"
+                                                              data-bs-original-title="Cài đặt noti"><i
+                                                                class="fas fa-bell"></i></span>
+                                                        <span class="badges badge-success action-more"
+                                                              data-action="qr" data-id="{{ this.phone }}"
+                                                              data-bs-toggle="tooltip" data-bs-placement="top"
+                                                              data-bs-original-title="Lấy QR"><i
+                                                                class="fas fa-qrcode"></i></span>
+                                                        <span class="badges badge-warning action-more"
+                                                              data-action="balance" data-id="{{ this.phone }}"
+                                                              data-bs-toggle="tooltip" data-bs-placement="top"
+                                                              data-bs-original-title="Cập nhập số dư"><i
+                                                                class="fas fa-coins"></i></span>
+                                                        <span class="badges badge-success action-more"
+                                                              data-action="refresh" data-id="{{ this.phone }}"
+                                                              data-bs-toggle="tooltip" data-bs-placement="top"
+                                                              data-bs-original-title="Cập nhập token"><i
+                                                                class="fas fa-redo-alt"></i></span>
+                                                        <a href="./home?_phone={{ this.phone }}"
+                                                        class="badges badge-info" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top"
+                                                        data-bs-original-title="Xem doanh thu số"><i
+                                                            class="fa fa-eye" aria-hidden="true"></i></a>
+                                                        <span class="badges badge-danger" data-bs-submit="momo-list"
+                                                              data-bs-action="remove" data-id="{{ this._id }}"
+                                                              data-bs-toggle="tooltip" data-bs-placement="top"
+                                                              data-bs-original-title="Xóa"><i class="fa fa-trash"
+                                                                                              aria-hidden="true"></i></span>
+                                                    </div>
+                                                </td>
+                                                <td>{{ this.phone }}</td>
+                                                <td>{{ this.name }}</td>
+                                                <td class="balance">{{ numberFormat this.balance }}đ</td>
+                                                <td data-bs-name="transfer" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.transfer }}">
+                                                        <span data-bs-html="true">{{{ transfer this.transfer
+                                                        }}}</span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.transfer }}">
+                                                        <select class="form-control ih-medium ip-light mb-2"
+                                                                data-bs-edit="true">
+                                                            <option value="true">Hoạt động</option>
+                                                            <option value="false">Không hoạt động</option>
+                                                        </select>
+                                                    </span>
+                                                </td>
+                                                <td data-bs-name="receiver" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.receiver }}">
+                                                        <span data-bs-html="true">{{{ receiver this.receiver
+                                                        }}}</span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.receiver }}">
+                                                        <select class="form-control ih-medium ip-light mb-2"
+                                                                data-bs-edit="true">
+                                                            <option value="true">Hoạt động</option>
+                                                            <option value="false">Không hoạt động</option>
+                                                        </select>
+                                                    </span>
+                                                </td>
+                                                <td data-bs-name="number" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-key="format"
+                                                          data-bs-value="{{ this.number }}">
+                                                        <span data-bs-html="true">{{ numberFormat this.number }}</span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.number }}">
+                                                        <input type="text" class="form-control ih-medium ip-light mb-2"
+                                                               data-bs-edit="true">
+                                                    </span>
+                                                </td>
+                                                <td data-bs-name="betMin" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-key="format"
+                                                          data-bs-value="{{ this.betMin }}">
+                                                        <span data-bs-html="true">{{ numberFormat this.betMin }}</span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.betMin }}">
+                                                        <input type="text" class="form-control ih-medium ip-light mb-2"
+                                                               data-bs-edit="true">
+                                                    </span>
+                                                </td>
+                                                <td data-bs-name="betMax" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-key="format"
+                                                          data-bs-value="{{ this.betMax }}">
+                                                        <span data-bs-html="true">{{ numberFormat this.betMax }}</span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.betMax }}">
+                                                        <input type="text" class="form-control ih-medium ip-light mb-2"
+                                                               data-bs-edit="true">
+                                                    </span>
+                                                </td>
+                                                <td data-bs-name="limitDay" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-key="format"
+                                                          data-bs-value="{{ this.limitDay }}">
+                                                        <span data-bs-html="true">{{ numberFormat this.limitDay
+                                                        }}</span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.limitDay }}">
+                                                        <input type="text" class="form-control ih-medium ip-light mb-2"
+                                                               data-bs-edit="true">
+                                                    </span>
+                                                </td>
+                                                <td data-bs-name="limitMonth" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-key="format"
+                                                          data-bs-value="{{ this.limitMonth }}">
+                                                        <span data-bs-html="true">{{ numberFormat this.limitMonth
+                                                        }}</span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.limitMonth }}">
+                                                        <input type="text" class="form-control ih-medium ip-light mb-2"
+                                                               data-bs-edit="true">
+                                                    </span>
+                                                </td>
                                                 <td data-bs-name="status" data-bs-hasEdit="true">
                                                     <span data-bs-table="html" data-bs-value="{{ this.status }}">
-                                                        <span data-bs-html="true">
-                                                            {{#ifCond this.status '==' 'active'}}
-                                                                <span class="badges badge-success">Chặn</span>
-                                                            {{else}}
-                                                                <span class="badges badge-warning">Tạm Dừng</span>
-                                                            {{/ifCond}}
-                                                        </span>
+                                                        <span data-bs-html="true">{{{ momoStatus this.status }}}</span>
                                                     </span>
                                                     <span data-bs-table="edit" data-bs-value="{{ this.status }}">
                                                         <select class="form-control ih-medium ip-light mb-2"
                                                                 data-bs-edit="true">
-                                                            <option value="active">Chặn</option>
+                                                            <option value="active">Hoạt Động</option>
+                                                            <option value="limit">Giới Hạn</option>
                                                             <option value="pending">Tạm Dừng</option>
+                                                            <option value="error">Lỗi Số</option>
                                                         </select>
                                                     </span>
                                                 </td>
-                                                <td>{{ formatDate this.updatedAt 'HH:mm:ss DD-MM-YYYY'}}</td>
-                                                <td>
-                                                    <div class="table-actions hand">
-                                                        <span class="badges badge-danger" data-bs-submit="block"
-                                                              data-bs-action="remove" data-id="{{ this._id }}"><i
-                                                                class="fa fa-trash" aria-hidden="true"></i></span>
-                                                    </div>
+                                                <td data-bs-name="loginStatus" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.loginStatus }}">
+                                                        <span data-bs-html="true">{{{ loginStatus this.loginStatus
+                                                        }}}</span>
+                                                    </span>
+                                                    <span data-bs-table="edit" data-bs-value="{{ this.loginStatus }}">
+                                                        <select class="form-control ih-medium ip-light mb-2"
+                                                                data-bs-edit="true">
+                                                            <option value="refreshError">Lỗi Refresh</option>
+                                                            <option value="waitLogin">Đợi Đăng Nhập</option>
+                                                            <option value="errorLogin">Lỗi Đăng Nhập</option>
+                                                            <option value="active">Hoạt Động</option>
+                                                            <option value="waitOTP">Đợi OTP</option>
+                                                            <option value="waitSend">Đợi Gửi OTP</option>
+                                                            <option value="error">Lỗi</option>
+                                                        </select>
+                                                    </span>
                                                 </td>
+                                                <td><textarea class="form-control">{{ this.description }}</textarea>
+                                                </td>
+                                                <td>{{ numberFormat this.amountDay }}đ</td>
+                                                <td>{{ numberFormat this.receiptDay }}đ</td>
+                                                <td>{{ numberFormat this.amountMonth }}đ</td>
+                                                <td>{{ numberFormat this.receiptMonth }}đ</td>
+                                                <td>{{ formatDate this.loginAt 'HH:mm:ss DD-MM-YYYY'}}</td>
+                                                <td>{{ formatDate this.updatedAt 'HH:mm:ss DD-MM-YYYY'}}</td>
+                                                <td>{{ formatDate this.createdAt 'HH:mm:ss DD-MM-YYYY'}}</td>
                                             </tr>
                                         {{else}}
                                             <tr>
-                                                <td colspan="12">
+                                                <td colspan="24">
                                                     <div class="dm-empty text-center">
                                                         <div class="dm-empty__image">
                                                             <img src="../themes/admin/images/1.png" alt="Rỗng">
@@ -125,7 +312,8 @@
                                             <li class="dm-pagination__item">
                                                 {{#paginate pagination type="previous"}}
                                                 <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
-                                                    class="dm-pagination__link pagination-control {{#if disabled}}disabled{{/if}}">
+                                                    class="dm-pagination__link pagination-control {{#if disabled}}
+                                                    disabled{{/if}}">
                                                     <span class="la la-angle-left"></span>
                                                     </a>
                                                 {{/paginate}}
@@ -137,7 +325,8 @@
                                                 {{/paginate}}
                                                 {{#paginate pagination type="next"}}
                                                 <a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}"
-                                                    class="dm-pagination__link pagination-control {{#if disabled}}disabled{{/if}}">
+                                                    class="dm-pagination__link pagination-control {{#if disabled}}
+                                                    disabled{{/if}}">
                                                     <span class="la la-angle-right"></span>
                                                     </a>
                                                 {{/paginate}}
@@ -169,31 +358,330 @@
         </div>
     </div>
 </main>
-<!-- Modal Add Block -->
-<div class="modal fade" data-bs-modal="block-add" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+<!-- Modal Add Momo -->
+<div class="modal fade" data-bs-modal="momo-add" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><i class="fas fa-user-lock"></i> Chặn Người Dùng</h5>
+                <h5 class="modal-title"><i class="fas fa-plus-circle"></i> Thêm Tài Khoản</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="#" method="post" class="form-axios">
+            <form action="#" method="post" id="formAdd">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="" class="il-gray fs-14 fw-500 mb-10">Username</label>
-                        <input type="text" name="username" class="form-control ih-medium ip-light"
-                               placeholder="Nhập username cần chặn...">
+                        <label class="il-gray fs-14 fw-500 mb-10">Thể loại momo</label>
+                        <select class="form-control ih-medium ip-light" name="type">
+                            <option value="">Vui lòng chọn thẻ loại</option>
+                            <option value="normal">Thường</option>
+                            <option value="business">Doanh nghiệp</option>
+                            <option value="file">File</option>
+                        </select>
                     </div>
+                    <div id="formMomo">
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary btn-sm">Chặn</button>
+                    <button type="submit" class="btn btn-primary btn-sm action-add" data-action="otp">Thêm</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+<div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Lịch Sử Phiên
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <canvas id="canvasQr"></canvas>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-gray" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
 {{>foot}}
+<script src="
+https://cdn.jsdelivr.net/npm/qr-code-styling@1.8.4/lib/qr-code-styling.min.js
+"></script>
+<script type="text/javascript">
+    $(document).ready(function (e) {
+
+        $('body').on('click', '.action-more', function (e) {
+            let _this = $(this);
+            let action = _this.data('action');
+            let phone = _this.data('id');
+
+            switch (action) {
+                case 'qr':
+                    _this.prop('disabled', true);
+                    axios.post('/api/v2/momo/qr', {phone})
+                            .then((result) => {
+                                let response = result.data;
+
+                                console.log(response);
+
+                                if (response.success) {
+                                    $('#qrModal').modal('show');
+                                    loadQR(response.data.accountNumber, 'https://developers.momo.vn/v3/assets/images/square-8c08a00f550e40a2efafea4a005b1232.png', '#0070FF');
+                                }
+
+                                response.success ? swal('Thông Báo', response.message, 'success') : swal('Thông Báo', response.message, 'error');
+                            })
+                            .catch(err => swal('Thông Báo', `Có lỗi xảy ra ${err.message || err}`, 'warning'))
+                            .finally(() => _this.prop('disabled', false))
+                    break;
+                case 'noti':
+                    _this.prop('disabled', true);
+                    axios.post('/api/v2/momo/noti', {phone})
+                            .then((result) => {
+                                let response = result.data;
+
+                                response.success ? swal('Thông Báo', response.message, 'success') : swal('Thông Báo', response.message, 'error');
+                            })
+                            .catch(err => swal('Thông Báo', `Có lỗi xảy ra ${err.message || err}`, 'warning'))
+                            .finally(() => _this.prop('disabled', false))
+                    break;
+                case 'export':
+                    _this.prop('disabled', true);
+                    axios.post('/api/v2/momo/export', {phone})
+                            .then((result) => {
+                                let response = result.data;
+
+                                // if(response.success) {
+                                const jsonString = JSON.stringify(response);
+                                const file = new Blob([jsonString], {type: 'application/json'});
+
+                                // Create a link element to trigger the download
+                                const link = document.createElement('a');
+                                link.href = URL.createObjectURL(file);
+                                link.download = phone + '.json'; // Set the download filename
+
+                                // Append the link to the body, click it to start the download, and remove it
+                                document.body.appendChild(link);
+                                link.click();
+                                // swal('Thông Báo', response.message, 'success')
+                                // } else {
+                                //     swal('Thông Báo', response.message, 'error')
+                                // }
+                            })
+                            .catch(err => swal('Thông Báo', `Có lỗi xảy ra ${err.message || err}`, 'warning'))
+                            .finally(() => _this.prop('disabled', false))
+                    break;
+                case 'balance':
+                    _this.prop('disabled', true);
+                    axios.post('/api/v2/momo/balance', {phone})
+                            .then((result) => {
+                                let response = result.data;
+
+                                response.success ? swal('Thông Báo', response.message, 'success') && _this.parent().parent().parent().find('td.amount').html(`${Intl.NumberFormat('en-US').format(response.balance)}đ`) : swal('Thông Báo', response.message, 'error');
+                            })
+                            .catch(err => swal('Thông Báo', `Có lỗi xảy ra ${err.message || err}`, 'warning'))
+                            .finally(() => _this.prop('disabled', false))
+                    break;
+                case 'refresh':
+                    _this.prop('disabled', true);
+                    axios.post('/api/v2/momo/refresh', {phone})
+                            .then((result) => {
+                                let response = result.data;
+
+                                response.success ? swal('Thông Báo', response.message, 'success') : swal('Thông Báo', response.message, 'error');
+                            })
+                            .catch(err => swal('Thông Báo', `Có lỗi xảy ra ${err.message || err}`, 'warning'))
+                            .finally(() => _this.prop('disabled', false))
+                    break;
+                default:
+                    swal('Thông Báo', 'Thao tác không hợp lệ!', 'warning');
+                    break;
+            }
+        })
+
+        $('select[name=type]').on('change', function () {
+            let typeMomo = $(this).val();
+            // $('#formMomo').append();
+            if (typeMomo === 'normal') {
+                $('#formMomo').html('').html('<div class=form-group><label class="fs-14 fw-500 il-gray mb-10"for="">Số Điện Thoại</label> <input class="form-control ih-medium ip-light"name=phone placeholder="Nhập số điện thoại..."></div><div class=form-group><label class="fs-14 fw-500 il-gray mb-10"for="">Mật Khẩu</label> <input class="form-control ih-medium ip-light"name=password placeholder="Nhập mật khẩu"type=password></div><div class=form-group><label class="fs-14 fw-500 il-gray mb-10"for="">OTP</label> <input class="form-control ih-medium ip-light"name=otp placeholder="Nhập otp nếu có"type=number></div><div class=form-group><label class="fs-14 fw-500 il-gray mb-10"for="">PROXY</label> <input class="form-control ih-medium ip-light"name=proxy readonly></div><div class=form-group><label class="fs-14 fw-500 il-gray mb-10"for="">IMEI</label> <input class="form-control ih-medium ip-light"name=imei readonly></div><div class=form-group><label class="fs-14 fw-500 il-gray mb-10"for="">Kết quả</label> <textarea class="form-control ih-medium ip-light"name=error rows=5></textarea></div>')
+            } else if (typeMomo === 'business') {
+                $('#formMomo').html('').html('<div class=form-group><label class="fs-14 fw-500 il-gray mb-10"for="">Số Điện Thoại</label> <input class="form-control ih-medium ip-light"name=phone placeholder="Nhập số điện thoại..."></div><div class=form-group><label class="fs-14 fw-500 il-gray mb-10"for="">Mật Khẩu</label> <input class="form-control ih-medium ip-light"name=password placeholder="Nhập mật khẩu"type=password></div><div class=form-group><label class="fs-14 fw-500 il-gray mb-10"for="">storeKey</label> <input class="form-control ih-medium ip-light"name=storeKey placeholder="Nhập storeId"></div><div class=form-group><label class="fs-14 fw-500 il-gray mb-10"for="">partnerCode</label> <input class="form-control ih-medium ip-light"name=partnerCode placeholder="Nhập partnerCode"></div><div class=form-group><label class="fs-14 fw-500 il-gray mb-10"for="">accessKey</label> <input class="form-control ih-medium ip-light"name=accessKey placeholder="Nhập accessKey"></div><div class=form-group><label class="fs-14 fw-500 il-gray mb-10"for="">secretKey</label> <input class="form-control ih-medium ip-light"name=secretKey placeholder="Nhập secretKey"></div>')
+            } else if (typeMomo === 'file') {
+                $('#formMomo').html('').html('<div class=form-group><label class="fs-14 fw-500 il-gray mb-10"for="">File Json</label><input class="form-control ih-medium ip-light" type="file" id="jsonFile" name="file" accept=".json"></div>')
+            } else {
+                $('#formMomo').html('');
+            }
+
+        });
+
+        // function onChange(event) {
+        //     var reader = new FileReader();
+        //     reader.onload = onReaderLoad;
+        //     reader.readAsText(event.target.files[0]);
+        // }
+        //
+        // function onReaderLoad(event){
+        //     console.log(event.target.result);
+        //     var obj = JSON.parse(event.target.result);
+        //     alert_data(obj.name, obj.family);
+        // }
+
+        function loadQR(data, img, bgc) {
+            qrCode = new QRCodeStyling({
+                width: 200,
+                height: 200,
+                data: '00020101021138620010A00000072701320006970454011899MM23332M575816780208QRIBFTTA53037045802VN62190515MOMOW2W575816786304164E' + data,
+                image: img,
+                dotsOptions: { color: bgc, type: "rounded" },
+                backgroundOptions: { color: "#FFF" },
+                imageOptions: { crossOrigin: "anonymous", margin: 5, imageSize: 0.5 },
+            });
+            console.log(qrCode);
+            $("#canvasQr").html(""), qrCode.append(document.getElementById("canvasQr"));
+        }
+
+        $(document).on("click", ".qrc", function () {
+            var bankCode = $(this).attr('data-bankcode');
+            var bgc = "#11089c";
+            if (bankCode == '970436') {
+                bgc = "#136c3d";
+            }
+            else if (bankCode == "970418") {
+                bgc = "#046c6c";
+            }
+            else if (bankCode == "970407") {
+                bgc = "#f01c24";
+            }
+            else if (bankCode == "970415") {
+                bgc = "#93d5f6";
+            }
+            else if (bankCode == "970416") {
+                bgc = "#0070FF";
+            }
+            else if (bankCode == "9902") {
+                bgc = "#008fe5";
+            }
+            else if (bankCode == "9903") {
+                bgc = "#c86b9f";
+            }
+            else if (bankCode == "9901") {
+                bgc = "#000";
+            }
+            var img = window.location.protocol + '//' + window.location.host + '/client/img/banks/' + bankCode + '.png';
+            var data = $(this).attr('data-content');
+            var md = $('#qr-download').attr("mobile-device");
+            if (bankCode == "ZLP") {
+                $('.qr-notes').show();
+            }
+            else {
+                $('.qr-notes').hide();
+            }
+            if (bankCode == "ZLP" && md == "1") {
+                $('#qr-download').text('Thanh Toán Ngay').attr("data-content", data);
+            }
+            else {
+                $('#qr-download').text('Tải QrCode về máy').attr("data-content", "");
+            }
+            loadQR(data, img, bgc);
+        });
+
+        $('body').on('submit', '#formAdd', function (e) {
+            e.preventDefault();
+            let action = $('.action-add').data('action');
+            let data = $(this).serialize();
+
+            let convertData = data.split('=');
+
+            $('.action-add').html(`<div class="dm-spin-dots spin-sm"><span class="spin-dot badge-dot dot-light"></span><span class="spin-dot badge-dot dot-light"></span><span class="spin-dot badge-dot dot-light"></span><span class="spin-dot badge-dot dot-light"></span></div>`).prop('disabled', true);
+
+            if (convertData[1] === 'file') {
+
+                const fileInput = document.getElementById('jsonFile');
+
+                if (fileInput.files.length === 0) {
+                    alert("Please select a JSON file.");
+                    return;
+                }
+
+                // Get the selected file
+                const file = fileInput.files[0];
+
+                // Check if the file is a JSON file
+                if (file.type !== "application/json") {
+                    alert("Please select a valid JSON file.");
+                    return;
+                }
+
+                // Create a FileReader to read the file
+                const reader = new FileReader();
+
+                // Define the onload event handler for the FileReader
+                reader.onload = function (event) {
+                    // Get the file content
+                    const fileContent = event.target.result;
+
+                    try {
+                        // Parse the JSON content
+                        const jsonData = JSON.parse(fileContent);
+
+                        axios.post(`/api/v2/momo/${action}`, jsonData)
+
+                                .then((result) => {
+                                    const res = result.data;
+                                    $('.action-add').html(action == 'otp' ? (res.success ? 'Xác Nhận' : 'Thêm') : (action == 'confirm' ? (res.success ? 'Đăng Nhập' : 'Xác Nhận') : 'Thêm')).prop('disabled', false);
+                                    if (res.success) {
+                                        swal('Thông báo', res.message, 'success');
+                                        setTimeout(() => window.location.reload(), 1500);  // Reload after success
+                                    } else {
+                                        swal('Thông báo', res.message, 'error');
+                                    }
+                                })
+                                .catch((err) => {
+                                    swal('Thông Báo', err.message || err, 'error');
+                                });
+                    } catch (error) {
+                        // Handle JSON parsing error
+                        swal('Error', 'Invalid JSON format', 'error');
+                    }
+                };
+
+                // Read the file as text
+                reader.readAsText(file);
+
+                console.log('Gui du lieu momo bang json')
+            } else {
+                axios.post(`/api/v2/momo/${action}`, data)
+                        .then((result) => {
+                            let res = result.data;
+
+                            $('.action-add').html(action == 'otp' ? (res.success ? 'Xác Nhận' : 'Thêm') : (action == 'confirm' ? (res.success ? 'Đăng Nhập' : 'Xác Nhận') : 'Thêm')).prop('disabled', false);
+
+                            switch (action) {
+                                case 'otp':
+                                    res.success ? swal('Thông báo', res.message, 'success') && $('input[name=proxy]').val(res.proxy) && $('.action-add').data('action', 'confirm') : swal('Thông báo', res.message, 'error');
+                                    break;
+                                case 'confirm':
+                                    res.success ? swal('Thông báo', res.message, 'success') && $('input[name=imei]').val(res.imei) && $('.action-add').data('action', 'login') : swal('Thông báo', res.message, 'error');
+                                    break;
+                                case 'login':
+                                    res.success ? swal('Thông báo', res.message, 'success') && setTimeout(() => window.location.reload(), 1500) : swal('Thông báo', res.message, 'error');
+                                    break;
+                            }
+                        })
+                        .catch((err) => {
+                            $('textarea[name=error]').textContent(err.dataResult);
+                            swal('Thông Báo', err.message || err, 'error');
+                        })
+            }
+        })
+    })
+</script>

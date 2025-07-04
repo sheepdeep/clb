@@ -1,387 +1,352 @@
 {{>head}}
-<body class="antialiased flex h-full text-base text-foreground bg-background [--header-height:60px] [--sidebar-width:290px] bg-muted! lg:overflow-hidden">
-<!-- Theme Mode -->
-<script>
-    const defaultThemeMode = 'light'; // light|dark|system
-    let themeMode;
+{{>nav}}
+<div id="content" class="main-content">
+    <div class="layout-px-spacing">
 
-    if (document.documentElement) {
-        if (localStorage.getItem('kt-theme')) {
-            themeMode = localStorage.getItem('kt-theme');
-        } else if (
-                document.documentElement.hasAttribute('data-kt-theme-mode')
-        ) {
-            themeMode =
-                    document.documentElement.getAttribute('data-kt-theme-mode');
-        } else {
-            themeMode = defaultThemeMode;
-        }
+        <div class="middle-content container-xxl p-0">
+            <div class="secondary-nav">
+                <div class="breadcrumbs-container" data-page-heading="Analytics">
+                    <header class="header navbar navbar-expand-sm">
+                        <a href="javascript:void(0);" class="btn-toggle sidebarCollapse" data-placement="bottom">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                        </a>
+                        <div class="d-flex breadcrumb-content">
+                            <div class="page-header">
+                                <div class="page-title"><h3>{{ title }}</h3></div>
+                            </div>
+                        </div>
+                    </header>
+                </div>
+            </div>
+            <!--  END BREADCRUMBS  -->
 
-        if (themeMode === 'system') {
-            themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches
-                    ? 'dark'
-                    : 'light';
-        }
-
-        document.documentElement.classList.add(themeMode);
-    }
-</script>
-<div class="flex grow">
-    <header class="flex lg:hidden items-center fixed z-10 top-0 start-0 end-0 shrink-0 bg-muted h-(--header-height)" id="header">
-        <!-- Container -->
-        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
-            <a href="/metronic/tailwind/demo4/">
-                <img class="dark:hidden min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray.svg"/>
-                <img class="hidden dark:block min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray-dark.svg"/>
-            </a>
-            <button class="kt-btn kt-btn-icon kt-btn-ghost -me-2" data-kt-drawer-toggle="#sidebar">
-                <i class="ki-filled ki-menu">
-                </i>
-            </button>
-        </div>
-        <!-- End of Container -->
-    </header>
-    <div class="flex flex-col lg:flex-row grow pt-(--header-height) lg:pt-0">
-        {{>nav}}
-        <div class="flex grow rounded-xl bg-background border border-input lg:ms-(--sidebar-width) mt-0 lg:mt-5 m-5">
-            <div class="flex flex-col grow kt-scrollable-y-auto lg:[--kt-scrollbar-width:auto] pt-5" id="scrollable_content">
-                <main class="grow" role="content">
-                    <div class="pb-5">
-                        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
-                            <div class="flex items-center flex-wrap gap-1 lg:gap-5">
-                                <h1 class="font-medium text-base text-mono">
-                                    {{ title }}
-                                </h1>
-                                <button data-kt-modal-toggle="#momo-add" class="kt-btn kt-btn-outline kt-btn-primary kt-btn-sm">
-                                    <i class="ki-filled ki-additem">
-                                    </i>
-                                    Thêm tài khoản
-                                </button>
+            <div class="row layout-top-spacing">
+                <form>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <select class="form-control br-30" name="status">
+                                {{#select status }}
+                                    <option value="">Trạng thái</option>
+                                    <option value="active">Hoạt Động</option>
+                                    <option value="limit">Giới Hạn</option>
+                                    <option value="pending">Tạm Dừng</option>
+                                    <option value="error">Lỗi Số</option>
+                                {{/select}}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control br-30" name="loginStatus">
+                                {{#select loginStatus }}
+                                    <option value="">Đăng Nhập</option>
+                                    <option value="refreshError">Lỗi Refresh</option>
+                                    <option value="waitLogin">Đợi Đăng Nhập</option>
+                                    <option value="errorLogin">Lỗi Đăng Nhập</option>
+                                    <option value="active">Hoạt Động</option>
+                                    <option value="waitOTP">Đợi OTP</option>
+                                    <option value="waitSend">Đợi Gửi OTP</option>
+                                    <option value="error">Lỗi</option>
+                                {{/select}}
+                            </select>
+                        </div>
+                        <div class="col-lg-6 col-md-8 col-sm-9 filtered-list-search mx-auto">
+                            <div class="form-inline my-2 my-lg-0 justify-content-center">
+                                <div class="w-100">
+                                    <input type="text" class="w-100 form-control product-search br-30" name="search" placeholder="Tìm kiếm" value="{{search}}">
+                                    <button class="btn btn-primary _effect--ripple waves-effect waves-light" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="kt-container-fluid">
-                        <div class="grid gap-5 lg:gap-7.5">
-                            <div class="kt-card kt-card-grid min-w-full">
-                                <div class="kt-card-header flex-wrap gap-2">
-                                    <h3 class="kt-card-title text-sm">
-                                        Hiện thị 20 of {{ numberFormat pageCount }} users
-                                    </h3>
-                                    <form>
-                                        <div class="flex flex-wrap gap-2 lg:gap-5">
-                                            <div class="flex">
-                                                <label class="kt-input">
-                                                    <i class="ki-filled ki-magnifier">
-                                                    </i>
-                                                    <input name="search" placeholder="Tìm kiếm" type="text" value="">
-                                                </label>
-                                            </div>
-                                            <div class="flex flex-wrap gap-2.5">
-                                                <select class="kt-select w-28" name="status">
-                                                    {{#select status }}
-                                                        <option value="">Trạng thái</option>
-                                                        <option value="active">Hoạt Động</option>
-                                                        <option value="limit">Giới Hạn</option>
-                                                        <option value="pending">Tạm Dừng</option>
-                                                        <option value="error">Lỗi Số</option>
-                                                    {{/select}}
-                                                </select>
-                                                <select class="kt-select w-28" name="loginStatus">
-                                                    {{#select loginStatus }}
-                                                        <option value="">Đăng Nhập</option>
-                                                        <option value="refreshError">Lỗi Refresh</option>
-                                                        <option value="waitLogin">Đợi Đăng Nhập</option>
-                                                        <option value="errorLogin">Lỗi Đăng Nhập</option>
-                                                        <option value="active">Hoạt Động</option>
-                                                        <option value="waitOTP">Đợi OTP</option>
-                                                        <option value="waitSend">Đợi Gửi OTP</option>
-                                                        <option value="error">Lỗi</option>
-                                                    {{/select}}
-                                                </select>
-                                                <button class="kt-btn kt-btn-outline kt-btn-primary">
-                                                    <i class="ki-filled ki-search-list">
-                                                    </i>
-                                                    Tìm kiếm
-                                                </button>
+                </form>
+
+
+
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="#" method="post" id="formAdd">
+                                <div class="form-group">
+                                    <label class="">Họ tên</label>
+                                    <input class="form-control" name="name" placeholder="Nhập họ tên...">
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Tài khoản</label>
+                                    <input class="form-control" name="username" placeholder="Nhập tài khoản...">
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Mật khẩu</label>
+                                    <input class="form-control" placeholder="Nhập mật khẩu..." name="password">
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Số tài khoản</label>
+                                    <input class="form-control" name="accountNumber" placeholder="Nhập số tài khoản...">
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Loại ngân hàng</label>
+                                    <input class="form-control" name="bankType" placeholder="Nhập loại ngân hàng...">
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Proxy</label>
+                                    <input class="form-control" name="proxy" placeholder="Nhập proxy nếu cần...">
+                                </div>
+                                <button type="submit" class="btn btn-success w-100 mt-2 action-add">Thêm</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+                    <div class="widget-four">
+                        <div class="widget-heading">
+                            <h5 class="">Thống kê</h5>
+                        </div>
+                        <div class="widget-content">
+                            <div class="vistorsBrowser">
+                                <div class="browser-list">
+                                    <div class="w-icon">
+                                        <img src="https://cdn-icons-png.freepik.com/512/6020/6020687.png">
+                                    </div>
+                                    <div class="w-browser-details">
+                                        <div class="w-browser-info">
+                                            <h6>Tổng tiền</h6>
+                                            <p class="browser-count">{{ numberFormat totalBalance  }}</p>
+                                        </div>
+                                        <div class="w-browser-stats">
+                                            <div class="progress">
+                                                <div class="progress-bar bg-gradient-secondary" role="progressbar" style="width: 100%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
-                                <div class="kt-card-content">
-                                    <div data-kt-datatable="true" data-kt-datatable-state-save="false" id="team_crew_table" data-kt-datatable-initialized="true" class="datatable-initialized">
-                                        <div class="kt-scrollable-x-auto">
-                                            <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
-                                                <thead>
-                                                <tr>
-                                                    <th class="min-w-[150px]">Số điện thoại</th>
-                                                    <th class="min-w-[150px]">Tên</th>
-                                                    <th class="min-w-[150px]">Số tài khoản</th>
-                                                    <th class="min-w-[150px]">Ngân hàng</th>
-                                                    <th class="min-w-[150px]">Số Dư {{{ tableSort originalUrl.search 'balance' _sort }}}</th>
-                                                    <th class="min-w-[150px]">Cược Min {{{ tableSort originalUrl.search 'betMin' _sort }}}</th>
-                                                    <th class="min-w-[150px]">Cược Max {{{ tableSort originalUrl.search 'betMax' _sort }}}</th>
-                                                    <th class="min-w-[150px]">Trạng Thái {{{ tableSort originalUrl.search 'status' _sort }}}</th>
-                                                    <th class="min-w-[150px]">Đăng Nhập {{{ tableSort originalUrl.search 'loginStatus' _sort }}}</th>
-                                                    <th class="min-w-[300px]">Mô Tả</th>
-                                                    <th class="min-w-[150px]">Chuyển Ngày</th>
-                                                    <th class="min-w-[150px]">Nhận Ngày</th>
-                                                    <th class="min-w-[150px]">Chuyển Tháng</th>
-                                                    <th class="min-w-[150px]">Nhận Tháng</th>
-                                                    <th class="min-w-[150px]">Proxy</th>
-                                                    <th class="min-w-[150px]">Đăng nhập lúc {{{ tableSort originalUrl.search 'updatedAt' _sort }}}
-                                                    </th>
-                                                    <th class="min-w-[150px]">Cập Nhập {{{ tableSort originalUrl.search 'updatedAt' _sort }}}
-                                                    </th>
-                                                    <th class="min-w-[150px]">Thời Gian {{{ tableSort originalUrl.search 'createdAt' _sort }}}
-                                                    </th>
-                                                    <th class="w-[60px]">
-                                                    </th>
-                                                </tr>
-                                                </thead>
 
-                                                <tbody data-table="bank">
-                                                {{#each list}}
-                                                    <tr class="edit-one" data-id="{{ this._id }}">
-                                                        <td>{{ this.username }}</td>
-                                                        <td>{{ this.name }}</td>
-                                                        <td>{{ this.accountNumber }}</td>
-                                                        <td><img width="50%" src="{{ bankImage this.bankType }}"></td>
-                                                        <td class="balance">{{ numberFormat this.balance }}đ</td>
-                                                        <td data-bs-name="betMin" data-bs-hasEdit="true">
+                                <div class="browser-list">
+                                    <div class="w-icon">
+                                        <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/02/Icon-MB-Bank-MBB.png">
+                                    </div>
+                                    <div class="w-browser-details">
+                                        <div class="w-browser-info">
+                                            <h6>Ngân hàng</h6>
+                                            <p class="browser-count">{{ calculatePercentage countBank totalBalance  }}%</p>
+                                        </div>
+                                        <div class="w-browser-stats">
+                                            <div class="progress">
+                                                <div class="progress-bar bg-gradient-primary" role="progressbar" style="width: {{ calculatePercentage countBank totalBalance  }}%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="browser-list">
+                                    <div class="w-icon">
+                                        <img src="https://pay2s.vn/blog/wp-content/uploads/2024/11/momo_icon_circle_pinkbg_RGB-1024x1024.png">
+                                    </div>
+                                    <div class="w-browser-details">
+
+                                        <div class="w-browser-info">
+                                            <h6>Momo</h6>
+                                            <p class="browser-count">{{ calculatePercentage countMomo totalBalance  }}%</p>
+                                        </div>
+
+                                        <div class="w-browser-stats">
+                                            <div class="progress">
+                                                <div class="progress-bar bg-gradient-danger" role="progressbar" style="width: {{ calculatePercentage countMomo totalBalance  }}%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="browser-list">
+                                    <div class="w-icon">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/2048px-Icon_of_Zalo.svg.png">
+                                    </div>
+                                    <div class="w-browser-details">
+
+                                        <div class="w-browser-info">
+                                            <h6>Zalo</h6>
+                                            <p class="browser-count">{{ calculatePercentage countZalo totalBalance  }}%</p>
+                                        </div>
+
+                                        <div class="w-browser-stats">
+                                            <div class="progress">
+                                                <div class="progress-bar bg-gradient-warning" role="progressbar" style="width: {{ calculatePercentage countZalo totalBalance  }}%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                {{#each list}}
+                                <div class="browser-list">
+                                    <div class="w-icon">
+                                        <img src="{{bankImage this.bankType}}">
+                                    </div>
+                                    <div class="w-browser-details">
+                                        <div class="w-browser-info">
+                                            <h6>{{ this.accountNumber }}</h6>
+                                            <p class="browser-count">{{ calculatePercentage this.balance ../totalBalance  }}%</p>
+                                        </div>
+                                        <div class="w-browser-stats">
+                                            <div class="progress">
+                                                <div class="progress-bar bg-gradient-dark" role="progressbar" style="width: {{ calculatePercentage this.balance ../totalBalance  }}%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/each}}
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-4">
+                    <div class="table-responsive">
+                        <table style="table-layout: fixed; width: 100%" class="table table-bordered border-secondary">
+                            <thead  class="text-center">
+                            <tr>
+                                <th style="width: 200px">
+                                    Thao tác
+                                </th>
+                                <th style="width: 130px">Số iện thoại</th>
+                                <th style="width: 250px">Tên</th>
+                                <th style="width: 200px">Số tài khoản</th>
+                                <th style="width: 130px">Ngân hàng</th>
+                                <th style="width: 250px">Số Dư {{{ tableSort originalUrl.search 'balance' _sort }}}</th>
+                                <th style="width: 250px">Cược Min {{{ tableSort originalUrl.search 'betMin' _sort }}}</th>
+                                <th style="width: 250px">Cược Max {{{ tableSort originalUrl.search 'betMax' _sort }}}</th>
+                                <th style="width: 250px">Trạng Thái {{{ tableSort originalUrl.search 'status' _sort }}}</th>
+                                <th style="width: 250px">Đăng Nhập {{{ tableSort originalUrl.search 'loginStatus' _sort }}}</th>
+                                <th style="width: 250px">Mô Tả</th>
+                                <th style="width: 250px">Chuyển Ngày</th>
+                                <th style="width: 250px">Nhận Ngày</th>
+                                <th style="width: 250px">Chuyển Tháng</th>
+                                <th style="width: 250px">Nhận Tháng</th>
+                                <th style="width: 250px">Proxy</th>
+                                <th style="width: 250px">Đăng nhập lúc {{{ tableSort originalUrl.search 'updatedAt' _sort }}}
+                                </th>
+                                <th style="width: 250px">Cập Nhập {{{ tableSort originalUrl.search 'updatedAt' _sort }}}
+                                </th>
+                                <th style="width: 250px">Thời Gian {{{ tableSort originalUrl.search 'createdAt' _sort }}}
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody data-table="bank" class="text-center">
+                            {{#each list}}
+                                <tr class="edit-one" data-id="{{ this._id }}">
+                                    <td class="text-center">
+                                        <div class="flex-column">
+                                            <a class="action-more" data-action="balance" data-id="{{ this._id }}">
+                                                <span class="badge badge-light-dark"><i class="fa fa-money-bill"></i></span>
+                                            </a>
+                                            <a class="action-more" data-action="refresh" data-id="{{ this._id }}">
+                                                <span class="badge badge-light-dark"><i class="fa fa-history"></i></span>
+                                            </a>
+                                            <a class="action-more" data-bs-submit="bank" data-bs-action="remove" data-id="{{ this._id }}">
+                                                <span class="badge badge-light-danger"><i class="fa fa-trash"></i></span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>{{ this.username }}</td>
+                                    <td>{{ this.name }}</td>
+                                    <td>{{ this.accountNumber }}</td>
+                                    <td><img width="100%" src="{{ bankImage this.bankType }}"></td>
+                                    <td class="balance">{{ numberFormat this.balance }}</td>
+                                    <td data-bs-name="betMin" data-bs-hasEdit="true">
                                                             <span data-bs-table="html" data-bs-key="format" data-bs-value="{{ this.betMin }}">
                                                             <span data-bs-html="true">{{ numberFormat this.betMin }}</span></span>
-                                                            <span data-bs-table="edit" data-bs-value="{{ this.betMin }}" class="hidden">
-                                                        <input type="text" class="kt-input"
+                                        <span data-bs-table="edit" data-bs-value="{{ this.betMin }}" class="hidden">
+                                                        <input type="text" class="form-control"
                                                                data-bs-edit="true">
                                                     </span>
-                                                        </td>
-                                                        <td data-bs-name="betMax" data-bs-hasEdit="true">
+                                    </td>
+                                    <td data-bs-name="betMax" data-bs-hasEdit="true">
                                                     <span data-bs-table="html" data-bs-key="format"
                                                           data-bs-value="{{ this.betMax }}">
                                                         <span data-bs-html="true">{{ numberFormat this.betMax }}</span>
                                                     </span>
-                                                            <span data-bs-table="edit" data-bs-value="{{ this.betMax }}" class="hidden">
-                                                        <input type="text" class="kt-input"
+                                        <span data-bs-table="edit" data-bs-value="{{ this.betMax }}" class="hidden">
+                                                        <input type="text" class="form-control"
                                                                data-bs-edit="true">
                                                     </span>
-                                                        </td>
-                                                        <td data-bs-name="status" data-bs-hasEdit="true">
+                                    </td>
+                                    <td data-bs-name="status" data-bs-hasEdit="true">
                                                             <span data-bs-table="html" data-bs-value="{{ this.status }}">
                                                                 <span data-bs-html="true">{{{ momoStatus this.status }}}</span>
                                                             </span>
-                                                            <span data-bs-table="edit" data-bs-value="{{ this.status }}" class="hidden flex justify-center items-center flex-wrap gap-2.5">
-                                                                <select class="kt-select"
+                                        <span data-bs-table="edit" data-bs-value="{{ this.status }}" class="hidden flex justify-center items-center flex-wrap gap-2.5">
+                                                                <select class="form-control"
                                                                         data-bs-edit="true">
-                                                                    <option value="active">Hoạt Động</option>
+                                                                    <option value="active">Hoạt động</option>
                                                                     <option value="limit">Giới Hạn</option>
                                                                     <option value="pending">Tạm Dừng</option>
                                                                     <option value="error">Lỗi Số</option>
                                                                 </select>
                                                             </span>
-                                                        </td>
-                                                        <td data-bs-name="loginStatus" data-bs-hasEdit="true">
+                                    </td>
+                                    <td data-bs-name="loginStatus" data-bs-hasEdit="true">
                                                             <span data-bs-table="html" data-bs-value="{{ this.loginStatus }}">
                                                                 <span data-bs-html="true">{{{ loginStatus this.loginStatus }}}</span>
                                                             </span>
-                                                            <span data-bs-table="edit" data-bs-value="{{ this.loginStatus }}" class="hidden flex justify-center items-center flex-wrap gap-2.5">
-                                                                <select class="kt-select"
+                                        <span data-bs-table="edit" data-bs-value="{{ this.loginStatus }}" class="hidden flex justify-center items-center flex-wrap gap-2.5">
+                                                                <select class="form-control"
                                                                         data-bs-edit="true">
                                                                     <option value="refreshError">Lỗi Refresh</option>
-                                                                    <option value="waitLogin">Đợi Đăng Nhập</option>
-                                                                    <option value="errorLogin">Lỗi Đăng Nhập</option>
-                                                                    <option value="active">Hoạt Động</option>
+                                                                    <option value="waitLogin">Đợi đăng Nhập</option>
+                                                                    <option value="errorLogin">Lỗi đăng Nhập</option>
+                                                                    <option value="active">Hoạt động</option>
                                                                     <option value="waitOTP">Đợi OTP</option>
                                                                     <option value="waitSend">Đợi Gửi OTP</option>
                                                                     <option value="error">Lỗi</option>
                                                                 </select>
                                                             </span>
-                                                        </td>
-                                                        <td><textarea class="kt-textarea">{{ this.description }}</textarea>
-                                                        </td>
-                                                        <td>{{ numberFormat this.amountDay }}đ</td>
-                                                        <td>{{ numberFormat this.receiptDay }}đ</td>
-                                                        <td>{{ numberFormat this.amountMonth }}đ</td>
-                                                        <td>{{ numberFormat this.receiptMonth }}đ</td>
-                                                        <td>{{ this.proxy }}</td>
-                                                        <td>{{ formatDate this.loginAt 'HH:mm:ss DD-MM-YYYY'}}</td>
-                                                        <td>{{ formatDate this.updatedAt 'HH:mm:ss DD-MM-YYYY'}}</td>
-                                                        <td>{{ formatDate this.createdAt 'HH:mm:ss DD-MM-YYYY'}}</td>
-                                                        <td>
-                                                            <div class="kt-menu" data-kt-menu="true">
-                                                            <div class="kt-menu-item kt-menu-item-dropdown" data-kt-menu-item-offset="0, 10px" data-kt-menu-item-placement="bottom-end" data-kt-menu-item-placement-rtl="bottom-start" data-kt-menu-item-toggle="dropdown" data-kt-menu-item-trigger="click">
-                                                                <button class="kt-menu-toggle kt-btn kt-btn-sm kt-btn-icon kt-btn-ghost">
-                                                                    <i class="ki-filled ki-dots-vertical text-lg">
-                                                                    </i>
-                                                                </button>
-                                                                <div class="kt-menu-dropdown kt-menu-default w-full max-w-[175px]" data-kt-menu-dismiss="true" data-popper-placement="bottom-end" style="z-index: 105; position: fixed; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-61px, 287px, 0px);">
-                                                                    <div class="kt-menu-item action-more" data-action="balance" data-id="{{ this._id }}">
-                                                                        <a class="kt-menu-link" href="#">
-                                                                              <span class="kt-menu-icon">
-                                                                                   <i class="ki-filled ki-enjin-coin-enj">
-                                                                                   </i>
-                                                                              </span>
-                                                                            <span class="kt-menu-title">Lấy số dư</span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="kt-menu-item action-more" data-action="refresh" data-id="{{ this._id }}">
-                                                                        <a class="kt-menu-link" href="#">
-                                                                              <span class="kt-menu-icon">
-                                                                                   <i class="ki-filled ki-key">
-                                                                                   </i>
-                                                                              </span>
-                                                                            <span  class="kt-menu-title">Đăng nhập lại</span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="kt-menu-separator">
-                                                                    </div>
-                                                                    <div class="kt-menu-item" data-bs-submit="bank"
-                                                                         data-bs-action="remove" data-id="{{ this._id }}">
-                                                                        <a class="kt-menu-link" href="#">
-                                                                              <span class="kt-menu-icon text-danger">
-                                                                                   <i class="ki-filled ki-trash">
-                                                                                   </i>
-                                                                              </span>
-                                                                            <span class="kt-menu-title">Xoá tài khoản</span>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        </td>
-                                                    </tr>
-                                                {{else}}
-                                                    <tr>
-                                                        <td colspan="24">
-                                                            <div class="dm-empty text-center">
-                                                                <div class="dm-empty__image">
-                                                                    <img src="../themes/admin/images/1.png" alt="Rỗng">
-                                                                </div>
-                                                                <div class="dm-empty__text">
-                                                                    <p class="">Không có dữ liệu !</p>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                {{/each}}
-                                                </tbody>
-
-                                            </table>
-                                        </div>
-                                        <div class="kt-card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-secondary-foreground text-sm font-medium">
-                                            <div class="flex items-center gap-2 order-2 md:order-1">
-                                                Show
-                                                <select class="kt-select w-16" data-kt-datatable-size="true" name="perpage"><option value="5">5</option><option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="50">50</option></select>
-                                                per page
+                                    </td>
+                                    <td><textarea class="form-control">{{ this.description }}</textarea>
+                                    </td>
+                                    <td>{{ numberFormat this.amountDay }}</td>
+                                    <td>{{ numberFormat this.receiptDay }}</td>
+                                    <td>{{ numberFormat this.amountMonth }}</td>
+                                    <td>{{ numberFormat this.receiptMonth }}</td>
+                                    <td>{{ this.proxy }}</td>
+                                    <td>{{ formatDate this.loginAt 'HH:mm:ss DD-MM-YYYY'}}</td>
+                                    <td>{{ formatDate this.updatedAt 'HH:mm:ss DD-MM-YYYY'}}</td>
+                                    <td>{{ formatDate this.createdAt 'HH:mm:ss DD-MM-YYYY'}}</td>
+                                </tr>
+                            {{else}}
+                                <tr>
+                                    <td colspan="24">
+                                        <div class="dm-empty text-center">
+                                            <div class="dm-empty__image">
+                                                <img src="../themes/admin/images/1.png" alt="Rỗng">
                                             </div>
-                                            <div class="flex items-center gap-4 order-1 md:order-2">
-                                                <span data-kt-datatable-info="true">1-10 of 34</span>
-                                                <div class="kt-datatable-pagination" data-kt-datatable-pagination="true"><button class="kt-datatable-pagination-button kt-datatable-pagination-prev disabled" disabled="">
-                                                    <svg class="rtl:transform rtl:rotate-180 size-3.5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M8.86501 16.7882V12.8481H21.1459C21.3724 12.8481 21.5897 12.7581 21.7498 12.5979C21.91 12.4378 22 12.2205 22 11.994C22 11.7675 21.91 11.5503 21.7498 11.3901C21.5897 11.2299 21.3724 11.1399 21.1459 11.1399H8.86501V7.2112C8.86628 7.10375 8.83517 6.9984 8.77573 6.90887C8.7163 6.81934 8.63129 6.74978 8.53177 6.70923C8.43225 6.66869 8.32283 6.65904 8.21775 6.68155C8.11267 6.70405 8.0168 6.75766 7.94262 6.83541L2.15981 11.6182C2.1092 11.668 2.06901 11.7274 2.04157 11.7929C2.01413 11.8584 2 11.9287 2 11.9997C2 12.0707 2.01413 12.141 2.04157 12.2065C2.06901 12.272 2.1092 12.3314 2.15981 12.3812L7.94262 17.164C8.0168 17.2417 8.11267 17.2953 8.21775 17.3178C8.32283 17.3403 8.43225 17.3307 8.53177 17.2902C8.63129 17.2496 8.7163 17.18 8.77573 17.0905C8.83517 17.001 8.86628 16.8956 8.86501 16.7882Z" fill="currentColor"></path>
-                                                    </svg>
-                                                </button><button class="kt-datatable-pagination-button active disabled" disabled="">1</button><button class="kt-datatable-pagination-button">2</button><button class="kt-datatable-pagination-button">3</button><button class="kt-datatable-pagination-button kt-datatable-pagination-more">...</button><button class="kt-datatable-pagination-button kt-datatable-pagination-next">
-                                                    <svg class="rtl:transform rtl:rotate-180 size-3.5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M15.135 7.21144V11.1516H2.85407C2.62756 11.1516 2.41032 11.2415 2.25015 11.4017C2.08998 11.5619 2 11.7791 2 12.0056C2 12.2321 2.08998 12.4494 2.25015 12.6096C2.41032 12.7697 2.62756 12.8597 2.85407 12.8597H15.135V16.7884C15.1337 16.8959 15.1648 17.0012 15.2243 17.0908C15.2837 17.1803 15.3687 17.2499 15.4682 17.2904C15.5677 17.3309 15.6772 17.3406 15.7822 17.3181C15.8873 17.2956 15.9832 17.242 16.0574 17.1642L21.8402 12.3814C21.8908 12.3316 21.931 12.2722 21.9584 12.2067C21.9859 12.1412 22 12.0709 22 11.9999C22 11.9289 21.9859 11.8586 21.9584 11.7931C21.931 11.7276 21.8908 11.6683 21.8402 11.6185L16.0574 6.83565C15.9832 6.75791 15.8873 6.70429 15.7822 6.68179C15.6772 6.65929 15.5677 6.66893 15.4682 6.70948C15.3687 6.75002 15.2837 6.81959 15.2243 6.90911C15.1648 6.99864 15.1337 7.10399 15.135 7.21144Z" fill="currentColor"></path>
-                                                    </svg>
-                                                </button></div>
+                                            <div class="dm-empty__text">
+                                                <p class="">Không có dữ liệu !</p>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
                     </div>
-                </main>
-                {{>foot}}
+                </div>
             </div>
+
+        </div>
+
+    </div>
+    <div class="footer-wrapper">
+        <div class="footer-section f-section-1">
+            <p class="">Copyright © <span class="dynamic-year">2022</span> <a target="_blank" href="">CuuDen</a>, All rights reserved.</p>
+        </div>
+        <div class="footer-section f-section-2">
+            <p class="">Coded with <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></p>
         </div>
     </div>
 </div>
-<div class="kt-modal" data-kt-modal="true" id="momo-add" data-bs-modal="momo-add">
-    <div class="kt-modal-content max-w-[400px] top-[5%]">
-        <div class="kt-modal-header">
-            <h3 class="kt-modal-title">Thêm Bank</h3>
-            <button
-                    type="button"
-                    class="kt-modal-close"
-                    aria-label="Close modal"
-                    data-kt-modal-dismiss="#modal"
-            >
-                <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-x"
-                        aria-hidden="true"
-                >
-                    <path d="M18 6 6 18"></path>
-                    <path d="m6 6 12 12"></path>
-                </svg>
-            </button>
-        </div>
-        <div class="kt-modal-body">
-            <form action="#" method="post" id="formAdd" class="kt-form">
-                <div class="modal-body">
-                    <div class="space-y-5">
-                        <div class="kt-form-item">
-                            <label class="kt-form-label">Họ tên</label>
-                            <div class="kt-form-control">
-                                <input class="kt-input" name="name" placeholder="Nhập họ tên...">
-                            </div>
-                        </div>
-                        <div class="kt-form-item">
-                            <label class="kt-form-label">Tài khoản</label>
-                            <div class="kt-form-control">
-                                <input class="kt-input" name="username" placeholder="Nhập tài khoản...">
-                            </div>
-                        </div>
-                        <div class="kt-form-item">
-                            <label class="kt-form-label">Mật khẩu</label>
-                            <div class="kt-form-control">
-                                <input class="kt-input" placeholder="Nhập mật khẩu..." name="password">
-                            </div>
-                        </div>
-                        <div class="kt-form-item">
-                            <label class="kt-form-label">Số tài khoản</label>
-                            <div class="kt-form-control">
-                                <input class="kt-input" name="accountNumber" placeholder="Nhập số tài khoản...">
-                            </div>
-                        </div>
-                        <div class="kt-form-item">
-                            <label class="kt-form-label">Loại ngân hàng</label>
-                            <div class="kt-form-control">
-                                <input class="kt-input" name="bankType" placeholder="Nhập loại ngân hàng...">
-                            </div>
-                        </div>
-                        <div class="kt-form-item">
-                            <label class="kt-form-label">Proxy</label>
-                            <div class="kt-form-control">
-                                <input class="kt-input" name="proxy" placeholder="Nhập proxy nếu cần...">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="kt-modal-footer">
-                    <div></div>
-                    <div class="flex gap-4">
-                        <button class="kt-btn kt-btn-secondary" data-kt-modal-dismiss="#modal">Đóng</button>
-                        <button type="submit" class="kt-btn kt-btn-primary action-add" data-action="otp">Thêm</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<script src="../themes/admin/assets/js/core.bundle.js">
-</script>
-<script src="../themes/admin/assets/vendors/ktui/ktui.min.js">
-</script>
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script type="text/javascript">
     $(document).ready(function (e) {
 
@@ -397,7 +362,7 @@
                             .then((result) => {
                                 let response = result.data;
 
-                                response.success ? swal('Thông Báo', response.message, 'success') && _this.parent().parent().parent().find('td.amount').html(`${Intl.NumberFormat('en-US').format(response.balance)}đ`) : swal('Thông Báo', response.message, 'error');
+                                response.success ? swal('Thông Báo', response.message, 'success') && _this.parent().parent().parent().find('td.amount').html(`${Intl.NumberFormat('en-US').format(response.balance)}`) : swal('Thông Báo', response.message, 'error');
                             })
                             .catch(err => swal('Thông Báo', `Có lỗi xảy ra ${err.message || err}`, 'warning'))
                             .finally(() => _this.prop('disabled', false))
@@ -462,6 +427,5 @@
         })
     })
 </script>
+{{>foot}}
 
-</body>
-</html>

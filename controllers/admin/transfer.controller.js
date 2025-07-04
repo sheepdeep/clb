@@ -19,7 +19,7 @@ const transferController = {
             next(err);
         }
     },
-    transfer: async (req, res, next) => {
+    transferMomoToMomo: async (req, res, next) => {
         try {
             let { phone, receiver, amount, comment, otp } = req.body;
 

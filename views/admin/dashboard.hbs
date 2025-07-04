@@ -1,334 +1,299 @@
 {{>head}}
-<body class="antialiased flex h-full text-base text-foreground bg-background [--header-height:60px] [--sidebar-width:290px] bg-muted! lg:overflow-hidden">
-<!-- Theme Mode -->
-<script>
-    const defaultThemeMode = 'light'; // light|dark|system
-    let themeMode;
+{{>nav}}
+    <div id="content" class="main-content">
+        <div class="layout-px-spacing">
 
-    if (document.documentElement) {
-        if (localStorage.getItem('kt-theme')) {
-            themeMode = localStorage.getItem('kt-theme');
-        } else if (
-                document.documentElement.hasAttribute('data-kt-theme-mode')
-        ) {
-            themeMode =
-                    document.documentElement.getAttribute('data-kt-theme-mode');
-        } else {
-            themeMode = defaultThemeMode;
-        }
+            <div class="middle-content container-xxl p-0">
 
-        if (themeMode === 'system') {
-            themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches
-                    ? 'dark'
-                    : 'light';
-        }
+                <div class="secondary-nav">
+                    <div class="breadcrumbs-container" data-page-heading="Analytics">
+                        <header class="header navbar navbar-expand-sm">
+                            <a href="javascript:void(0);" class="btn-toggle sidebarCollapse" data-placement="bottom">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                            </a>
+                            <div class="d-flex breadcrumb-content">
+                                <div class="page-header">
 
-        document.documentElement.classList.add(themeMode);
-    }
-</script>
-<div class="flex grow">
-    <header class="flex lg:hidden items-center fixed z-10 top-0 start-0 end-0 shrink-0 bg-muted h-(--header-height)" id="header">
-        <!-- Container -->
-        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
-            <a href="/metronic/tailwind/demo4/">
-                <img class="dark:hidden min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray.svg"/>
-                <img class="hidden dark:block min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray-dark.svg"/>
-            </a>
-            <button class="kt-btn kt-btn-icon kt-btn-ghost -me-2" data-kt-drawer-toggle="#sidebar">
-                <i class="ki-filled ki-menu">
-                </i>
-            </button>
+                                    <div class="page-title"><h3>{{ title }}</h3></div>
+
+                                </div>
+                            </div>
+                        </header>
+                    </div>
+                </div>
+                <!--  END BREADCRUMBS  -->
+
+                <div class="row layout-top-spacing">
+
+                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+                        <div class="widget widget-card-five">
+                            <div class="widget-content">
+                                <div class="account-box">
+
+                                    <div class="info-box">
+                                        <div class="icon">
+                                                <span>
+                                                    <img src="../themes/admin/images/receipt.png" alt="money-bag">
+                                                </span>
+                                        </div>
+
+                                        <div class="balance-info">
+                                            <h6>Tổng Nhận</h6>
+                                            <p>{{ numberFormat revenueData.receipt }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+                        <div class="widget widget-card-five">
+                            <div class="widget-content">
+                                <div class="account-box">
+
+                                    <div class="info-box">
+                                        <div class="icon">
+                                                <span>
+                                                    <img src="../themes/admin/images/minus.png" alt="money-bag">
+                                                </span>
+                                        </div>
+
+                                        <div class="balance-info">
+                                            <h6>Tổng Chi</h6>
+                                            <p>{{ numberFormat revenueData.minus }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+                        <div class="widget widget-card-five">
+                            <div class="widget-content">
+                                <div class="account-box">
+
+                                    <div class="info-box">
+                                        <div class="icon">
+                                                <span>
+                                                    <img src="../themes/admin/images/minus.png" alt="money-bag">
+                                                </span>
+                                        </div>
+
+                                        <div class="balance-info">
+                                            <h6>Doanh Thu</h6>
+                                            <p>                                            {{ numberFormat revenueData.earning }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+                        <div class="widget widget-card-five">
+                            <div class="widget-content">
+                                <div class="account-box">
+
+                                    <div class="info-box">
+                                        <div class="icon">
+                                                <span>
+                                                    <img src="../themes/admin/images/win.png" alt="money-bag">
+                                                </span>
+                                        </div>
+
+                                        <div class="balance-info">
+                                            <h6>Tổng Thắng</h6>
+                                            <p>{{ numberFormat revenueData.win }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+                        <div class="widget widget-card-five">
+                            <div class="widget-content">
+                                <div class="account-box">
+
+                                    <div class="info-box">
+                                        <div class="icon">
+                                                <span>
+                                                    <img src="../themes/admin/images/won.png" alt="money-bag">
+                                                </span>
+                                        </div>
+
+                                        <div class="balance-info">
+                                            <h6>Tổng Thua</h6>
+                                            <p>{{ numberFormat revenueData.won }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+                        <div class="widget widget-card-five">
+                            <div class="widget-content">
+                                <div class="account-box">
+
+                                    <div class="info-box">
+                                        <div class="icon">
+                                                <span>
+                                                    <img src="../themes/admin/images/error.png" alt="money-bag">
+                                                </span>
+                                        </div>
+
+                                        <div class="balance-info">
+                                            <h6>Tổng Lỗi</h6>
+                                            <p>{{ numberFormat revenueData.error }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+                        <div class="widget widget-card-five">
+                            <div class="widget-content">
+                                <div class="account-box">
+
+                                    <div class="info-box">
+                                        <div class="icon">
+                                                <span>
+                                                    <img src="../themes/admin/images/refund.png" alt="money-bag">
+                                                </span>
+                                        </div>
+
+                                        <div class="balance-info">
+                                            <h6>Tổng Hoàn</h6>
+                                            <p>{{ numberFormat revenueData.refund }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+                        <div class="widget widget-card-five">
+                            <div class="widget-content">
+                                <div class="account-box">
+                                    <div class="info-box">
+                                        <div class="icon">
+                                                <span>
+                                                    <img src="../themes/admin/images/player.png" alt="money-bag">
+                                                </span>
+                                        </div>
+
+                                        <div class="balance-info">
+                                            <h6>Tổng Thành Viên</h6>
+                                            <p>{{ countUser }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+                        <div class="widget widget-card-five">
+                            <div class="widget-content">
+                                <div class="account-box">
+                                    <div class="info-box">
+                                        <div class="icon">
+                                                <span>
+                                                    <img src="../themes/admin/images/block.png" alt="money-bag">
+                                                </span>
+                                        </div>
+
+                                        <div class="balance-info">
+                                            <h6>Tổng Bị Khoá</h6>
+                                            <p>{{ countBlockUser }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+                        <div class="widget widget-card-five">
+                            <div class="widget-content">
+                                <div class="account-box">
+
+                                    <div class="info-box">
+                                        <div class="icon">
+                                                <span>
+                                                    <img src="../themes/admin/images/wallet.png" alt="money-bag">
+                                                </span>
+                                        </div>
+
+                                        <div class="balance-info">
+                                            <h6>Số dư Momo</h6>
+                                            <p>{{ numberFormat countMomo }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+                        <div class="widget widget-card-five">
+                            <div class="widget-content">
+                                <div class="account-box">
+
+                                    <div class="info-box">
+                                        <div class="icon">
+                                                <span>
+                                                    <img src="../themes/admin/images/wallet.png" alt="money-bag">
+                                                </span>
+                                        </div>
+
+                                        <div class="balance-info">
+                                            <h6>Số dư Zalo</h6>
+                                            <p>{{ numberFormat countZalo }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+                        <div class="widget widget-card-five">
+                            <div class="widget-content">
+                                <div class="account-box">
+
+                                    <div class="info-box">
+                                        <div class="icon">
+                                                <span>
+                                                    <img src="../themes/admin/images/wallet.png" alt="money-bag">
+                                                </span>
+                                        </div>
+
+                                        <div class="balance-info">
+                                            <h6>Số dư Bank</h6>
+                                            <p>{{ numberFormat countBank }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
-        <!-- End of Container -->
-    </header>
-    <div class="flex flex-col lg:flex-row grow pt-(--header-height) lg:pt-0">
-        {{>nav}}
-        <div class="flex grow rounded-xl bg-background border border-input lg:ms-(--sidebar-width) mt-0 lg:mt-5 m-5">
-            <div class="flex flex-col grow kt-scrollable-y-auto lg:[--kt-scrollbar-width:auto] pt-5" id="scrollable_content">
-                <main class="grow" role="content">
-                    <div class="pb-5">
-                        <!-- Container -->
-                        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
-                            <div class="flex items-center flex-wrap gap-1 lg:gap-5">
-                                <h1 class="font-medium text-base text-mono">
-                                    Tổng quát
-                                </h1>
-                                <div class="hand">
-                                    <h3 id="actionTime" data-bs-toggle="tooltip" data-bs-placement="top"><i class="fas fa-calendar-alt"></i>
-                                        <span data-type="{{ typeDate }}" data-time="{{ _revenueTime }}">{{ formatDate _revenueTime typeDate }}</span>
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </h3>
-                                </div>
-                            </div>
-                            <div class="flex items-center flex-wrap gap-3">
-                                <button class="group kt-btn kt-btn-ghost kt-btn-icon size-9 rounded-full hover:bg-primary/10 hover:[&amp;_i]:text-primary" data-kt-modal-toggle="#search_modal">
-                                    <i class="ki-filled ki-magnifier text-lg group-hover:text-primary">
-                                    </i>
-                                </button>
-                                <button class="kt-btn kt-btn-ghost kt-btn-icon size-9 rounded-full hover:bg-primary/10 hover:[&amp;_i]:text-primary" data-kt-drawer-toggle="#notifications_drawer">
-                                    <i class="ki-filled ki-notification-status text-lg">
-                                    </i>
-                                </button>
-                                <div class="hidden kt-drawer kt-drawer-end card flex-col max-w-[90%] w-[450px] top-5 bottom-5 end-5 rounded-xl border border-border" data-kt-drawer="true" data-kt-drawer-container="body" id="notifications_drawer">
-                                    <div class="flex items-center justify-between gap-2.5 text-sm text-mono font-semibold px-5 py-2.5 border-b border-b-border" id="notifications_header">
-                                        Thông báo
-                                        <button class="kt-btn kt-btn-sm kt-btn-icon kt-btn-dim shrink-0" data-kt-drawer-dismiss="true">
-                                            <i class="ki-filled ki-cross">
-                                            </i>
-                                        </button>
-                                    </div>
-                                    <div class="grow flex flex-col" id="notifications_tab_all">
-                                        <div class="grow kt-scrollable-y-auto" data-kt-scrollable="true" data-kt-scrollable-dependencies="#header" data-kt-scrollable-max-height="auto" data-kt-scrollable-offset="150px">
-                                            <div class="grow flex flex-col gap-5 pt-3 pb-4 divider-y divider-border">
-                                                {{#each logs}}
-                                                <div class="flex grow gap-2.5 px-5">
-                                                    <div class="kt-avatar size-8">
-                                                        <div class="kt-avatar-image">
-                                                            <img alt="avatar" src="../themes/admin/images/notification.svg">
-                                                            </img>
-                                                        </div>
-                                                        <div class="kt-avatar-indicator -end-2 -bottom-2">
-                                                            <div class="kt-avatar-status kt-avatar-status-offline size-2.5">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex flex-col gap-3.5 grow">
-                                                        <div class="flex flex-col gap-1">
-                                                            <div class="text-sm font-medium mb-px">
-                                                                <a class="hover:text-primary text-mono font-semibold" href="#">
-                                                                    {{ this.typeData }}
-                                                                </a>
-                                                                <span class="text-secondary-foreground hand delete-log" data-id="{{ this._id }}"><i class="ki-filled ki-trash text-warning"></i></span>
-                                                            </div>
-                                                            <span class="flex items-center text-xs font-medium text-muted-foreground">
-                  {{ timeNow this.createdAt }} - {{ formatDate this.createdAt
-                                                               'HH:mm:ss
-                                                               DD-MM-YYYY' }}
-                 </span>
-                                                        </div>
-                                                        <div class="kt-card shadow-none flex items-center flex-row gap-1.5 p-2.5 rounded-lg bg-muted/70">
-                                                            <span class="font-medium text-muted-foreground text-xs">
-                                                                {{{ this.content }}}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                    {{#unless @last}}
-                                                <div class="border-b border-b-border">
-                                                </div>
-                                                    {{/unless}}
-                                                {{/each}}
-                                            </div>
-                                        </div>
-                                        <div class="border-b border-b-border">
-                                        </div>
-                                        <div class="grid grid-cols-2 p-5 gap-2.5" id="notifications_all_footer">
-                                            <button class="kt-btn kt-btn-outline justify-center delete-log" data-id="all">
-                                                Đã đọc
-                                            </button>
-                                            <button class="kt-btn kt-btn-outline justify-center delete-log" data-id="all">
-                                                Xoá tất cả
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End of Container -->
-                    </div>
-                    <!-- End of Toolbar -->
-                    <!-- Container -->
-                    <div class="kt-container-fluid">
-                        <div class="grid gap-5 lg:gap-7.5">
-                            <style>
-                                    .channel-stats-bg {
-                                        background-image: url('/static/metronic/tailwind/dist/assets/media/images/2600x1600/bg-3.png');
-                                    }
-                                    .dark .channel-stats-bg {
-                                        background-image: url('/static/metronic/tailwind/dist/assets/media/images/2600x1600/bg-3-dark.png');
-                                    }
-                                </style>
-                            <div class="grid grid-cols-3 gap-5 lg:gap-7.5 h-full items-stretch">
-                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/receipt.png">
-                                    <div class="flex flex-col gap-1 pb-4 px-5">
-                                        <span class="text-3xl font-semibold text-mono">
-                                            {{ numberFormat revenueData.receipt }}
-                                        </span>
-                                        <span class="text-sm font-normal text-secondary-foreground">
-                                            Tổng Nhận
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/minus.png">
-                                    <div class="flex flex-col gap-1 pb-4 px-5">
-                                        <span class="text-3xl font-semibold text-mono">
-                                            {{ numberFormat revenueData.minus }}
-                                        </span>
-                                        <span class="text-sm font-normal text-secondary-foreground">
-                                            Tổng Chi
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/minus.png">
-                                    <div class="flex flex-col gap-1 pb-4 px-5">
-                                        <span class="text-3xl font-semibold text-mono">
-                                            {{ numberFormat revenueData.earning }}
-                                        </span>
-                                        <span class="text-sm font-normal text-secondary-foreground">
-                                            Doanh Thu
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-4 gap-5 lg:gap-7.5 h-full items-stretch">
-                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/win.png">
-                                    <div class="flex flex-col gap-1 pb-4 px-5">
-                                        <span class="text-3xl font-semibold text-mono">
-                                            {{ numberFormat revenueData.win }}
-                                        </span>
-                                        <span class="text-sm font-normal text-secondary-foreground">
-                                            Tổng Thắng
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/won.png">
-                                    <div class="flex flex-col gap-1 pb-4 px-5">
-                                        <span class="text-3xl font-semibold text-mono">
-                                            {{ numberFormat revenueData.won }}
-                                        </span>
-                                        <span class="text-sm font-normal text-secondary-foreground">
-                                            Tổng Thua
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/error.png">
-                                    <div class="flex flex-col gap-1 pb-4 px-5">
-                                        <span class="text-3xl font-semibold text-mono">
-                                            {{ numberFormat revenueData.error }}
-                                        </span>
-                                        <span class="text-sm font-normal text-secondary-foreground">
-                                            Tổng Lỗi
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/refund.png">
-                                    <div class="flex flex-col gap-1 pb-4 px-5">
-                                        <span class="text-3xl font-semibold text-mono">
-                                            {{ numberFormat revenueData.refund }}
-                                        </span>
-                                        <span class="text-sm font-normal text-secondary-foreground">
-                                            Tổng Hoàn
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-5 lg:gap-7.5 h-full items-stretch">
-                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/player.png">
-                                    <div class="flex flex-col gap-1 pb-4 px-5">
-                                        <span class="text-3xl font-semibold text-mono">
-                                            {{ numberFormat countUser }}
-                                        </span>
-                                        <span class="text-sm font-normal text-secondary-foreground">
-                                            Tổng Thành Viên
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/block.png">
-                                    <div class="flex flex-col gap-1 pb-4 px-5">
-                                        <span class="text-3xl font-semibold text-mono">
-                                            {{ numberFormat countBlockUser }}
-                                        </span>
-                                        <span class="text-sm font-normal text-secondary-foreground">
-                                            Tổng Bị Khoá
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-3 gap-5 lg:gap-7.5 h-full items-stretch">
-                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/wallet.png">
-                                    <div class="flex flex-col gap-1 pb-4 px-5">
-                                        <span class="text-3xl font-semibold text-mono">
-                                            {{ numberFormat countMomo }}
-                                        </span>
-                                        <span class="text-sm font-normal text-secondary-foreground">
-                                            Số dư Momo
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/wallet.png">
-                                    <div class="flex flex-col gap-1 pb-4 px-5">
-                                        <span class="text-3xl font-semibold text-mono">
-                                            {{ numberFormat countZalo }}
-                                        </span>
-                                        <span class="text-sm font-normal text-secondary-foreground">
-                                            Số dư Zalo
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="kt-card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                    <img alt="" class="w-7 mt-4 ms-5" src="../themes/admin/images/wallet.png">
-                                    <div class="flex flex-col gap-1 pb-4 px-5">
-                                        <span class="text-3xl font-semibold text-mono">
-                                            {{ numberFormat countBank }}
-                                        </span>
-                                        <span class="text-sm font-normal text-secondary-foreground">
-                                            Số dư Bank
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-                {{>foot}}
+        <div class="footer-wrapper">
+            <div class="footer-section f-section-1">
+                <p class="">Copyright © <span class="dynamic-year">2022</span> <a target="_blank" href="">CuuDen</a>, All rights reserved.</p>
+            </div>
+            <div class="footer-section f-section-2">
+                <p class="">Coded with <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></p>
             </div>
         </div>
     </div>
-</div>
-<script src="../themes/admin/assets/js/core.bundle.js">
-</script>
-<script src="../themes/admin/assets/vendors/ktui/ktui.min.js">
-</script>
-<script src="../themes/admin/assets/vendors/apexcharts/apexcharts.min.js">
-</script>
-<script src="../themes/admin/assets/js/widgets/general.js">
-</script>
-<script>
-    $(document).ready(function () {
-        $('body').on('click', '.delete-log', function (e) {
-            let id = $(this).data('id');
-
-            $(this).html(`<div class="dm-spin-dots spin-sm"><span class="spin-dot badge-dot dot-secondary"></span><span class="spin-dot badge-dot dot-secondary"></span><span class="spin-dot badge-dot dot-secondary"></span><span class="spin-dot badge-dot dot-secondary"></span></div>`).prop('disabled', true);
-
-            instance.delete(`logSystem/${id}`)
-                    .then((response) => {
-                        let data = response.data;
-
-                        data.success ? id == 'all' ? $('ul.timeline>li.timeline-inverted').remove() : $(`#${id}`).remove() : swal('Thông Báo', data.message, 'error');
-                    })
-                    .catch((err) => {
-                        swal('Thông Báo', err.message || err, 'error');
-                    })
-                    .finally(() => $(this).html(id == 'all' ? 'Xóa tất cả' : `<i class="uil uil-trash"></i>`).prop('disabled', false));
-        })
-
-        socket.on('logSystem', function (data) {
-            let array = ['info', 'warning', 'danger', 'dark', 'light', 'primary', 'secondary'];
-            $('div.dm-empty').remove();
-            $('ul.timeline').prepend(`<li class="timeline-inverted" id="${data._id}"><span class="timeline-single__buble" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="${data.typeData}"><span class="bg-${array[Math.floor(Math.random() * array.length)]}"></span></span><div class="timeline-single"><div class="timeline-single__days"><span class="text-danger hand delete-log"data-id="${data._id}"><i class="uil uil-trash"></i></span><span>${moment(data.time).locale("vi").fromNow()} - ${moment(data.createdAt).format('HH:mm:ss DD-MM-YYYY')}</span></div><div class="timeline-single__content"><divclass="d-flex justify-content-between align-content-center flex-wrap"><div class="d-flex align-content-center">${data.content}</div></div></div></div></li>`);
-        })
-    })
-</script>
-</body>
-</html>
+{{>foot}}

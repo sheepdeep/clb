@@ -96,12 +96,12 @@ console.log(`TOKEN SETUP: ${process.env.TOKEN_SETUP.toUpperCase()}`)
 
 // Kết nối MongoDB
 db.connectDB();
-// historyHelper.history();
-// historyHelper.fakeBill();
+historyHelper.history();
+historyHelper.fakeBill();
 // historyHelper.reward();
 historyHelper.telegramBot();
 setInterval(() => {
-    historyHelper.gift();
+    // historyHelper.gift();
     historyHelper.telegramBot();
 }, 15 * 60 * 1000);
 

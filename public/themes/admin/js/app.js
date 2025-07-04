@@ -435,7 +435,6 @@ $(document).ready(function () {
                             .catch((err) => {
                                 swal('Thông Báo', err.message || err, 'error');
                             })
-                            .finally(() => _this.html(preContent).prop('disabled', false));
                     }
                 })
                 break;
@@ -494,6 +493,6 @@ function getDevice(userAgent) {
             break;
         }
     }
-    
+
     return deviceName;
 }

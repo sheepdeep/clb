@@ -1,32 +1,40 @@
 <!DOCTYPE html>
-<html class="h-full" data-kt-theme="true" data-kt-theme-mode="light" dir="ltr" lang="en">
+<html lang="en">
 <head>
-    <title>
-        {{#if title}}{{ title }} - {{ settings.defaultTitle }}{{else}}{{ settings.defaultTitle }}{{/if}}
-    </title>
-    <meta charset="utf-8"/>
-    <meta content="follow, index" name="robots"/>
-    <link href="https://keenthemes.com/metronic/tailwind/demo4/" rel="canonical"/>
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-    <link href="{{ settings.favicon }}" rel="shortcut icon"/>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
-    <link href="../themes/admin/assets/vendors/apexcharts/apexcharts.css" rel="stylesheet"/>
-    <link href="../themes/admin/assets/vendors/keenicons/styles.bundle.css" rel="stylesheet"/>
-    <link href="../themes/admin/assets/css/styles.css" rel="stylesheet"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="../themes/axios.min.js"></script>
-    <script src="../themes/socket.io.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
-    <script src="../themes/admin/js/app.min.js"></script>
-    <!-- Google tag (gtag.js) -->
-    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-52YZ3XGZJ6">
-    </script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+    <title>{{#if title}}{{ title }} - {{ settings.defaultTitle }}{{else}}{{ settings.defaultTitle }}{{/if}}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="title"
+          content="{{#if title}}{{ title }} - {{ settings.defaultTitle }}{{else}}{{ settings.defaultTitle }}{{/if}}" />
+    <meta name="description" content="{{ settings.description }}" />
+    <meta name="keywords" content="{{ settings.keywords }}" />
+    <meta name="robots" content="index, follow">
+    <link href="{{ settings.favicon }}" rel="shortcut icon" type="image/x-icon" />
 
-        gtag('config', 'G-52YZ3XGZJ6');
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
+    <link href="../assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/layouts/horizontal-light-menu/css/light/plugins.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/css/light/components/tabs.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+    <link href="../assets/layouts/horizontal-light-menu/css/light/plugins.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/css/light/authentication/auth-boxed.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/css/light/elements/search.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/css/light/elements/custom-pagination.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/css/light/components/modal.css" rel="stylesheet" type="text/css" />
+
+    <link href="../assets/css/light/dashboard/dash_1.css" rel="stylesheet" type="text/css" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+<style>
+    .hidden {
+        display: none; /* Hide the element */
+    }
+    .tr-warning {
+        background-color: #ffcc00; /* Yellow color */
+        color: #000;  /* Black text for contrast */
+    }
+
+</style>

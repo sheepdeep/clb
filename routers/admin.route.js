@@ -29,6 +29,7 @@ const refundController = require('../controllers/admin/refund.controller');
 const topController = require('../controllers/admin/top.controller');
 const taiXiuController = require('../controllers/admin/taixiu.controller');
 const telegramController = require('../controllers/telegram.controller');
+const momoTransferController = require('../controllers/admin/transfer/momo.controller');
 const historyMomoController = require('../controllers/admin/history-momo.controller');
 const momoModel = require("../models/momo.model");
 
@@ -163,7 +164,7 @@ router.post('/sendOTP', loggedInAdmin, isAdmin, async (req, res, next) => {
             })
         }
 
-        let vaild = ['addGift', 'useTrans'];
+        let vaild = ['addGift', 'useTrans', 'transferMomoToMomo'];
 
         if (!vaild.includes(action)) {
             return res.json({
@@ -241,9 +242,13 @@ router.route(['/momo-list/:id', '/momo-lite/:id'])
     .put(isAdmin, momoController.update)
     .delete(isAdmin, momoController.remove);
 
-router.route('/transfer-to-bank')
-    .get(loggedInAdmin, transferBankController.index)
-    .post(isAdmin, transferBankController.transfer)
+router.route('/transfer-momo-momo')
+    .get(isAdmin, momoTransferController.index)
+    .post(isAdmin, momoTransferController.transferToMomo);
+
+// router.route('/transfer-to-bank')
+//     .get(loggedInAdmin, transferBankController.index)
+//     .post(isAdmin, transferBankController.transfer)
 
 router.route('/refund')
     .get(loggedInAdmin, refundController.index)
@@ -253,9 +258,9 @@ router.route('/top')
     .get(loggedInAdmin, topController.index)
     .post(isAdmin, topController.refund)
 
-router.route('/transfer')
-    .get(loggedInAdmin, transferController.index)
-    .post(isAdmin, transferController.transfer)
+// router.route('/transfer')
+//     .get(loggedInAdmin, transferController.index)
+//     .post(isAdmin, transferController.transfer)
 
 router.route('/pay')
     .get(payController.index)

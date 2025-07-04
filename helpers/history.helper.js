@@ -21,6 +21,7 @@ const momoModel = require('../models/momo.model');
 const momoHelper = require("./momo.helper");
 const giftModel = require('../models/gift.model');
 const telgramHelper = require("./telegram.helper");
+const {data} = require("express-session/session/cookie");
 
 exports.handleCltx = async (history, bank) => {
     try {
@@ -169,12 +170,18 @@ exports.handleTransId = async (transId) => {
                 createdAt: { $gte: moment().startOf('day').toDate(), $lte: moment().endOf('day').toDate() }
             }).sort({ createdAt: -1 });
 
-            if (!checkRefundDay && historyOld && historyOld.result == 'lose' && historyOld.amount >= 50000 && historyOld.amount <= 500000) {
+            const result = dataSetting.refund.data.filter(entry => {
+                const min = parseInt(entry.min);
+                const max = parseInt(entry.max);
+                return historyOld.amount >= min && historyOld.amount <= max;
+            });
 
+            if (!checkRefundDay && historyOld && historyOld.result === 'lose' && result.length > 0) {
                 const transId = `SBRF${Math.floor(Math.random() * (99999999 - 10000000) + 10000000)}`;
-                const bonus = Math.floor(historyOld.amount * dataSetting.refund.won / 100);
 
-                await historyModel.findOneAndUpdate({transId}, {
+                const bonus = Math.floor(historyOld.amount * result[0].bonus / 100);
+
+                const historyRefund = await historyModel.findOneAndUpdate({ transId }, {
                     $set: {
                         transId,
                         username: historyOld.username,
@@ -188,8 +195,13 @@ exports.handleTransId = async (transId) => {
                         comment: historyOld.comment,
                         description: `Hoàn tiền đơn thua ${historyOld.transId}`,
                     }
-                }, {upsert: true}).lean();
+                }, { upsert: true }).lean();
+
+                setImmediate(async () => {
+                    await this.transferMomo(await historyModel.findOne({transId: transId}).lean());
+                });
             }
+
 
         } else if (result === 'win') {
             setImmediate(async () => {
@@ -489,12 +501,12 @@ exports.fakeBill = async () => {
         const dataSetting = await settingModel.findOne({});
 
         if (!dataSetting.fakeUser.data.length) {
-            await sleep(3000);
+            await sleep(30000);
             return await this.fakeBill();
         }
 
         if (dataSetting.checkTransId.status == 'close') {
-            await sleep(3000);
+            await sleep(30000);
             return await this.fakeBill();
         }
 
@@ -561,7 +573,7 @@ exports.fakeBill = async () => {
 
             socket.emit('cltx', dataEncode);
 
-            await sleep(5 * 1000);
+            await sleep(5 * 10000);
             return await this.fakeBill();
         }
 
@@ -646,8 +658,15 @@ exports.telegramBot = async () => {
                 }).save();
             }
 
+            let msgRefund = '';  // Initialize msgRefund as an empty string
+
+            for (let dataRefund of dataSetting.refund.data) {
+                // Concatenate each refund message
+                msgRefund += `💵 ${new Intl.NumberFormat('en-US').format(dataRefund.min)} - ${new Intl.NumberFormat('en-US').format(dataRefund.max)} [HOÀN ${dataRefund.bonus}%]\n`;
+            }
+
             for (let user of users) {
-                const message = `Xin  chào ${user.username} \n✅ SUPBANK.ME <b>Gửi tặng giftcode (HSD đến 23:59 ngày ${tomorrow.format('DD/MM')})</b> \n🎁 Gifcode VIP 200K --> 1tr: ${todayCode1} \n🎁 Gifcode Thường 20K: ${todayCode2} \n👉 Nhận miễn phí 15k: <a href="https://supbank.me/fan">[Tại Đây]</a>\n👉 Giới thiệu bạn bè chơi SupBank để nhận 399k/lượt: <a href="https://supbank.me/ctv">[Tại Đây]</a> \n👉 Kênh thông báo: <a href="https://t.me/supbankcode">[Tại Đây]</a> \nTRUY CẬP SUPBANK.ME NGAY ĐỂ NHẬN GIFTCODE NÀY!`
+                const message = `Xin  chào ${user.username} \n✅ SUPBANK.ME <b>Gửi tặng giftcode (HSD đến 23:59 ngày ${tomorrow.format('DD/MM')})</b> \n🎁 Gifcode VIP 200K --> 1tr: ${todayCode1} \n🎁 Gifcode Thường 20K: ${todayCode2} \n${msgRefund}👉 Nhận miễn phí 15k: <a href="https://supbank.me/fan">[Tại Đây]</a>\n👉 Giới thiệu bạn bè chơi SupBank để nhận 399k/lượt: <a href="https://supbank.me/ctv">[Tại Đây]</a> \n👉 Kênh thông báo: <a href="https://t.me/supbankcode">[Tại Đây]</a> \nTRUY CẬP SUPBANK.ME NGAY ĐỂ NHẬN GIFTCODE NÀY!`
                 console.log(await telegramHelper.sendText(dataSetting.telegram.token, user.telegram.chatId, message));
             }
         }
