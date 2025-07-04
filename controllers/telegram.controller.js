@@ -56,7 +56,7 @@ const telegramController = {
 
                 }
 
-                return res.json(await telegramHelper.sendText(process.env.privateTOKEN, chatId, message));
+                return res.json(await telegramHelper.sendText(dataSetting.telegram.token, chatId, message));
             }
 
             return res.json({
