@@ -337,8 +337,18 @@
                                                                     </div>
                                                                 </td>
                                                                 <td data-bs-position="true">{{ sum @index 1 }}</td>
-                                                                <td data-bs-position="true">{{ sum @index 1 }}</td>
-
+                                                                <td data-bs-key="min" data-bs-value="{{ this.min }}"
+                                                                    data-bs-type="number" data-bs-more="numberFormat">{{
+                                                                this.min }}
+                                                                </td>
+                                                                <td data-bs-key="max" data-bs-value="{{ this.max }}"
+                                                                    data-bs-type="number" data-bs-more="numberFormat">{{
+                                                                this.max }}
+                                                                </td>
+                                                                <td data-bs-key="bonus" data-bs-value="{{ this.bonus }}"
+                                                                    data-bs-type="number" data-bs-more="numberFormat">{{
+                                                                this.bonus }}
+                                                                </td>
                                                             </tr>
                                                         {{/each}}
                                                         </tbody>
