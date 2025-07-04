@@ -518,7 +518,16 @@ exports.fakeBill = async () => {
 
             const randomIndex = Math.floor(Math.random() * dataSetting.fakeUser.data.length);
 
-            const randomReward = await rewardModel.aggregate([{ $sample: { size: 1 } }]);
+            const randomReward = await rewardModel.aggregate([
+                {
+                    $match: {
+                        gameType: { $in: ['CL_Game', 'TX_Game', 'CL2_Game'] }
+                    }
+                },
+                {
+                    $sample: { size: 1 }
+                }
+            ]);
             const reward = randomReward[0];
 
             let {
