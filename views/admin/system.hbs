@@ -186,6 +186,17 @@
                                                    </div>
                                                </div>
                                                <div class="col-md-12 mt-2">
+                                                   <div class="form-group">
+                                                       <label>Loại Top</label>
+                                                       <select name="topData-typeTOP" class="form-control">
+                                                           {{#select settings.topData.typeTOP }}
+                                                               <option value="day">Ngày</option>
+                                                               <option value="week">Tuần</option>
+                                                           {{/select }}
+                                                       </select>
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-12 mt-2">
                                                    <label>* FAKE USER [HISTORY]</label>
                                                    <div class="table-responsive">
                                                        <table class="table table-bordered border-secondary">
