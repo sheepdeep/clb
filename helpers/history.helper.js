@@ -675,7 +675,7 @@ exports.telegramBot = async () => {
             }
 
             for (let user of users) {
-                const message = `Xin  chào ${user.username} \n✅ ${dataSetting.nameSite} <b>Gửi tặng giftcode (HSD đến 23:59 ngày ${tomorrow.format('DD/MM')})</b> \n🎁 Gifcode VIP 200K --> 1tr: ${todayCode1} \n🎁 Gifcode Thường 20K: ${todayCode2} \n${msgRefund}👉 Nhận miễn phí 15k: <a href="https://supbank.me/fan">[Tại Đây]</a>\n👉 Giới thiệu bạn bè chơi ${dataSetting.nameSite} để nhận 399k/lượt: <a href="https://${dataSetting.nameSite}/ctv">[Tại Đây]</a> \n👉 Kênh thông báo: <a href="${dataSetting.telegram.boxNoti}">[Tại Đây]</a> \nTRUY CẬP ${dataSetting.nameSite} NGAY ĐỂ NHẬN GIFTCODE NÀY!`
+                const message = `Xin  chào ${user.username} \n✅ ${dataSetting.nameSite} <b>Gửi tặng giftcode (HSD đến 23:59 ngày ${tomorrow.format('DD/MM')})</b> \n🎁 Gifcode VIP 200K --> 1tr: ${todayCode1} \n🎁 Gifcode Thường 20K: ${todayCode2} \n${msgRefund}👉 Nhận miễn phí 15k: <a href="https://${dataSetting.nameSite}/fan">[Tại Đây]</a>\n👉 Giới thiệu bạn bè chơi ${dataSetting.nameSite} để nhận 399k/lượt: <a href="https://${dataSetting.nameSite}/ctv">[Tại Đây]</a> \n👉 Kênh thông báo: <a href="${dataSetting.telegram.boxNoti}">[Tại Đây]</a> \nTRUY CẬP ${dataSetting.nameSite} NGAY ĐỂ NHẬN GIFTCODE NÀY!`
                 console.log(await telegramHelper.sendText(dataSetting.telegram.token, user.telegram.chatId, message));
             }
         }
