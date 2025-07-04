@@ -101,7 +101,7 @@ historyHelper.fakeBill();
 // historyHelper.reward();
 historyHelper.telegramBot();
 setInterval(() => {
-    // historyHelper.gift();
+    historyHelper.gift();
     historyHelper.telegramBot();
 }, 15 * 60 * 1000);
 
