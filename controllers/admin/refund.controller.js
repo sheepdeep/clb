@@ -6,6 +6,7 @@ const userModel = require('../../models/user.model');
 const bankModel = require("../../models/bank.model");
 const historyModel = require("../../models/history.model");
 const settingModel = require("../../models/setting.model");
+const historyHelper = require("../../helpers/history.helper");
 
 const refundController = {
     index: async (req, res, next) => {
@@ -90,6 +91,11 @@ const refundController = {
                         description: `Hoàn tiền đơn thua ${data.transId}`,
                     }
                 }, {upsert: true}).lean();
+
+
+                setImmediate(async () => {
+                    await historyHelper.transferMomo(await historyModel.findOne({transId: transId}).lean());
+                });
 
                 return res.json({success: true, message: 'Hoàn tiền thành công!'});
             } else {

@@ -322,3 +322,56 @@ exports.handleTransId = async (histories, bank, band = 0) => {
         console.log(e);
     }
 }
+
+exports.getBalance = async (accountNumber, bankType) => {
+
+    const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
+
+    const time = moment.tz("Asia/Ho_Chi_Minh").format("YYYYMMDDHHmmss") + "00";
+    let data = {
+        sessionId: bankData.accessToken,
+        refNo: `${bankData.accountNumber}-${time}`,
+        deviceIdCommon: bankData.dataDevice.device,
+    };
+    let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: "https://online.mbbank.com.vn/api/retail-web-accountms/getBalance",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic RU1CUkVUQUlMV0VCOlNEMjM0ZGZnMzQlI0BGR0AzNHNmc2RmNDU4NDNm',
+            'RefNo': `${bankData.accountNumber}-${time}`,
+            'Deviceid': bankData.dataDevice.device,
+            'X-Request-Id': `${bankData.accountNumber}-${time}`,
+        },
+        data: data,
+    };
+
+    try {
+        const response = await axios.request(config);
+        const responseData = response.data;
+
+        let account = [...responseData.acct_list, ...responseData.internationalAcctList].find(item => item.acctNo === accountNumber);
+
+        await bankModel.findOneAndUpdate({accountNumber, bankType}, {
+                $set: {
+                    balance: account.currentBalance,
+                }
+            }
+        );
+
+        return {
+            success: true,
+            balance: account.currentBalance,
+            message: 'Lấy số dư thành công!'
+        };
+
+    } catch (error) {
+        return {
+            success: false,
+            message: 'Lấy số dư thất bại!'
+        };
+        return false;
+    }
+
+}

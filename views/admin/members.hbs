@@ -62,7 +62,7 @@
                             <tbody data-table="members" class="text-center">
                             {{#each threads}}
                                 <tr class="edit-one" data-id="{{ this._id }}">
-                                    <td><a href="{{../adminPath}}/?search={{ this.username }}">{{ this.username }}</a></td>
+                                    <td><a href="{{../adminPath}}/?_username={{ this.username }}">{{ this.username }}</a></td>
                                     <td>{{ numberFormat this.balance }}</td>
                                     <td data-bs-hasEdit="true">
                                         <span class="badge badge-dark"><b>{{ this.bankInfo.accountNumber }} - {{ this.bankInfo.accountName }} - {{ bankName this.bankInfo.bankCode }}</b></span>

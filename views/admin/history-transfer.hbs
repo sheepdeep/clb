@@ -1,241 +1,117 @@
 {{>head}}
-<body class="antialiased flex h-full text-base text-foreground bg-background [--header-height:60px] [--sidebar-width:290px] bg-muted! lg:overflow-hidden">
-<!-- Theme Mode -->
-<script>
-    const defaultThemeMode = 'light'; // light|dark|system
-    let themeMode;
+{{>nav}}
+<div id="content" class="main-content">
+    <div class="layout-px-spacing">
 
-    if (document.documentElement) {
-        if (localStorage.getItem('kt-theme')) {
-            themeMode = localStorage.getItem('kt-theme');
-        } else if (
-                document.documentElement.hasAttribute('data-kt-theme-mode')
-        ) {
-            themeMode =
-                    document.documentElement.getAttribute('data-kt-theme-mode');
-        } else {
-            themeMode = defaultThemeMode;
-        }
-
-        if (themeMode === 'system') {
-            themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches
-                    ? 'dark'
-                    : 'light';
-        }
-
-        document.documentElement.classList.add(themeMode);
-    }
-</script>
-<div class="flex grow">
-    <header class="flex lg:hidden items-center fixed z-10 top-0 start-0 end-0 shrink-0 bg-muted h-(--header-height)" id="header">
-        <!-- Container -->
-        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
-            <a href="/metronic/tailwind/demo4/">
-                <img class="dark:hidden min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray.svg"/>
-                <img class="hidden dark:block min-h-[30px]" src="/static/metronic/tailwind/dist/assets/media/app/mini-logo-gray-dark.svg"/>
-            </a>
-            <button class="kt-btn kt-btn-icon kt-btn-ghost -me-2" data-kt-drawer-toggle="#sidebar">
-                <i class="ki-filled ki-menu">
-                </i>
-            </button>
-        </div>
-        <!-- End of Container -->
-    </header>
-    <div class="flex flex-col lg:flex-row grow pt-(--header-height) lg:pt-0">
-        {{>nav}}
-        <div class="flex grow rounded-xl bg-background border border-input lg:ms-(--sidebar-width) mt-0 lg:mt-5 m-5">
-            <div class="flex flex-col grow kt-scrollable-y-auto lg:[--kt-scrollbar-width:auto] pt-5" id="scrollable_content">
-                <main class="grow" role="content">
-                    <div class="pb-5">
-                        <div class="kt-container-fluid flex items-center justify-between flex-wrap gap-3">
-                            <div class="flex items-center flex-wrap gap-1 lg:gap-5">
-                                <h1 class="font-medium text-base text-mono">
-                                    {{ title }}
-                                </h1>
+        <div class="middle-content container-xxl p-0">
+            <div class="secondary-nav">
+                <div class="breadcrumbs-container" data-page-heading="Analytics">
+                    <header class="header navbar navbar-expand-sm">
+                        <a href="javascript:void(0);" class="btn-toggle sidebarCollapse" data-placement="bottom">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                        </a>
+                        <div class="d-flex breadcrumb-content">
+                            <div class="page-header">
+                                <div class="page-title"><h3>{{ title }}</h3></div>
                             </div>
                         </div>
-                    </div>
-                    <div class="kt-container-fluid">
-                        <div class="grid gap-5 lg:gap-7.5">
-                            <div class="kt-card kt-card-grid min-w-full">
-                                <div class="kt-card-header flex-wrap gap-2">
-                                    <form>
-                                        <div class="flex flex-wrap gap-2 lg:gap-5">
-                                            <div class="flex">
-                                                <label class="kt-input">
-                                                    <i class="ki-filled ki-magnifier">
-                                                    </i>
-                                                    <input name="search" placeholder="Tìm kiếm" type="text" value="{{ search }}">
-                                                </label>
-                                            </div>
-                                            <div class="flex flex-wrap gap-2.5">
-                                                <button class="kt-btn kt-btn-outline kt-btn-primary">
-                                                    <i class="ki-filled ki-search-list">
-                                                    </i>
-                                                    Tìm kiếm
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="kt-card-content">
-                                    <div data-kt-datatable="true" data-kt-datatable-state-save="false" id="team_crew_table" data-kt-datatable-initialized="true" class="datatable-initialized">
-                                        <div class="kt-scrollable-x-auto">
-                                            <table class="kt-table table-auto kt-table-border" data-kt-datatable-table="true">
-                                                <thead>
-                                                <tr>
-                                                    <th>Mã Giao Dịch</th>
-                                                    <th>Người Chuyển</th>
-                                                    <th>Người Nhận</th>
-                                                    <th>Trước GD {{{ tableSort originalUrl.search 'firstMoney' _sort }}}
-                                                    </th>
-                                                    <th>Số Tiền {{{ tableSort originalUrl.search 'amount' _sort }}}</th>
-                                                    <th>Sau GD {{{ tableSort originalUrl.search 'lastMoney' _sort }}}</th>
-                                                    <th>Nội Dung</th>
-                                                    <th>Thời Gian {{{ tableSort originalUrl.search 'updatedAt' _sort }}}
-                                                    </th>
-                                                </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                {{#each transfer}}
-                                                    <tr>
-                                                        <td><span class="badges badge-secondary">{{ this.transId }}</span></td>
-                                                        <td>{{ this.transfer }}</td>
-                                                        <td>{{ this.receiver }}</td>
-                                                        <td>{{ numberFormat this.firstMoney }}đ</td>
-                                                        <td>{{ numberFormat this.amount }}đ</td>
-                                                        <td>{{ numberFormat this.lastMoney }}đ</td>
-                                                        <td><textarea class="form-control">{{ this.comment }}</textarea></td>
-                                                        <td>{{ formatDate this.updatedAt 'DD-MM-YYYY HH:mm:ss'}}</td>
-                                                    </tr>
-                                                {{else}}
-                                                    <tr>
-                                                        <td colspan="24" class="text-center py-10">
-                                                            <div class="flex flex-col justify-center items-center gap-4 min-h-[150px]">
-                                                                <img src="../themes/admin/images/1.png" alt="Rỗng" class="w-20 h-20 object-contain" />
-                                                                <p class="text-gray-500 text-base">Không có dữ liệu!</p>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                {{/each}}
-                                                </tbody>
-
-                                            </table>
-                                        </div>
-                                        <div class="kt-card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-secondary-foreground text-sm font-medium">
-                                            <div class="flex items-center gap-2 order-2 md:order-1">
-                                                Hiện thị
-                                                <select class="kt-select w-16 page-selection" name="perPage" data-query="{{ checkQuery originalUrl.search 'perPage' }}">
-                                                    {{#select perPage }}
-                                                        <option value="5">5</option>
-                                                        <option value="10">10</option>
-                                                        <option value="20">20</option>
-                                                        <option value="30">30</option>
-                                                        <option value="50">50</option>
-                                                    {{/select}}
-                                                </select>
-                                                trang
-                                            </div>
-                                            <div class="flex items-center gap-4 order-1 md:order-2">
-                                                <div class="kt-datatable-pagination">
-                                                    {{#paginate pagination type="previous"}}
-                                                    <a class="kt-datatable-pagination-button kt-datatable-pagination-prev {{#if disabled}}disabled{{/if}}" href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}">
-                                                        <svg class="rtl:transform rtl:rotate-180 size-3.5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8.86501 16.7882V12.8481H21.1459C21.3724 12.8481 21.5897 12.7581 21.7498 12.5979C21.91 12.4378 22 12.2205 22 11.994C22 11.7675 21.91 11.5503 21.7498 11.3901C21.5897 11.2299 21.3724 11.1399 21.1459 11.1399H8.86501V7.2112C8.86628 7.10375 8.83517 6.9984 8.77573 6.90887C8.7163 6.81934 8.63129 6.74978 8.53177 6.70923C8.43225 6.66869 8.32283 6.65904 8.21775 6.68155C8.11267 6.70405 8.0168 6.75766 7.94262 6.83541L2.15981 11.6182C2.1092 11.668 2.06901 11.7274 2.04157 11.7929C2.01413 11.8584 2 11.9287 2 11.9997C2 12.0707 2.01413 12.141 2.04157 12.2065C2.06901 12.272 2.1092 12.3314 2.15981 12.3812L7.94262 17.164C8.0168 17.2417 8.11267 17.2953 8.21775 17.3178C8.32283 17.3403 8.43225 17.3307 8.53177 17.2902C8.63129 17.2496 8.7163 17.18 8.77573 17.0905C8.83517 17.001 8.86628 16.8956 8.86501 16.7882Z" fill="currentColor"></path>
-                                                        </svg>
-                                                        </a>
-                                                    {{/paginate}}
-                                                    {{#paginate pagination type="middle" limit=pagination.limit}}
-                                                    <a class="kt-datatable-pagination-button {{#if active}}active{{/if}}" href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}">{{n}}</a>
-                                                    {{/paginate}}
-                                                    {{#paginate pagination type="next"}}
-                                                    <a class="kt-datatable-pagination-button kt-datatable-pagination-next {{#if disabled}}disabled{{/if}}" href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}">
-                                                        <svg class="rtl:transform rtl:rotate-180 size-3.5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M15.135 7.21144V11.1516H2.85407C2.62756 11.1516 2.41032 11.2415 2.25015 11.4017C2.08998 11.5619 2 11.7791 2 12.0056C2 12.2321 2.08998 12.4494 2.25015 12.6096C2.41032 12.7697 2.62756 12.8597 2.85407 12.8597H15.135V16.7884C15.1337 16.8959 15.1648 17.0012 15.2243 17.0908C15.2837 17.1803 15.3687 17.2499 15.4682 17.2904C15.5677 17.3309 15.6772 17.3406 15.7822 17.3181C15.8873 17.2956 15.9832 17.242 16.0574 17.1642L21.8402 12.3814C21.8908 12.3316 21.931 12.2722 21.9584 12.2067C21.9859 12.1412 22 12.0709 22 11.9999C22 11.9289 21.9859 11.8586 21.9584 11.7931C21.931 11.7276 21.8908 11.6683 21.8402 11.6185L16.0574 6.83565C15.9832 6.75791 15.8873 6.70429 15.7822 6.68179C15.6772 6.65929 15.5677 6.66893 15.4682 6.70948C15.3687 6.75002 15.2837 6.81959 15.2243 6.90911C15.1648 6.99864 15.1337 7.10399 15.135 7.21144Z" fill="currentColor"></path>
-                                                        </svg>
-                                                        </a>
-                                                    {{/paginate}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-                {{>foot}}
+                    </header>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
-<div class="kt-modal" data-kt-modal="true" id="momo-add" data-bs-modal="momo-add">
-    <div class="kt-modal-content max-w-[400px] top-[5%]">
-        <div class="kt-modal-header">
-            <h3 class="kt-modal-title">Thêm ZALO</h3>
-            <button
-                    type="button"
-                    class="kt-modal-close"
-                    aria-label="Close modal"
-                    data-kt-modal-dismiss="#modal"
-            >
-                <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-x"
-                        aria-hidden="true"
-                >
-                    <path d="M18 6 6 18"></path>
-                    <path d="m6 6 12 12"></path>
-                </svg>
-            </button>
-        </div>
-        <div class="kt-modal-body">
-            <form action="#" method="post" id="formAdd" class="kt-form">
-                <div class="modal-body">
-                    <div class="space-y-5">
-                        <div class="kt-form-item">
-                            <label class="kt-form-label">Số Điện Thoại</label>
-                            <div class="kt-form-control">
-                                <input class="kt-input" placeholder="Nhập số điện thoại..." name="phone">
-                            </div>
+
+            <div class="row layout-top-spacing">
+                <form>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <select class="form-control br-30 page-selection" name="perPage" data-query="{{ checkQuery originalUrl.search 'perPage' }}">
+                                {{#select perPage }}
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="50">50</option>
+                                {{/select}}
+                            </select>
                         </div>
-                        <div class="kt-form-item">
-                            <label class="kt-form-label">Mật khẩu</label>
-                            <div class="kt-form-control">
-                                <input class="kt-input" placeholder="Nhập mật khẩu..." name="password">
-                            </div>
-                        </div>
-                        <div class="kt-form-item">
-                            <label class="kt-form-label">Cookie</label>
-                            <div class="kt-form-control">
-                                <textarea class="kt-textarea" placeholder="Nhập cookie..." rows="12" name="accessToken"></textarea>
+                        <div class="col-lg-9 col-md-8 col-sm-9 filtered-list-search mx-auto">
+                            <div class="form-inline my-2 my-lg-0 justify-content-center">
+                                <div class="w-100">
+                                    <input type="text" class="w-100 form-control product-search br-30" name="search" placeholder="Tìm kiếm" value="{{search}}">
+                                    <button class="btn btn-primary _effect--ripple waves-effect waves-light" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="kt-modal-footer">
-                    <div></div>
-                    <div class="flex gap-4">
-                        <button class="kt-btn kt-btn-secondary" data-kt-modal-dismiss="#modal">Đóng</button>
-                        <button type="submit" class="kt-btn kt-btn-primary action-add" data-action="otp">Thêm</button>
+                </form>
+
+
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered border-secondary">
+                            <thead  class="text-center">
+                            <tr>
+                                <th>Mã Giao Dịch</th>
+                                <th>Người Chuyển</th>
+                                <th>Người Nhận</th>
+                                <th>Trước GD {{{ tableSort originalUrl.search 'firstMoney' _sort }}}
+                                </th>
+                                <th>Số Tiền {{{ tableSort originalUrl.search 'amount' _sort }}}</th>
+                                <th>Sau GD {{{ tableSort originalUrl.search 'lastMoney' _sort }}}</th>
+                                <th>Nội Dung</th>
+                                <th>Thời Gian {{{ tableSort originalUrl.search 'updatedAt' _sort }}}
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{#each transfer}}
+                                <tr class="text-center">
+                                    <td><span class="badge badge-secondary">{{ this.transId }}</span></td>
+                                    <td>{{ this.transfer }}</td>
+                                    <td>{{ this.receiver }}</td>
+                                    <td>{{ numberFormat this.firstMoney }}đ</td>
+                                    <td>{{ numberFormat this.amount }}đ</td>
+                                    <td>{{ numberFormat this.lastMoney }}đ</td>
+                                    <td><textarea class="form-control">{{ this.comment }}</textarea></td>
+                                    <td>{{ formatDate this.updatedAt 'DD-MM-YYYY HH:mm:ss'}}</td>
+                                </tr>
+                            {{else}}
+                                <tr>
+                                    <td colspan="24" class="text-center py-10">
+                                        <div class="flex flex-col justify-center items-center gap-4 min-h-[150px]">
+                                            <img src="../themes/admin/images/1.png" alt="Rỗng" class="w-20 h-20 object-contain" />
+                                            <p class="text-gray-500 text-base">Không có dữ liệu!</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
+                        <div class="pagination-no_spacing">
+                            <ul class="pagination">
+                                {{#paginate pagination type="previous"}}
+                                    <li><a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}" class="prev"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg></a></li>
+                                {{/paginate}} {{#paginate pagination type="middle" limit=pagination.limit}}
+                                <li><a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}" class="{{#if active}}active{{/if}}">{{n}}</a></li>
+                            {{/paginate}} {{#paginate pagination type="next"}}
+                                <li><a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}" class="next"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg></a></li>
+                            {{/paginate}}
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </form>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="footer-wrapper">
+        <div class="footer-section f-section-1">
+            <p class="">Copyright © <span class="dynamic-year">2022</span> <a target="_blank" href="">CuuDen</a>, All rights reserved.</p>
+        </div>
+        <div class="footer-section f-section-2">
+            <p class="">Coded with <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></p>
         </div>
     </div>
 </div>
-<script src="../themes/admin/assets/js/core.bundle.js">
-</script>
-<script src="../themes/admin/assets/vendors/ktui/ktui.min.js">
-</script>
-</body>
-</html>
+{{>foot}}
+

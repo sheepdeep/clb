@@ -20,6 +20,31 @@
             </div>
 
             <div class="row layout-top-spacing">
+                <form>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <select class="form-control br-30 page-selection" name="perPage" data-query="{{ checkQuery originalUrl.search 'perPage' }}">
+                                {{#select perPage }}
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="50">50</option>
+                                {{/select}}
+                            </select>
+                        </div>
+                        <div class="col-lg-9 col-md-8 col-sm-9 filtered-list-search mx-auto">
+                            <div class="form-inline my-2 my-lg-0 justify-content-center">
+                                <div class="w-100">
+                                    <input type="text" class="w-100 form-control product-search br-30" name="search" placeholder="Tìm kiếm" value="{{search}}">
+                                    <button class="btn btn-primary _effect--ripple waves-effect waves-light" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+
                 <div class="col-md-12">
                     <form action="" method="post" class="form-axios">
                         <div class="kt-form-item">
@@ -42,10 +67,10 @@
                             <label for="" class="">OTP</label>
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" name="otp" placeholder="Nhập mã otp được gửi đến phía admin!">
-                                <button class="btn btn-primary get-otp" data-action="refund" type="button">Lấy OTP</button>
+                                <button class="btn btn-primary get-otp" data-action="addGift" type="button">Lấy OTP</button>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success w-100 mt-2 action-add">Hoàn tiền</button>
+                        <button type="submit" class="btn btn-success w-100 mt-2 action-add">Thêm</button>
                     </form>
 
                 </div>

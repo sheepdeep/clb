@@ -164,7 +164,7 @@ router.post('/sendOTP', loggedInAdmin, isAdmin, async (req, res, next) => {
             })
         }
 
-        let vaild = ['addGift', 'useTrans', 'transferMomoToMomo'];
+        let vaild = ['addGift', 'useTrans', 'transferMomoToMomo', 'refund'];
 
         if (!vaild.includes(action)) {
             return res.json({

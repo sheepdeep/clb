@@ -297,7 +297,7 @@ const momoController = {
             let data = await bankModel.findById(id);
 
             if (data.bankType == 'mbb') {
-                const result = await mbbankHelper.login(data.accountNumber, data.bankType);
+                const result = await mbbankHelper.getBalance(data.accountNumber, data.bankType);
                 return res.json(result);
             } else if (data.bankType == 'exim') {
                 const result = await eximbankHelper.getBalance(data.accountNumber, data.bankType);
