@@ -564,21 +564,21 @@
 </div>
 <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script>
-    $('body').on('submit', '#formSetting', function (e) {
-        e.preventDefault();
-        let data = $(this).serialize();
-
-        $('#formSetting>button').html(`<div class="dm-spin-dots spin-sm"><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span></div>`);
-        axios.put('#', data)
-                .then((result) => {
-                    let response = result.data;
-                    response.success ? swal('Thông Báo', response.message, 'success') : swal('Thông Báo', response.message, 'error');
-                })
-                .catch((err) => {
-                    swal('Thông Báo', err.message || err, 'error');
-                })
-                .finally(() => $('#formSetting>button').html(`<i class="ki-filled ki-save-2"></i> Lưu`));
-    })
+    // $('body').on('submit', '#formSetting', function (e) {
+    //     e.preventDefault();
+    //     let data = $(this).serialize();
+    //
+    //     $('#formSetting>button').html(`<div class="dm-spin-dots spin-sm"><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span><span class="spin-dot badge-dot dot-primary"></span></div>`);
+    //     axios.put('#', data)
+    //             .then((result) => {
+    //                 let response = result.data;
+    //                 response.success ? swal('Thông Báo', response.message, 'success') : swal('Thông Báo', response.message, 'error');
+    //             })
+    //             .catch((err) => {
+    //                 swal('Thông Báo', err.message || err, 'error');
+    //             })
+    //             .finally(() => $('#formSetting>button').html(`<i class="ki-filled ki-save-2"></i> Lưu`));
+    // })
 
     $('body').on('submit', 'form.dataEnz', function (e) {
         e.preventDefault();
