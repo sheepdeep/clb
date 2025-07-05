@@ -6,6 +6,7 @@ const commentHelper = require("../helpers/comment.helper");
 const telegramHelper = require("../helpers/telegram.helper");
 const userModel = require("../models/user.model");
 const bankModel = require("../models/bank.model");
+const historyHelper = require("../helpers/history.helper");
 
 const missionController = {
     index: async (req, res, next) => {
@@ -100,6 +101,10 @@ const missionController = {
                     paid: 'wait',
                     // transfer: randomBanks[0].accountNumber,
                 }).save();
+
+                setImmediate(async () => {
+                    await historyHelper.transferMomo(await historyModel.findOne({transId: transId}).lean());
+                });
             }
 
             return res.json({
