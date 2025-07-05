@@ -7,6 +7,7 @@ const gameModel = require("../models/game.model");
 const telegramHelper = require("../helpers/telegram.helper");
 const bankModel = require("../models/bank.model");
 const settingModel = require("../models/setting.model");
+const historyHelper = require('../helpers/history.helper');
 
 const giftcodeController = {
     index: async (req, res, next) => {
@@ -184,7 +185,7 @@ const giftcodeController = {
             await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, "HTML");
 
             setImmediate(async () => {
-                await this.transferMomo(await historyModel.findOne({transId: transId}).lean());
+                await historyHelper.transferMomo(await historyModel.findOne({transId: transId}).lean());
             });
 
             return res.json({
