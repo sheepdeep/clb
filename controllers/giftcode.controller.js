@@ -163,10 +163,11 @@ const giftcodeController = {
             }
 
             if (checkCode.type == 'bank') {
+                const transId = `SBG${Math.floor(Math.random() * (99999999 - 10000000) + 10000000)}`;
                 let newHistory = await new historyModel({
                     username: res.locals.profile.username,
                     receiver: res.locals.profile.username,
-                    transId: `SBG${Math.floor(Math.random() * (99999999 - 10000000) + 10000000)}`,
+                    transId: transId,
                     amount: checkCode.amount,
                     bonus: checkCode.amount,
                     comment: "GIFTCODE",
@@ -178,9 +179,13 @@ const giftcodeController = {
                 }).save();
             }
 
-            const message = `<b>🎉 Xin chúc mừng người chơi ${res.locals.profile.username.slice(0, 4)}**** đã nhận thưởng GIFTCODE thành công.</b>\n\n<b>💵 GIFTCODE: <code>${code}</code> có trị giá ${Intl.NumberFormat('en-US').format(checkCode.amount)} VNĐ</b>\n\n<b>Truy cập SUPBANK.ME để trải nghiệm</b>`;
+            const message = `<b>🎉 Xin chúc mừng người chơi ${res.locals.profile.username.slice(0, 4)}**** đã nhận thưởng GIFTCODE thành công.</b>\n\n<b>💵 GIFTCODE: <code>${code}</code> có trị giá ${Intl.NumberFormat('en-US').format(checkCode.amount)} VNĐ</b>\n\n<b>Truy cập ${dataSetting.nameSite} để trải nghiệm</b>`;
 
             await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, "HTML");
+
+            setImmediate(async () => {
+                await this.transferMomo(await historyModel.findOne({transId: transId}).lean());
+            });
 
             return res.json({
                 success: true,
