@@ -287,7 +287,7 @@
                         $('[data-bs-modal="gift-history"] h5.modal-title').html(`<i class="fa fa-gift" aria-hidden="true"></i> ${response.data.code}`);
                         $('#historyGift').html(!response.data.players.length ? `<tr><td class="py-10 text-center"colspan=24><div class="flex flex-col gap-4 items-center justify-center min-h-[150px]"><img alt=Rỗng class="h-20 object-contain w-20"src=../themes/admin/images/1.png><p class="text-base text-gray-500">Không có dữ liệu!</div>` : '');
 
-                        response.data.players.map(obj => $('#historyGift').append(`<tr><td>${obj.username}</td><td>${moment(obj.time).format('HH:mm:ss DD-MM-YYYY')}</td><td><div class="table-actions hand"><span class="kt-badge kt-badge-danger delete-history" data-id="${response.data._id}" data-username="${obj.username}"><i class="ki-filled ki-trash"></i></span></div></td></tr>`));
+                        response.data.players.map(obj => $('#historyGift').append(`<tr><td>${obj.username}</td><td>${moment(obj.time).format('HH:mm:ss DD-MM-YYYY')}</td><td><div class="table-actions hand"><span class="badge badge-danger delete-history" data-id="${response.data._id}" data-username="${obj.username}"><i class="fa fa-trash"></i></span></div></td></tr>`));
                         $('[data-bs-modal="gift-history"]').modal('show');
                     })
                     .catch((err) => {
