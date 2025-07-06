@@ -337,13 +337,12 @@ const historyController = {
             if (data.transferType === 'momo') {
                 const historyMomo = await momoHelper.getHistory(data.transfer);
 
-                console.log(historyMomo);
                 const results = await Promise.all(
-                    historyMomo.map(history =>
-                        momoHelper.getDetails(data.transfer, history.transId, 'transfer_p2b')
+                    historyMomo.map(async history =>
+                        await momoHelper.getDetails(data.transfer, history.transId, 'transfer_p2b')
                     )
                 );
-
+                
                 for (let index = 0; index < results.length; index++) {
                     const dataHistory = results[index];
                     const noteMsg = JSON.parse(dataHistory?.serviceData).transhisData?.["td.note_msg"] || "";

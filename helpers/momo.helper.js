@@ -2792,21 +2792,48 @@ exports.getHistory = async (phone, offset = 0, limit = 20) => {
             "channel": "APP",
             "lang": "vi",
             "deviceName": dataDevice.deviceName,
-            "deviceOS": "android",
-            "requestId": `${timeToRequest}`,
+            "deviceOS": "ios",
             "client": "sync_app",
-            "offset": offset,
             "limit": limit,
-            "dbPart": 0
+            "offset": offset,
+            "dbPart": 0,
+            "page": 0,
+            "criteria": {
+                "transCategory": [
+                    "IN",
+                    "th_p2p_transfer_cat1",
+                    "th_transfer_luckymoney_cat2",
+                    "th_adjustment_cat2",
+                    "th_discount_cat2",
+                    "th_fee_cat2",
+                    "th_transfer_money_cat2",
+                    "th_p2p_cat2",
+                    "th_p2p_w2b_cat3",
+                    "th_transfer_w2merchant_cat3",
+                    "th_transfer_via_viber_cat3",
+                    "th_transfer_viber_request_cat3",
+                    "th_p2p_transfer_chat_cat3",
+                    "th_p2p_transfer_request_cat3",
+                    "th_p2p_w2w_cat3",
+                    "th_transfer_w2cash_cat3",
+                    "th_p2p_w2w_transfer_cat3",
+                    "th_p2p_w2w_qr_cat3",
+                    "th_transfer_luckymoney_link_cat2",
+                    "th_transfer_via_link_cat2",
+                    "th_transfer_via_linkp2m_cat2",
+                    "th_transfer_via_linkp2mpartner_cat2",
+                    "th_transfer_moneypool_cat2",
+                    "th_transfer_deposit_chotot_cat2",
+                    "th_transfer_money_splitbill_cat2",
+                    "th_transfer_temporary_cat2"
+                ]
+            },
+            "requestId": "1751775188760"
         }
 
-        const resultMoMo = await this.doRequestEncryptMoMo('https://api.momo.vn/transhis/api/transhis/browse', body, currentAccount, null, {agentid: currentAccount.agentId, secureid: dataDevice.secureId, devicecode: dataDevice.deviceCode, phone: currentAccount.phone})
-
-
-        if (resultMoMo.statusCode === 200) {
-            return resultMoMo.momoMsg;
-        }
-        return [];
+        const resultMoMo = await this.doRequestEncryptMoMo('https://api.momo.vn/transhis/api/transhis/search', body, currentAccount, null, {agentid: currentAccount.agentId, secureid: dataDevice.secureId, devicecode: dataDevice.deviceCode, phone: currentAccount.phone})
+        
+        return resultMoMo.momoMsg;
     } catch (e) {
         console.log(e);
     }
