@@ -62,7 +62,7 @@ const giftcodeController = {
                 })
             }
 
-            if (checkCode.players.find(e => e.username = res.locals.profile.username)) {
+            if (checkCode.players.some(e => e.username === res.locals.profile.username)) {
                 return res.json({
                     success: false,
                     message: "Mã code đã được sử dụng!"

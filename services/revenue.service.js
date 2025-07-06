@@ -81,7 +81,8 @@ const revenueService = {
                         amount: { $sum: '$amount' }
                     }
                 }
-            ];            let filterMinus = [{ $match: {}},{ $group: { _id: null, amount: { $sum: '$amount' } } }]
+            ];
+            let filterMinus = [{ $match: {}},{ $group: { _id: null, amount: { $sum: '$amount' } } }]
 
             if (username) {
                 filterReceipt[0].$match.username = username;
