@@ -108,7 +108,7 @@ const cronController = {
                             transfer: dataMomo.phone,
                             username: history.username,
                             firstMoney: dataMomo.balance,
-                            amount: history.bonus,
+                            amount: history.bonus + 3300 + (history.bonus * (0.8 / 100)),
                             lastMoney: balance.balance,
                             comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
                         }).save();
