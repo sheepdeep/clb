@@ -378,7 +378,9 @@ const settingSchema = new mongoose.Schema({
         }
     },
     fakeUser: {
-        data: Object
+        data: Object,
+        min: Number,
+        max: Number
     },
     xsst: {
         turn: Number,
