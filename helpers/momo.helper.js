@@ -2726,8 +2726,6 @@ exports.confirmMoMoToBank = async (phone, initTransHisMsg, amount, confirmId) =>
 
     const resultMoMo = await this.doRequestEncryptMoMo(TRAN_HIS_CONFIRM_MSG, confirmBody, currentAccount, "TRAN_HIS_CONFIRM_MSG",{agentid: currentAccount.agentId, secureid: dataDevice.secureId, devicecode: dataDevice.deviceCode, phone: currentAccount.phone})
 
-    console.log(resultMoMo);
-
     if (resultMoMo.result) {
 
         // return _.get(confirmResult, 'momoMsg.tranHisMsg')
@@ -2745,6 +2743,7 @@ exports.confirmMoMoToBank = async (phone, initTransHisMsg, amount, confirmId) =>
         return {
             success: true,
             message: 'Chuyển tiền thành công! ' + resultMoMo.momoMsg.transId,
+            fee: Math.floor(resultMoMo.extra.fee),
             data: {
                 transId: resultMoMo.momoMsg.transId,
                 phone,
@@ -2832,7 +2831,7 @@ exports.getHistory = async (phone, offset = 0, limit = 20) => {
         }
 
         const resultMoMo = await this.doRequestEncryptMoMo('https://api.momo.vn/transhis/api/transhis/search', body, currentAccount, null, {agentid: currentAccount.agentId, secureid: dataDevice.secureId, devicecode: dataDevice.deviceCode, phone: currentAccount.phone})
-        
+
         return resultMoMo.momoMsg;
     } catch (e) {
         console.log(e);

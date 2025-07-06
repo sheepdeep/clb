@@ -874,7 +874,7 @@ exports.transferMomo = async (history) => {
                         transfer: dataBank.phone,
                         username: history.username,
                         firstMoney: dataBank.balance,
-                        amount: history.bonus,
+                        amount: history.bonus + resultInitTransfer.fee,
                         lastMoney: balance.balance,
                         comment: dataSetting.commentSite.rewardGD + String(history.transId).slice(-4)
                     }).save();
