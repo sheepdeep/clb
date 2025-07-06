@@ -256,7 +256,7 @@ exports.handleTransId = async (histories, bank, band = 0) => {
                 ip = user.ip;
 
                 let countUser = await userModel.aggregate([{ $match: { ip: { $regex: ip } } }, { $group: { _id: null, count: { $sum: 1 } } }]);
-                if (countUser.length > 0 && countUser[0].count > 2) {
+                if (countUser.length > 0 && countUser[0].count >= 2) {
                     await historyModel.findOneAndUpdate({transId}, {
                         $set: {
                             username,
