@@ -190,6 +190,7 @@ exports.handleTransId = async (transId) => {
                         gameType: historyOld.gameType,
                         amount: bonus,
                         bonus,
+                        transferType: 'momo',
                         result: 'refund',
                         paid: 'wait',
                         comment: historyOld.comment,
@@ -513,7 +514,7 @@ exports.fakeBill = async () => {
         if (bankData) {
 
             const transId = 'FT25038' + Math.floor(Math.random() * (999999999 - 100000000 + 1));
-            const amount = parseInt(String(Math.floor(Math.random() * (100 - 10 + 1)) + 10) + '000');
+            const amount = parseInt(String(Math.floor(Math.random() * (1000 - 10 + 1)) + 10) + '000');
             const bank = await bankModel.findOne({status: 'active', loginStatus: 'active'}).lean();
 
             const randomIndex = Math.floor(Math.random() * dataSetting.fakeUser.data.length);

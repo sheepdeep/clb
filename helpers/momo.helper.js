@@ -2425,6 +2425,8 @@ exports.INIT_TOBANK = async (phone, dataTransfer) => {
             }
         }
 
+        // console.log()
+
         const checkBalance = await this.balance(phone);
 
         if (!checkBalance.success) {
