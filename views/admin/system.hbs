@@ -185,6 +185,31 @@
                                                        </select>
                                                    </div>
                                                </div>
+                                               <div class="col-md-4 mt-2">
+                                                   <div class="form-group">
+                                                       <label>Tối thiểu [GIFTCODE]</label>
+                                                       <input type="text" class="form-control" name="giftCode-min" value="{{ settings.giftCode.min }}"
+                                                              placeholder="">
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-4 mt-2">
+                                                   <div class="form-group">
+                                                       <label>Tối đa [GIFTCODE]</label>
+                                                       <input type="text" class="form-control" name="giftCode-max" value="{{ settings.giftCode.max }}"
+                                                              placeholder="">
+                                                   </div>
+                                               </div>
+                                               <div class="col-md-12 mt-2">
+                                                   <div class="form-group">
+                                                       <label>Loại nhận [GIFTCODE]</label>
+                                                       <select name="giftCode-typeBank" class="form-control">
+                                                           {{#select settings.giftCode.typeBank }}
+                                                               <option value="bank">bank</option>
+                                                               <option value="balance">balance</option>
+                                                           {{/select }}
+                                                       </select>
+                                                   </div>
+                                               </div>
                                                <div class="col-md-12 mt-2">
                                                    <div class="form-group">
                                                        <label>Loại Top</label>

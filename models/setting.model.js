@@ -295,6 +295,9 @@ const settingSchema = new mongoose.Schema({
             type: String,
             default: 'active'
         },
+        min: Number,
+        max: Number,
+        typeBank: String,
         noti: {
             type: String,
             default: '1. Một số điện thoại chỉ được nhập 1 mã/ngày. <br>2. Mã code khuyến mại sẽ tùy vào điều kiện để sử dụng, có thời hạn.<br>3. Mã code khuyến mại sẽ được cấp theo các chương trình khuyến mại của hệ thống Momo. <br>4. Vui lòng liên hệ chát CSKH để biết thêm chi tết khi bạn nhận được CODE. <br>'

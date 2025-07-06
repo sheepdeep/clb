@@ -614,11 +614,11 @@ exports.gift = async () => {
 
         await new giftModel({
             code,
-            amount: Math.floor(Math.random() * (20000 - 10000 + 1)) + 10000,
-            playCount: 50000,
+            amount: Math.floor(Math.random() * (dataSetting.giftCode.max - dataSetting.giftCode.min + 1)) + dataSetting.giftCode.min,
+            playCount: 100000,
             limit: 1,
             status: 'active',
-            type: 'balance',
+            type: dataSetting.giftCode.typeBank,
             expiredAt: moment().add(1, 'days').toDate()
         }).save();
 
