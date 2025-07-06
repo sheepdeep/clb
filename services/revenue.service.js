@@ -68,8 +68,20 @@ const revenueService = {
     revenueMoney: async (time, typeDate, username) => {
         try {
 
-            let filterReceipt = [{$match: {result: { $ne: 'ok' }, bot: false} },{ $group: { _id: null, amount: { $sum: '$amount' } } }];
-            let filterMinus = [{ $match: {}},{ $group: { _id: null, amount: { $sum: '$amount' } } }]
+            let filterReceipt = [
+                {
+                    $match: {
+                        result: { $in: ['lose', 'win', 'refund'] }, // Matches both 'lose' and 'win'
+                        bot: false
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        amount: { $sum: '$amount' }
+                    }
+                }
+            ];            let filterMinus = [{ $match: {}},{ $group: { _id: null, amount: { $sum: '$amount' } } }]
 
             if (username) {
                 filterReceipt[0].$match.username = username;

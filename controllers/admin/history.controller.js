@@ -342,7 +342,7 @@ const historyController = {
                         await momoHelper.getDetails(data.transfer, history.transId, 'transfer_p2b')
                     )
                 );
-                
+
                 for (let index = 0; index < results.length; index++) {
                     const dataHistory = results[index];
                     const noteMsg = JSON.parse(dataHistory?.serviceData).transhisData?.["td.note_msg"] || "";
