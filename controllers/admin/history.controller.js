@@ -337,6 +337,7 @@ const historyController = {
             if (data.transferType === 'momo') {
                 const historyMomo = await momoHelper.getHistory(data.transfer);
 
+                console.log(historyMomo);
                 const results = await Promise.all(
                     historyMomo.map(history =>
                         momoHelper.getDetails(data.transfer, history.transId, 'transfer_p2b')
