@@ -71,7 +71,6 @@ const revenueService = {
             let filterReceipt = [
                 {
                     $match: {
-                        result: { $in: ['lose', 'win', 'refund'] }, // Matches both 'lose' and 'win'
                         bot: false
                     }
                 },
