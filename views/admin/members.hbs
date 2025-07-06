@@ -50,6 +50,9 @@
                         <table class="table table-bordered border-secondary">
                             <thead  class="text-center">
                             <tr>
+                                <th>
+                                    <i class="fa fa-headphones"></i>
+                                </th>
                                 <th>Tên Đăng Nhập</th>
                                 <th>Số Dư</th>
                                 <th>Thông Tin Bank</th>
@@ -62,6 +65,16 @@
                             <tbody data-table="members" class="text-center">
                             {{#each threads}}
                                 <tr class="edit-one" data-id="{{ this._id }}">
+                                    <td>
+                                        <div class="flex-column">
+<!--                                            <a class="reCheck" data-action="reCheck" data-id="{{ this.transId }}">-->
+<!--                                                <span class="badge badge-light-dark"><i class="fa fa-lock"></i></span>-->
+<!--                                            </a>-->
+                                            <a class="action-more" data-bs-submit="members" data-bs-action="remove" data-id="{{ this._id }}">
+                                                <span class="badge badge-light-danger"><i class="fa fa-trash"></i></span>
+                                            </a>
+                                        </div>
+                                    </td>
                                     <td><a href="{{../adminPath}}/?_username={{ this.username }}">{{ this.username }}</a></td>
                                     <td>{{ numberFormat this.balance }}</td>
                                     <td data-bs-hasEdit="true">
