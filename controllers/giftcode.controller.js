@@ -192,7 +192,7 @@ const giftcodeController = {
 
             const message = `<b>🎉 Xin chúc mừng người chơi ${res.locals.profile.username.slice(0, 4)}**** đã nhận thưởng GIFTCODE thành công.</b>\n\n<b>💵 GIFTCODE: <code>${code}</code> có trị giá ${Intl.NumberFormat('en-US').format(checkCode.amount)} VNĐ</b>\n\n<b>Truy cập ${dataSetting.nameSite} để trải nghiệm</b>`;
 
-            await telegramHelper.sendText(dataSetting.telegram.token, process.env.privateID, message, "HTML");
+            await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, "HTML");
 
             return res.json({
                 success: true,
