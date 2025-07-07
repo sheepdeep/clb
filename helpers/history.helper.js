@@ -210,6 +210,8 @@ exports.handleTransId = async (transId) => {
             });
         }
 
+        await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, `CÓ MGD MỚI ${result === 'lose' ? 'THUA' : 'THẮNG'}`);
+
         let histories = await historyModel.find({username: user.username}, {
             _id: 0,
             transId: 1,

@@ -1,0 +1,89 @@
+{{>head}}
+{{>nav}}
+<div id="content" class="main-content">
+    <div class="layout-px-spacing">
+
+        <div class="middle-content container-xxl p-0">
+            <div class="secondary-nav">
+                <div class="breadcrumbs-container" data-page-heading="Analytics">
+                    <header class="header navbar navbar-expand-sm">
+                        <a href="javascript:void(0);" class="btn-toggle sidebarCollapse" data-placement="bottom">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                        </a>
+                        <div class="d-flex breadcrumb-content">
+                            <div class="page-header">
+                                <div class="page-title"><h3>{{ title }}</h3></div>
+                            </div>
+                        </div>
+                    </header>
+                </div>
+            </div>
+            <!--  END BREADCRUMBS  -->
+
+            <div class="row layout-top-spacing">
+                {{#each threads}}
+                    <div class="col-xl-2">
+                        <a class="card" href="{{../adminPath}}/history?search={{this.transId}}" target="_blank">
+                            <img  src="https://qr.sepay.vn/img?bank={{this.bankCode}}&acc={{this.accountNumber}}&template=compact&amount=&des={{this.comment}}" class="card-img-top" alt="...">
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <b>{{ this.gameName }}</b>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <p class="text-success mb-0">{{ numberFormat this.bonus }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <button  class="btn btn-success mt-2 w-100 action-more" data-id="{{this.id}}">Đã Chuyển</button>
+                    </div>
+                {{/each}}
+
+                <div class="row-xl-12 mt-4">
+                    <div class="pagination-no_spacing">
+                        <ul class="pagination">
+                            {{#paginate pagination type="previous"}}
+                                <li><a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}" class="prev"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg></a></li>
+                            {{/paginate}} {{#paginate pagination type="middle" limit=pagination.limit}}
+                            <li><a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}" class="{{#if active}}active{{/if}}">{{n}}</a></li>
+                        {{/paginate}} {{#paginate pagination type="next"}}
+                            <li><a href="{{ baseURL }}?{{#if query }}{{ query }}&page={{n}}{{else}}page={{n}}{{/if}}" class="next"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg></a></li>
+                        {{/paginate}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="footer-wrapper">
+        <div class="footer-section f-section-1">
+            <p class="">Copyright © <span class="dynamic-year">2022</span> <a target="_blank" href="">CuuDen</a>, All rights reserved.</p>
+        </div>
+        <div class="footer-section f-section-2">
+            <p class="">Coded with <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></p>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
+<script>
+    $('body').on('click', '.action-more', function (e) {
+        let _this = $(this);
+        let id = _this.data('id');
+
+        axios.post('{{adminPath}}/pay', {id, paid: 'sent'})
+                .then((result) => {
+                    let response = result.data;
+
+                    response.success ? swal('Thông Báo', response.message, 'success') && window.location.reload() : swal('Thông Báo', response.message, 'error');
+                })
+                .catch(err => swal('Thông Báo', `Có lỗi xảy ra ${err.message || err}`, 'warning'))
+                .finally(() => _this.prop('disabled', false))
+    })
+
+</script>
+{{>foot}}
+

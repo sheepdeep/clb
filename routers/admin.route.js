@@ -264,10 +264,11 @@ router.route('/top')
 
 router.route('/pay')
     .get(payController.index)
-
-router.route('/pay-otp')
-    .get(payController.pay)
     .post(payController.verify);
+
+// router.route('/pay-otp')
+//     .get(payController.pay)
+//     .post(payController.verify);
 
 router.route('/taixiu')
     .get(loggedInAdmin, tableSort, taiXiuController.index)
