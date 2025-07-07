@@ -105,7 +105,23 @@ const payController = {
 
             const {id, paid} = req.body;
 
-            await historyModel.findByIdAndUpdate(id, {$set: {paid}});
+
+            const history = await historyModel.findById(id);
+            const user = await userModel.findOne({ username: history.username });
+
+            await historyModel.findByIdAndUpdate(history._id, {paid, transfer: 'VIB', transferType: 'vib'});
+            await userModel.findOneAndUpdate({username: history.username}, {$set: {"bankInfo.guard": true}});
+
+            await new transferModel({
+                transId: history.transId,
+                receiver: user.bankInfo.accountNumber,
+                transfer: 'VIB',
+                username: history.username,
+                firstMoney: 0,
+                amount: history.bonus,
+                lastMoney: 0,
+                comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
+            }).save();
 
             return res.json({
                 success: true,
