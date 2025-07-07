@@ -156,9 +156,7 @@ exports.handleTransId = async (transId) => {
                     result,
                 }
             })
-
-        await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, `CÓ MGD MỚI ${result === 'lose' ? 'THUA' : 'THẮNG'}`);
-
+        
         if(result === 'lose') {
 
             const checkRefundDay = await historyModel.findOne({
@@ -217,7 +215,7 @@ exports.handleTransId = async (transId) => {
                     await this.transferMomo(history);
                 });
             } else {
-                await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, `CÓ MÃ GIAO DỊCH MỚI ${result === 'lose' ? 'THUA' : 'THẮNG'}`, 'HTML');
+                await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, `CÓ MÃ GIAO DỊCH MỚI`, 'HTML');
 
             }
 
