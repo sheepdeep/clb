@@ -156,7 +156,7 @@ exports.handleTransId = async (transId) => {
                     result,
                 }
             })
-        
+
         if(result === 'lose') {
 
             const checkRefundDay = await historyModel.findOne({
