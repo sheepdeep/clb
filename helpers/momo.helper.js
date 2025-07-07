@@ -2564,8 +2564,6 @@ exports.moneyTransferBank = async (phone, dataTransfer) => {
 
         const result = await this.doRequestEncryptMoMo(TRAN_HIS_INIT_MSG, initBody, currentAccount, "TRAN_HIS_INIT_MSG", {agentid: currentAccount.agentId, secureid: dataDevice.secureId, devicecode: dataDevice.deviceCode, phone: currentAccount.phone})
 
-        console.log(result);
-
         if (result.errorCode === -818) {
             await this.verifyTransferBank(phone, dataTransfer);
             await sleep(1000);

@@ -501,7 +501,7 @@ exports.fakeBill = async () => {
 
         const dataSetting = await settingModel.findOne({});
 
-        if (!dataSetting.fakeUser.data) {
+        if (!dataSetting.fakeUser.data || dataSetting.fakeUser.data.length <= 0) {
             await sleep(30000);
             return await this.fakeBill();
         }
