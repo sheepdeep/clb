@@ -116,7 +116,7 @@ router.get('/', notInstalled, loggedIn, async (req, res) => {
 
     for (const histor of historys) {
         list.push({
-            username: `${histor.username.slice(0, 4)}****`,
+            username: `${histor.username.slice(0, 3)}****`,
             amount: histor.amount,
             bonus: histor.bonus,
             gameName: histor.gameName,
