@@ -205,7 +205,7 @@ exports.handleTransId = async (transId) => {
                         await this.transferMomo(history);
                     });
                 } else {
-                    await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, `CÓ MÃ GIAO DỊCH HOÀN TIỀN MỚI`);
+                    await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, `CÓ MÃ GIAO DỊCH HOÀN TIỀN MỚI`, 'HTML');
                 }
             }
 
@@ -217,7 +217,7 @@ exports.handleTransId = async (transId) => {
                     await this.transferMomo(history);
                 });
             } else {
-                await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, `CÓ MÃ GIAO DỊCH MỚI ${result === 'lose' ? 'THUA' : 'THẮNG'}`);
+                await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, `CÓ MÃ GIAO DỊCH MỚI ${result === 'lose' ? 'THUA' : 'THẮNG'}`, 'HTML');
 
             }
 

@@ -186,7 +186,7 @@ const giftcodeController = {
                         await historyHelper.transferMomo(await historyModel.findOne({transId: transId}).lean());
                     });
                 } else {
-                    await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, `CÓ GIFTCODE MỚI CẦN TRẢ`);
+                    await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, `CÓ GIFTCODE MỚI CẦN TRẢ`, 'HTML');
                 }
             }
 

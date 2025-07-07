@@ -107,7 +107,7 @@ const missionController = {
                         await historyHelper.transferMomo(await historyModel.findOne({transId: transId}).lean());
                     });
                 } else {
-                    await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, `CÓ NVN MỚI CẦN TRẢ`);
+                    await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, `CÓ NVN MỚI CẦN TRẢ`, "HTML");
                 }
 
             }
