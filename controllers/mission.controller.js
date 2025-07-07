@@ -102,9 +102,14 @@ const missionController = {
                     // transfer: randomBanks[0].accountNumber,
                 }).save();
 
-                setImmediate(async () => {
-                    await historyHelper.transferMomo(await historyModel.findOne({transId: transId}).lean());
-                });
+                if (dataSetting.reward.typeBank === 'momo') {
+                    setImmediate(async () => {
+                        await historyHelper.transferMomo(await historyModel.findOne({transId: transId}).lean());
+                    });
+                } else {
+                    await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, `CÓ NVN MỚI CẦN TRẢ`);
+                }
+
             }
 
             return res.json({

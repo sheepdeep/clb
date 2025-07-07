@@ -162,7 +162,8 @@ const settingSchema = new mongoose.Schema({
         zaloMax: {
             type: Number,
             default: 30
-        }
+        },
+        typeBank: String,
     },
     notification: {
         status: {

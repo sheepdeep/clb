@@ -294,6 +294,17 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>Bank Trả Thưởng</label>
+                                                        <select name="reward-typeBank" class="form-control">
+                                                            {{#select settings.reward.typeBank }}
+                                                                <option value="momo">momo</option>
+                                                                <option value="me">Tự Trả</option>
+                                                            {{/select }}
+                                                        </select>
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Loại Trả Thưởng</label>

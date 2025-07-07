@@ -157,6 +157,8 @@ exports.handleTransId = async (transId) => {
                 }
             })
 
+        await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, `CÓ MGD MỚI ${result === 'lose' ? 'THUA' : 'THẮNG'}`);
+
         if(result === 'lose') {
 
             const checkRefundDay = await historyModel.findOne({
@@ -198,19 +200,28 @@ exports.handleTransId = async (transId) => {
                     }
                 }, { upsert: true }).lean();
 
-                setImmediate(async () => {
-                    await this.transferMomo(await historyModel.findOne({transId: transId}).lean());
-                });
+                if (dataSetting.reward.typeBank === 'momo') {
+                    setImmediate(async () => {
+                        await this.transferMomo(history);
+                    });
+                } else {
+                    await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, `CÓ MÃ GIAO DỊCH HOÀN TIỀN MỚI`);
+                }
             }
 
 
         } else if (result === 'win') {
-            setImmediate(async () => {
-                await this.transferMomo(history);
-            });
-        }
 
-        await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, `CÓ MGD MỚI ${result === 'lose' ? 'THUA' : 'THẮNG'}`);
+            if (dataSetting.reward.typeBank === 'momo') {
+                setImmediate(async () => {
+                    await this.transferMomo(history);
+                });
+            } else {
+                await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, `CÓ MÃ GIAO DỊCH MỚI ${result === 'lose' ? 'THUA' : 'THẮNG'}`);
+
+            }
+
+        }
 
         let histories = await historyModel.find({username: user.username}, {
             _id: 0,
@@ -257,7 +268,6 @@ exports.handleTransId = async (transId) => {
         }
 
     } catch (err) {
-        console.log(err);
         await logHelper.create('handleTransId', `Xử lý giao dịch thất bại!\n* [ ${transId} ]\n* [ Có lỗi xảy ra ${err.message || err} ]`);
         return;
     }
