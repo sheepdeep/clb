@@ -50,13 +50,11 @@ const telegramController = {
 
                         message = `✅ Tài khoản liên kết thành công!`;
                     }
+
+                    await telegramHelper.sendText(dataSetting.telegram.token, chatId, message)
                 }
 
-                if (comment == '/otp') {
-
-                }
-
-                return res.json(await telegramHelper.sendText(dataSetting.telegram.token, chatId, message));
+                return res.json({success: true});
             }
 
             return res.json({
