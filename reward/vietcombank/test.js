@@ -77,7 +77,7 @@ const run = async (accountNumber) => {
                 const result = await vcbHelper.initTransfer(accountNumber, dataBank.bankType, dataTransfer);
 
                 if (result && result.code === '00') {
-                    const resultOTP = await vcbHelper.genOtpTransfer(dataBank, result.transaction.tranId, 'IN', 5);
+                    const resultOTP = await vcbHelper.genOtpTransfer(dataBank, result.transaction.tranId, 'IN', 1);
 
                     if (resultOTP && resultOTP.code === '00') {
                         let waitOTP = true;
@@ -112,6 +112,11 @@ const run = async (accountNumber) => {
                     await vcbHelper.login(accountNumber, bankType);
                 }
             } else {
+
+
+                const resultCheckBanker = await vcbHelper.getNameBank(accountNumber, dataBank.bankType, user.bankInfo.accountNumber, user.bankInfo.bankCode);
+                await vcbHelper.getlistDDAccount(accountNumber, dataBank.bankType);
+
                 const result = await vcbHelper.initTransferV1(accountNumber, dataBank.bankType, dataTransfer);
 
                 if (result && result.code === '00') {
@@ -177,7 +182,7 @@ const run = async (accountNumber) => {
                         paid: 'hold'
                     });
 
-                    telegramHelper.sendText(process.env.privateTOKEN,process.env.privateID, `VCB ${dataBank.accountNumber} [${result.des}]`)
+                    telegramHelper.sendText(process.env.privateTOKEN,process.env.privateID, `VCB ${dataBank.accountNumber} [${result.des} - ${result.mid}]`)
                 }
 
                 await bankModel.findOneAndUpdate({accountNumber}, {$set: {reward: false, otp: null}});
