@@ -85,20 +85,6 @@ io.on('connection', function (socket) {
     });
 });
 
-io.of('/admin').on('connection', (socket) => {
-    console.log('Admin connected to /admin');
-
-    // Lắng nghe và gửi thông điệp cho admin
-    socket.on('adminMessage', (data) => {
-        console.log('Admin says:', data);
-        socket.emit('adminResponse', 'Data received from admin');
-    });
-
-    socket.on('disconnect', () => {
-        console.log('Admin disconnected from /admin');
-    });
-});
-
 
 // SET TOKEN SETUP
 process.env.TOKEN_SETUP = uuidv4().toUpperCase();

@@ -566,6 +566,33 @@ exports.confirmTransfer = async (bankData, tranId, challenge, otp, type="OUT", o
     }
 }
 
+exports.getNameBank = async (accountNumber, bankType, accountNo, bankCode) => {
+    try {
+        const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
+
+        const bodyData  = {
+            "DT": "Windows",
+            "OV": "10",
+            "PM": "Chrome 111.0.0.0",
+            "E": null,
+            "browserId": bankData.dataDevice.browserId,
+            "accountNo": accountNo,
+            "bankCode": bankCode.toString(),
+            "lang": 'vi',
+            "mid": 917,
+            "user": bankData.username,
+            "mobileId": bankData.dataDevice.session.mobileId,
+            "sessionId": bankData.dataDevice.session.sessionId,
+            "clientId": bankData.dataDevice.session.clientId,
+        }
+        
+        return await this.curlPost('https://digiapp.vietcombank.com.vn/napas-service/v1/inquiry-holdername', bodyData, this.headerNull(bankData.username))
+
+    } catch (e) {
+
+    }
+}
+
 exports.initTransfer = async (accountNumber, bankType, dataTransfer) => {
     try {
 
@@ -611,35 +638,35 @@ exports.initTransferV1 = async (accountNumber, bankType, dataTransfer) => {
 
         const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
 
-        const bodyData = {
+        const bodyData  = {
             "DT": "Windows",
             "OV": "10",
             "PM": "Chrome 111.0.0.0",
-            "E": "",
-            "amount": String(dataTransfer.amount),
-            "appVersion": "",
+            "E": this.getE() || "",
             "browserId": bankData.dataDevice.browserId,
             "ccyType": "2",
             "cif": "",
-            "clientId": bankData.dataDevice.session.clientId,
             "creditAccountNo": dataTransfer.accountNumber,
+            "creditAccountName": dataTransfer.name,
             "debitAccountNo": accountNumber,
+            "omniBankCode": dataTransfer.bankCode,
+            "amount": dataTransfer.amount.toString(),
+            "content": dataTransfer.comment,
             "feeType": "1",
             "lang": "vi",
             "mid": 4034,
-            "mobileId": bankData.dataDevice.session.mobileId,
-            "omniBankCode": dataTransfer.bankCode,
-            "sessionId": bankData.dataDevice.session.sessionId,
             "type": "account",
+            "transferCategory": null,
             "user": bankData.username,
-            "transferCategory": null
+            "mobileId": bankData.dataDevice.session.mobileId,
+            "sessionId": bankData.dataDevice.session.sessionId,
+            "clientId": bankData.dataDevice.session.clientId,
         }
 
         const result = await this.curlPost('https://digiapp.vietcombank.com.vn/napas-service/v1/get-channel-transfer-intersea', bodyData, this.headerNull(bankData.username))
 
         if (result && result.code === '00') {
             const resultV2 = await this.initTransferV2(accountNumber, bankType, dataTransfer);
-
             if (result && result.code === '00') {
                 return resultV2;
             } else {
