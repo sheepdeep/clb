@@ -17,7 +17,6 @@ connectDB();
 const run = async (accountNumber) => {
     const dataSetting = await settingModel.findOne({});
 
-
     if (dataSetting.reward.typeBank === 'vcb') {
 
         const dataBank = await bankModel.findOne({accountNumber, bankType: 'vcb', reward: false}).lean();
@@ -71,8 +70,6 @@ const run = async (accountNumber) => {
                 comment: array[Math.floor(Math.random() * array.length)] + String(history.transId).slice(-4),
                 amount: history.bonus
             };
-
-            console.log(dataTransfer);
 
             let resultConfirm;
 
@@ -191,17 +188,17 @@ const run = async (accountNumber) => {
                 await bankModel.findOneAndUpdate({accountNumber}, {$set: {reward: false, otp: null}});
             }
 
-            await sleep(1000);
+            await sleep(5000);
             run('1056069780');
 
         }
 
-        await sleep(1000);
+        await sleep(5000);
         run('1056069780');
     }
 
 
-    await sleep(1000);
+    await sleep(10000);
     run('1056069780');
 }
 
