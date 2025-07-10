@@ -625,7 +625,7 @@ exports.gift = async () => {
         await new giftModel({
             code,
             amount: Math.floor(Math.random() * (dataSetting.giftCode.max - dataSetting.giftCode.min + 1)) + dataSetting.giftCode.min,
-            playCount: 100000,
+            playCount: 200000,
             limit: 1,
             status: 'active',
             type: dataSetting.giftCode.typeBank,

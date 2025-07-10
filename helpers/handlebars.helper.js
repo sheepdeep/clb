@@ -335,7 +335,7 @@ module.exports = {
 
         switch (bankType) {
             case 'mbb':
-                src = `/themes/images/banks/mbb.png`;
+                src = `/themes/images/banks/mbb.webp`;
                 break;
             case 'ncb':
                 src = `/themes/images/banks/ncb.png`;
@@ -345,6 +345,9 @@ module.exports = {
                 break;
             case 'acb':
                 src = `/themes/images/banks/acb.png`;
+                break;
+            case 'vcb':
+                src = `/themes/images/banks/vcb.webp`;
                 break;
             default:
                 src = `<span class="badge badge-danger">Lỗi</span>`;

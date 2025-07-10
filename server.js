@@ -85,8 +85,18 @@ io.on('connection', function (socket) {
     });
 });
 
-io.of("/admin").on("connection", (socket) => {
-    socket.emit("welcome", "Chào mừng đến kênh chat!");
+io.of('/admin').on('connection', (socket) => {
+    console.log('Admin connected to /admin');
+
+    // Lắng nghe và gửi thông điệp cho admin
+    socket.on('adminMessage', (data) => {
+        console.log('Admin says:', data);
+        socket.emit('adminResponse', 'Data received from admin');
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Admin disconnected from /admin');
+    });
 });
 
 

@@ -394,62 +394,6 @@ const apiController = {
 
                     const bankData = await bankModel.findOneAndUpdate({bankType: 'exim', username}, {$set: {otp}});
 
-                    // const result = await eximbankHelper.verifyTransfer(bankData.accountNumber, bankData.bankType, otp);
-                    //
-                    // const accountNumber = bankData.accountNumber;
-                    //
-                    // const history = await historyModel.findOne({transfer: accountNumber, paid: "wait"});
-                    //
-                    // if (history) {
-                    //
-                    //     if (result.resultDecode.code == '00') {
-                    //
-                    //         // const balance = await eximbankHelper.getBalance(bankData.accountNumber, bankData.bankType)
-                    //
-                    //         await bankModel.findOneAndUpdate({accountNumber}, {$set: {
-                    //             otp: null, reward: false, balance: bankData.balance - history.bonus
-                    //         }});
-                    //
-                    //         history.paid = 'sent';
-                    //         history.save();
-                    //         const user = await userModel.findOne({username: history.username});
-                    //         user.bankInfo.guard = true;
-                    //         user.save();
-                    //
-                    //         await new transferModel({
-                    //             transId: history.transId,
-                    //             receiver: user.bankInfo.accountNumber,
-                    //             transfer: bankData.accountNumber,
-                    //             username: history.username,
-                    //             firstMoney: bankData.balance,
-                    //             amount: history.bonus,
-                    //             lastMoney: bankData.balance - history.bonus,
-                    //             comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
-                    //         }).save();
-                    //
-                    //         console.log(`${history.transId} done`)
-                    //
-                    //     } else if (result.resultDecode.des == 'Tài khoản không đủ duy trì số dư tối thiểu, Quý Khách vui lòng kiểm tra lại.' || result.message == 'Tài khoản (nhận)  không đủ duy trì số dư/ tài khoản không hợp lệ để thực hiện giao dịch, vui lòng kiểm tra lại') {
-                    //         await bankModel.findOneAndUpdate({accountNumber}, {$set: {
-                    //             otp: null, reward: false
-                    //         }});
-                    //         logHelper.create("rewardErr", `${accountNumber} [Hết tiền trả thưởng]`)
-                    //         await bankModel.findOneAndUpdate({accountNumber}, {$set: {
-                    //             status: 'pending'
-                    //         }});
-                    //         history.paid = 'hold';
-                    //         history.save();
-                    //     } else {
-                    //         history.paid = 'hold';
-                    //         history.save();
-                    //     }
-                    //
-                    //
-                    //     return res.json({
-                    //         success: true,
-                    //     })
-                    // }
-
                 }
 
                 return res.json({

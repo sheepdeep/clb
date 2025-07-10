@@ -19,9 +19,13 @@
 
     const adminSocket = io("http://127.0.0.1/admin");
 
-    // socket.on('countOnline', (data) => {
-    //     $('#userCount').html(data);
-    // })
+    // Lắng nghe sự kiện 'notiRewardBank' từ server
+    adminSocket.on('notiRewardBank', (data) => {
+        console.log('Server says:', data);
+    });
+
+    // Gửi thông báo đến server (Admin gửi yêu cầu)
+    adminSocket.emit('notiRewardBank', { reward: '1000 Coins' });
 
     $('body').on('click', '[data-bs-submit]', function (e) {
         let _this = $(this);
