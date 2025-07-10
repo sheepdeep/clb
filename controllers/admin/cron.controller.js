@@ -56,7 +56,7 @@ const cronController = {
             const result = historyHelper.transferVcb();
 
             return res.json(result);
-            
+
         } catch (e) {
             console.log(e);
         }
