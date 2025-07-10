@@ -23,7 +23,7 @@ const run = async (accountNumber) => {
         const dataBank = await bankModel.findOne({accountNumber, bankType: 'vcb', reward: false}).lean();
         let array = dataSetting.commentSite.rewardGD.split(',');
         const history = await historyModel.findOneAndUpdate({paid: 'wait'}, {$set: {transfer: accountNumber, paid: 'sent'}}).lean();
-        
+
         if (history && dataBank) {
 
             await bankModel.findOneAndUpdate({accountNumber}, {$set: {reward: true, otp: null}});
@@ -187,6 +187,8 @@ const run = async (accountNumber) => {
 
         }
 
+        await sleep(1000);
+        run('1056069780');
     }
 
 
