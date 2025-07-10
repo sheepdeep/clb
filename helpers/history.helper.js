@@ -911,13 +911,13 @@ exports.transferZalo = async (history) => {
     }
 }
 
-exports.transferVcb = async (history) => {
+exports.transferVcb = async () => {
     try {
         const dataSetting = await settingModel.findOne({});
         var startTime = performance.now();
         const bankReward = await bankModel.aggregate([
             {
-                $match: { reward: false, loginStatus: 'active', } // Điều kiện lọc
+                $match: { reward: false, loginStatus: 'active', bankType: 'vcb' } // Điều kiện lọc
             },
             {
                 $sample: { size: 1 }
@@ -939,6 +939,7 @@ exports.transferVcb = async (history) => {
                 const user = await userModel.findOne({username: history.username});
 
                 if(user.bankInfo.accountNumber) {
+
                     const dataBank = await bankModel.findOne({accountNumber: bankReward[0].accountNumber, bankType: bankReward[0].bankType});
 
                     console.log(`Thực hiện trả thưởng #${history.transId} => ${dataBank.accountNumber}`)
@@ -996,7 +997,6 @@ exports.transferVcb = async (history) => {
                             }
                         }
 
-                        await bankModel.findOneAndUpdate({accountNumber}, {$set: {reward: false, otp: null}});
                     } else {
                         await historyModel.findByIdAndUpdate(history._id, {
                             paid: 'hold'

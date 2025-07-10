@@ -53,7 +53,7 @@ const cronController = {
     reward: async (req, res, next) => {
         try {
 
-            const result = historyHelper.transferVcb();
+            const result = await historyHelper.transferVcb();
 
             return res.json(result);
 
