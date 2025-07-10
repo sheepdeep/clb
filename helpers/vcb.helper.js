@@ -749,20 +749,30 @@ exports.getBalance = async (accountNumber, bankType) => {
 
         const result = await this.curlPost('https://digiapp.vietcombank.com.vn/bank-service/v1/get-list-account-via-cif', bodyData, this.headerNull(bankData.username))
 
-        let account = [...result.DDAccounts].find(item => item.accountNo === accountNumber);
+        if (result && result.code === '00') {
+            let account = [...result.DDAccounts].find(item => item.accountNo === accountNumber);
 
-        await bankModel.findOneAndUpdate({accountNumber, bankType}, {
-                $set: {
-                    balance: parseInt(account.availableBalance),
+            await bankModel.findOneAndUpdate({accountNumber, bankType}, {
+                    $set: {
+                        balance: parseInt(account.availableBalance),
+                    }
                 }
-            }
-        );
+            );
 
-        return {
-            success: true,
-            balance: parseInt(account.availableBalance),
-            message: 'Lấy số dư thành công!'
-        };
+            return {
+                success: true,
+                balance: parseInt(account.availableBalance),
+                message: 'Lấy số dư thành công!'
+            };
+
+        } else if (result && result.code === '108') {
+            await this.login(accountNumber, bankType);
+
+            return {
+                success: false,
+                message: 'Lấy số dư thất bại!'
+            };
+        }
 
     } catch (e) {
         console.log(e);
