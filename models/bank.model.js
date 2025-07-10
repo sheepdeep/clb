@@ -33,6 +33,8 @@ const bankSchema = mongoose.Schema({
     otp: String,
     token: String,
     otpToken: String,
+    deviceId: String,
+    simSlot: String,
     transType: String,
     errorLogin: Number,
     cookie: String,

@@ -100,7 +100,8 @@ const run = async (accountNumber) => {
                                 });
                                 await bankModel.findOneAndUpdate({accountNumber}, {$set: {reward: false, otp: null}});
                                 telegramHelper.sendText(process.env.privateTOKEN,process.env.privateID, `VCB ${dataBank.accountNumber} [Quá thời gian nhập OTP]`)
-                                waitOTP = false;
+                                await sleep(5000);
+                                run('1056069780');
                             }
 
                             console.log(`Đợi OTP còn lại ${remainingTime} giây`);
@@ -142,7 +143,9 @@ const run = async (accountNumber) => {
                                 });
                                 await bankModel.findOneAndUpdate({accountNumber}, {$set: {reward: false, otp: null}});
                                 telegramHelper.sendText(process.env.privateTOKEN,process.env.privateID, `VCB ${dataBank.accountNumber} [Quá thời gian nhập OTP]`)
-                                waitOTP = false;
+
+                                await sleep(5000);
+                                run('1056069780');
                             }
 
                             console.log(`Đợi OTP còn lại ${remainingTime} giây`);

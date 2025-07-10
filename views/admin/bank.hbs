@@ -226,6 +226,8 @@
                                 <th style="width: 250px">Nhận Tháng</th>
                                 <th style="width: 250px">Trạng thái</th>
                                 <th style="width: 250px">OTP</th>
+                                <th style="width: 250px">DEVICE ID</th>
+                                <th style="width: 250px">SIM SLOT</th>
                                 <th style="width: 250px">Proxy</th>
                                 <th style="width: 250px">Đăng nhập lúc {{{ tableSort originalUrl.search 'updatedAt' _sort }}}
                                 </th>
@@ -328,6 +330,34 @@
                                             {{/ifCond}}
                                         </span>
                                         <span data-bs-table="edit" data-bs-value="{{ this.otp }}" class="hidden">
+                                                        <input type="text" class="form-control"
+                                                               data-bs-edit="true">
+                                                    </span>
+                                    </td>
+                                    <td data-bs-name="deviceId" data-bs-hasEdit="true">
+                                        <span data-bs-table="html" data-bs-key="text"
+                                              data-bs-value="{{ this.deviceId }}">
+                                            {{#if this.deviceId}}
+                                                <span data-bs-html="true">{{ this.deviceId }}</span>
+                                            {{else}}
+                                                <span data-bs-html="true">Không có</span>
+                                            {{/if}}
+                                        </span>
+                                        <span data-bs-table="edit" data-bs-value="{{ this.deviceId }}" class="hidden">
+                                                        <input type="text" class="form-control"
+                                                               data-bs-edit="true">
+                                                    </span>
+                                    </td>
+                                    <td data-bs-name="simSlot" data-bs-hasEdit="true">
+                                        <span data-bs-table="html" data-bs-key="text"
+                                              data-bs-value="{{ this.simSlot }}">
+                                            {{#if this.simSlot}}
+                                                <span data-bs-html="true">{{ this.simSlot }}</span>
+                                            {{else}}
+                                                <span data-bs-html="true">Không có</span>
+                                            {{/if}}
+                                        </span>
+                                        <span data-bs-table="edit" data-bs-value="{{ this.simSlot }}" class="hidden">
                                                         <input type="text" class="form-control"
                                                                data-bs-edit="true">
                                                     </span>

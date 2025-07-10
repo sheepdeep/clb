@@ -372,10 +372,6 @@ const apiController = {
 
             console.log(dataMessage)
 
-            let username = dataMessage[0].sim;
-            if (username.startsWith('+84')) {
-                username = '0' + username.slice(3);
-            }
             const message = dataMessage[0].message;
             const number = dataMessage[0].number;
 
@@ -460,31 +456,22 @@ const apiController = {
 
                 // console.log(dataMessageMB);
 
-            } else {
+            } else if (number === 'Vietcombank') {
+
                 const regex = /\d+/g;  // Tìm mã OTP 6 chữ số
                 const match = message.match(regex);
                 const otp = match[0];
-                const accountNumber = match[2];
 
-                const bank = await bankModel.findOne({accountNumber});
-
-                if (bank) {
-                    await bankModel.findOneAndUpdate({accountNumber}, {$set:{
-                            otp
-                        }})
-
-                    return res.json({
-                        success: true,
-                        message: 'Thành công!',
-                        accountNumber,
+                await bankModel.findOneAndUpdate({slotSim: dataMessage[0].simSlot, deviceId: dataMessage[0].deviceID}, {$set:{
                         otp
-                    })
-                } else {
-                    return res.json({
-                        success: true,
-                        message: 'Lỗi hệ thống!',
-                    })
-                }
+                    }})
+
+                return res.json({
+                    success: true,
+                    message: 'Thành công!',
+                    otp
+                })
+
             }
 
             return res.json({
