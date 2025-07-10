@@ -177,7 +177,7 @@ const run = async (accountNumber) => {
             }
 
             if (resultConfirm && resultConfirm.code === '00') {
-                const balance = await vcbHelper.getBalance(dataBank.phone);
+                const balance = await vcbHelper.getBalance(accountNumber, dataBank.bankType);
                 await historyModel.findByIdAndUpdate(history._id, {
                     transferType: 'vcb'
                 });
