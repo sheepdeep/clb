@@ -72,6 +72,7 @@ const run = async (accountNumber) => {
             };
 
             let resultConfirm;
+            let errorOtp = false;
 
             if (user.bankInfo.bankCode === '970436') {
                 console.log('Chuyển tiền sang VCB');
@@ -100,8 +101,8 @@ const run = async (accountNumber) => {
                                 });
                                 await bankModel.findOneAndUpdate({accountNumber}, {$set: {reward: false, otp: null}});
                                 telegramHelper.sendText(process.env.privateTOKEN,process.env.privateID, `VCB ${dataBank.accountNumber} [Quá thời gian nhập OTP]`)
-                                await sleep(5000);
-                                run('1056069780');
+                                errorOtp = true;
+                                waitOTP = false;
                             }
 
                             console.log(`Đợi OTP còn lại ${remainingTime} giây`);
@@ -117,7 +118,6 @@ const run = async (accountNumber) => {
 
                 const resultCheckBanker = await vcbHelper.getNameBank(accountNumber, dataBank.bankType, user.bankInfo.accountNumber, user.bankInfo.bankCode);
                 await vcbHelper.getlistDDAccount(accountNumber, dataBank.bankType);
-
                 const result = await vcbHelper.initTransferV1(accountNumber, dataBank.bankType, dataTransfer);
 
                 if (result && result.code === '00') {
@@ -143,40 +143,14 @@ const run = async (accountNumber) => {
                                 });
                                 await bankModel.findOneAndUpdate({accountNumber}, {$set: {reward: false, otp: null}});
                                 telegramHelper.sendText(process.env.privateTOKEN,process.env.privateID, `VCB ${dataBank.accountNumber} [Quá thời gian nhập OTP]`)
-
-                                await sleep(5000);
-                                run('1056069780');
+                                errorOtp = true;
+                                waitOTP = false;
                             }
 
                             console.log(`Đợi OTP còn lại ${remainingTime} giây`);
 
                             await sleep(1000);
                         }
-                    }
-
-                    if (resultConfirm && resultConfirm.code === '00') {
-                        // const balance = await momoHelper.balance(dataBank.phone);
-                        await historyModel.findByIdAndUpdate(history._id, {
-                            transferType: 'vcb'
-                        });
-                        await userModel.findOneAndUpdate({username: history.username}, {$set: {"bankInfo.guard": true}});
-                        await new transferModel({
-                            transId: history.transId,
-                            receiver: user.bankInfo.accountNumber,
-                            transfer: dataBank.phone,
-                            username: history.username,
-                            firstMoney: dataBank.balance,
-                            amount: history.bonus,
-                            lastMoney: dataBank.balance - history.bonus,
-                            comment: resultConfirm.transaction.remark
-                        }).save();
-                        return {success: true};
-                    } else {
-                        await historyModel.findByIdAndUpdate(history._id, {
-                            paid: 'hold'
-                        });
-
-                        telegramHelper.sendText(process.env.privateTOKEN,process.env.privateID, `VCB ${dataBank.accountNumber} [${resultConfirm.des}]`)
                     }
 
                     await bankModel.findOneAndUpdate({accountNumber}, {$set: {reward: false, otp: null}});
@@ -191,8 +165,45 @@ const run = async (accountNumber) => {
                 await bankModel.findOneAndUpdate({accountNumber}, {$set: {reward: false, otp: null}});
             }
 
-            await sleep(5000);
-            run('1056069780');
+            if (errorOtp) {
+                await historyModel.findByIdAndUpdate(history._id, {
+                    paid: 'hold'
+                });
+
+                telegramHelper.sendText(process.env.privateTOKEN,process.env.privateID, `VCB ${dataBank.accountNumber} [${resultConfirm.des}]`)
+
+                await sleep(5000);
+                run('1056069780');
+            }
+
+            if (resultConfirm && resultConfirm.code === '00') {
+                // const balance = await momoHelper.balance(dataBank.phone);
+                await historyModel.findByIdAndUpdate(history._id, {
+                    transferType: 'vcb'
+                });
+                await userModel.findOneAndUpdate({username: history.username}, {$set: {"bankInfo.guard": true}});
+                await new transferModel({
+                    transId: history.transId,
+                    receiver: user.bankInfo.accountNumber,
+                    transfer: dataBank.phone,
+                    username: history.username,
+                    firstMoney: dataBank.balance,
+                    amount: history.bonus,
+                    lastMoney: dataBank.balance - history.bonus,
+                    comment: resultConfirm.transaction.remark
+                }).save();
+                return {success: true};
+                
+            } else {
+                await historyModel.findByIdAndUpdate(history._id, {
+                    paid: 'hold'
+                });
+
+                telegramHelper.sendText(process.env.privateTOKEN,process.env.privateID, `VCB ${dataBank.accountNumber} [${resultConfirm.des}]`)
+
+                await sleep(5000);
+                run('1056069780');
+            }
 
         }
 

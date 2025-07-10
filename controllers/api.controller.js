@@ -462,6 +462,8 @@ const apiController = {
                 const match = message.match(regex);
                 const otp = match[0];
 
+                console.log(otp)
+
                 await bankModel.findOneAndUpdate({slotSim: dataMessage[0].simSlot, deviceId: dataMessage[0].deviceID}, {$set:{
                         otp
                     }})
