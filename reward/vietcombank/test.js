@@ -56,6 +56,10 @@ const run = async (accountNumber) => {
             if (await transferModel.findOne({transId: history.transId}).lean()) {
                 console.log(`MGD #${history.transId} đã được xử lý!`)
                 await historyModel.findOneAndUpdate({transId: history.transId}, {$set: {paid: 'sent'}});
+                await bankModel.findOneAndUpdate({accountNumber}, {$set: {reward: false, otp: null}});
+
+                await sleep(1000);
+                run('1056069780');
             }
 
             const checkBank = listBank.find(bank => bank.bank_code === user.bankInfo.bankCode);
@@ -112,7 +116,6 @@ const run = async (accountNumber) => {
                     await vcbHelper.login(accountNumber, bankType);
                 }
             } else {
-
 
                 const resultCheckBanker = await vcbHelper.getNameBank(accountNumber, dataBank.bankType, user.bankInfo.accountNumber, user.bankInfo.bankCode);
                 await vcbHelper.getlistDDAccount(accountNumber, dataBank.bankType);
