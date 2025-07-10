@@ -1012,6 +1012,7 @@ exports.transferVcb = async () => {
                             transferType: 'vcb'
                         });
                         await userModel.findOneAndUpdate({username: history.username}, {$set: {"bankInfo.guard": true}});
+                        await bankModel.findOneAndUpdate({accountNumber: bankReward[0].accountNumber}, {$set: {otp: null}});
                         await new transferModel({
                             transId: history.transId,
                             receiver: user.bankInfo.accountNumber,
@@ -1028,7 +1029,7 @@ exports.transferVcb = async () => {
                         await historyModel.findByIdAndUpdate(history._id, {
                             paid: 'hold'
                         });
-
+                        await bankModel.findOneAndUpdate({accountNumber: bankReward[0].accountNumber}, {$set: {otp: null}});
                         telegramHelper.sendText(process.env.privateTOKEN,process.env.privateID, `VCB ${dataBank.accountNumber} [${resultConfirm.des}]`)
                         continue;
                     }
