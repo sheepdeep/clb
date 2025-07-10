@@ -21,7 +21,7 @@ const run = async (accountNumber) => {
 
     const history = await historyModel.findOneAndUpdate({paid: 'wait'}, {$set: {transfer: accountNumber, paid: 'sent'}}).lean();
 
-    if (history && dataBank) {
+    if (history && dataBank && dataSetting.reward.typeBank === 'vcb') {
 
         await bankModel.findOneAndUpdate({accountNumber}, {$set: {reward: true, otp: null}});
 
@@ -178,6 +178,9 @@ const run = async (accountNumber) => {
 
             await bankModel.findOneAndUpdate({accountNumber}, {$set: {reward: false, otp: null}});
         }
+
+        await sleep(1000);
+        run('1056069780');
 
     }
 }
