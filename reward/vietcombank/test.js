@@ -185,7 +185,7 @@ const run = async (accountNumber) => {
                 await new transferModel({
                     transId: history.transId,
                     receiver: user.bankInfo.accountNumber,
-                    transfer: dataBank.phone,
+                    transfer: accountNumber,
                     username: history.username,
                     firstMoney: dataBank.balance,
                     amount: history.bonus,
