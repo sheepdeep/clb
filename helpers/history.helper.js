@@ -927,7 +927,7 @@ exports.transferVcb = async () => {
         if (bankReward.length > 0) {
 
             await bankModel.findOneAndUpdate({accountNumber: bankReward[0].accountNumber}, {$set: {reward: true, otp: null}});
-            const histories = await historyModel.find({paid: 'wait'}).limit(1);
+            const histories = await historyModel.find({paid: 'wait'}).limit(2);
 
             for(let history of histories) {
                 let array = dataSetting.commentSite.rewardGD.split(',');
@@ -979,7 +979,7 @@ exports.transferVcb = async () => {
                                 const dataBank1 = await bankModel.findOne({accountNumber: dataBank.accountNumber, bankType: 'vcb'});
 
                                 if (dataBank1.otp) {
-                                    resultConfirm = await vcbHelper.confirmTransfer(dataBank, result.transaction.tranId, resultOTP.challenge, dataBank.otp, "OUT");
+                                    resultConfirm = await vcbHelper.confirmTransfer(dataBank, result.transaction.tranId, resultOTP.challenge, dataBank1.otp, "OUT");
                                     waitOTP = false;
                                 }
 
@@ -1007,7 +1007,7 @@ exports.transferVcb = async () => {
                     }
 
                     if (resultConfirm && resultConfirm.code === '00') {
-                        const balance = await vcbHelper.getBalance(accountNumber, dataBank.bankType);
+                        const balance = await vcbHelper.getBalance(dataBank.accountNumber, dataBank.bankType);
                         await historyModel.findByIdAndUpdate(history._id, {
                             transferType: 'vcb'
                         });
@@ -1015,7 +1015,7 @@ exports.transferVcb = async () => {
                         await new transferModel({
                             transId: history.transId,
                             receiver: user.bankInfo.accountNumber,
-                            transfer: accountNumber,
+                            transfer: dataBank.accountNumber,
                             username: history.username,
                             firstMoney: dataBank.balance,
                             amount: history.bonus,
