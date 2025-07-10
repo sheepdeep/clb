@@ -933,6 +933,9 @@ exports.transferVcb = async () => {
                 let array = dataSetting.commentSite.rewardGD.split(',');
                 const checkTrans = await transferModel.findOne({transId: history.transId}).lean();
                 if (checkTrans) {
+                    await historyModel.findByIdAndUpdate(history._id, {
+                        paid: 'sent'
+                    });
                     continue;
                 }
 
