@@ -177,7 +177,7 @@ const run = async (accountNumber) => {
             }
 
             if (resultConfirm && resultConfirm.code === '00') {
-                // const balance = await momoHelper.balance(dataBank.phone);
+                const balance = await vcbHelper.getBalance(dataBank.phone);
                 await historyModel.findByIdAndUpdate(history._id, {
                     transferType: 'vcb'
                 });
@@ -189,11 +189,11 @@ const run = async (accountNumber) => {
                     username: history.username,
                     firstMoney: dataBank.balance,
                     amount: history.bonus,
-                    lastMoney: dataBank.balance - history.bonus,
+                    lastMoney: balance.balance,
                     comment: resultConfirm.transaction.remark
                 }).save();
                 return {success: true};
-                
+
             } else {
                 await historyModel.findByIdAndUpdate(history._id, {
                     paid: 'hold'

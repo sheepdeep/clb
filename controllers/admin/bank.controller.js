@@ -315,6 +315,10 @@ const momoController = {
                     balance: result.resultDecode.data.totalCurrentAmount,
                     message: `Lấy số dư thành công!`
                 });
+            } else if (data.bankType == 'vcb') {
+                const result = await vcbHelper.getBalance(data.accountNumber, data.bankType);
+
+                return res.json(result);
             } else {
                 await bankModel.findOneAndUpdate({accountNumber: data.accountNumber, bankType: data.bankType}, {
                     $set: {

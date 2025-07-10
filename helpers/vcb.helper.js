@@ -727,3 +727,44 @@ exports.initTransferV2 = async (accountNumber, bankType, dataTransfer) => {
         };
     }
 }
+
+exports.getBalance = async (accountNumber, bankType) => {
+    try {
+
+        const bankData = await bankModel.findOne({accountNumber, bankType}).lean();
+
+        const bodyData  = {
+            "DT": "Windows",
+            "OV": "10",
+            "PM": "Chrome 111.0.0.0",
+            "E": null,
+            "browserId": bankData.dataDevice.browserId,
+            "lang": 'vi',
+            "mid": 8,
+            "user": bankData.username,
+            "mobileId": bankData.dataDevice.session.mobileId,
+            "sessionId": bankData.dataDevice.session.sessionId,
+            "clientId": bankData.dataDevice.session.clientId,
+        }
+
+        const result = await this.curlPost('https://digiapp.vietcombank.com.vn/bank-service/v1/get-list-account-via-cif', bodyData, this.headerNull(bankData.username))
+
+        let account = [...result.DDAccounts].find(item => item.accountNo === accountNumber);
+
+        await bankModel.findOneAndUpdate({accountNumber, bankType}, {
+                $set: {
+                    balance: parseInt(account.availableBalance),
+                }
+            }
+        );
+
+        return {
+            success: true,
+            balance: parseInt(account.availableBalance),
+            message: 'Lấy số dư thành công!'
+        };
+
+    } catch (e) {
+        console.log(e);
+    }
+}
