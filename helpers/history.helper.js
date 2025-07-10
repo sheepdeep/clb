@@ -933,7 +933,7 @@ exports.transferVcb = async () => {
                 let array = dataSetting.commentSite.rewardGD.split(',');
                 const checkTrans = await transferModel.findOne({transId: history.transId}).lean();
                 if (checkTrans) {
-                    return {success: false, message: 'Mã đã được trả thưởng!'};
+                    continue;
                 }
 
                 const user = await userModel.findOne({username: history.username});
