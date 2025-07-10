@@ -585,7 +585,7 @@ exports.getNameBank = async (accountNumber, bankType, accountNo, bankCode) => {
             "sessionId": bankData.dataDevice.session.sessionId,
             "clientId": bankData.dataDevice.session.clientId,
         }
-        
+
         return await this.curlPost('https://digiapp.vietcombank.com.vn/napas-service/v1/inquiry-holdername', bodyData, this.headerNull(bankData.username))
 
     } catch (e) {

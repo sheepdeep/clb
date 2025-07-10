@@ -224,6 +224,8 @@
                                 <th style="width: 250px">Nhận Ngày</th>
                                 <th style="width: 250px">Chuyển Tháng</th>
                                 <th style="width: 250px">Nhận Tháng</th>
+                                <th style="width: 250px">Trạng thái</th>
+                                <th style="width: 250px">OTP</th>
                                 <th style="width: 250px">Proxy</th>
                                 <th style="width: 250px">Đăng nhập lúc {{{ tableSort originalUrl.search 'updatedAt' _sort }}}
                                 </th>
@@ -309,6 +311,27 @@
                                     <td>{{ numberFormat this.receiptDay }}</td>
                                     <td>{{ numberFormat this.amountMonth }}</td>
                                     <td>{{ numberFormat this.receiptMonth }}</td>
+                                    <td>
+                                        {{#ifCond this.reward '===' true}}
+                                            <span class="badge badge-warning">Đang trả</span>
+                                        {{else}}
+                                            <span class="badge badge-success">Nghỉ ngơi</span>
+                                        {{/ifCond}}
+                                    </td>
+                                    <td data-bs-name="otp" data-bs-hasEdit="true">
+                                        <span data-bs-table="html" data-bs-key="text"
+                                              data-bs-value="{{ this.otp }}">
+                                            {{#ifCond this.otp '===' null}}
+                                                <span data-bs-html="true">Đang chờ</span>
+                                                {{else}}
+                                                <span data-bs-html="true">{{ this.otp }}</span>
+                                            {{/ifCond}}
+                                        </span>
+                                        <span data-bs-table="edit" data-bs-value="{{ this.otp }}" class="hidden">
+                                                        <input type="text" class="form-control"
+                                                               data-bs-edit="true">
+                                                    </span>
+                                    </td>
                                     <td>{{ this.proxy }}</td>
                                     <td>{{ formatDate this.loginAt 'HH:mm:ss DD-MM-YYYY'}}</td>
                                     <td>{{ formatDate this.updatedAt 'HH:mm:ss DD-MM-YYYY'}}</td>
