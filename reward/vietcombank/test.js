@@ -183,6 +183,9 @@ const run = async (accountNumber) => {
         run('1056069780');
 
     }
+
+    await sleep(1000);
+    run('1056069780');
 }
 
 run('1056069780');
