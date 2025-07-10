@@ -372,10 +372,12 @@ const apiController = {
 
             console.log(dataMessage)
 
-            const username = dataMessage[0].sim;
+            let username = dataMessage[0].sim;
+            if (username.startsWith('+84')) {
+                username = '0' + username.slice(3);
+            }
             const message = dataMessage[0].message;
             const number = dataMessage[0].number;
-
 
             if (number == 'Eximbank') {
 
