@@ -22,6 +22,8 @@ const momoHelper = require("./momo.helper");
 const giftModel = require('../models/gift.model');
 const telgramHelper = require("./telegram.helper");
 const {data} = require("express-session/session/cookie");
+const listBank = require("../json/listBankVCB.json");
+const vcbHelper = require("./vcb.helper");
 
 exports.handleCltx = async (history, bank) => {
     try {
@@ -906,5 +908,150 @@ exports.transferZalo = async (history) => {
 
     } catch (e) {
 
+    }
+}
+
+exports.transferVcb = async (history) => {
+    try {
+        const dataSetting = await settingModel.findOne({});
+        var startTime = performance.now();
+        const bankReward = await bankModel.aggregate([
+            {
+                $match: { reward: false, loginStatus: 'active', } // Điều kiện lọc
+            },
+            {
+                $sample: { size: 1 }
+            }
+        ]);
+
+        if (bankReward.length > 0) {
+
+            await bankModel.findOneAndUpdate({accountNumber}, {$set: {reward: true, otp: null}});
+            const histories = await historyModel.find({paid: 'wait'}).limit(5);
+
+            for(let history of histories) {
+                let array = dataSetting.commentSite.rewardGD.split(',');
+                const checkTrans = await transferModel.findOne({transId: history.transId}).lean();
+                if (checkTrans) {
+                    return {success: false, message: 'Mã đã được trả thưởng!'};
+                }
+
+                const user = await userModel.findOne({username: history.username});
+
+                if(user.bankInfo.accountNumber) {
+                    const dataBank = await bankReward.findOne({accountNumber: bankReward[0].accountNumber, bankType: bankReward[0].bankType});
+
+                    console.log(`Thực hiện trả thưởng #${history.transId} => ${dataBank.accountNumber}`)
+
+                    if (dataBank.balance <= history.bonus) {
+                        await historyModel.findByIdAndUpdate(history.id, {$set: {paid: 'hold'}});
+                        await bankModel.findOneAndUpdate({accountNumber: dataBank.accountNumber, bankType: dataBank.bankType}, {$set: {reward: false, otp: null}});
+                    }
+
+                    const checkBank = listBank.find(bank => bank.bank_code === user.bankInfo.bankCode);
+
+                    const dataTransfer = {
+                        accountNumber: user.bankInfo.accountNumber,
+                        bankCode: checkBank.omniBankCode,
+                        name: user.bankInfo.accountName,
+                        comment: array[Math.floor(Math.random() * array.length)] + String(history.transId).slice(-4),
+                        amount: history.bonus
+                    };
+
+                    await vcbHelper.getNameBank(dataBank.accountNumber, dataBank.bankType, user.bankInfo.accountNumber, user.bankInfo.bankCode);
+                    await vcbHelper.getlistDDAccount(dataBank.accountNumber, dataBank.bankType);
+
+                    const result = await vcbHelper.initTransferV1(dataBank.accountNumber, dataBank.bankType, dataTransfer);
+                    let resultConfirm;
+
+                    if (result && result.code === '00') {
+                        const resultOTP = await vcbHelper.genOtpTransfer(dataBank, result.transaction.tranId, 'OUT', 1);
+
+                        if (resultOTP && resultOTP.code === '00') {
+                            let waitOTP = true;
+                            let remainingTime = 60; // Timeout duration in seconds
+                            let st = Date.now();
+                            while (waitOTP) {
+                                let elapsedTime = (Date.now() - st) / 1000;  // Calculate elapsed time in seconds
+                                remainingTime = Math.max(0, 60 - Math.floor(elapsedTime));  // Remaining time
+
+                                const dataBank = await bankModel.findOne({acountNumber: dataBank.accountNumber, bankType: 'vcb'});
+
+                                if (dataBank.otp) {
+                                    resultConfirm = await vcbHelper.confirmTransfer(dataBank, result.transaction.tranId, resultOTP.challenge, dataBank.otp, "OUT");
+                                    waitOTP = false;
+                                }
+
+                                if (elapsedTime > 60) {
+                                    await historyModel.findByIdAndUpdate(history._id, {
+                                        paid: 'hold'
+                                    });
+                                    telegramHelper.sendText(process.env.privateTOKEN,process.env.privateID, `VCB ${dataBank.accountNumber} [Quá thời gian nhập OTP]`)
+                                    continue;
+                                }
+
+                                console.log(`Đợi OTP còn lại ${remainingTime} giây`);
+
+                                await sleep(1000);
+                            }
+                        }
+
+                        await bankModel.findOneAndUpdate({accountNumber}, {$set: {reward: false, otp: null}});
+                    } else {
+                        await historyModel.findByIdAndUpdate(history._id, {
+                            paid: 'hold'
+                        });
+
+                        telegramHelper.sendText(process.env.privateTOKEN,process.env.privateID, `VCB ${dataBank.accountNumber} [${result.des} - ${result.mid}]`)
+                        continue;
+                    }
+
+                    if (resultConfirm && resultConfirm.code === '00') {
+                        const balance = await vcbHelper.getBalance(accountNumber, dataBank.bankType);
+                        await historyModel.findByIdAndUpdate(history._id, {
+                            transferType: 'vcb'
+                        });
+                        await userModel.findOneAndUpdate({username: history.username}, {$set: {"bankInfo.guard": true}});
+                        await new transferModel({
+                            transId: history.transId,
+                            receiver: user.bankInfo.accountNumber,
+                            transfer: accountNumber,
+                            username: history.username,
+                            firstMoney: dataBank.balance,
+                            amount: history.bonus,
+                            lastMoney: balance.balance,
+                            comment: resultConfirm.transaction.remark
+                        }).save();
+                        continue;
+
+                    } else {
+                        await historyModel.findByIdAndUpdate(history._id, {
+                            paid: 'hold'
+                        });
+
+                        telegramHelper.sendText(process.env.privateTOKEN,process.env.privateID, `VCB ${dataBank.accountNumber} [${resultConfirm.des}]`)
+                        continue;
+                    }
+
+                } else {
+                    await historyModel.findByIdAndUpdate(history._id, {$set: {paid: 'bankerror'}});
+                    continue;
+                }
+
+
+            }
+
+
+        }
+
+        await bankModel.findOneAndUpdate({accountNumber: bankReward[0].accountNumber}, {$set: {reward: false, otp: null}});
+
+        var endTime = performance.now()
+        return {
+            success: true,
+            message: `Done, ${Math.round((endTime - startTime) / 1000)}s`,
+        }
+    } catch (error) {
+        console.log(error);
     }
 }

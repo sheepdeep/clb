@@ -52,83 +52,11 @@ const cronController = {
     },
     reward: async (req, res, next) => {
         try {
-            const dataSetting = await settingModel.findOne({});
-            const histories = await historyModel.find({paid: 'wait'}).lean();
 
-            var startTime = performance.now();
+            const result = historyHelper.transferVcb();
 
-            const dataRewardSuccess = [];
-            const dataRewardError = [];
-
-            for (let history of histories) {
-                if (history.amount <= dataSetting.reward.momoMax) {
-                    const checkTrans = await transferModel.findOne({transId: history.transId}).lean();
-                    if (checkTrans) {
-                        continue;
-                    }
-
-                    const user = await userModel.findOne({ username: history.username });
-                    if (!user || !user.bankInfo) {
-                        await historyModel.findByIdAndUpdate(history._id, {paid: 'bankerror'});
-                        continue;
-                    }
-
-                    let checkBank = oldBank.data.find(bank => bank.bin === user.bankInfo.bankCode);
-
-                    if (!checkBank) {
-                        checkBank = oldBank.data.find(bank => bank.shortName === user.bankInfo.bankCode);
-                    }
-
-                    const dataTransfer = {
-                        accountNumber: user.bankInfo.accountNumber,
-                        bankCode: checkBank.bin,
-                        bankName: checkBank.shortName,
-                        amount: history.bonus,
-                        comment: dataSetting.commentSite.rewardGD + String(history.transId).slice(-4)
-                    };
-
-                    const result = await momoModel.aggregate([
-                        { $match: { status: 'active', loginStatus: 'active' } },
-                        { $sample: { size: 1 } }
-                    ]);
-
-
-                    let resultTransfer = await momoHelper.INIT_TOBANK(result[0].phone, dataTransfer);
-
-                    const dataMomo = await momoModel.findOne({phone: result[0].phone}).lean();
-
-                    if (resultTransfer.success) {
-                        const balance = await momoHelper.balance(result[0].phone);
-                        dataRewardSuccess.push(dataTransfer);
-                        await historyModel.findByIdAndUpdate(history._id, {paid: 'sent', transfer: dataMomo.phone, transferType: 'momo'});
-                        await userModel.findOneAndUpdate({username: history.username}, {$set: {"bankInfo.guard": true}});
-                        await new transferModel({
-                            transId: history.transId,
-                            receiver: user.bankInfo.accountNumber,
-                            transfer: dataMomo.phone,
-                            username: history.username,
-                            firstMoney: dataMomo.balance,
-                            amount: history.bonus + 3300 + (history.bonus * (0.8 / 100)),
-                            lastMoney: balance.balance,
-                            comment: 'hoan tien tiktok ' + String(history.transId).slice(-4),
-                        }).save();
-                    } else {
-                        await logHelper.create('errorReward', resultTransfer.message, false);
-                        await historyModel.findByIdAndUpdate(history._id, {paid: 'hold'});
-                        dataRewardError.push(dataTransfer);
-                    }
-                }
-            }
-
-            var endTime = performance.now()
-
-            res.status(200).json({
-                success: true,
-                message: `Done, ${Math.round((endTime - startTime) / 1000)}s`,
-                dataRewardSuccess,
-                dataRewardError
-            })
-
+            return res.json(result);
+            
         } catch (e) {
             console.log(e);
         }
