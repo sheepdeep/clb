@@ -975,9 +975,9 @@ exports.transferVcb = async (history) => {
                                 let elapsedTime = (Date.now() - st) / 1000;  // Calculate elapsed time in seconds
                                 remainingTime = Math.max(0, 60 - Math.floor(elapsedTime));  // Remaining time
 
-                                const dataBank = await bankModel.findOne({acountNumber: dataBank.accountNumber, bankType: 'vcb'});
+                                const dataBank1 = await bankModel.findOne({accountNumber: dataBank.accountNumber, bankType: 'vcb'});
 
-                                if (dataBank.otp) {
+                                if (dataBank1.otp) {
                                     resultConfirm = await vcbHelper.confirmTransfer(dataBank, result.transaction.tranId, resultOTP.challenge, dataBank.otp, "OUT");
                                     waitOTP = false;
                                 }
