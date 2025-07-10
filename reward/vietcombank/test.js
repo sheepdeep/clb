@@ -68,6 +68,7 @@ const run = async (accountNumber) => {
                 amount: history.bonus
             };
 
+            console.log(dataTransfer);
 
             let resultConfirm;
 

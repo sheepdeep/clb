@@ -681,6 +681,7 @@ exports.initTransferV2 = async (accountNumber, bankType, dataTransfer) => {
             "feeType": "1",
             "lang": "vi",
             "mid": 4035,
+            "transferCategory": null,
             "creditOmniBankCode": dataTransfer.bankCode,
             "content": dataTransfer.comment,
             "user": bankData.username,
