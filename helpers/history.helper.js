@@ -939,7 +939,7 @@ exports.transferVcb = async (history) => {
                 const user = await userModel.findOne({username: history.username});
 
                 if(user.bankInfo.accountNumber) {
-                    const dataBank = await bankReward.findOne({accountNumber: bankReward[0].accountNumber, bankType: bankReward[0].bankType});
+                    const dataBank = await bankModel.findOne({accountNumber: bankReward[0].accountNumber, bankType: bankReward[0].bankType});
 
                     console.log(`Thực hiện trả thưởng #${history.transId} => ${dataBank.accountNumber}`)
 
