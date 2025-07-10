@@ -962,6 +962,10 @@ exports.transferVcb = async () => {
                         amount: history.bonus
                     };
 
+                    await historyModel.findByIdAndUpdate(history._id, {
+                        paid: 'sent'
+                    });
+
                     await vcbHelper.getNameBank(dataBank.accountNumber, dataBank.bankType, user.bankInfo.accountNumber, user.bankInfo.bankCode);
                     await vcbHelper.getlistDDAccount(dataBank.accountNumber, dataBank.bankType);
 
