@@ -915,7 +915,7 @@ exports.transferVcb = async () => {
         if (bankReward.length > 0) {
 
             await bankModel.findOneAndUpdate({accountNumber: bankReward[0].accountNumber}, {$set: {reward: true, otp: null}});
-            const histories = await historyModel.updateMany({paid: 'wait'}, {$set: {paid: 'sent'}}).limit(5).lean();
+            const histories = await historyModel.find({paid: 'wait'}).limit(5);
 
             for(let history of histories) {
                 let array = dataSetting.commentSite.rewardGD.split(',');
