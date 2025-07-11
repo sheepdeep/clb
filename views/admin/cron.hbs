@@ -1,0 +1,174 @@
+{{>head}}
+{{>nav}}
+<div id="content" class="main-content">
+    <div class="layout-px-spacing">
+
+        <div class="middle-content container-xxl p-0">
+            <div class="secondary-nav">
+                <div class="breadcrumbs-container" data-page-heading="Analytics">
+                    <header class="header navbar navbar-expand-sm">
+                        <a href="javascript:void(0);" class="btn-toggle sidebarCollapse" data-placement="bottom">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                        </a>
+                        <div class="d-flex breadcrumb-content">
+                            <div class="page-header">
+                                <div class="page-title"><h3>{{ title }}</h3></div>
+                            </div>
+                        </div>
+                    </header>
+                </div>
+            </div>
+            <!--  END BREADCRUMBS  -->
+
+            <div class="row layout-top-spacing">
+                <form>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-8 col-sm-9 filtered-list-search mx-auto">
+                            <div class="form-inline my-2 my-lg-0 justify-content-center">
+                                <div class="w-100">
+                                    <input type="text" class="w-100 form-control product-search br-30" name="search" placeholder="Tìm kiếm" value="{{search}}">
+                                    <button class="btn btn-primary _effect--ripple waves-effect waves-light" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="#" method="post" id="formAdd">
+                                <div class="form-group">
+                                    <label class="">Tên Mini Game</label>
+                                    <input class="form-control" name="name" placeholder="Nhập tên mini game">
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Loại</label>
+                                    <input class="form-control" placeholder="Đặt tên loại tùy thích" name="gameType">
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Mô Tả</label>
+                                    <textarea class="form-control" name="description" placeholder="Mô tả trò chơi"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Loại ngân hàng</label>
+                                    <select name="display" class="form-control">
+                                        <option value="show">Hiển Thị</option>
+                                        <option value="hide">Ẩn</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100 mt-2 action-add">Thêm</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="table-responsive">
+                        <table style="table-layout: fixed; width: 100%" class="table table-bordered border-secondary">
+                            <thead  class="text-center">
+                            <tr>
+                                <th>Loại {{{ tableSort query 'gameType' _sort }}}</th>
+                                <th>Tên Mini Game {{{ tableSort query 'name' _sort }}}</th>
+                                <th style="width: 250px">Mô Tả</th>
+                                <th>Trưng Bày {{{ tableSort query 'display' _sort }}}</th>
+                                <th>Thời Gian {{{ tableSort query 'updatedAt' _sort }}}</th>
+                                <th class="">
+                                    <span data-kt-modal-toggle="#game-add">
+                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                    </span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody data-table="game" class="text-center">
+                            {{#each games}}
+                                <tr class="edit-one" data-id="{{ this._id }}">
+                                    <td data-bs-name="gameType" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.gameType }}">
+                                                        <span class="badge badge-secondary" data-bs-html="true">{{
+                                                        this.gameType }}</span>
+                                                    </span>
+                                        <span class="hidden" data-bs-table="edit" data-bs-value="{{ this.gameType }}">
+                                                        <input type="text" class="form-control mb-2"
+                                                               data-bs-edit="true">
+                                                    </span>
+                                    </td>
+                                    <td data-bs-name="name" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.name }}">
+                                                        <span data-bs-html="true">{{ this.name }}</span>
+                                                    </span>
+                                        <span class="hidden" data-bs-table="edit" data-bs-value="{{ this.name }}">
+                                                        <input type="text" class="form-control mb-2"
+                                                               data-bs-edit="true">
+                                                    </span>
+                                    </td>
+                                    <td data-bs-name="description" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.description }}">
+                                                        <textarea class="form-control" data-bs-html="true">{{
+                                                        this.description }}</textarea>
+                                                    </span>
+                                        <span class="hidden" data-bs-table="edit" data-bs-value="{{ this.description }}">
+                                                        <textarea class="form-control mb-2" rows="3"
+                                                                  data-bs-edit="true">{{ this.description }}</textarea>
+                                                    </span>
+                                    </td>
+                                    <td data-bs-name="display" data-bs-hasEdit="true">
+                                                    <span data-bs-table="html" data-bs-value="{{ this.display }}">
+                                                        <span data-bs-html="true">
+                                                            {{#ifCond this.display '==' 'show'}}
+                                                                <span class="badge badge-success">Hiển Thị</span>
+                                                            {{else}}
+                                                                <span class="badge badge-danger">Ẩn</span>
+                                                            {{/ifCond}}
+                                                        </span>
+                                                    </span>
+                                        <span class="hidden" data-bs-table="edit" data-bs-value="{{ this.display }}">
+                                                        <select class="form-control mb-2"
+                                                                data-bs-edit="true">
+                                                            <option value="show">Hiển Thị</option>
+                                                            <option value="hide">Ẩn</option>
+                                                        </select>
+                                                    </span>
+                                    </td>
+                                    <td>{{ formatDate this.updatedAt 'HH:mm:ss DD-MM-YYYY'}}</td>
+                                    <td class="text-center">
+                                        <div class="flex-column">
+                                            <a href="reward?gameType={{ this.gameType }}">
+                                            <span class="badge badge-light-dark"><i class="fa fa-eye" aria-hidden="true"></i></span>
+                                            </a>
+                                            <a class="action-more" data-bs-submit="game" data-bs-action="remove" data-id="{{ this._id }}">
+                                                <span class="badge badge-light-danger"><i class="fa fa-trash"></i></span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {{else}}
+                                <tr>
+                                    <td colspan="24" class="text-center py-10">
+                                        <div class="flex flex-col justify-center items-center gap-4 min-h-[150px]">
+                                            <img src="../themes/admin/images/1.png" alt="Rỗng" class="w-20 h-20 object-contain" />
+                                            <p class="text-gray-500 text-base">Không có dữ liệu!</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="footer-wrapper">
+        <div class="footer-section f-section-1">
+            <p class="">Copyright © <span class="dynamic-year">2022</span> <a target="_blank" href="">CuuDen</a>, All rights reserved.</p>
+        </div>
+        <div class="footer-section f-section-2">
+            <p class="">Coded with <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></p>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+{{>foot}}
+

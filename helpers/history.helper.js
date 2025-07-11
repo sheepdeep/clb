@@ -434,17 +434,6 @@ exports.handleDesc = async (description) => {
         };
     }
 
-    // Loop through the words in desc
-    if (desc[0] == 'CUSTOMER') {
-
-        // const user =  await userModel.findOne({ username: { $regex: desc[1].toUpperCase(), $options: "i" } }).lean();
-
-        return {
-            username: desc[1],
-            comment: desc[2].toUpperCase().replace(/[.-]/g, '')
-        };
-    }
-
     for (let i = 0; i < desc.length; i++) {
         // Check if the word matches a username
         if (await userModel.findOne({ username: desc[i].toLowerCase() })) {
@@ -924,10 +913,11 @@ exports.transferVcb = async () => {
             }
         ]);
 
+
         if (bankReward.length > 0) {
 
             await bankModel.findOneAndUpdate({accountNumber: bankReward[0].accountNumber}, {$set: {reward: true, otp: null}});
-            const histories = await historyModel.find({paid: 'wait'}).limit(5);
+            const histories = await historyModel.updateMany({paid: 'wait'}, {$set: {paid: 'sent'}}).limit(5);
 
             for(let history of histories) {
                 let array = dataSetting.commentSite.rewardGD.split(',');
