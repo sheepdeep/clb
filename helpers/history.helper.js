@@ -437,7 +437,7 @@ exports.handleDesc = async (description) => {
     for (let i = 0; i < desc.length; i++) {
         console.log(desc[i]);
         // Check if the word matches a username
-        if (await userModel.findOne({ username: desc[i] })) {
+        if (await userModel.findOne({ username: desc[i].replace(/\./g, '') })) {
             numberUser = i;  // Store index of the matching user
         }
 
