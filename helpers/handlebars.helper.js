@@ -377,4 +377,11 @@ module.exports = {
 
         return;
     },
+    lowercase: (text) => {
+        if (text) {
+            return text.toLowerCase();
+        }
+
+        return;
+    },
 }

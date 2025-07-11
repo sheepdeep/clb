@@ -608,8 +608,7 @@ exports.generateRandomAlphanumeric = (length) => {
 
 exports.gift = async () => {
     try {
-        const code = "SB" + await this.generateRandomAlphanumeric(12);
-        const bankReceiver = await bankModel.findOne({bankType: 'mbb'}).lean();
+        const code = "RB" + await this.generateRandomAlphanumeric(12);
         const dataSetting = await settingModel.findOne({});
 
         await new giftModel({
@@ -640,8 +639,8 @@ exports.telegramBot = async () => {
         if (dataSetting.telegram.botGift == 'active') {
             const users = await userModel.find({ "telegram.chatId": { $ne: null } });
 
-            const todayCode1 = `SBVIP${moment().format('DDMMYY')}`;
-            const todayCode2 = `SB${moment().format('DDMMYY')}`;
+            const todayCode1 = `RBVIP${moment().format('DDMMYY')}`;
+            const todayCode2 = `RB${moment().format('DDMMYY')}`;
 
             // Kiểm tra xem đã có code nào trong 2 cái trên chưa
             const existing = await giftModel.findOne({
