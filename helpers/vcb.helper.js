@@ -94,6 +94,8 @@ exports.login = async (accountNumber, bankType) => {
 
         const result = await this.curlPost("https://digiapp.vietcombank.com.vn/authen-service/v1/login", bodyData, this.headerNull(bankData.username));
 
+        console.log(result);
+
         if (result.code == '20231' && result.mid == 6) {
             const checkBrowser = await this.checkBrowser(accountNumber, bankType, result.browserToken);
 
