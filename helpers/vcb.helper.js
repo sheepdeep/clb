@@ -40,7 +40,7 @@ exports.createTaskCaptcha = async(base64Img) => {
     try {
 
         let config = {
-            url: "http://103.72.96.214:8277/api/captcha/vietcombank",
+            url: "http://103.153.64.187:8277/api/captcha/vietcombank",
             method: "POST",
             data: {
                 base64: base64Img

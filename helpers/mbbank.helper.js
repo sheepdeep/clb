@@ -73,7 +73,7 @@ exports.login = async (accountNumber, bankType) => {
 
     const response = await axios(config);
 
-    const captchaText = await this.solveCaptcha("http://103.72.96.214:8277/api/captcha/mbbank", response.data.imageString);
+    const captchaText = await this.solveCaptcha("http://103.153.64.187:8277/api/captcha/mbbank", response.data.imageString);
 
     const bodyData = {
         "userId": bankData.username,
