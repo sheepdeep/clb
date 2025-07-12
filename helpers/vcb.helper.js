@@ -40,10 +40,11 @@ exports.createTaskCaptcha = async(base64Img) => {
     try {
 
         let config = {
-            url: "https://ecaptcha.sieuthicode.net/api/captcha/vcb",
+            url: "http://103.72.96.214:8277/api/captcha/vietcombank",
             method: "POST",
             data: {
-                api_key: 'ec7c869ea3d96b88df2a153e3cad7545',
+                // username: '102380179255627991170',
+                // api_key: 'a356229527f3ad6ff081d56f43950a10',
                 base64: base64Img
             }
         };
@@ -93,8 +94,6 @@ exports.login = async (accountNumber, bankType) => {
         }, {upsert: true})
 
         const result = await this.curlPost("https://digiapp.vietcombank.com.vn/authen-service/v1/login", bodyData, this.headerNull(bankData.username));
-
-        console.log(result);
 
         if (result.code == '20231' && result.mid == 6) {
             const checkBrowser = await this.checkBrowser(accountNumber, bankType, result.browserToken);
