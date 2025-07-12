@@ -540,6 +540,12 @@ exports.fakeBill = async () => {
                 paid
             } = await gameHelper.checkWin(bank.accountNumber, amount, transId, reward.content);
 
+            if (result === 'win' && amount >= 200000) {
+                const message = `<b>🎉 Xin chúc mừng người chơi ${dataSetting.fakeUser.data[randomIndex].slice(0, 4)}**** vừa chiến thắng ${Intl.NumberFormat('en-US').format(Math.floor(amount * reward.amount))} VNĐ</b>\n\n<b>Truy cập ${dataSetting.nameSite} để trải nghiệm</b>`;
+
+                await telegramHelper.sendText(dataSetting.telegram.token, dataSetting.telegram.chatId, message, "HTML");
+            }
+
 
             await historyModel.findOneAndUpdate({transId}, {
                 $set: {
