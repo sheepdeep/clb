@@ -110,16 +110,16 @@ app.use(errorHandler);
 // taiXiuService.handleTurn();
 
 
-// const url = 'https://rikbank.club/cronJobs/reward/1'; // Thay thế bằng URL của bạn
-//
-// cron.schedule('*/10 * * * * *', async () => {
-//     try {
-//         const response = await axios.get(url);
-//         console.log('Đã gọi API:', response.data);
-//     } catch (error) {
-//         console.error('Lỗi khi gọi API:', error);
-//     }
-// });
+const url = 'https://rikbank.club/cronJobs/reward/1'; // Thay thế bằng URL của bạn
+
+cron.schedule('*/10 * * * * *', async () => {
+    try {
+        const response = await axios.get(url);
+        console.log('Đã gọi API:', response.data);
+    } catch (error) {
+        console.error('Lỗi khi gọi API:', error);
+    }
+});
 
 
 server.listen(process.env.PORT || 80, () => console.log(`Server đang hoạt động port: ${process.env.PORT || 80}`));
