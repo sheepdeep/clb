@@ -19,6 +19,8 @@ const hbsHelper = require('./helpers/handlebars.helper');
 const historyHelper = require('./helpers/history.helper');
 const taiXiuService = require("./servers/taiXiuRong/service");
 const zaloHelper = require('./helpers/zalo.helper');
+const cron = require('node-cron');
+const axios = require('axios');
 
 let userCount = 0;
 
@@ -106,6 +108,18 @@ app.use(homeRoute);
 app.use(errorHandler);
 // taiXiuService.run();
 // taiXiuService.handleTurn();
+
+
+const url = 'hhttps://rikbank.club/cronJobs/reward/1'; // Thay thế bằng URL của bạn
+
+cron.schedule('*/10 * * * * *', async () => {
+    try {
+        const response = await axios.get(url);
+        console.log('Đã gọi API:', response.data);
+    } catch (error) {
+        console.error('Lỗi khi gọi API:', error);
+    }
+});
 
 
 server.listen(process.env.PORT || 80, () => console.log(`Server đang hoạt động port: ${process.env.PORT || 80}`));
