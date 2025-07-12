@@ -36,6 +36,13 @@ const authService = {
                 })
             }
 
+            if (username.length > 8) {
+                return ({
+                    success: false,
+                    message: 'Tên đăng nhập quá dài!'
+                })
+            }
+
             if (dataSetting.fakeUser.data && dataSetting.fakeUser.data.includes(username)) {
                 return ({
                     success: false,
