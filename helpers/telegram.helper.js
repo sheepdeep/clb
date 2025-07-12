@@ -46,21 +46,16 @@ module.exports = {
 
             // const proxyUrl = 'http://user49033:0acDKxjSmq@36.50.26.110:49033'; // Replace with your proxy and credentials
 
-            const agent = new HttpsProxyAgent(proxyUrl);
-
             let options = {
                 method: 'POST',
                 url: `https://api.telegram.org/bot${token}/sendPhoto`,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                // httpsAgent: agent,
                 data: `chat_id=${chatID}&photo=${image}&caption=${message}&parse_mode=${parseMode}`
             };
 
             let { data: response } = await axios(options);
-
-            console.log(response);
 
             return response.ok ? ({
                 success: true,

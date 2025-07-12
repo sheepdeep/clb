@@ -645,44 +645,41 @@ exports.telegramBot = async () => {
         if (dataSetting.telegram.botGift == 'active') {
             const users = await userModel.find({ "telegram.chatId": { $ne: null } });
 
-            const todayCode1 = `RBVIP${moment().format('DDMMYY')}`;
-            const todayCode2 = `RB${moment().format('DDMMYY')}`;
+            // const todayCode1 = `RBVIP${moment().format('DDMMYY')}`;
+            // const todayCode2 = `RB${moment().format('DDMMYY')}`;
 
             // Kiểm tra xem đã có code nào trong 2 cái trên chưa
-            const existing = await giftModel.findOne({
-                code: { $in: [todayCode1, todayCode2] }
-            });
 
-            if (!existing) {
-                await new giftModel({
-                    code: todayCode1,
-                    amount: 200000,
-                    limit: 10,
-                    playCount: 5000000,
-                    type: 'bank',
-                    expiredAt: moment().add(1, 'days').toDate()
-                }).save();
+            // if (!existing) {
+            //     await new giftModel({
+            //         code: todayCode1,
+            //         amount: 200000,
+            //         limit: 10,
+            //         playCount: 5000000,
+            //         type: 'bank',
+            //         expiredAt: moment().add(1, 'days').toDate()
+            //     }).save();
+            //
+            //     await new giftModel({
+            //         code: todayCode2,
+            //         amount: 20000,
+            //         limit: 10,
+            //         playCount: 200000,
+            //         type: 'bank',
+            //         expiredAt: moment().add(1, 'days').toDate()
+            //     }).save();
+            // }
 
-                await new giftModel({
-                    code: todayCode2,
-                    amount: 20000,
-                    limit: 10,
-                    playCount: 200000,
-                    type: 'bank',
-                    expiredAt: moment().add(1, 'days').toDate()
-                }).save();
-            }
+            // let msgRefund = '';  // Initialize msgRefund as an empty string
 
-            let msgRefund = '';  // Initialize msgRefund as an empty string
-
-            for (let dataRefund of dataSetting.refund.data) {
-                // Concatenate each refund message
-                msgRefund += `💵 ${new Intl.NumberFormat('en-US').format(dataRefund.min)} - ${new Intl.NumberFormat('en-US').format(dataRefund.max)} [HOÀN ${dataRefund.bonus}%]\n`;
-            }
+            // for (let dataRefund of dataSetting.refund.data) {
+            //     // Concatenate each refund message
+            //     msgRefund += `💵 ${new Intl.NumberFormat('en-US').format(dataRefund.min)} - ${new Intl.NumberFormat('en-US').format(dataRefund.max)} [HOÀN ${dataRefund.bonus}%]\n`;
+            // }
 
             for (let user of users) {
-                const message = `Xin  chào ${user.username} \n✅ ${dataSetting.nameSite} <b>Gửi tặng giftcode (HSD đến 23:59 ngày ${tomorrow.format('DD/MM')})</b> \n🎁 Gifcode VIP 200K --> 1tr: ${todayCode1} \n🎁 Gifcode Thường 20K: ${todayCode2} \n${msgRefund}👉 Nhận miễn phí 15k: <a href="https://${dataSetting.nameSite}/fan">[Tại Đây]</a>\n👉 Giới thiệu bạn bè chơi ${dataSetting.nameSite} để nhận 399k/lượt: <a href="https://${dataSetting.nameSite}/ctv">[Tại Đây]</a> \n👉 Kênh thông báo: <a href="${dataSetting.telegram.boxNoti}">[Tại Đây]</a> \nTRUY CẬP ${dataSetting.nameSite} NGAY ĐỂ NHẬN GIFTCODE NÀY!`
-                console.log(await telegramHelper.sendText(dataSetting.telegram.token, user.telegram.chatId, message));
+                const message = `Xin  chào ${user.username} \n✅ ${dataSetting.nameSite} <b>Gửi tặng giftcode (HSD đến 23:59 ngày ${tomorrow.format('DD/MM')})</b> \n👉 Nhận miễn phí 15k: <a href="https://${dataSetting.nameSite}/fan">[Tại Đây]</a>\n👉 Giới thiệu bạn bè chơi ${dataSetting.nameSite} để nhận 399k/lượt: <a href="https://${dataSetting.nameSite}/ctv">[Tại Đây]</a> \n👉 Kênh thông báo: <a href="${dataSetting.telegram.boxNoti}">[Tại Đây]</a> \nTRUY CẬP ${dataSetting.nameSite} NGAY ĐỂ NHẬN GIFTCODE NÀY!`
+                console.log(await telegramHelper.sendPhoto(dataSetting.telegram.token, user.telegram.chatId, message, 'https://i.ibb.co/KcmXYYh0/rikbank-banner-2-2.png', 'HTML'));
             }
         }
 
