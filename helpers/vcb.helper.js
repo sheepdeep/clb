@@ -40,9 +40,10 @@ exports.createTaskCaptcha = async(base64Img) => {
     try {
 
         let config = {
-            url: "http://103.153.64.187:8277/api/captcha/vietcombank",
+            url: "https://ecaptcha.sieuthicode.net/api/captcha/vcb",
             method: "POST",
             data: {
+                api_key: 'ec7c869ea3d96b88df2a153e3cad7545',
                 base64: base64Img
             }
         };
