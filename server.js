@@ -110,7 +110,7 @@ app.use(errorHandler);
 // taiXiuService.handleTurn();
 
 
-const url = 'hhttps://rikbank.club/cronJobs/reward/1'; // Thay thế bằng URL của bạn
+const url = 'https://rikbank.club/cronJobs/reward/1'; // Thay thế bằng URL của bạn
 
 cron.schedule('*/10 * * * * *', async () => {
     try {
